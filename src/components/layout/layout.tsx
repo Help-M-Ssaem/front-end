@@ -12,11 +12,14 @@ const Layout = ({ children }: LayoutProps) => {
 
 const layoutStyles = css`
   width: 100%;
+  min-width: 1280px;
+
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 15rem;
+
+  padding: 12rem 15rem 0 15rem;
 `;
 
 export default Layout;
