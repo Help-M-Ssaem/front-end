@@ -18,33 +18,36 @@ import ChattingPage from "./pages/chatting/chatting";
 import AlarmPage from "./pages/alarm/alarm";
 import FavoritesPage from "./pages/favorites/favorites";
 import UserPage from "./pages/user/user";
+import Layout from "./components/layout/layout";
 
 function App() {
   return (
     <>
       <Global styles={GlobalStyle} />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<MainPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signin" element={<SigninPage />} />
-          <Route path="/board" element={<BoardPage />}>
-            <Route path="free" element={<FreeBoardPage />} />
-            <Route path="mbti" element={<MbtiBoardPage />} />
-            <Route path="create" element={<CreateBoardPage />} />
-            <Route path="update" element={<UpdateBoardPage />} />
-          </Route>
-          <Route path="/matching" element={<MatchingPage />} />
-          <Route path="/debate" element={<DebatePage />}>
-            <Route path="create" element={<CreateDebatePage />} />
-            <Route path="update" element={<UpdateDebatePage />} />
-          </Route>
-          <Route path="/mbtitype" element={<MbtiTypePage />} />
-          <Route path="/chatting" element={<ChattingPage />} />
-          <Route path="/alarm" element={<AlarmPage />} />
-          <Route path="/favorites" element={<FavoritesPage />} />
-          <Route path="/user" element={<UserPage />} />
-        </Routes>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<MainPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signin" element={<SigninPage />} />
+            <Route path="/board" element={<BoardPage />}>
+              <Route path="free" element={<FreeBoardPage />} />
+              <Route path="mbti" element={<MbtiBoardPage />} />
+              <Route path="create" element={<CreateBoardPage />} />
+              <Route path="update" element={<UpdateBoardPage />} />
+            </Route>
+            <Route path="/matching" element={<MatchingPage />} />
+            <Route path="/debate" element={<DebatePage />}>
+              <Route path="create" element={<CreateDebatePage />} />
+              <Route path="update" element={<UpdateDebatePage />} />
+            </Route>
+            <Route path="/mbtitype" element={<MbtiTypePage />} />
+            <Route path="/chatting" element={<ChattingPage />} />
+            <Route path="/alarm" element={<AlarmPage />} />
+            <Route path="/favorites" element={<FavoritesPage />} />
+            <Route path="/user" element={<UserPage />} />
+          </Routes>
+        </Layout>
       </BrowserRouter>
     </>
   );
