@@ -19,12 +19,14 @@ import AlarmPage from "./pages/alarm/alarm";
 import FavoritesPage from "./pages/favorites/favorites";
 import UserPage from "./pages/user/user";
 import Layout from "./components/layout/layout";
+import Header from "./components/header/Header";
 
 function App() {
   return (
     <>
       <Global styles={GlobalStyle} />
       <BrowserRouter>
+        <Header />
         <Layout>
           <Routes>
             <Route path="/" element={<MainPage />} />
