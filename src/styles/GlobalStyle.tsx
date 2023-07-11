@@ -1,12 +1,10 @@
-import { css } from '@emotion/react';
+import { css } from "@emotion/react";
 
 const GlobalStyle = css`
   * {
-    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI',
-      'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
-  }
-
-  * {
+    font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui,
+      Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
+      "Noto Sans KR", "Malgun Gothic", sans-serif;
     box-sizing: border-box;
   }
 
@@ -129,6 +127,7 @@ const GlobalStyle = css`
   body {
     width: 100%;
     height: 100%;
+    font-family: "Pretendard";
   }
 
   ol,
@@ -143,7 +142,7 @@ const GlobalStyle = css`
   blockquote:after,
   q:before,
   q:after {
-    content: '';
+    content: "";
     content: none;
   }
   table {
@@ -176,8 +175,8 @@ const GlobalStyle = css`
     appearance: none;
   }
 
-  input[type='number']::-webkit-inner-spin-button,
-  input[type='number']::-webkit-outer-spin-button {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
