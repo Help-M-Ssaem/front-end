@@ -5,6 +5,7 @@ import { SearchIcon } from "../../constants/CommonIcons";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import COLOR from "../../styles/color";
+import FONT from "../../styles/font";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -133,13 +134,15 @@ const buttonCSS = css`
   color: ${COLOR.WHITE};
   border-radius: 3rem;
   padding: 0.7rem 1.2rem;
-  font-weight: bold;
-  font-size: 0.9rem;
+  font-size: ${FONT.SIZE.TITLE3};
+  font-weight: ${FONT.WEIGHT.BOLD};
 `;
 
 const listCSS = css`
   display: flex;
   align-items: center;
+  font-size: ${FONT.SIZE.TITLE3};
+  font-weight: ${FONT.WEIGHT.REGULAR};
 
   li {
     cursor: pointer;
