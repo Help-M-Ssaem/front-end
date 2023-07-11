@@ -14,7 +14,6 @@ const layoutStyles = css`
   width: 100%;
   min-width: 1280px;
 
-  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;

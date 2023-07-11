@@ -5,11 +5,13 @@ import { SearchIcon } from "../../constants/CommonIcons";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import COLOR from "../../styles/color";
+import { useRecoilState } from "recoil";
+import { navbarState } from "../../states/navbar";
 
 const Header = () => {
   const navigate = useNavigate();
   const [LoginOpen, setLoginOpen] = useState(true);
-  const [selectedItem, setSelectedItem] = useState("");
+  const [selectedItem, setSelectedItem] = useRecoilState(navbarState);
 
   const handleLoginClick = () => {
     navigate("/login"); // 로그인 기능 만들어지면 수정
@@ -28,7 +30,7 @@ const Header = () => {
   return (
     <header css={headerCSS}>
       <div css={headerTopCSS}>
-        <LogoIcon onClick={() => navigate("/")} />
+        <LogoIcon onClick={() => handleItemClick("/")} />
         {LoginOpen && (
           <button css={buttonCSS} onClick={handleLoginClick}>
             로그인하고 이용하기
