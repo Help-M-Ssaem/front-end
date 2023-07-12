@@ -4,7 +4,7 @@ import { Outlet, useNavigate } from "react-router";
 import COLOR from "../../styles/color";
 import { useRecoilState } from "recoil";
 import { boardNavbarState } from "../../states/navbar";
-import { FilledStarIcon } from "../../constants/CommonIcons";
+import { FilledStarIcon } from "../../assets/CommonIcons";
 import FONT from "../../styles/font";
 import Mbti from "../../components/mbti/Mbti";
 

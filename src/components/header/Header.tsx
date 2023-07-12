@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { LogoIcon } from "../../constants/HeaderIcons";
-import { SearchIcon } from "../../constants/CommonIcons";
+import { LogoIcon } from "../../assets/HeaderIcons";
+import { SearchIcon } from "../../assets/CommonIcons";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import COLOR from "../../styles/color";

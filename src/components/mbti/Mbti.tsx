@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { useState } from "react";
-import { EmptyStarIcon, FilledStarIcon } from "../../constants/CommonIcons";
+import { EmptyStarIcon, FilledStarIcon } from "../../assets/CommonIcons";
 import { css } from "@emotion/react";
 import FONT from "../../styles/font";
 import COLOR from "../../styles/color";
