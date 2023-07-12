@@ -2,7 +2,8 @@
 import { css } from "@emotion/react";
 import { Board } from "../../interfaces/board";
 import COLOR from "../../styles/color";
-import Badge from "../badge/badge";
+import FONT from "../../styles/font";
+import Badge from "../badge/Badge";
 
 interface BoardProps {
   board: Board;
@@ -45,7 +46,7 @@ const boardBoxCSS = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 0;
+  padding: 1.2rem 0;
   border-top: 1px solid ${COLOR.MAIN};
 `;
 
@@ -57,17 +58,21 @@ const leftCSS = css`
 const rightCSS = css``;
 
 const nameCSS = css`
-  font-weight: bold;
+  font-size: ${FONT.SIZE.HEADLINE};
+  font-weight: ${FONT.WEIGHT.SEMIBOLD};
   margin-bottom: 0.4rem;
 `;
 
 const titleCSS = css`
-  font-weight: bold;
+  font-size: ${FONT.SIZE.TITLE3};
+  font-weight: ${FONT.WEIGHT.BOLD};
   margin-bottom: 0.4rem;
 `;
 
 const contentCSS = css`
   margin-bottom: 1rem;
+  font-size: ${FONT.SIZE.HEADLINE};
+  font-weight: ${FONT.WEIGHT.REGULAR};
 `;
 
 const marginRightCSS = css`
@@ -81,8 +86,8 @@ const profileBoxCSS = css`
 `;
 
 const profileImgCSS = css`
-  width: 4rem;
-  height: 4rem;
+  width: 3.5rem;
+  height: 3.5rem;
   border-radius: 50%;
   margin-right: 1rem;
 `;
@@ -97,14 +102,17 @@ const profileDetailCSS = css`
 `;
 
 const thumbnailCSS = css`
-  width: 10rem;
-  height: 10rem;
+  width: 9rem;
+  height: 9rem;
 `;
 
 const detailCSS = css`
   display: flex;
   font-size: 0.9rem;
   color: ${COLOR.GRAY2};
+
+  font-size: ${FONT.SIZE.FOOTNOTE};
+  font-weight: ${FONT.WEIGHT.REGULAR};
 `;
 
 export default BoardComponent;

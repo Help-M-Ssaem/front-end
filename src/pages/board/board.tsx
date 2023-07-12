@@ -5,10 +5,31 @@ import COLOR from "../../styles/color";
 import { useRecoilState } from "recoil";
 import { boardNavbarState } from "../../states/navbar";
 import { FilledStarIcon } from "../../constants/CommonIcons";
+import FONT from "../../styles/font";
+import Mbti from "../../components/mbti/Mbti";
 
 const BoardPage = () => {
   const navigate = useNavigate();
   const [selectedItem, setSelectedItem] = useRecoilState(boardNavbarState);
+
+  const mbtiList = [
+    ["ISTJ", false],
+    ["ISFJ", false],
+    ["INFJ", false],
+    ["INTJ", false],
+    ["ISTP", false],
+    ["ISFP", false],
+    ["INFP", false],
+    ["INTP", false],
+    ["ESTP", false],
+    ["ESFP", false],
+    ["ENFP", false],
+    ["ENTP", false],
+    ["ESTJ", false],
+    ["ESFJ", false],
+    ["ENFJ", false],
+    ["ENTJ", false],
+  ];
 
   const handleItemClick = (path: string) => {
     setSelectedItem(path);
@@ -33,6 +54,11 @@ const BoardPage = () => {
           >
             자유 게시판
           </div>
+        </div>
+        <div css={mbtiContainerCSS}>
+          {mbtiList.map((mbti) => (
+            <Mbti mbti={mbti} />
+          ))}
         </div>
       </div>
       <div css={titleBoxCSS}>
@@ -62,9 +88,11 @@ const buttonCSS = css`
   width: 100%;
   text-align: center;
   padding-bottom: 1.7rem;
-  font-weight: bold;
-  color: ${COLOR.GRAY2};
+
   position: relative;
+  font-size: ${FONT.SIZE.TITLE3};
+  font-weight: ${FONT.WEIGHT.BOLD};
+  color: ${COLOR.GRAY2};
 
   &:hover,
   &.active {
@@ -81,7 +109,15 @@ const titleBoxCSS = css`
 `;
 
 const titleCSS = css`
-  font-size: 0.9rem;
-  font-weight: bold;
+  font-size: ${FONT.SIZE.TITLE3};
+  font-weight: ${FONT.WEIGHT.BOLD};
   margin-right: 0.5rem;
+`;
+
+const mbtiContainerCSS = css`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  padding: 2rem;
 `;

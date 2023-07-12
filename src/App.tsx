@@ -18,7 +18,7 @@ import ChattingPage from "./pages/chatting/chatting";
 import AlarmPage from "./pages/alarm/alarm";
 import FavoritesPage from "./pages/favorites/favorites";
 import UserPage from "./pages/user/user";
-import Layout from "./components/layout/layout";
+import Layout from "./components/layout/Layout";
 import Header from "./components/header/Header";
 
 function App() {

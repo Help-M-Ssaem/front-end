@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import Container from "../../components/container/container";
-import Button from "../../components/button/button";
-import BoardComponent from "../../components/board/board";
+import Container from "../../components/container/Container";
+import Button from "../../components/button/Button";
+import BoardComponent from "../../components/board/Board";
 import { useNavigate } from "react-router";
 import { css } from "@emotion/react";
 
@@ -67,7 +67,7 @@ const FreeBoardPage = () => {
   return (
     <Container>
       <div css={buttonBoxCSS}>
-        <Button text="글쓰기" onClick={() => navigate("/board/create")} />
+        <Button text="글 쓰기" onClick={() => navigate("/board/create")} />
       </div>
       {freeBoardList.map((board) => (
         <BoardComponent board={board} key={board.id} />
