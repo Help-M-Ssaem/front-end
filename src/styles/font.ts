@@ -5,10 +5,10 @@ const FONT = {
     TITLE1: "2rem",
     TITLE2: "1.4rem",
     TITLE3: "1rem",
-    HEADLINE: "0.8rem",
+    HEADLINE: "0.9rem",
     BODY: "0.8rem",
-    FOOTNOTE: "0.6rem",
-    CAPTION: "0.4rem",
+    FOOTNOTE: "0.7rem",
+    CAPTION: "0.6rem",
   },
   WEIGHT: {
     REGULAR: 400,
