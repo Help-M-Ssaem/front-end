@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
+import FONT from "../../styles/font";
 
 type ButtonProps = {
   text: string;
@@ -15,7 +16,11 @@ const Button = ({ text, onClick }: ButtonProps) => {
 
     color: ${COLOR.WHITE};
     background: ${COLOR.MAIN2};
-    padding: 0.4rem 1.6rem;
+
+    font-size: ${FONT.SIZE.BODY};
+    font-weight: ${FONT.WEIGHT.BOLD};
+
+    padding: 0.5rem 1.7rem;
     border-radius: 2rem;
   `;
 
