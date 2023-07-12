@@ -7,18 +7,17 @@ interface LayoutProps {
 }
 
 const Layout = ({ children }: LayoutProps) => {
-  return <div css={layoutStyles}>{children}</div>;
+  return <div css={layoutCSS}>{children}</div>;
 };
 
-const layoutStyles = css`
+const layoutCSS = css`
   width: 100%;
   min-width: 1280px;
 
   display: flex;
   flex-direction: column;
-  align-items: center;
 
-  padding: 12rem 15rem 0 15rem;
+  padding: 11.5rem 15rem 0 15rem;
 `;
 
 export default Layout;

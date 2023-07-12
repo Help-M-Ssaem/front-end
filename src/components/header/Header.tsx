@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { LogoIcon } from "../../constants/HeaderIcons";
-import { SearchIcon } from "../../constants/CommonIcons";
+import { LogoIcon } from "../../assets/HeaderIcons";
+import { SearchIcon } from "../../assets/CommonIcons";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import COLOR from "../../styles/color";
@@ -47,8 +47,8 @@ const Header = () => {
             Home
           </li>
           <li
-            onClick={() => handleItemClick("/board")}
-            className={selectedItem === "/board" ? "active" : ""}
+            onClick={() => handleItemClick("/board/mbti")}
+            className={selectedItem === "/board/mbti" ? "active" : ""}
           >
             게시판
           </li>
@@ -103,6 +103,7 @@ export default Header;
 
 const headerCSS = css`
   width: 100%;
+  height: 11.5rem;
   min-width: 1280px;
 
   display: flex;
@@ -110,10 +111,13 @@ const headerCSS = css`
   justify-content: center;
   align-items: space-between;
   padding: 0 15rem;
+  background: ${COLOR.WHITE};
+  box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.1);
 
   position: fixed;
   left: 0;
   right: 0;
+  z-index: 1;
 `;
 
 const headerTopCSS = css`
