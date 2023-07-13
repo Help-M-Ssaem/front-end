@@ -1,8 +1,8 @@
 const FONT = {
   SIZE: {
-    HEROTITLE: "3rem",
-    BIGTITLE: "2.4rem",
-    TITLE1: "2rem",
+    HEROTITLE: "1.7rem",
+    BIGTITLE: "1.6rem",
+    TITLE1: "1.5rem",
     TITLE2: "1.4rem",
     TITLE3: "1rem",
     HEADLINE: "0.9rem",
