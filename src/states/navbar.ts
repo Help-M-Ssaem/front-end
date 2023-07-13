@@ -8,9 +8,3 @@ export const navbarState = atom({
   default: "/",
   effects_UNSTABLE: [persistAtom],
 });
-
-export const boardNavbarState = atom({
-  key: "boardNavbarState",
-  default: "mbti",
-  effects_UNSTABLE: [persistAtom],
-});
