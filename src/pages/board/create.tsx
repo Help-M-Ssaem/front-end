@@ -8,10 +8,13 @@ import { useRecoilValue } from "recoil";
 import { mbtiState } from "../../states/board";
 import { useState } from "react";
 import FONT from "../../styles/font";
+import Button from "../../components/button/Button";
+import { useNavigate } from "react-router";
 
 const CreateBoardPage = () => {
   const mbti = useRecoilValue(mbtiState);
   const [title, setTitle] = useState("");
+  const navigate = useNavigate();
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -36,6 +39,15 @@ const CreateBoardPage = () => {
           initialEditType="wysiwyg"
           useCommandShortcut={true}
         />
+        <div css={buttonBoxCSS}>
+          <Button
+            style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
+            onClick={() => navigate(-1)}
+          >
+            취소하기
+          </Button>
+          <Button onClick={() => navigate(-1)}>글 쓰기</Button>
+        </div>
       </Container>
     </div>
   );
@@ -71,4 +83,10 @@ const inputCSS = css`
   border-radius: 0.5rem;
   padding: 0.5rem;
   margin-bottom: 1rem;
+`;
+
+const buttonBoxCSS = css`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
 `;
