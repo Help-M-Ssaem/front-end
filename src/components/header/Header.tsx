@@ -152,11 +152,11 @@ const listCSS = css`
   }
 
   li:hover {
-    color: ${COLOR.MAIN2};
+    color: ${COLOR.MAIN1};
   }
 
   li.active {
-    color: ${COLOR.MAIN2};
+    color: ${COLOR.MAIN1};
   }
 
   li.active:after {
@@ -171,7 +171,7 @@ const listCSS = css`
     left: 0;
     width: 100%;
     height: 3.5px;
-    background: ${COLOR.MAIN2};
+    background: ${COLOR.MAIN1};
     content: "";
     opacity: 0;
     transition: height 0.3s, opacity 0.3s, transform 0.3s;
