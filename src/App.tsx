@@ -5,7 +5,6 @@ import MainPage from "./pages/main/main";
 import LoginPage from "./pages/auth/login";
 import SigninPage from "./pages/auth/signin";
 import BoardPage from "./pages/board/board";
-import FreeBoardPage from "./pages/board/free";
 import MbtiBoardPage from "./pages/board/mbti";
 import CreateBoardPage from "./pages/board/create";
 import UpdateBoardPage from "./pages/board/update";
@@ -33,7 +32,6 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signin" element={<SigninPage />} />
             <Route path="/board" element={<BoardPage />}>
-              <Route path="free" element={<FreeBoardPage />} />
               <Route path="mbti" element={<MbtiBoardPage />} />
               <Route path="create" element={<CreateBoardPage />} />
               <Route path="update" element={<UpdateBoardPage />} />
