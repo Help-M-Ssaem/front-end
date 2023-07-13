@@ -17,7 +17,7 @@ const layoutCSS = css`
   display: flex;
   flex-direction: column;
 
-  padding: 11.5rem 15rem 0 15rem;
+  padding: 10rem 15rem 0 15rem;
 `;
 
 export default Layout;
