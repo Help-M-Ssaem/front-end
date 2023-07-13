@@ -109,7 +109,7 @@ export default Header;
 
 const headerCSS = css`
   width: 100%;
-  height: 10rem;
+  height: 9rem;
   min-width: 1280px;
 
   display: flex;
@@ -123,14 +123,14 @@ const headerCSS = css`
   position: fixed;
   left: 0;
   right: 0;
-  z-index: 1;
+  z-index: 10;
 `;
 
 const headerTopCSS = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 0 1rem 0;
+  padding: 1.5rem 0 0.8rem 0;
 `;
 
 const headerBottomCSS = css`
@@ -162,7 +162,7 @@ const listCSS = css`
   li.active:after {
     height: 3.5px;
     opacity: 1;
-    transform: translateY(0.8rem);
+    transform: translateY(0.7rem);
   }
 
   li:after {
@@ -175,13 +175,13 @@ const listCSS = css`
     content: "";
     opacity: 0;
     transition: height 0.3s, opacity 0.3s, transform 0.3s;
-    transform: translateY(0.6rem);
+    transform: translateY(0.5rem);
   }
 
   li:hover:after {
     height: 3.5px;
     opacity: 1;
-    transform: translateY(0.8rem);
+    transform: translateY(0.7rem);
   }
 `;
 

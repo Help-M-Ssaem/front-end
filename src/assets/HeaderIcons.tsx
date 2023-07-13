@@ -5,8 +5,8 @@ type LoginIconProps = {
 export const LogoIcon = ({ onClick }: LoginIconProps) => {
   return (
     <svg
-      width="220"
-      height="70"
+      width="205"
+      height="65"
       viewBox="0 0 238 78"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
