@@ -19,12 +19,14 @@ import FavoritesPage from "./pages/favorites/favorites";
 import UserPage from "./pages/user/user";
 import Layout from "./components/layout/Layout";
 import Header from "./components/header/Header";
+import ScrollToTop from "./components/scroll/ScrollToTop";
 
 function App() {
   return (
     <>
       <Global styles={GlobalStyle} />
       <BrowserRouter>
+        <ScrollToTop />
         <Header />
         <Layout>
           <Routes>
