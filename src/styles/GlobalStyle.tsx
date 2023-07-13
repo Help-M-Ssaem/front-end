@@ -169,15 +169,8 @@ const GlobalStyle = css`
     color: inherit;
   }
 
-  input {
-    -webkit-appearance: none; /* Safari and Chrome */
-    -moz-appearance: none; /* Firefox */
-    appearance: none;
-  }
-
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
   }
