@@ -7,11 +7,19 @@ import Profile from "../profile/Profile";
 
 interface BoardProps {
   board: Board;
+  onClick: (id: number) => void;
 }
 
-const BoardComponent = ({ board }: BoardProps) => {
+const MAX_CONTENT_LENGTH = 70;
+
+const BoardComponent = ({ board, onClick }: BoardProps) => {
+  const truncatedContent =
+    board.content.length > MAX_CONTENT_LENGTH
+      ? board.content.substring(0, MAX_CONTENT_LENGTH) + "..."
+      : board.content;
+
   return (
-    <div css={boardBoxCSS}>
+    <div css={boardBoxCSS} onClick={() => onClick(board.id)}>
       <div css={leftCSS}>
         <div css={profileBoxCSS}>
           <Profile
@@ -22,7 +30,7 @@ const BoardComponent = ({ board }: BoardProps) => {
           />
         </div>
         <div css={titleCSS}>{board.title}</div>
-        <div css={contentCSS}>{board.content}</div>
+        <div css={contentCSS}>{truncatedContent}</div>
         <div css={detailCSS}>
           <div css={marginRightCSS}>{board.createdAt}</div>
           <div css={marginRightCSS}>공감 {board.like}</div>
@@ -42,6 +50,7 @@ const boardBoxCSS = css`
   align-items: center;
   padding: 1.2rem 0;
   border-top: 1px solid ${COLOR.MAIN};
+  cursor: pointer;
 `;
 
 const leftCSS = css`
@@ -50,6 +59,10 @@ const leftCSS = css`
 `;
 
 const rightCSS = css``;
+
+const profileBoxCSS = css`
+  margin-bottom: 0.8rem;
+`;
 
 const titleCSS = css`
   font-size: ${FONT.SIZE.TITLE3};
@@ -61,16 +74,14 @@ const contentCSS = css`
   margin-bottom: 1rem;
   font-size: ${FONT.SIZE.HEADLINE};
   font-weight: ${FONT.WEIGHT.REGULAR};
+  line-height: 1.4rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const marginRightCSS = css`
   margin-right: 1rem;
-`;
-
-const profileBoxCSS = css`
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.8rem;
 `;
 
 const thumbnailCSS = css`

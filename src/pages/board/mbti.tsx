@@ -9,63 +9,67 @@ import Mbti from "../../components/mbti/Mbti";
 import COLOR from "../../styles/color";
 import { useRecoilState } from "recoil";
 import { mbtiState } from "../../states/board";
+import { useState } from "react";
+import BoardDetail from "../../components/board/BoardDetail";
+import { Board } from "../../interfaces/board";
 
 const MbtiBoardPage = () => {
   const navigate = useNavigate();
   const [mbtiSelected, setMbtiSelected] = useRecoilState(mbtiState);
+  const [boardClicked, setBoardClicked] = useState(false);
+  const [mbtiBoard, setMbtiBoard] = useState<Board | null>(null);
+
+  const handleBoardClick = (id: number) => {
+    const selectedBoard = mbtiBoardList.find((board) => board.id === id);
+    setMbtiBoard(selectedBoard || null);
+    setBoardClicked(true);
+    window.scrollTo(0, 0);
+  };
+
+  const handleBoardUpdate = () => {};
+
+  const handleBoardDelete = () => {};
 
   // dummy data for mbti board
   const mbtiBoardList = [
     {
       id: 1,
       name: "유보라",
-      profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
+      profile: "https://i.ibb.co/njkbL5W/react-query.png",
       thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
       mbti: "EsFP",
       badge: "엠비티어론",
       title: "카페에서 남친이랑 싸웠어",
-      content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-      createdAt: "23.06.21",
+      content:
+        "내가 말을 '만약에'라고 시작하면 너무 기빨린대 내가 말을 '만약에'라고 시작하면 너무 기빨린대내가 말을 '만약에'라고 시작하면 너무 기빨린대내가 말을 '만약에'라고 시작하면 너무 기빨린대내가 말을 '만약에'라고 시작하면 너무 기빨린대",
+      createdAt: "2023.06.14 19:07",
       like: 3,
       comment: 4,
     },
     {
       id: 2,
-      name: "유보라",
-      profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
+      name: "김보라",
+      profile: "https://i.ibb.co/BVDQKL0/image.png",
       thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
       mbti: "EsFP",
       badge: "엠비티어론",
-      title: "카페에서 남친이랑 싸웠어",
+      title: "엠비티아이 신기하다",
       content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-      createdAt: "23.06.21",
-      like: 3,
+      createdAt: "2023.06.14 19:07",
+      like: 4,
       comment: 4,
     },
     {
       id: 3,
-      name: "유보라",
+      name: "박보라",
       profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
       thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
       mbti: "EsFP",
       badge: "엠비티어론",
-      title: "카페에서 남친이랑 싸웠어",
+      title: "박보라박보라박보라박브레드?",
       content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-      createdAt: "23.06.21",
-      like: 3,
-      comment: 4,
-    },
-    {
-      id: 4,
-      name: "유보라",
-      profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-      thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-      mbti: "EsFP",
-      badge: "엠비티어론",
-      title: "카페에서 남친이랑 싸웠어",
-      content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-      createdAt: "23.06.21",
-      like: 3,
+      createdAt: "2023.06.14 19:07",
+      like: 5,
       comment: 4,
     },
   ];
@@ -98,7 +102,11 @@ const MbtiBoardPage = () => {
             onClick={() => setMbtiSelected("전체")}
             className={mbtiSelected === "전체" ? "active" : ""}
           >
-            전체 (5,230)
+            전체 (
+            {mbtiBoardList &&
+              mbtiBoardList.length > 0 &&
+              `${mbtiBoardList.length}`}
+            )
           </div>
           <div css={mbtiCSS}>
             {mbtiList.map((mbti) => (
@@ -107,13 +115,39 @@ const MbtiBoardPage = () => {
           </div>
         </div>
       </div>
+
+      {/* board detail */}
+      {boardClicked && (
+        <>
+          <div css={titleBoxCSS}>{mbtiSelected} 게시판</div>
+          <Container>
+            <div css={buttonBoxCSS}>
+              {/* 로그인 구현되면 수정 */}
+              <Button
+                onClick={handleBoardUpdate}
+                style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
+              >
+                수정
+              </Button>
+              <Button onClick={handleBoardDelete}>삭제</Button>
+            </div>
+            <BoardDetail board={mbtiBoard!} />
+          </Container>
+        </>
+      )}
+
+      {/* board all */}
       <div css={titleBoxCSS}>{mbtiSelected} 게시판</div>
       <Container>
         <div css={buttonBoxCSS}>
           <Button onClick={() => navigate("/board/create")}>글 쓰기</Button>
         </div>
         {mbtiBoardList.map((board) => (
-          <BoardComponent board={board} key={board.id} />
+          <BoardComponent
+            board={board}
+            key={board.id}
+            onClick={() => handleBoardClick(board.id)}
+          />
         ))}
       </Container>
     </>
