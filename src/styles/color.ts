@@ -1,5 +1,6 @@
 const COLOR = {
   MAIN: "#DACAFF",
+  MAIN1: "#A580FC",
   MAIN2: "#AD71EA",
   MAIN3: "#FAF8FF",
   MAIN4: "#F4EFFF",

@@ -110,7 +110,7 @@ const MbtiBoardPage = () => {
       <div css={titleBoxCSS}>{mbtiSelected} 게시판</div>
       <Container>
         <div css={buttonBoxCSS}>
-          <Button text="글 쓰기" onClick={() => navigate("/board/create")} />
+          <Button onClick={() => navigate("/board/create")}>글 쓰기</Button>
         </div>
         {mbtiBoardList.map((board) => (
           <BoardComponent board={board} key={board.id} />

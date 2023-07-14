@@ -8,6 +8,7 @@ import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import { useRecoilState } from "recoil";
 import { navbarState } from "../../states/navbar";
+import Button from "../button/Button";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -33,9 +34,14 @@ const Header = () => {
       <div css={headerTopCSS}>
         <LogoIcon onClick={() => handleItemClick("/")} />
         {LoginOpen && (
-          <button css={buttonCSS} onClick={handleLoginClick}>
+          <Button
+            onClick={handleLoginClick}
+            style={{
+              fontSize: FONT.SIZE.HEADLINE,
+            }}
+          >
             로그인하고 이용하기
-          </button>
+          </Button>
         )}
       </div>
       <div css={headerBottomCSS}>
@@ -103,7 +109,7 @@ export default Header;
 
 const headerCSS = css`
   width: 100%;
-  height: 11.5rem;
+  height: 9rem;
   min-width: 1280px;
 
   display: flex;
@@ -117,14 +123,14 @@ const headerCSS = css`
   position: fixed;
   left: 0;
   right: 0;
-  z-index: 1;
+  z-index: 10;
 `;
 
 const headerTopCSS = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2rem 0 1.5rem 0;
+  padding: 1.5rem 0 0.8rem 0;
 `;
 
 const headerBottomCSS = css`
@@ -132,16 +138,6 @@ const headerBottomCSS = css`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.2rem;
-`;
-
-const buttonCSS = css`
-  border: none;
-  background-color: ${COLOR.MAIN2};
-  color: ${COLOR.WHITE};
-  border-radius: 3rem;
-  padding: 0.7rem 1.2rem;
-  font-size: ${FONT.SIZE.TITLE3};
-  font-weight: ${FONT.WEIGHT.BOLD};
 `;
 
 const listCSS = css`
@@ -156,17 +152,17 @@ const listCSS = css`
   }
 
   li:hover {
-    color: ${COLOR.MAIN2};
+    color: ${COLOR.MAIN1};
   }
 
   li.active {
-    color: ${COLOR.MAIN2};
+    color: ${COLOR.MAIN1};
   }
 
   li.active:after {
-    height: 4px;
+    height: 3.5px;
     opacity: 1;
-    transform: translateY(1rem);
+    transform: translateY(0.7rem);
   }
 
   li:after {
@@ -174,18 +170,18 @@ const listCSS = css`
     top: 80%;
     left: 0;
     width: 100%;
-    height: 4px;
-    background: ${COLOR.MAIN2};
+    height: 3.5px;
+    background: ${COLOR.MAIN1};
     content: "";
     opacity: 0;
     transition: height 0.3s, opacity 0.3s, transform 0.3s;
-    transform: translateY(0.8rem);
+    transform: translateY(0.5rem);
   }
 
   li:hover:after {
-    height: 4px;
+    height: 3.5px;
     opacity: 1;
-    transform: translateY(1rem);
+    transform: translateY(0.7rem);
   }
 `;
 
