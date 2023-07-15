@@ -4,11 +4,12 @@ import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 
 type ButtonProps = {
-  text: string;
+  children?: React.ReactNode;
+  style?: React.CSSProperties;
   onClick?: () => void;
 };
 
-const Button = ({ text, onClick }: ButtonProps) => {
+const Button = ({ children, style, onClick }: ButtonProps) => {
   const buttonCSS = css`
     display: flex;
     justify-content: center;
@@ -16,7 +17,6 @@ const Button = ({ text, onClick }: ButtonProps) => {
 
     color: ${COLOR.WHITE};
     background: ${COLOR.MAIN2};
-
     font-size: ${FONT.SIZE.BODY};
     font-weight: ${FONT.WEIGHT.BOLD};
 
@@ -25,8 +25,8 @@ const Button = ({ text, onClick }: ButtonProps) => {
   `;
 
   return (
-    <button css={buttonCSS} onClick={onClick}>
-      {text}
+    <button css={buttonCSS} onClick={onClick} style={style}>
+      {children}
     </button>
   );
 };

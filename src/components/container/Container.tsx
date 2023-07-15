@@ -8,16 +8,22 @@ import COLOR from "../../styles/color";
 type ContainerProps = {
   width?: string;
   height?: string;
+  background?: string;
   children?: ReactElement[] | ReactElement | React.ReactNode;
   style?: React.CSSProperties;
 };
 
-const Container = ({ width, height, children, style }: ContainerProps) => {
+const Container = ({
+  width,
+  height,
+  background,
+  children,
+  style,
+}: ContainerProps) => {
   const containerCSS = css`
     width: ${width || "100%"};
     height: ${height || "100%"};
-    background: ${COLOR.MAIN3};
-
+    background: ${background || COLOR.MAIN3};
     border-radius: 1.2rem;
     padding: 1.5rem;
   `;
