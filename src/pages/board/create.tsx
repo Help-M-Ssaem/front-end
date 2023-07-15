@@ -4,26 +4,58 @@ import { Editor } from "@toast-ui/react-editor";
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import Container from "../../components/container/Container";
-import { useRecoilValue } from "recoil";
-import { mbtiState } from "../../states/board";
 import { useState } from "react";
 import FONT from "../../styles/font";
 import Button from "../../components/button/Button";
 import { useNavigate } from "react-router";
+import { ArrowIcon } from "../../assets/CommonIcons";
 
 const CreateBoardPage = () => {
-  const mbti = useRecoilValue(mbtiState);
   const [title, setTitle] = useState("");
+  const [openCategory, setOpenCategory] = useState(false);
   const navigate = useNavigate();
 
+  const handleCategoryClick = () => {
+    setOpenCategory(!openCategory);
+  };
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
 
+  const categoryList = [
+    "전체",
+    "ISTJ",
+    "ISFJ",
+    "INFJ",
+    "INTJ",
+    "ISTP",
+    "ISFP",
+    "INFP",
+    "INTP",
+    "ESTP",
+    "ESFP",
+    "ENFP",
+    "ENTP",
+    "ESTJ",
+    "ESFJ",
+    "ENFJ",
+    "ENTJ",
+  ];
+
   return (
     <div css={editorContainerCSS}>
       <Container background="#FFFFFF" style={{ padding: "2.5rem" }}>
-        <div css={titleCSS}>{mbti} 게시판</div>
+        <div css={titleBoxCSS}>
+          <div css={titleCSS}>전체 게시판</div>
+          <ArrowIcon onClick={handleCategoryClick} />
+          {openCategory && (
+            <div css={categoryBoxCSS}>
+              {categoryList.map((category) => (
+                <div css={categoryCSS}>{category}</div>
+              ))}
+            </div>
+          )}
+        </div>
         <div css={contentCSS}>제목을 입력해주세요.</div>
         <input
           type="text"
@@ -62,11 +94,40 @@ const editorContainerCSS = css`
   padding: 1.5rem 15rem;
 `;
 
+const titleBoxCSS = css`
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  position: relative;
+`;
+
 const titleCSS = css`
   font-size: ${FONT.SIZE.TITLE1};
   font-weight: ${FONT.WEIGHT.BOLD};
   color: ${COLOR.MAINDARK};
+  margin-right: 0.8rem;
+`;
+
+const categoryBoxCSS = css`
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid ${COLOR.GRAY4};
+  border-radius: 0.5rem;
+  padding: 1rem;
   margin-bottom: 1rem;
+  position: absolute;
+  left: 0;
+  top: 2.5rem;
+  background: ${COLOR.WHITE};
+  z-index: 2;
+`;
+
+const categoryCSS = css`
+  flex-basis: 20%;
+  font-size: ${FONT.SIZE.HEADLINE};
+  font-weight: ${FONT.WEIGHT.REGULAR};
+  color: ${COLOR.GRAY2};
+  margin: 0 0.5rem 0.5rem 0;
 `;
 
 const contentCSS = css`

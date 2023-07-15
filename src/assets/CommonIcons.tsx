@@ -99,3 +99,23 @@ export const BestIcon = () => {
     </svg>
   );
 };
+
+interface ArrowIconProps {
+  onClick: () => void;
+}
+
+export const ArrowIcon = ({ onClick }: ArrowIconProps) => {
+  return (
+    <svg
+      width="11"
+      height="11"
+      viewBox="0 0 14 12"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      onClick={onClick}
+      cursor="pointer"
+    >
+      <path d="M1 1L7 10L13 1" stroke="#222222" stroke-width="2" />
+    </svg>
+  );
+};

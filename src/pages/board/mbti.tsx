@@ -119,8 +119,11 @@ const MbtiBoardPage = () => {
       {/* board detail */}
       {boardClicked && (
         <>
-          <div css={titleBoxCSS}>{mbtiSelected} 게시판</div>
-          <Container>
+          <Container
+            style={{
+              marginTop: "1rem",
+            }}
+          >
             <div css={buttonBoxCSS}>
               {/* 로그인 구현되면 수정 */}
               <Button
