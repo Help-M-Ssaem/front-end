@@ -88,7 +88,6 @@ const CreateDebatePage = () => {
   return (
     <div css={editorContainerCSS}>
       <Container background="#FFFFFF" style={{ padding: "2.5rem" }}>
-        <form onSubmit={handleSubmit}>
         <div css={titleCSS}>과몰입 토론</div>
         <div css={contentCSS}>제목을 입력해주세요.</div>
         <input type="text" value={postData.title} onChange={handleTitleChange} css={inputCSS}/>
@@ -129,9 +128,8 @@ const CreateDebatePage = () => {
             취소하기
           </Button>
 
-          <Button type="submit">글 쓰기</Button>
+          <Button onClick={()=>handleSubmit}>글 쓰기</Button>
         </div>
-        </form>
       </Container>
     </div>
   );
