@@ -19,6 +19,7 @@ import FavoritesPage from "./pages/favorites/favorites";
 import UserPage from "./pages/user/user";
 import Layout from "./components/layout/Layout";
 import Header from "./components/header/Header";
+import Footer from "./components/footer/Footer";
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
             <Route path="/user" element={<UserPage />} />
           </Routes>
         </Layout>
+        <Footer />
       </BrowserRouter>
     </>
   );
