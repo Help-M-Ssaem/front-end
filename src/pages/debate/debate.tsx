@@ -1,7 +1,7 @@
-import React from "react";
+import { Outlet } from "react-router-dom";
 
-const DebatePage = () => {
-  return <div>DebatePage</div>;
+const Debate = () => {
+  return <Outlet />;
 };
 
-export default DebatePage;
+export default Debate;
