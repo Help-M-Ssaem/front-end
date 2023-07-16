@@ -11,18 +11,20 @@ import Catlogo from "../../assets/logo/CatLogo.svg";
 import Google from "../../assets/logo/Google.svg";
 import Kakao from "../../assets/logo/Kakao.svg";
 import Naver from "../../assets/logo/Naver.svg";
+import KakaoLogin from "./KakaoLogin";
+import GLogin from "./GoogleLogin";
 
 const LoginPage = () => {
   const [state, setState] = useState({
     Id: "",
     password: "",
   });
-  const [selectedItem, setSelectedItem] = useRecoilState(navbarState);
+  const setSelectedItem = useRecoilState(navbarState);
 
   const navigate = useNavigate();
 
   const handleItemClick = (path: string) => {
-    setSelectedItem(path);
+    // setSelectedItem(path);
     navigate(path);
   };
 
@@ -36,8 +38,10 @@ const LoginPage = () => {
       <hr css={lineCSS} />
 
       <div css={RectCSS}>
-        <img src={Google} />
-        <img src={Kakao} />
+        <GLogin />
+        {/* <img src={Google} /> */}
+        <KakaoLogin />
+        {/* <img src={Kakao} /> */}
         <img src={Naver} />
       </div>
     </div>
@@ -79,6 +83,8 @@ const RectCSS = css`
   flex-direction: column;
   padding: 2rem;
   gap: 1rem;
+
+  cursor: pointer;
 `;
 
 export default LoginPage;
