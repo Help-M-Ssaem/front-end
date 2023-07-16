@@ -87,7 +87,7 @@ const SigninPage = () => {
           onChange={handleSelectAllChange}
           disabled={false}
           checkboxes={checkedItems}
-        ></SelectAllCheckbox>
+        />
         <div css={buttonContainer}>
           <button
             disabled={!areAllRequiredChecked}

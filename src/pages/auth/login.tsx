@@ -17,12 +17,12 @@ const LoginPage = () => {
     Id: "",
     password: "",
   });
-  const [selectedItem, setSelectedItem] = useRecoilState(navbarState);
+  const setSelectedItem = useRecoilState(navbarState);
 
   const navigate = useNavigate();
 
   const handleItemClick = (path: string) => {
-    setSelectedItem(path);
+    // setSelectedItem(path);
     navigate(path);
   };
 

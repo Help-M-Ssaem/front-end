@@ -13,14 +13,13 @@ interface SelectAllCheckboxProps {
   checked?: boolean;
 }
 
-const SelectAllCheckbox: React.FC<SelectAllCheckboxProps> = ({
+const SelectAllCheckbox = ({
   disabled = false,
   onChange,
   checkboxes,
-  setCheckboxes,
   children,
-  checked,
-}) => {
+  setCheckboxes,
+}: SelectAllCheckboxProps) => {
   const handleSelectAllChange = (isChecked: boolean) => {
     if (setCheckboxes) {
       setCheckboxes.forEach((setCheckbox) => setCheckbox(isChecked));

@@ -14,13 +14,13 @@ interface CheckboxProps {
   onChange: (checked: boolean) => void;
 }
 
-const Checkbox: React.FC<CheckboxProps> = ({
+const Checkbox = ({
   children,
   disabled = false,
   checked,
   desc,
   onChange,
-}) => {
+}: CheckboxProps) => {
   const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { checked } = event.target;
     onChange(checked);
@@ -51,7 +51,7 @@ const checkboxLabelStyles = css`
   margin-bottom: 0.5rem;
   font-size: 16px;
   color: ${COLOR.GRAY2};
-
+  cursor: pointer;
   input[type="checkbox"] {
     display: none;
   }
@@ -62,6 +62,7 @@ const checkboxLabelStyles = css`
     top: 0.2rem;
     // height: 30px;
     position: relative;
+    // cursor: pointer;
   }
 `;
 

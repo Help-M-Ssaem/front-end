@@ -17,42 +17,52 @@ const Footer = () => {
   };
 
   return (
-    <footer css={footerCSS}>
-      <ul css={infoCSS}>
-        <li>이용약관</li>
-        <li>개인정보처리방침</li>
-        <li>문의 이메일</li>
-      </ul>
+    <div css={wraperCSS}>
+      <footer css={footerCSS}>
+        <div css={contentCSS}>
+          <ul css={infoCSS}>
+            <li>이용약관</li>
+            <li>개인정보처리방침</li>
+            <li>문의 이메일</li>
+          </ul>
 
-      <hr css={lineCSS} />
-      <div css={logoIcon}>
-        <LogoIcon onClick={() => handleItemClick("/")} />
-      </div>
-    </footer>
+          <hr css={lineCSS} />
+          <div css={logoIcon}>
+            <LogoIcon onClick={() => handleItemClick("/")} />
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 };
 
 export default Footer;
 
+const wraperCSS = css`
+  width: 100%;
+  min-height: 13vh;
+`;
+
 const footerCSS = css`
   width: 100%;
-  height: 8rem;
-  min-width: 1280px;
+  padding-top: 2rem;
+  background: ${COLOR.MAIN};
+  position: fixed;
   bottom: 0;
+`;
 
+const contentCSS = css`
   display: flex;
+  width: 100%;
+
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0 15rem;
-  background: ${COLOR.WHITE};
-
-  position: fixed;
-  z-index: 1;
+  min-height: 3vh;
 `;
 
 const lineCSS = css`
-  position: absolute;
+  // position: absolute;
   border: 1px solid #d4d3d3;
   bottom: 4rem;
   height: 0;
@@ -65,22 +75,23 @@ const lineCSS = css`
 const logoIcon = css`
   display: flex;
   width: 10rem;
-  position: absolute;
+  // position: absolute;
   bottom: 0;
 `;
 
 const infoCSS = css`
   display: flex;
-  position: absolute;
+  // position: absolute;
   top: 1.5rem;
 
-  justify-content: space-between;
+  // justify-content: space-between;
 
   align-items: center;
 
   font-size: ${FONT.SIZE.BODY};
   color: ${COLOR.GRAY2};
   li {
+    cursor: pointer;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
   }
