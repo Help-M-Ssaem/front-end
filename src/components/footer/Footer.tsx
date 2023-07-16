@@ -10,9 +10,10 @@ import FONT from "../../styles/font";
 
 const Footer = () => {
   const navigate = useNavigate();
-  const [selectedItem, setSelectedItem] = useRecoilState(navbarState);
-  const handleItemClick = (path: string) => {
-    setSelectedItem(path);
+
+  //이용약관, 관련 링크 디자인 나오면 추가 예정
+  const setSelectedItem = useRecoilState(navbarState);
+  const handleWindowClick = (path: string) => {
     navigate(path);
   };
 
@@ -28,7 +29,7 @@ const Footer = () => {
 
           <hr css={lineCSS} />
           <div css={logoIcon}>
-            <LogoIcon onClick={() => handleItemClick("/")} />
+            <LogoIcon onClick={() => handleWindowClick("/")} />
           </div>
         </div>
       </footer>
@@ -45,10 +46,12 @@ const wraperCSS = css`
 
 const footerCSS = css`
   width: 100%;
-  padding-top: 2rem;
-  background: ${COLOR.MAIN};
+  padding-top: 1rem;
+  background: ${COLOR.WHITE};
   position: fixed;
   bottom: 0;
+
+  min-height: 3vh;
 `;
 
 const contentCSS = css`
