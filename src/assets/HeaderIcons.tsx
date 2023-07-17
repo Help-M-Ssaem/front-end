@@ -1,12 +1,14 @@
 type LoginIconProps = {
+  width?: string;
+  height?: string;
   onClick: () => void;
 };
 
-export const LogoIcon = ({ onClick }: LoginIconProps) => {
+export const LogoIcon = ({ width, height, onClick }: LoginIconProps) => {
   return (
     <svg
-      width="205"
-      height="65"
+      width={width || "205"}
+      height={height || "65"}
       viewBox="0 0 238 78"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
