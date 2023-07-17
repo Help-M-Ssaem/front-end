@@ -65,8 +65,8 @@ const Header = () => {
             M쌤 매칭
           </li>
           <li
-            onClick={() => handleItemClick("/debate")}
-            className={selectedItem === "/debate" ? "active" : ""}
+            onClick={() => handleItemClick("/debate/postlist")}
+            className={selectedItem === "/debate/postlist" ? "active" : ""}
           >
             MBTI 과몰입 토론
           </li>

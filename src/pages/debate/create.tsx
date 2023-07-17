@@ -10,6 +10,7 @@ import { Option, PostData } from "../../interfaces/debate";
 import PlusButton from "../../components/debate/plusbutton/PlusButton";
 
 const CreateDebatePage = () => {
+  //로그인을 통해 작성자의 정보를 받아서 글에 올려줄 것.
   const [postData, setPostData] = useState<PostData>({
     title: "",
     content: "",
