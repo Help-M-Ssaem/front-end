@@ -1,3 +1,6 @@
+import { ClassNames } from "@emotion/react";
+import COLOR from "../styles/color";
+
 export const SearchIcon = () => {
   return (
     <svg
@@ -116,6 +119,33 @@ export const ArrowIcon = ({ onClick }: ArrowIconProps) => {
       cursor="pointer"
     >
       <path d="M1 1L7 10L13 1" stroke="#222222" strokeWidth="2" />
+    </svg>
+  );
+};
+
+interface CheckIconProps extends React.SVGProps<SVGAElement> {
+  className?: string;
+  checked: boolean;
+}
+
+export const CheckIcon: React.FC<CheckIconProps> = ({ className, checked }) => {
+  return (
+    <svg
+      className={className}
+      width="17"
+      height="17"
+      viewBox="0 0 17 17"
+      fill="none "
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle
+        cx="8.5"
+        cy="8.5"
+        r="8.5"
+        fill={checked ? "#D4D3D3" : "#AD71EA"}
+      />
+
+      <path d="M4 7.15385L7.91304 11L13 6" stroke="white" />
     </svg>
   );
 };
