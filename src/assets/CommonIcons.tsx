@@ -115,7 +115,7 @@ export const ArrowIcon = ({ onClick }: ArrowIconProps) => {
       onClick={onClick}
       cursor="pointer"
     >
-      <path d="M1 1L7 10L13 1" stroke="#222222" stroke-width="2" />
+      <path d="M1 1L7 10L13 1" stroke="#222222" strokeWidth="2" />
     </svg>
   );
 };

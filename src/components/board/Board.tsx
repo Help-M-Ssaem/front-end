@@ -10,7 +10,7 @@ interface BoardProps {
   onClick: (id: number) => void;
 }
 
-const MAX_CONTENT_LENGTH = 70;
+const MAX_CONTENT_LENGTH = 60;
 
 const BoardComponent = ({ board, onClick }: BoardProps) => {
   const truncatedContent =

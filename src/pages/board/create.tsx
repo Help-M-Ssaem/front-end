@@ -4,7 +4,7 @@ import { Editor } from "@toast-ui/react-editor";
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import Container from "../../components/container/Container";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import FONT from "../../styles/font";
 import Button from "../../components/button/Button";
 import { useNavigate } from "react-router";
@@ -42,6 +42,8 @@ const CreateBoardPage = () => {
     "ENTJ",
   ];
 
+  const editorRef = useRef<Editor | null>(null);
+
   return (
     <div css={editorContainerCSS}>
       <Container background="#FFFFFF" style={{ padding: "2.5rem" }}>
@@ -65,11 +67,25 @@ const CreateBoardPage = () => {
         />
         <div css={contentCSS}>내용을 입력해주세요.</div>
         <Editor
+          ref={editorRef}
           initialValue="hello react editor world!"
           previewStyle="vertical"
           height="30rem"
           initialEditType="wysiwyg"
           useCommandShortcut={true}
+          hooks={{
+            addImageBlobHook: async (blob, callback) => {
+              console.log(blob); // File {name: '이미지.png', ... }
+
+              // 1. 첨부된 이미지 파일을 서버로 전송후, 이미지 경로 url을 받아온다.
+              // const imgUrl = await .... 서버 전송 / 경로 수신 코드 ...
+
+              // Multipart/form-data 형식으로 보내겠습니다!
+
+              // 2. 첨부된 이미지를 화면에 표시(경로는 임의로 넣었다.)
+              // callback("imgUrl", "이미지");
+            },
+          }}
         />
         <div css={buttonBoxCSS}>
           <Button
