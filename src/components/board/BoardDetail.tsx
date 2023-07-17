@@ -6,6 +6,45 @@ import CommentComponent from "../comment/Comment";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import { LikeIcon } from "../../assets/ButtonIcons";
+import Input from "../input/Input";
+import Button from "../button/Button";
+
+// TODO: 댓글 API 연동
+const commentList = [
+  {
+    id: 1,
+    profile: "https://i.ibb.co/DgVwMvJ/2023-07-03-132904.png",
+    name: "김유리",
+    mbti: "ENFP",
+    badge: "ENFJ",
+    content: "저도 이런 취미 생겼으면 좋겠어요!",
+    date: "2021.09.01",
+    like: 3,
+    isBest: true,
+  },
+  {
+    id: 2,
+    profile: "https://i.ibb.co/DgVwMvJ/2023-07-03-132904.png",
+    name: "박지운",
+    mbti: "ENFP",
+    badge: "ENFJ",
+    content: "저도 이런 취미 생겼으면 좋겠어요!",
+    date: "2021.09.01",
+    like: 4,
+    isBest: false,
+  },
+  {
+    id: 3,
+    profile: "https://i.ibb.co/DgVwMvJ/2023-07-03-132904.png",
+    name: "송민혁",
+    mbti: "ENFP",
+    badge: "ENFJ",
+    content: "저도 이런 취미 생겼으면 좋겠어요!",
+    date: "2021.09.01",
+    like: 5,
+    isBest: false,
+  },
+];
 
 type BoardDetailProps = {
   board: Board;
@@ -14,43 +53,13 @@ type BoardDetailProps = {
 const BoardDetail = ({ board }: BoardDetailProps) => {
   const handleLikeClick = () => {
     alert("공감이 완료되었습니다.");
+    // TODO: 공감 API 연동
   };
 
-  const commentList = [
-    {
-      id: 1,
-      profile: "https://i.ibb.co/DgVwMvJ/2023-07-03-132904.png",
-      name: "김유리",
-      mbti: "ENFP",
-      badge: "ENFJ",
-      content: "저도 이런 취미 생겼으면 좋겠어요!",
-      date: "2021.09.01",
-      like: 3,
-      isBest: true,
-    },
-    {
-      id: 2,
-      profile: "https://i.ibb.co/DgVwMvJ/2023-07-03-132904.png",
-      name: "박지운",
-      mbti: "ENFP",
-      badge: "ENFJ",
-      content: "저도 이런 취미 생겼으면 좋겠어요!",
-      date: "2021.09.01",
-      like: 4,
-      isBest: false,
-    },
-    {
-      id: 3,
-      profile: "https://i.ibb.co/DgVwMvJ/2023-07-03-132904.png",
-      name: "송민혁",
-      mbti: "ENFP",
-      badge: "ENFJ",
-      content: "저도 이런 취미 생겼으면 좋겠어요!",
-      date: "2021.09.01",
-      like: 5,
-      isBest: false,
-    },
-  ];
+  const handleCommentSubmit = () => {
+    alert("댓글이 등록되었습니다.");
+    // TODO: 댓글 등록 API 연동
+  };
 
   return (
     <>
@@ -81,6 +90,13 @@ const BoardDetail = ({ board }: BoardDetailProps) => {
         {commentList &&
           commentList.map((comment) => <CommentComponent comment={comment} />)}
       </div>
+
+      <div css={commentTextCSS}>댓글 쓰기</div>
+      <hr css={hrCSS} />
+      <form css={submitButtonBoxCSS} onSubmit={handleCommentSubmit}>
+        <Input onSubmit={handleCommentSubmit} />
+        <Button style={{ marginLeft: "0.5rem", width: "5rem" }}>등록</Button>
+      </form>
     </>
   );
 };
@@ -136,4 +152,14 @@ const commentTextCSS = css`
   font-size: ${FONT.SIZE.HEADLINE};
   font-weight: ${FONT.WEIGHT.BOLD};
   color: ${COLOR.MAINDARK};
+  margin-top: 3rem;
+`;
+
+const hrCSS = css`
+  border: 1px solid ${COLOR.MAIN};
+  margin: 1rem 0;
+`;
+
+const submitButtonBoxCSS = css`
+  display: flex;
 `;

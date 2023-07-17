@@ -13,6 +13,69 @@ import { useState } from "react";
 import BoardDetail from "../../components/board/BoardDetail";
 import { Board } from "../../interfaces/board";
 
+// TODO: mbtiBoardList 서버 연동
+const mbtiBoardList = [
+  {
+    id: 1,
+    name: "유보라",
+    profile: "https://i.ibb.co/njkbL5W/react-query.png",
+    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
+    mbti: "EsFP",
+    badge: "엠비티어론",
+    title: "카페에서 남친이랑 싸웠어",
+    content:
+      "내가 말을 '만약에'라고 시작하면 너무 기빨린대 내가 말을 '만약에'라고 시작하면 너무 기빨린대내가 말을 '만약에'라고 시작하면 너무 기빨린대내가 말을 '만약에'라고 시작하면 너무 기빨린대내가 말을 '만약에'라고 시작하면 너무 기빨린대",
+    createdAt: "2023.06.14 19:07",
+    like: 3,
+    comment: 4,
+  },
+  {
+    id: 2,
+    name: "김보라",
+    profile: "https://i.ibb.co/BVDQKL0/image.png",
+    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
+    mbti: "EsFP",
+    badge: "엠비티어론",
+    title: "엠비티아이 신기하다",
+    content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
+    createdAt: "2023.06.14 19:07",
+    like: 4,
+    comment: 4,
+  },
+  {
+    id: 3,
+    name: "박보라",
+    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
+    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
+    mbti: "EsFP",
+    badge: "엠비티어론",
+    title: "박보라박보라박보라박브레드?",
+    content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
+    createdAt: "2023.06.14 19:07",
+    like: 5,
+    comment: 4,
+  },
+];
+
+const mbtiList = [
+  "ISTJ",
+  "ISFJ",
+  "INFJ",
+  "INTJ",
+  "ISTP",
+  "ISFP",
+  "INFP",
+  "INTP",
+  "ESTP",
+  "ESFP",
+  "ENFP",
+  "ENTP",
+  "ESTJ",
+  "ESFJ",
+  "ENFJ",
+  "ENTJ",
+];
+
 const MbtiBoardPage = () => {
   const navigate = useNavigate();
   const [mbtiSelected, setMbtiSelected] = useRecoilState(mbtiState);
@@ -26,76 +89,12 @@ const MbtiBoardPage = () => {
     window.scrollTo(0, 0);
   };
 
-  const handleBoardUpdate = () => {};
-
   const handleBoardDelete = () => {};
-
-  // dummy data for mbti board
-  const mbtiBoardList = [
-    {
-      id: 1,
-      name: "유보라",
-      profile: "https://i.ibb.co/njkbL5W/react-query.png",
-      thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-      mbti: "EsFP",
-      badge: "엠비티어론",
-      title: "카페에서 남친이랑 싸웠어",
-      content:
-        "내가 말을 '만약에'라고 시작하면 너무 기빨린대 내가 말을 '만약에'라고 시작하면 너무 기빨린대내가 말을 '만약에'라고 시작하면 너무 기빨린대내가 말을 '만약에'라고 시작하면 너무 기빨린대내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-      createdAt: "2023.06.14 19:07",
-      like: 3,
-      comment: 4,
-    },
-    {
-      id: 2,
-      name: "김보라",
-      profile: "https://i.ibb.co/BVDQKL0/image.png",
-      thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-      mbti: "EsFP",
-      badge: "엠비티어론",
-      title: "엠비티아이 신기하다",
-      content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-      createdAt: "2023.06.14 19:07",
-      like: 4,
-      comment: 4,
-    },
-    {
-      id: 3,
-      name: "박보라",
-      profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-      thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-      mbti: "EsFP",
-      badge: "엠비티어론",
-      title: "박보라박보라박보라박브레드?",
-      content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-      createdAt: "2023.06.14 19:07",
-      like: 5,
-      comment: 4,
-    },
-  ];
-
-  const mbtiList = [
-    "ISTJ",
-    "ISFJ",
-    "INFJ",
-    "INTJ",
-    "ISTP",
-    "ISFP",
-    "INFP",
-    "INTP",
-    "ESTP",
-    "ESFP",
-    "ENFP",
-    "ENTP",
-    "ESTJ",
-    "ESFJ",
-    "ENFJ",
-    "ENTJ",
-  ];
 
   return (
     <>
       <div css={headerCSS}>
+        <div css={mbtiTitleCSS}>MBTI 별 게시판</div>
         <div css={mbtiContainerCSS}>
           <div
             css={mbtiAllCSS}
@@ -125,9 +124,9 @@ const MbtiBoardPage = () => {
             }}
           >
             <div css={buttonBoxCSS}>
-              {/* 로그인 구현되면 수정 */}
+              {/* TODO: 로그인 구현되면 수정 */}
               <Button
-                onClick={handleBoardUpdate}
+                onClick={() => navigate("/board/update")}
                 style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
               >
                 수정
@@ -175,7 +174,16 @@ const titleBoxCSS = css`
 const mbtiContainerCSS = css`
   display: flex;
   justify-content: space-between;
-  padding: 2rem;
+  padding: 1.5rem;
+  border-top: 1px solid ${COLOR.MAIN};
+`;
+
+const mbtiTitleCSS = css`
+  font-size: ${FONT.SIZE.TITLE3};
+  font-weight: ${FONT.WEIGHT.BOLD};
+  color: ${COLOR.MAIN2};
+  text-align: center;
+  padding: 1.5rem 0;
 `;
 
 const mbtiAllCSS = css`
