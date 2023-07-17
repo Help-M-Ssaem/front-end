@@ -2,37 +2,33 @@
 import { css } from "@emotion/react";
 import { LogoIcon } from "../../assets/HeaderIcons";
 import { SearchIcon } from "../../assets/CommonIcons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
-import { useRecoilState } from "recoil";
-import { navbarState } from "../../states/navbar";
 import Button from "../button/Button";
 
 const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [LoginOpen, setLoginOpen] = useState(true);
-  const [selectedItem, setSelectedItem] = useRecoilState(navbarState);
 
   const handleLoginClick = () => {
-    navigate("/login"); // 로그인 기능 만들어지면 수정
+    navigate("/login");
     setLoginOpen(!LoginOpen);
-  };
-
-  const handleItemClick = (path: string) => {
-    setSelectedItem(path);
-    navigate(path);
   };
 
   const handleSearchClick = () => {
     // 버튼 기능 디자인 만들어지면 수정
   };
 
+  const boardPaths = ["/board/mbti", "/board/create", "/board/update"];
+  const debatePaths = ["/debate/postlist", "/debate/create", "/debate/update"];
+
   return (
     <header css={headerCSS}>
       <div css={headerTopCSS}>
-        <LogoIcon onClick={() => handleItemClick("/")} />
+        <LogoIcon onClick={() => navigate("/")} />
         {LoginOpen && (
           <Button
             onClick={handleLoginClick}
@@ -47,52 +43,52 @@ const Header = () => {
       <div css={headerBottomCSS}>
         <ul css={[listCSS, left]}>
           <li
-            onClick={() => handleItemClick("/")}
-            className={selectedItem === "/" ? "active" : ""}
+            onClick={() => navigate("/")}
+            className={location.pathname === "/" ? "active" : ""}
           >
             Home
           </li>
           <li
-            onClick={() => handleItemClick("/board/mbti")}
-            className={selectedItem === "/board/mbti" ? "active" : ""}
+            onClick={() => navigate("/board/mbti")}
+            className={boardPaths.includes(location.pathname) ? "active" : ""}
           >
             게시판
           </li>
           <li
-            onClick={() => handleItemClick("/matching")}
-            className={selectedItem === "/matching" ? "active" : ""}
+            onClick={() => navigate("/matching")}
+            className={location.pathname === "/matching" ? "active" : ""}
           >
             M쌤 매칭
           </li>
           <li
-            onClick={() => handleItemClick("/debate")}
-            className={selectedItem === "/debate" ? "active" : ""}
+            onClick={() => navigate("/debate/postlist")}
+            className={debatePaths.includes(location.pathname) ? "active" : ""}
           >
             MBTI 과몰입 토론
           </li>
           <li
-            onClick={() => handleItemClick("/mbtitype")}
-            className={selectedItem === "/mbtitype" ? "active" : ""}
+            onClick={() => navigate("/mbtitype")}
+            className={location.pathname === "/mbtitype" ? "active" : ""}
           >
             MBTI 유형
           </li>
         </ul>
         <ul css={[listCSS, right]}>
           <li
-            onClick={() => handleItemClick("/chatting")}
-            className={selectedItem === "/chatting" ? "active" : ""}
+            onClick={() => navigate("/chatting")}
+            className={location.pathname === "/chatting" ? "active" : ""}
           >
             채팅
           </li>
           <li
-            onClick={() => handleItemClick("/alarm")}
-            className={selectedItem === "/alarm" ? "active" : ""}
+            onClick={() => navigate("/alarm")}
+            className={location.pathname === "/alarm" ? "active" : ""}
           >
             알람
           </li>
           <li
-            onClick={() => handleItemClick("/favorites")}
-            className={selectedItem === "/favorites" ? "active" : ""}
+            onClick={() => navigate("/favorites")}
+            className={location.pathname === "/favorites" ? "active" : ""}
           >
             즐겨찾기
           </li>
@@ -104,7 +100,6 @@ const Header = () => {
     </header>
   );
 };
-
 export default Header;
 
 const headerCSS = css`
