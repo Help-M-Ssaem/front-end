@@ -12,6 +12,7 @@ import { mbtiState } from "../../states/board";
 import { useState } from "react";
 import BoardDetail from "../../components/board/BoardDetail";
 import { Board } from "../../interfaces/board";
+import Text from "../../components/text/Text";
 
 // TODO: mbtiBoardList 서버 연동
 const mbtiBoardList = [
@@ -139,7 +140,7 @@ const MbtiBoardPage = () => {
       )}
 
       {/* board all */}
-      <div css={titleBoxCSS}>{mbtiSelected} 게시판</div>
+      <Text>{mbtiSelected} 게시판</Text>
       <Container>
         <div css={buttonBoxCSS}>
           <Button onClick={() => navigate("/board/create")}>글 쓰기</Button>
@@ -161,14 +162,6 @@ const headerCSS = css`
   margin-left: -15rem;
   background: ${COLOR.MAIN3};
   padding: 0 15rem;
-`;
-
-const titleBoxCSS = css`
-  display: flex;
-  align-items: center;
-  margin: 1rem 0;
-  font-size: ${FONT.SIZE.TITLE3};
-  font-weight: ${FONT.WEIGHT.BOLD};
 `;
 
 const mbtiContainerCSS = css`
