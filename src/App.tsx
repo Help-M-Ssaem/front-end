@@ -9,14 +9,11 @@ import BoardPage from "./pages/board/board";
 import MbtiBoardPage from "./pages/board/mbti";
 import CreateBoardPage from "./pages/board/create";
 import UpdateBoardPage from "./pages/board/update";
-
 import MatchingPage from "./pages/matching/matching";
-
 import DebatePage from "./pages/debate/debate";
 import PostListDebatePage from "./pages/debate/postlist";
 import UpdateDebatePage from "./pages/debate/update";
 import CreateDebatePage from "./pages/debate/create";
-
 import MbtiTypePage from "./pages/mbtitype/mbtitype";
 import ChattingPage from "./pages/chatting/chatting";
 import AlarmPage from "./pages/alarm/alarm";
@@ -27,6 +24,10 @@ import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import ScrollToTop from "./components/scroll/ScrollToTop";
 import KakaoLogin from "./pages/auth/KakaoLogin";
+import MatchPage from "./pages/matching/match";
+import MatchingPage from "./pages/matching/matching";
+import CreateMatchingPage from "./pages/matching/create";
+import UpdateMatchingPage from "./pages/matching/update";
 function App() {
   return (
     <>
@@ -45,7 +46,11 @@ function App() {
               <Route path="create" element={<CreateBoardPage />} />
               <Route path="update" element={<UpdateBoardPage />} />
             </Route>
-            <Route path="/matching" element={<MatchingPage />} />
+            <Route path="/match" element={<MatchPage />}>
+              <Route path="matching" element={<MatchingPage />} />
+              <Route path="create" element={<CreateMatchingPage />} />
+              <Route path="update" element={<UpdateMatchingPage />} />
+            </Route>
             <Route path="/debate" element={<DebatePage />}>
               <Route path="postlist" element={<PostListDebatePage/>}/>
               <Route path="create" element={<CreateDebatePage />} />
