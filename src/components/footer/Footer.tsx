@@ -4,18 +4,13 @@ import { LogoIcon } from "../../assets/HeaderIcons";
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
-import { navbarState } from "../../states/navbar";
 import FONT from "../../styles/font";
 
 const Footer = () => {
   const navigate = useNavigate();
 
-  //이용약관, 관련 링크 디자인 나오면 추가 예정
-  const setSelectedItem = useSetRecoilState(navbarState);
   const handleWindowClick = (path: string) => {
     navigate(path);
-    setSelectedItem(path);
   };
 
   return (
