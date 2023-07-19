@@ -108,7 +108,6 @@ const DebateComponent = ({ debate }: DebateProps) => {
     </div>
   );
 };
-
 const debateBoxCSS = css`
   display: flex;
   justify-content: space-between;

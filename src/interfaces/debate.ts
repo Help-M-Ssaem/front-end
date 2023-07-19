@@ -23,7 +23,6 @@ export interface Debate extends PostData {
   createdAt: string;
   comment: number;
 }
-
 export interface DebateProps {
   debate: Debate;
 }

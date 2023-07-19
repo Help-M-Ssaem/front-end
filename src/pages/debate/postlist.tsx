@@ -110,7 +110,6 @@ const titleBoxCSS = css`
   font-weight: ${FONT.WEIGHT.BOLD};
 `;
 
-
 const buttonBoxCSS = css`
   margin-left: auto;
   margin: 1rem 0;

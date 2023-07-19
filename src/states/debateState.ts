@@ -1,6 +1,5 @@
 import { atomFamily } from 'recoil';
 import { Debate } from '../interfaces/debate';
-
 export const debateState = atomFamily<Debate, number>({
     key: 'debateState',
     default: (id) => ({
