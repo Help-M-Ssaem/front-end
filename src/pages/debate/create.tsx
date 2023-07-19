@@ -15,10 +15,12 @@ const CreateDebatePage = () => {
     title: "",
     content: "",
     selectedOptions: [
-      { textContent: "", imageContent: undefined },
-      { textContent: "", imageContent: undefined },
+      { textContent: "", imageContent: undefined ,voteCount: 0,},
+      { textContent: "", imageContent: undefined ,voteCount: 0,},
     ],
-    selectedFile: undefined,
+    selectedOptionIndex: -1,
+    totalVotes: 0,
+    voted: false,
   });
   const navigate = useNavigate();
 
@@ -66,7 +68,7 @@ const CreateDebatePage = () => {
     if (postData.selectedOptions.length < 4) {
       const updatedOptions = [
         ...postData.selectedOptions,
-        { textContent: "", imageContent: undefined },
+        { textContent: "", imageContent: undefined, voteCount: 0 },
       ];
       handleInputChange("selectedOptions", updatedOptions);
     }

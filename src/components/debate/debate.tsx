@@ -1,32 +1,40 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { Option,Debate } from "../../interfaces/debate";
+import { Option, DebateProps } from "../../interfaces/debate";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import Badge from "../badge/Badge";
-import { useRecoilState } from 'recoil'
-import { choseState } from "../../states/debateState";
+import { useState } from "react";
 
-interface DebateProps {
-    debate: Debate;
-}
 const DebateComponent = ({ debate }: DebateProps) => {
-  const [choseItem, setChoseItem] = useRecoilState(choseState(debate.id));
-  
+  const [options, setOptions] = useState<Option[]>([]);
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(debate.selectedOptionIndex);
+  const [voted, setVoted] = useState(false);
+  const [totalCount, setTotalCount] = useState(0);
+
+  const vote = (index:number) => {
+    if (voted) {
+      return;
+    }
+
+    const updatedOptions = options.map((option, i) =>
+      i === index ? { ...option, voteCount: option.voteCount + 1 } : option
+    );
+
+    setOptions(updatedOptions);
+    setSelectedOptionIndex(index);
+    setVoted(true);
+    setTotalCount(totalCount + 1);
+  };
+
   const handleItemClick = (
     event: React.MouseEvent<HTMLDivElement>,
     index: number
   ) => {
     event.preventDefault();
-    if (!choseItem.chose) {
-      setChoseItem((prevSelectedItems: { id: number; chose: boolean }) => ({
-        ...prevSelectedItems,
-        chose: true,
-        index: index,
-      }));
-    }
+    vote(index)
+
   };
-  
   return (
     <div css={debateBoxCSS}>
       <div css={leftCSS}>
@@ -52,11 +60,13 @@ const DebateComponent = ({ debate }: DebateProps) => {
       <div css={titleCSS}>{debate.title}</div>
       <div css={contentCSS}>{debate.content}</div>
       <div css={imageContentCSS}>
-        {debate.selectedOptions.map((image: Option, index: number) => {const isActive = choseItem.chose && choseItem.index === index;
+      {debate.selectedOptions.map((image: Option, index: number) => {
+          const isActive = selectedOptionIndex === index && voted;
+          const isVotedOption = index === debate.selectedOptionIndex && debate.voted
           return (
             <div
-              css={[imageWrapperCSS, listCSS, isActive && activeItemCSS]}
-              onClick={(event) => handleItemClick(event, index)}>
+              css={[imageWrapperCSS, listCSS, (isActive || isVotedOption)&& activeItemCSS]}
+              onClick={(event) => (!debate.voted)&& handleItemClick(event, index)}>
 
             <div css={imageWrapperCSS2} key={index}>
               {typeof image.imageContentURL === "string" ? (
@@ -67,16 +77,30 @@ const DebateComponent = ({ debate }: DebateProps) => {
                 {image.textContent}
               </span>
               </div>)
-              : <span css={textCSS({ size: FONT.SIZE.BIGTITLE, weight: FONT.WEIGHT.REGULAR })}>
+              : <span 
+              css={textCSS({ size: FONT.SIZE.BIGTITLE, weight: FONT.WEIGHT.REGULAR })}>
                 {image.textContent}</span>}
             </div>
+            {(voted||debate.voted) && (
+                  <div css ={persentBox}>
+                  <span  css={[
+                    textCSS({ size: FONT.SIZE.TITLE2, weight: FONT.WEIGHT.REGULAR }),
+                    (isActive || isVotedOption) ? { color: COLOR.WHITE } : { color: COLOR.BLACK },
+                  ]}
+                  >
+                    {debate.totalVotes > 0
+            ? `${((image.voteCount / debate.totalVotes) * 100).toFixed(1)}%`
+            : ""}
+                  </span>
+                  </div>
+                )}
           </div>
           );
           })}
           </div>
           
           <div css={detailCSS}>
-            <div>{debate.participants}명이 참여중</div>
+            <div>{debate.totalVotes}명이 참여중</div>
             <div>댓글 {debate.comment}</div>
           </div>
       </div>
@@ -146,6 +170,7 @@ const imageContentCSS = css`
   gap: 1rem;
   justify-content: center;
   place-items: center
+  grid-auto-rows: minmax(0, auto);
 `;
 
 const imageWrapperCSS = css`
@@ -240,6 +265,13 @@ const detailCSS = css`
   margin-right: 1rem;
   margin-left: 1rem;
 
+`;
+
+const persentBox = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.7rem;
 `;
 
 export default DebateComponent;
