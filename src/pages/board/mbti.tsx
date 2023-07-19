@@ -156,6 +156,8 @@ const MbtiBoardPage = () => {
   );
 };
 
+export default MbtiBoardPage;
+
 const headerCSS = css`
   width: calc(100% + 30rem);
   margin-left: -15rem;
@@ -215,4 +217,4 @@ const buttonBoxCSS = css`
   margin-bottom: 1rem;
 `;
 
-export default MbtiBoardPage;
+
