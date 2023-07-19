@@ -22,6 +22,7 @@ import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import ScrollToTop from "./components/scroll/ScrollToTop";
 import KakaoLogin from "./pages/auth/KakaoLogin";
+import UserInfo from "./pages/auth/UserInfo";
 function App() {
   return (
     <>
@@ -35,6 +36,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/auth" element={<KakaoLogin />} />
             <Route path="/signin" element={<SigninPage />} />
+            <Route path="/singin/user" element={<UserInfo />} />
             <Route path="/board" element={<BoardPage />}>
               <Route path="mbti" element={<MbtiBoardPage />} />
               <Route path="create" element={<CreateBoardPage />} />
