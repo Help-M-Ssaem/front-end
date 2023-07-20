@@ -16,6 +16,7 @@ const Hot = ({ board }: hotProps) => {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
+        marginRight: "1.5rem",
       }}
     >
       <div css={categoryCSS}>{board.category}</div>

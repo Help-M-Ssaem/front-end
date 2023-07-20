@@ -7,6 +7,7 @@ import Hot from "../../components/main/Hot";
 import Profile from "../../components/profile/Profile";
 import FONT from "../../styles/font";
 import NotLoginComponent from "../../components/auth/NotLogin";
+import LoginComponent from "../../components/auth/Login";
 
 const mbtiBoardList = [
   {
@@ -86,6 +87,14 @@ const hotboardlist = [
   },
 ];
 
+const user = {
+  id: 1,
+  name: "김보라",
+  image: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
+  mbti: "EsFP",
+  badge: "엠비티어론",
+};
+
 const MainPage = () => {
   const HotBoard = useHotBoard();
 
@@ -96,14 +105,14 @@ const MainPage = () => {
           hotboardlist.map((hotboard) => (
             <Hot board={hotboard} key={hotboard.id} />
           ))}
-        <NotLoginComponent />
+        {/* <NotLoginComponent /> */}
+        <LoginComponent user={user} />
       </div>
 
       <div css={plusBoxCSS}>
         <Text>HOT 게시글</Text>
         <div css={plusCSS}>더보기</div>
       </div>
-
       <div css={hotBoardBoxCSS}>
         {mbtiBoardList &&
           mbtiBoardList.map((board) => (
@@ -136,14 +145,12 @@ const MainPage = () => {
             </div>
           ))}
       </div>
-
       <hr css={hrCSS} />
 
       <div css={plusBoxCSS}>
         <Text>HOT 토론</Text>
         <div css={plusCSS}>더보기</div>
       </div>
-
       <div css={hotBoardBoxCSS}>
         {mbtiBoardList &&
           mbtiBoardList.map((board) => (
@@ -186,10 +193,6 @@ const headerCSS = css`
   justify-content: space-between;
   align-items: center;
   height: 15rem;
-
-  > * {
-    margin-right: 1.5rem;
-  }
 `;
 
 const hotBoardBoxCSS = css`

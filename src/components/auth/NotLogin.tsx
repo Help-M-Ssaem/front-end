@@ -20,7 +20,9 @@ const NotLoginComponent = () => {
       <Button>로그인하고 이용하기</Button>
       <div css={detailBoxCSS}>
         <div css={detailCSS}>아이디 찾기</div>
+        <span css={verticalBarCSS}>|</span>
         <div css={detailCSS}>비밀번호 찾기</div>
+        <span css={verticalBarCSS}>|</span>
         <div css={detailCSS}>회원가입</div>
       </div>
     </Container>
@@ -38,7 +40,7 @@ const textCSS = css`
 
 const detailBoxCSS = css`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
 `;
 
 const detailCSS = css`
@@ -53,4 +55,11 @@ const detailCSS = css`
   &:last-child {
     border-right: none;
   }
+`;
+
+const verticalBarCSS = css`
+  color: ${COLOR.GRAY2};
+  font-size: ${FONT.SIZE.FOOTNOTE};
+  margin-top: 0.7rem;
+  cursor: default;
 `;
