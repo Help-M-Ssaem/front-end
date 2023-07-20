@@ -4,9 +4,9 @@ import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import { useHotBoard } from "../../hooks/main/useHotBoard";
 import Hot from "../../components/main/Hot";
-import Container from "../../components/container/Container";
 import Profile from "../../components/profile/Profile";
 import FONT from "../../styles/font";
+import NotLoginComponent from "../../components/auth/NotLogin";
 
 const mbtiBoardList = [
   {
@@ -84,29 +84,19 @@ const hotboardlist = [
     category: "지금의 게시글",
     title: "어제 강남 러쉬에서 만난 대문자 E 직원",
   },
-  {
-    id: 4,
-    category: "지금의 게시글",
-    title: "어제 강남 러쉬에서 만난 대문자 E 직원",
-  },
 ];
 
 const MainPage = () => {
   const HotBoard = useHotBoard();
-  console.log(HotBoard);
-
-  const handleClick = () => {};
 
   return (
     <>
       <div css={headerCSS}>
         {hotboardlist &&
           hotboardlist.map((hotboard) => (
-            <div key={hotboard.id}>
-              <Hot board={hotboard} />
-            </div>
+            <Hot board={hotboard} key={hotboard.id} />
           ))}
-        {/* <Container background={COLOR.WHITE}></Container> */}
+        <NotLoginComponent />
       </div>
 
       <div css={plusBoxCSS}>
@@ -190,13 +180,15 @@ const headerCSS = css`
   width: calc(100% + 30rem);
   margin-left: -15rem;
   background: ${COLOR.MAIN4};
-  padding: 2.5rem 15rem;
+  padding: 2.8rem 15rem;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 15rem;
 
   > * {
-    margin-right: 1rem;
+    margin-right: 1.5rem;
   }
 `;
 

@@ -13,7 +13,9 @@ const Hot = ({ board }: hotProps) => {
     <Container
       background={COLOR.WHITE}
       style={{
-        marginRight: "1rem",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
       }}
     >
       <div css={categoryCSS}>{board.category}</div>
