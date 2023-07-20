@@ -74,16 +74,19 @@ const hotboardlist = [
     id: 1,
     category: "지금의 게시글",
     title: "어제 강남 러쉬에서 만난 대문자 E 직원",
+    hot: true,
   },
   {
     id: 2,
     category: "지금의 게시글",
     title: "어제 강남 러쉬에서 만난 대문자 E 직원",
+    hot: true,
   },
   {
     id: 3,
     category: "지금의 게시글",
     title: "어제 강남 러쉬에서 만난 대문자 E 직원",
+    hot: false,
   },
 ];
 
