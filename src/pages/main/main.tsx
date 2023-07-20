@@ -128,15 +128,15 @@ const MainPage = () => {
                 </div>
                 <div css={titleCSS}>{board.title}</div>
                 <div css={contentCSS}>
-                  {board.content.length > 20
-                    ? `${board.content.slice(0, 20)}...`
+                  {board.content.length > 30
+                    ? `${board.content.slice(0, 30)}...`
                     : board.content}
                 </div>
                 <div css={textCSS}>{board.category}</div>
               </div>
               <div css={rightCSS}>
                 <div css={textCSS}>{board.createdAt}</div>
-                <img src={board.thumbnail} css={imgCSS} alt="thumbnail" />
+                <img css={imgCSS} src={board.thumbnail} alt="thumbnail" />
                 <div css={detailCSS}>
                   <div css={[textCSS, marginRightCSS]}>공감 {board.like}</div>
                   <div css={textCSS}>댓글 {board.comment}</div>
@@ -166,8 +166,8 @@ const MainPage = () => {
                 </div>
                 <div css={titleCSS}>{board.title}</div>
                 <div css={contentCSS}>
-                  {board.content.length > 20
-                    ? `${board.content.slice(0, 20)}...`
+                  {board.content.length > 30
+                    ? `${board.content.slice(0, 30)}...`
                     : board.content}
                 </div>
                 <div css={textCSS}>{board.category}</div>
@@ -204,10 +204,11 @@ const hotBoardBoxCSS = css`
 const containerCSS = css`
   display: flex;
   justify-content: space-between;
+  align-items: center;
+
   background: ${COLOR.MAIN3};
   width: calc(50% - 0.5rem);
   margin-bottom: 1rem;
-  align-items: center;
   border-radius: 1.2rem;
   padding: 1.5rem;
 `;
@@ -267,7 +268,7 @@ const textCSS = css`
 const imgCSS = css`
   width: 6rem;
   height: 6rem;
-  margin: 0.5rem 0;
+  margin: 0.5rem 0 0.5rem 0.8rem;
 `;
 
 const marginRightCSS = css`
