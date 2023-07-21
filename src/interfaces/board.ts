@@ -1,3 +1,5 @@
+import { User } from "./user";
+
 export interface Board {
   id: number;
   name: string;
@@ -12,7 +14,7 @@ export interface Board {
   comment: number;
 }
 
-export interface HotBoard {
+export interface HotBoard extends User {
   id: number;
   title: string;
   content: string;
@@ -21,11 +23,5 @@ export interface HotBoard {
   likeCount: number;
   commentCount: number;
   createdAt: string;
-  memberSimpleInfo: {
-    id: number;
-    nickName: string;
-    mbtiEnum: string;
-    badge: string;
-    profileImgUrl: string;
-  };
+  memberSimpleInfo: User;
 }

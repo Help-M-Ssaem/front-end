@@ -23,9 +23,9 @@ const LoginComponent = ({ user }: userProps) => {
       <div css={textCSS}>로그아웃</div>
       <div css={profileCSS}>
         <Profile
-          image={user.image}
-          name={user.name}
-          mbti={user.mbti}
+          image={user.profileImgUrl}
+          name={user.nickName}
+          mbti={user.mbtiEnum}
           badge={user.badge}
         />
       </div>
