@@ -5,13 +5,13 @@ import { css } from "@emotion/react";
 import { ContainerAnimation } from "../../styles/animation";
 import COLOR from "../../styles/color";
 
-type ContainerProps = {
+interface ContainerProps {
   width?: string;
   height?: string;
   background?: string;
   children?: ReactElement[] | ReactElement | React.ReactNode;
   style?: React.CSSProperties;
-};
+}
 
 const Container = ({
   width,

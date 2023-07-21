@@ -17,10 +17,13 @@ const Badge = ({ mbti, color }: BadgeProps) => {
     color: ${COLOR.WHITE};
     font-size: ${FONT.SIZE.BODY};
     font-weight: ${FONT.WEIGHT.REGULAR};
-    background: ${color || "transparent"};
-    padding: 0.1rem 0.5rem;
+    background: ${color || "#F8CAFF"};
+    padding: 0 0.5rem;
     border-radius: 0.9rem;
-    margin-right: 0.5rem;
+    margin-right: 0.4rem;
+
+    height: 1.3rem;
+    white-space: nowrap;
   `;
 
   return <div css={badgeCSS}>{mbti}</div>;
