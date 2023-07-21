@@ -1,3 +1,8 @@
+/** @jsxImportSource @emotion/react */
+import { ClassNames } from "@emotion/react";
+import COLOR from "../styles/color";
+import { css } from "@emotion/react";
+
 export const SearchIcon = () => {
   return (
     <svg
@@ -164,3 +169,51 @@ export const CheckIcon = ({ className, checked }: CheckIconProps) => {
     </svg>
   );
 };
+interface PolygonIconProps {
+  onClick?: () => void;
+}
+
+export const PolygonIcon = ({ onClick }: PolygonIconProps) => {
+  return (
+    <svg
+      width="17"
+      height="50"
+      viewBox="0 0 14 33"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      transform="translate(10,13)"
+      css={PolygonIconCSS}
+      onClick={onClick}
+    >
+      <path
+        d="M7 0L13.0622 10.5H0.937822L7 0Z"
+        fill="#D9D9D9"
+        css={[IconCSS, HoverIconCSS]}
+      />
+      <path
+        d="M7 22L0.937822 11.5H13.0622L7 22Z"
+        fill="#D9D9D9"
+        transform="translate(0, 15)"
+        css={[IconCSS, HoverIconCSS]}
+      />
+    </svg>
+  );
+};
+
+const PolygonIconCSS = css`
+  cursor: pointer;
+`;
+
+const IconCSS = css`
+  transition: fill 0.3s;
+
+  &:hover {
+    fill: ${COLOR.GRAY1};
+  }
+`;
+
+const HoverIconCSS = css`
+  &:hover {
+    fill: ${COLOR.GRAY1};
+  }
+`;

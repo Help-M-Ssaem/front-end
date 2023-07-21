@@ -40,8 +40,8 @@ const LoginPage = () => {
       <div css={RectCSS}>
         {/* <GLogin /> */}
         <img src={Google} />
-        <KakaoLogin />
-        {/* <img src={Kakao} /> */}
+        {/* <KakaoLogin /> */}
+        <img src={Kakao} />
         <img src={Naver} />
       </div>
     </div>
