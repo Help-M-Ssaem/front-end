@@ -5,8 +5,8 @@ import { useForm } from "react-hook-form";
 import FONT from "../../styles/font";
 import COLOR from "../../styles/color";
 import { PolygonIcon } from "../../assets/CommonIcons";
-import { string } from "prop-types";
-import { mssaemAxios as axios } from "../../apis/axios";
+import { useNickName } from "../../hooks/user/userInfo";
+import { useNavigate } from "react-router-dom";
 
 interface InFoInputs {
   nickName: string;
@@ -19,6 +19,8 @@ const UserInfo = () => {
   const [mouseClicked, setMouseClicked] = useState(false);
   const [invalidInput, setInvalidInput] = useState<string | null>(null);
   const [nickName, setnickName] = useState("");
+  const [result, setResult] = useState<boolean | null>(null);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -32,6 +34,7 @@ const UserInfo = () => {
     { name: "mbti_4", values: ["p", "P", "j", "J"] },
   ];
 
+  // 나중에 API 한 번에 쏠수도 있으니 일단
   const [values, setValues] = useState<InFoInputs>({
     nickName: "",
     mbtiInputs: {
@@ -91,58 +94,66 @@ const UserInfo = () => {
     }));
   };
 
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  //닉네임부분
 
-  const sendNickName = {
-    method: "post",
-    url: "/nick-name",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    data: {
-      nickName: values.nickName,
-    },
-  };
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const checkNickNameMutation = useNickName();
 
   useEffect(() => {
-    async function handleOutsideClick(event: MouseEvent) {
-      if (
-        inputRef.current &&
-        mouseClicked &&
-        !inputRef.current.contains(event.target as Node)
-      ) {
-        console.log("클릭"); //여기 까지는 잘 됨.
+    console.log("nickName:", nickName);
+  }, [nickName]);
 
-        try {
-          const response = await axios(sendNickName);
-          console.log(response);
-
-          const usedValue = response.data.used;
-        } catch (error) {
-          console.error(error);
-        }
-      }
+  const checkDuplicateNickName = async (nickName: string) => {
+    try {
+      const result = await (
+        await checkNickNameMutation.mutateAsync(nickName)
+      ).used;
+      console.log(result);
+      setResult(result);
+    } catch (error) {
+      console.error(error);
     }
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, [inputRef, mouseClicked]);
+  };
+
+  const handleNickNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+
+    if (inputValue.trim() === "") {
+      setResult(null);
+    } else {
+      setnickName(inputValue);
+      checkDuplicateNickName(inputValue);
+    }
+  };
 
   return (
     <div css={userinfoCSS}>
       <h1 css={titleCSS}>유저 정보 입력</h1>
       <form css={formCSS}>
-        <div onClick={() => setMouseClicked(true)}>
+        <div
+          onClick={() => setMouseClicked(true)}
+          css={nickNameCSS({ result })}
+        >
           <label css={labelCSS} id="nickBox">
             M쌤에서 사용할 닉네임을 입력해주세요.
+            <input
+              {...register("nickName")}
+              placeholder="닉네임"
+              ref={inputRef}
+              onChange={handleNickNameChange}
+            />
           </label>
-          <input
-            css={InputCSS}
-            {...register("nickName")}
-            placeholder="닉네임"
-            ref={inputRef}
-          />
+          <div css={NickNameContainer}>
+            {result !== null && (
+              <div css={NickNameMsg}>
+                <p className={`msg ${result ? "error" : "success"}`}>
+                  {result
+                    ? "이미 사용 중인 닉네임입니다."
+                    : "사용 가능한 닉네임입니다."}
+                </p>
+              </div>
+            )}
+          </div>
         </div>
 
         <label css={labelCSS}>당신의 MBTI는 무엇인가요?</label>
@@ -171,7 +182,12 @@ const UserInfo = () => {
               </p>
             </div>
           )}
-        <input type="submit" value="회원가입" css={buttonCSS} />
+        <input
+          type="submit"
+          value="회원가입"
+          css={buttonCSS}
+          onClick={() => navigate("/")}
+        />
       </form>
     </div>
   );
@@ -185,12 +201,6 @@ const userinfoCSS = css`
   flex-direction: column;
   align-items: center;
   padding-top: 2rem;
-
-  // display: flex;
-  // flex-direction: column;
-  // align-items: center;
-  // padding-top: 2rem;
-  // max-width: 30rem;
 `;
 const titleCSS = css`
   font-size: ${FONT.SIZE.TITLE1};
@@ -204,21 +214,47 @@ const formCSS = css`
   width: 100%;
   max-width: 30rem;
 `;
+const nickNameCSS = (props: any) => css`
+  margin-bottom: 2rem;
 
-const InputCSS = css`
-  display: block;
-  box-sizing: border-box;
-  width: 100%;
-  border-radius: 1rem;
-  border: 0.2rem solid ${COLOR.GRAY4};
-  padding: 0.7rem 1rem;
-  font-size: ${FONT.SIZE.TITLE3};
-
-  margin-top: 1rem;
-  margin-bottom: 5rem;
-  text-align: left;
+  input {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    border-radius: 1rem;
+    border: 0.2rem solid ${props.result === true ? "red" : COLOR.GRAY4};
+    padding: 0.7rem 1rem;
+    font-size: ${FONT.SIZE.TITLE3};
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    text-align: left;
+  }
 `;
 
+const NickNameContainer = css`
+  position: relative;
+  height: 1.5rem;
+`;
+
+const NickNameMsg = css`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left:0.5rem;
+  font-size: ${FONT.SIZE.FOOTNOTE};
+  font-weight : ${FONT.WEIGHT.MEDIUM}
+  display: flex;
+
+  .success {
+    color: green;
+  }
+  .error {
+    color: red;
+  }
+
+
+
+`;
 const labelCSS = css`
   color: ${COLOR.GRAY2};
 `;
