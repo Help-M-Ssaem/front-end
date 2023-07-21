@@ -108,7 +108,6 @@ const sigininCSS = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-
   padding-top: 1rem;
 `;
 
@@ -158,7 +157,6 @@ const buttonContainer = css`
 `;
 const policyCSS = css`
   width: 25rem;
-
   }
 `;
 
