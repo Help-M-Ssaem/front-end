@@ -9,6 +9,7 @@ import FONT from "../../styles/font";
 import NotLoginComponent from "../../components/auth/NotLogin";
 import LoginComponent from "../../components/auth/Login";
 import { HotBoard } from "../../interfaces/board";
+import { useHotDebate } from "../../hooks/main/useHotDebate";
 
 const hotboardlist = [
   {
@@ -41,7 +42,7 @@ const user = {
 
 const MainPage = () => {
   const { hotBoard } = useHotBoard();
-  const;
+  const { hotDebate } = useHotDebate();
 
   return (
     <>
@@ -50,8 +51,8 @@ const MainPage = () => {
           hotboardlist.map((hotboard) => (
             <Hot board={hotboard} key={hotboard.id} />
           ))}
-        {/* <NotLoginComponent /> */}
-        <LoginComponent user={user} />
+        <NotLoginComponent />
+        {/* <LoginComponent user={user} /> */}
       </div>
 
       <div css={plusBoxCSS}>
