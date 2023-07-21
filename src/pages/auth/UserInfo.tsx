@@ -16,7 +16,6 @@ interface InFoInputs {
 }
 
 const UserInfo = () => {
-  const [mouseClicked, setMouseClicked] = useState(false);
   const [invalidInput, setInvalidInput] = useState<string | null>(null);
   const [nickName, setnickName] = useState("");
   const [result, setResult] = useState<boolean | null>(null);
@@ -44,6 +43,13 @@ const UserInfo = () => {
       mbti_4: mbtiInputs[3].values[3],
     },
   });
+
+  const onSubmit = () => {
+    // 폼 데이터가 유효한 경우에만 페이지 이동
+    if (result === false) {
+      navigate("/");
+    }
+  };
 
   const handlePolygonClick = (name: string) => {
     const mbtiKey = name;
@@ -129,11 +135,8 @@ const UserInfo = () => {
   return (
     <div css={userinfoCSS}>
       <h1 css={titleCSS}>유저 정보 입력</h1>
-      <form css={formCSS}>
-        <div
-          onClick={() => setMouseClicked(true)}
-          css={nickNameCSS({ result })}
-        >
+      <form css={formCSS} onSubmit={handleSubmit(onSubmit)}>
+        <div css={nickNameCSS({ result })}>
           <label css={labelCSS} id="nickBox">
             M쌤에서 사용할 닉네임을 입력해주세요.
             <input
@@ -185,6 +188,7 @@ const UserInfo = () => {
         <input
           type="submit"
           value="회원가입"
+          disabled={result !== false}
           css={buttonCSS}
           onClick={() => navigate("/")}
         />
@@ -251,9 +255,6 @@ const NickNameMsg = css`
   .error {
     color: red;
   }
-
-
-
 `;
 const labelCSS = css`
   color: ${COLOR.GRAY2};
@@ -273,7 +274,6 @@ const mbtiBox = css`
   display: flex;
   gap: 3rem;
   align-items: center;
-
   text_align: center;
 `;
 
@@ -298,6 +298,11 @@ const buttonCSS = css`
     background-color: ${COLOR.GRAY1};
     transition: 0.7s;
     cursor: pointer;
+  }
+
+  :disabled {
+    background-color: ${COLOR.GRAY3};
+    pointer-events: none;
   }
 `;
 
