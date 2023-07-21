@@ -3,12 +3,12 @@ import { css } from "@emotion/react";
 import Badge from "../badge/Badge";
 import FONT from "../../styles/font";
 
-type profileProps = {
+interface profileProps {
   image: string;
   name: string;
   mbti: string;
   badge: string;
-};
+}
 
 const Profile = ({ image, name, mbti, badge }: profileProps) => {
   return (
