@@ -51,11 +51,18 @@ const loginCss = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 3rem;
+  padding-top: 2rem;
+  max-width: 100rem;
+
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
+  // padding-top: 3rem;
 `;
 
 const CatCss = css`
   width: 7rem;
+  padding-top: 2rem;
 `;
 
 const titleCSS = css`
@@ -75,7 +82,7 @@ const descCSS = css`
 const lineCSS = css`
   border: 1px solid #d4d3d3;
   height: 0.1rem;
-  width: 26rem;
+  width: 30rem;
 `;
 
 const RectCSS = css`
@@ -83,8 +90,8 @@ const RectCSS = css`
   flex-direction: column;
   padding: 2rem;
   gap: 1rem;
-
   cursor: pointer;
+  width: 30rem;
 `;
 
 export default LoginPage;

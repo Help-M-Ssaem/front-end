@@ -41,6 +41,7 @@ function App() {
             <Route path="/auth" element={<KakaoLogin />} />
             <Route path="/signin" element={<SigninPage />} />
             <Route path="/signin/user" element={<UserInfo />} />
+            <Route path="/signin/user" element={<UserInfo />} />
             <Route path="/board" element={<BoardPage />}>
               <Route path="mbti" element={<MbtiBoardPage />} />
               <Route path="create" element={<CreateBoardPage />} />
