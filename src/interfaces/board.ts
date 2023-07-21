@@ -12,7 +12,7 @@ export interface Board {
   comment: number;
 }
 
-export interface HomeBoard {
+export interface HotBoard {
   id: number;
   title: string;
   content: string;
@@ -20,7 +20,7 @@ export interface HomeBoard {
   boardMbti: string;
   likeCount: number;
   commentCount: number;
-  createAt: string;
+  createdAt: string;
   memberSimpleInfo: {
     id: number;
     nickName: string;
@@ -28,10 +28,4 @@ export interface HomeBoard {
     badge: string;
     profileImgUrl: string;
   };
-}
-
-export interface HotBoard extends HomeBoard {
-  page: number;
-  totalState: number;
-  result: HomeBoard[];
 }

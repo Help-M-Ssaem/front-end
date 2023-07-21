@@ -8,66 +8,7 @@ import Profile from "../../components/profile/Profile";
 import FONT from "../../styles/font";
 import NotLoginComponent from "../../components/auth/NotLogin";
 import LoginComponent from "../../components/auth/Login";
-
-const mbtiBoardList = [
-  {
-    id: 1,
-    name: "유보라",
-    profile: "https://i.ibb.co/njkbL5W/react-query.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "카페에서 남친이랑 싸웠어",
-    content:
-      "내가 말을 '만약에'라고 시작하면 너무 기빨린대 내가 말을 '만약에'라고 시작하면 너무 기빨린대내가 말을 '만약에'라고 시작하면 너무 기빨린대내가 말을 '만약에'라고 시작하면 너무 기빨린대내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-    createdAt: "1분전",
-    category: "커플 게시판",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 2,
-    name: "김보라",
-    profile: "https://i.ibb.co/BVDQKL0/image.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "엠비티아이 신기하다",
-    content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-    createdAt: "1분전",
-    category: "커플 게시판",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 3,
-    name: "박보라",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "박보라박보라박보라박브레드?",
-    content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-    createdAt: "1분전",
-    category: "커플 게시판",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 4,
-    name: "박보라",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "박보라박보라박보라박브레드?",
-    content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-    createdAt: "1분전",
-    category: "커플 게시판",
-    like: 3,
-    comment: 4,
-  },
-];
+import { HotBoard } from "../../interfaces/board";
 
 const hotboardlist = [
   {
@@ -99,7 +40,8 @@ const user = {
 };
 
 const MainPage = () => {
-  const HotBoard = useHotBoard();
+  const { hotBoard } = useHotBoard();
+  const;
 
   return (
     <>
@@ -117,16 +59,16 @@ const MainPage = () => {
         <div css={plusCSS}>더보기</div>
       </div>
       <div css={hotBoardBoxCSS}>
-        {mbtiBoardList &&
-          mbtiBoardList.map((board) => (
+        {hotBoard &&
+          hotBoard.map((board: HotBoard) => (
             <div css={containerCSS} key={board.id}>
               <div css={leftCSS}>
                 <div css={profileCSS}>
                   <Profile
-                    image={board.profile}
-                    name={board.name}
-                    mbti={board.mbti}
-                    badge={board.badge}
+                    image={board.memberSimpleInfo.profileImgUrl}
+                    name={board.memberSimpleInfo.nickName}
+                    mbti={board.memberSimpleInfo.mbtiEnum}
+                    badge={board.memberSimpleInfo.badge}
                   />
                 </div>
                 <div css={titleCSS}>{board.title}</div>
@@ -135,14 +77,16 @@ const MainPage = () => {
                     ? `${board.content.slice(0, 30)}...`
                     : board.content}
                 </div>
-                <div css={textCSS}>{board.category}</div>
+                <div css={textCSS}>{board.boardMbti}</div>
               </div>
               <div css={rightCSS}>
                 <div css={textCSS}>{board.createdAt}</div>
-                <img css={imgCSS} src={board.thumbnail} alt="thumbnail" />
+                <img css={imgCSS} src={board.imgUrl} alt="thumbnail" />
                 <div css={detailCSS}>
-                  <div css={[textCSS, marginRightCSS]}>공감 {board.like}</div>
-                  <div css={textCSS}>댓글 {board.comment}</div>
+                  <div css={[textCSS, marginRightCSS]}>
+                    공감 {board.likeCount}
+                  </div>
+                  <div css={textCSS}>댓글 {board.commentCount}</div>
                 </div>
               </div>
             </div>
@@ -154,31 +98,6 @@ const MainPage = () => {
         <Text>HOT 토론</Text>
         <div css={plusCSS}>더보기</div>
       </div>
-      <div css={hotBoardBoxCSS}>
-        {mbtiBoardList &&
-          mbtiBoardList.map((board) => (
-            <div css={containerCSS} key={board.id}>
-              <div css={leftCSS}>
-                <div css={profileCSS}>
-                  <Profile
-                    image={board.profile}
-                    name={board.name}
-                    mbti={board.mbti}
-                    badge={board.badge}
-                  />
-                </div>
-                <div css={titleCSS}>{board.title}</div>
-                <div css={contentCSS}>
-                  {board.content.length > 30
-                    ? `${board.content.slice(0, 30)}...`
-                    : board.content}
-                </div>
-                <div css={textCSS}>{board.category}</div>
-              </div>
-            </div>
-          ))}
-      </div>
-
       <hr css={hrCSS} />
     </>
   );
