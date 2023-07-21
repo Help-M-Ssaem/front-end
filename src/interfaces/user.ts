@@ -1,7 +1,7 @@
 export interface User {
   id: number;
-  image: string;
-  name: string;
-  mbti: string;
+  nickName: string;
+  mbtiEnum: string;
   badge: string;
+  profileImgUrl: string;
 }
