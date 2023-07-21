@@ -25,6 +25,7 @@ import MatchPage from "./pages/matching/match";
 import MatchingPage from "./pages/matching/matching";
 import CreateMatchingPage from "./pages/matching/create";
 import UpdateMatchingPage from "./pages/matching/update";
+import DetailBoardPage from "./pages/board/detail";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
             <Route path="/singin/user" element={<UserInfo />} />
             <Route path="/board" element={<BoardPage />}>
               <Route path="mbti" element={<MbtiBoardPage />} />
+              <Route path=":id" element={<DetailBoardPage />} />
               <Route path="create" element={<CreateBoardPage />} />
               <Route path="update" element={<UpdateBoardPage />} />
             </Route>

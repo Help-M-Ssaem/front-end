@@ -9,8 +9,7 @@ import Mbti from "../../components/mbti/Mbti";
 import COLOR from "../../styles/color";
 import { useRecoilState } from "recoil";
 import { mbtiState } from "../../states/board";
-import { useState } from "react";
-import BoardDetail from "../../components/board/BoardDetail";
+import { useEffect, useState } from "react";
 import { Board } from "../../interfaces/board";
 import Text from "../../components/text/Text";
 
@@ -80,17 +79,10 @@ const mbtiList = [
 const MbtiBoardPage = () => {
   const navigate = useNavigate();
   const [mbtiSelected, setMbtiSelected] = useRecoilState(mbtiState);
-  const [boardClicked, setBoardClicked] = useState(false);
-  const [mbtiBoard, setMbtiBoard] = useState<Board | null>(null);
 
-  const handleBoardClick = (id: number) => {
-    const selectedBoard = mbtiBoardList.find((board) => board.id === id);
-    setMbtiBoard(selectedBoard || null);
-    setBoardClicked(true);
-    window.scrollTo(0, 0);
-  };
-
-  const handleBoardDelete = () => {};
+  useEffect(() => {
+    setMbtiSelected("전체");
+  }, []);
 
   return (
     <>
@@ -116,30 +108,6 @@ const MbtiBoardPage = () => {
         </div>
       </div>
 
-      {/* board detail */}
-      {boardClicked && (
-        <>
-          <Container
-            style={{
-              marginTop: "1rem",
-            }}
-          >
-            <div css={buttonBoxCSS}>
-              {/* TODO: 로그인 구현되면 수정 */}
-              <Button
-                onClick={() => navigate("/board/update")}
-                style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
-              >
-                수정
-              </Button>
-              <Button onClick={handleBoardDelete}>삭제</Button>
-            </div>
-            <BoardDetail board={mbtiBoard!} />
-          </Container>
-        </>
-      )}
-
-      {/* board all */}
       <Text>{mbtiSelected} 게시판</Text>
       <Container>
         <div css={buttonBoxCSS}>
@@ -149,7 +117,7 @@ const MbtiBoardPage = () => {
           <BoardComponent
             board={board}
             key={board.id}
-            onClick={() => handleBoardClick(board.id)}
+            onClick={() => navigate(`/board/${board.id}`)}
           />
         ))}
       </Container>
@@ -209,5 +177,3 @@ const buttonBoxCSS = css`
   justify-content: flex-end;
   margin-bottom: 1rem;
 `;
-
-
