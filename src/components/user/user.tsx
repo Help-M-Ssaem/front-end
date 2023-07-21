@@ -5,8 +5,6 @@ import { useForm } from "react-hook-form";
 import FONT from "../../styles/font";
 import COLOR from "../../styles/color";
 import { PolygonIcon } from "../../assets/CommonIcons";
-import { string } from "prop-types";
-import axios from "axios";
 
 interface InFoInputs {
   nickName: string;

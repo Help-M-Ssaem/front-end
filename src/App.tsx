@@ -19,7 +19,7 @@ import Layout from "./components/layout/Layout";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import ScrollToTop from "./components/scroll/ScrollToTop";
-import KakaoLogin from "./pages/auth/KakaoLogin";
+import KakaoLogin from "./components/auth/KakaoLogin";
 import UserInfo from "./pages/auth/UserInfo";
 import MatchPage from "./pages/matching/match";
 import MatchingPage from "./pages/matching/matching";

@@ -11,8 +11,8 @@ import Catlogo from "../../assets/logo/CatLogo.svg";
 import Google from "../../assets/logo/Google.svg";
 import Kakao from "../../assets/logo/Kakao.svg";
 import Naver from "../../assets/logo/Naver.svg";
-import KakaoLogin from "./KakaoLogin";
-import GLogin from "./GoogleLogin";
+import KakaoLogin from "../../components/auth/KakaoLogin";
+import GLogin from "../../components/auth/GoogleLogin";
 
 const LoginPage = () => {
   const [state, setState] = useState({
@@ -39,10 +39,10 @@ const LoginPage = () => {
 
       <div css={RectCSS}>
         {/* <GLogin /> */}
-        <img src={Google} />
-        {/* <KakaoLogin /> */}
-        <img src={Kakao} />
-        <img src={Naver} />
+        <KakaoLogin />
+        {/* <img src={Google} /> */}
+        {/* <img src={Kakao} /> */}
+        {/* <img src={Naver} /> */}
       </div>
     </div>
   );
