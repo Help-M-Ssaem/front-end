@@ -1,34 +1,23 @@
 import { useMutation, useQueryClient } from "react-query";
 import { mssaemAxios as axios } from "../../apis/axios";
-import { BoardCreate } from "../../interfaces/board";
 import { boardKeys } from "../../constants/boardKey";
 
-async function createBoard({
-  postBoardReq,
-  image,
-}: BoardCreate): Promise<void> {
-  await axios.post(
-    `/member/board`,
-    { postBoardReq, image },
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+async function createBoard(board: FormData): Promise<void> {
+  await axios.post(`/member/board`, board, {
+    headers: {
+      "Content-Type": "multipart/form-data",
     },
-  );
+  });
 }
 
 interface UseCreateBoard {
   mutate: () => void;
 }
 
-export function useCreateBoard({
-  postBoardReq,
-  image,
-}: BoardCreate): UseCreateBoard {
+export function useCreateBoard(board: FormData): UseCreateBoard {
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(() => createBoard({ postBoardReq, image }), {
+  const { mutate } = useMutation(() => createBoard(board), {
     onSuccess: () => {
       queryClient.invalidateQueries(boardKeys.all);
     },
