@@ -10,6 +10,7 @@ import NotLoginComponent from "../../components/auth/NotLogin";
 import LoginComponent from "../../components/auth/Login";
 import { HotBoard } from "../../interfaces/board";
 import { useHotDebate } from "../../hooks/main/useHotDebate";
+import { useNavigate } from "react-router";
 
 const hotboardlist = [
   {
@@ -43,6 +44,7 @@ const user = {
 const MainPage = () => {
   const { hotBoard } = useHotBoard();
   const { hotDebate } = useHotDebate();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -57,7 +59,9 @@ const MainPage = () => {
 
       <div css={plusBoxCSS}>
         <Text>HOT 게시글</Text>
-        <div css={plusCSS}>더보기</div>
+        <div css={plusCSS} onClick={() => navigate("hotBoard")}>
+          더보기
+        </div>
       </div>
       <div css={hotBoardBoxCSS}>
         {hotBoard &&
@@ -97,7 +101,9 @@ const MainPage = () => {
 
       <div css={plusBoxCSS}>
         <Text>HOT 토론</Text>
-        <div css={plusCSS}>더보기</div>
+        <div css={plusCSS} onClick={() => navigate("hotDebate")}>
+          더보기
+        </div>
       </div>
       <hr css={hrCSS} />
     </>
