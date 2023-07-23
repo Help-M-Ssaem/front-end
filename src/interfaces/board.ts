@@ -11,3 +11,9 @@ export interface HotBoard extends User {
   createdAt: string;
   memberSimpleInfo: User;
 }
+
+export interface HotBoardMore extends HotBoard {
+  page: number;
+  totalSize: number;
+  result: HotBoard[];
+}

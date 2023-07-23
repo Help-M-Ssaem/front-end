@@ -64,7 +64,7 @@ const MainPage = () => {
         </div>
       </div>
       <div css={hotBoardBoxCSS}>
-        {hotBoards &&
+        {Array.isArray(hotBoards) &&
           hotBoards.map((hotboard: HotBoard) => (
             <HotBoardComponent hotBoard={hotboard} key={hotboard.id} />
           ))}

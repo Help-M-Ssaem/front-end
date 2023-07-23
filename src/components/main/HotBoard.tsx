@@ -1,16 +1,18 @@
+/** @jsxImportSource @emotion/react */
 import Profile from "../profile/Profile";
 import { HotBoard } from "../../interfaces/board";
-import { css } from "@emotion/react";
+import { SerializedStyles, css } from "@emotion/react";
 import FONT from "../../styles/font";
 import COLOR from "../../styles/color";
 
 interface HotBoardProps {
   hotBoard: HotBoard;
+  addCSS?: SerializedStyles;
 }
 
-const HotBoardComponent = ({ hotBoard }: HotBoardProps) => {
+const HotBoardComponent = ({ hotBoard, addCSS }: HotBoardProps) => {
   return (
-    <div css={containerCSS} key={hotBoard.id}>
+    <div css={[containerCSS, addCSS]} key={hotBoard.id}>
       <div css={leftCSS}>
         <div css={profileCSS}>
           <Profile
