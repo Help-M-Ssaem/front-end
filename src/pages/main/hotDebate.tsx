@@ -1,8 +1,15 @@
+import Container from "../../components/container/Container";
+import Text from "../../components/text/Text";
+import { useHotDebateMore } from "../../hooks/main/useHotDebateMore";
+
 const HotDebatePage = () => {
+  const { hotDebateMore } = useHotDebateMore(1, 6);
+
   return (
-    <div>
-      <h1>HotDebatePage</h1>
-    </div>
+    <>
+      <Text>HOT 게시글</Text>
+      <Container></Container>
+    </>
   );
 };
 
