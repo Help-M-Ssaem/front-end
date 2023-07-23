@@ -2,11 +2,6 @@ import { useMutation, useQueryClient } from "react-query";
 import { mssaemAxios as axios } from "../../apis/axios";
 import { boardKeys } from "../../constants/boardKey";
 
-interface updateBoardProps {
-  board: FormData;
-  id: number;
-}
-
 async function updateBoard(board: FormData, id: number): Promise<void> {
   await axios.patch(`/member/board/${id}`, board, {
     headers: {
