@@ -4,13 +4,23 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainPage from "./pages/main/main";
 import LoginPage from "./pages/auth/login";
 import SigninPage from "./pages/auth/signin";
+
 import BoardPage from "./pages/board/board";
 import MbtiBoardPage from "./pages/board/mbti";
+import DetailBoardPage from "./pages/board/detail";
 import CreateBoardPage from "./pages/board/create";
 import UpdateBoardPage from "./pages/board/update";
+
+import MatchPage from "./pages/matching/match";
+import MatchingPage from "./pages/matching/matching";
+import CreateMatchingPage from "./pages/matching/create";
+import UpdateMatchingPage from "./pages/matching/update";
+
 import DebatePage from "./pages/debate/debate";
+import PostListDebatePage from "./pages/debate/postlist";
 import UpdateDebatePage from "./pages/debate/update";
 import CreateDebatePage from "./pages/debate/create";
+
 import MbtiTypePage from "./pages/mbtitype/mbtitype";
 import ChattingPage from "./pages/chatting/chatting";
 import AlarmPage from "./pages/alarm/alarm";
@@ -21,11 +31,6 @@ import Footer from "./components/footer/Footer";
 import ScrollToTop from "./components/scroll/ScrollToTop";
 import KakaoLogin from "./pages/auth/KakaoLogin";
 import UserInfo from "./pages/auth/UserInfo";
-import MatchPage from "./pages/matching/match";
-import MatchingPage from "./pages/matching/matching";
-import CreateMatchingPage from "./pages/matching/create";
-import UpdateMatchingPage from "./pages/matching/update";
-import DetailBoardPage from "./pages/board/detail";
 
 function App() {
   return (
@@ -41,6 +46,7 @@ function App() {
             <Route path="/auth" element={<KakaoLogin />} />
             <Route path="/signin" element={<SigninPage />} />
             <Route path="/singin/user" element={<UserInfo />} />
+
             <Route path="/board" element={<BoardPage />}>
               <Route path="mbti" element={<MbtiBoardPage />} />
               <Route path=":id" element={<DetailBoardPage />} />
@@ -53,9 +59,11 @@ function App() {
               <Route path="update" element={<UpdateMatchingPage />} />
             </Route>
             <Route path="/debate" element={<DebatePage />}>
+              <Route path="postlist" element={<PostListDebatePage />} />
               <Route path="create" element={<CreateDebatePage />} />
               <Route path="update" element={<UpdateDebatePage />} />
             </Route>
+
             <Route path="/mbtitype" element={<MbtiTypePage />} />
             <Route path="/chatting" element={<ChattingPage />} />
             <Route path="/alarm" element={<AlarmPage />} />
