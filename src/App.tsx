@@ -4,13 +4,19 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainPage from "./pages/main/main";
 import LoginPage from "./pages/auth/login";
 import SigninPage from "./pages/auth/signin";
+
 import BoardPage from "./pages/board/board";
 import MbtiBoardPage from "./pages/board/mbti";
 import CreateBoardPage from "./pages/board/create";
 import UpdateBoardPage from "./pages/board/update";
+
+import MatchingPage from "./pages/matching/matching";
+
 import DebatePage from "./pages/debate/debate";
+import PostListDebatePage from "./pages/debate/postlist";
 import UpdateDebatePage from "./pages/debate/update";
 import CreateDebatePage from "./pages/debate/create";
+
 import MbtiTypePage from "./pages/mbtitype/mbtitype";
 import ChattingPage from "./pages/chatting/chatting";
 import AlarmPage from "./pages/alarm/alarm";
@@ -45,12 +51,9 @@ function App() {
               <Route path="create" element={<CreateBoardPage />} />
               <Route path="update" element={<UpdateBoardPage />} />
             </Route>
-            <Route path="/match" element={<MatchPage />}>
-              <Route path="matching" element={<MatchingPage />} />
-              <Route path="create" element={<CreateMatchingPage />} />
-              <Route path="update" element={<UpdateMatchingPage />} />
-            </Route>
+            <Route path="/matching" element={<MatchingPage />} />
             <Route path="/debate" element={<DebatePage />}>
+              <Route path="postlist" element={<PostListDebatePage/>}/>
               <Route path="create" element={<CreateDebatePage />} />
               <Route path="update" element={<UpdateDebatePage />} />
             </Route>

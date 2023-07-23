@@ -23,7 +23,6 @@ const Header = () => {
   };
 
   const boardPaths = ["/board/mbti", "/board/create", "/board/update"];
-  const matchPaths = ["/match/matching", "/match/create", "/match/update"];
   const debatePaths = ["/debate/postlist", "/debate/create", "/debate/update"];
 
   return (
@@ -56,8 +55,8 @@ const Header = () => {
             게시판
           </li>
           <li
-            onClick={() => navigate("/match/matching")}
-            className={matchPaths.includes(location.pathname) ? "active" : ""}
+            onClick={() => navigate("/matching")}
+            className={location.pathname === "/matching" ? "active" : ""}
           >
             M쌤 매칭
           </li>
