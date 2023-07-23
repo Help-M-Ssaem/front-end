@@ -4,13 +4,13 @@ import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import { useHotBoard } from "../../hooks/main/useHotBoard";
 import Hot from "../../components/main/Hot";
-import Profile from "../../components/profile/Profile";
 import FONT from "../../styles/font";
 import NotLoginComponent from "../../components/auth/NotLogin";
 import LoginComponent from "../../components/auth/Login";
 import { HotBoard } from "../../interfaces/board";
 import { useHotDebate } from "../../hooks/main/useHotDebate";
 import { useNavigate } from "react-router";
+import HotBoardComponent from "../../components/main/HotBoard";
 
 const hotboardlist = [
   {
@@ -42,8 +42,8 @@ const user = {
 };
 
 const MainPage = () => {
-  const { hotBoard } = useHotBoard();
-  const { hotDebate } = useHotDebate();
+  const { hotBoards } = useHotBoard();
+  const { hotDebates } = useHotDebate();
   const navigate = useNavigate();
 
   return (
@@ -54,7 +54,7 @@ const MainPage = () => {
             <Hot board={hotboard} key={hotboard.id} />
           ))}
         <NotLoginComponent />
-        {/* <LoginComponent user={user} /> */}
+        {/* TODO: 로그인 구현되면 수정 <LoginComponent user={user} /> */}
       </div>
 
       <div css={plusBoxCSS}>
@@ -64,37 +64,9 @@ const MainPage = () => {
         </div>
       </div>
       <div css={hotBoardBoxCSS}>
-        {hotBoard &&
-          hotBoard.map((board: HotBoard) => (
-            <div css={containerCSS} key={board.id}>
-              <div css={leftCSS}>
-                <div css={profileCSS}>
-                  <Profile
-                    image={board.memberSimpleInfo.profileImgUrl}
-                    name={board.memberSimpleInfo.nickName}
-                    mbti={board.memberSimpleInfo.mbtiEnum}
-                    badge={board.memberSimpleInfo.badge}
-                  />
-                </div>
-                <div css={titleCSS}>{board.title}</div>
-                <div css={contentCSS}>
-                  {board.content.length > 30
-                    ? `${board.content.slice(0, 30)}...`
-                    : board.content}
-                </div>
-                <div css={textCSS}>{board.boardMbti}</div>
-              </div>
-              <div css={rightCSS}>
-                <div css={textCSS}>{board.createdAt}</div>
-                <img css={imgCSS} src={board.imgUrl} alt="thumbnail" />
-                <div css={detailCSS}>
-                  <div css={[textCSS, marginRightCSS]}>
-                    공감 {board.likeCount}
-                  </div>
-                  <div css={textCSS}>댓글 {board.commentCount}</div>
-                </div>
-              </div>
-            </div>
+        {hotBoards &&
+          hotBoards.map((hotboard: HotBoard) => (
+            <HotBoardComponent hotBoard={hotboard} key={hotboard.id} />
           ))}
       </div>
       <hr css={hrCSS} />
@@ -130,18 +102,6 @@ const hotBoardBoxCSS = css`
   justify-content: space-between;
 `;
 
-const containerCSS = css`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  background: ${COLOR.MAIN3};
-  width: calc(50% - 0.5rem);
-  margin-bottom: 1rem;
-  border-radius: 1.2rem;
-  padding: 1.5rem;
-`;
-
 const plusBoxCSS = css`
   display: flex;
   justify-content: space-between;
@@ -154,54 +114,6 @@ const plusCSS = css`
   color: ${COLOR.GRAY2};
   text-decoration: underline;
   cursor: pointer;
-`;
-
-const leftCSS = css`
-  display: flex;
-  flex-direction: column;
-`;
-
-const rightCSS = css`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-`;
-
-const profileCSS = css`
-  margin-bottom: 0.6rem;
-`;
-
-const titleCSS = css`
-  font-size: ${FONT.SIZE.TITLE3};
-  font-weight: ${FONT.WEIGHT.BOLD};
-  color: ${COLOR.MAINDARK};
-  margin-bottom: 0.3rem;
-`;
-
-const contentCSS = css`
-  font-size: ${FONT.SIZE.HEADLINE};
-  font-weight: ${FONT.WEIGHT.REGULAR};
-  margin-bottom: 0.8rem;
-`;
-
-const detailCSS = css`
-  display: flex;
-`;
-
-const textCSS = css`
-  font-size: ${FONT.SIZE.CAPTION};
-  font-weight: ${FONT.WEIGHT.REGULAR};
-  color: ${COLOR.GRAY2};
-`;
-
-const imgCSS = css`
-  width: 6rem;
-  height: 6rem;
-  margin: 0.5rem 0 0.5rem 0.8rem;
-`;
-
-const marginRightCSS = css`
-  margin-right: 0.7rem;
 `;
 
 const hrCSS = css`
