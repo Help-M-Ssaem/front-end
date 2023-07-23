@@ -6,6 +6,8 @@ import FONT from "../../styles/font";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/button/Button";
 import MatchingComponent from "../../components/matching/Matching";
+import Text from "../../components/text/Text";
+import Mssaem from "../../components/matching/Mssaem";
 
 // TODO: matchingList 서버 연동
 const matchingList = [
@@ -44,6 +46,41 @@ const matchingList = [
   },
 ];
 
+const mssaemList = [
+  {
+    id: 1,
+    profile: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
+    name: "유보라",
+    mbti: "ESFP",
+    badge: "엠비티어론",
+    title: "진짜 어른이 되고 싶은 어른이에요",
+  },
+  {
+    id: 2,
+    profile: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
+    name: "유보라",
+    mbti: "ESFP",
+    badge: "엠비티어론",
+    title: "진짜 어른이 되고 싶은 어른이에요",
+  },
+  {
+    id: 3,
+    profile: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
+    name: "유보라",
+    mbti: "ESFP",
+    badge: "엠비티어론",
+    title: "진짜 어른이 되고 싶은 어른이에요",
+  },
+  {
+    id: 4,
+    profile: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
+    name: "유보라",
+    mbti: "ESFP",
+    badge: "엠비티어론",
+    title: "진짜 어른이 되고 싶은 어른이에요",
+  },
+];
+
 const MatchingPage = () => {
   const navigate = useNavigate();
 
@@ -53,8 +90,14 @@ const MatchingPage = () => {
     <>
       <div css={headerCSS}>
         <div css={mbtiTitleCSS}>인기 M쌤</div>
+        <div css={mssaemListCSS}>
+          {mssaemList &&
+            mssaemList.map((mssaem) => (
+              <Mssaem mssaem={mssaem} key={mssaem.id} />
+            ))}
+        </div>
       </div>
-      <div css={titleBoxCSS}>전체 매칭</div>
+      <Text>M쌤 매칭을 기다리는 고민</Text>
       <Container>
         <div css={buttonBoxCSS}>
           <Button onClick={() => navigate("/match/create")}>글 쓰기</Button>
@@ -77,22 +120,19 @@ const headerCSS = css`
   width: calc(100% + 30rem);
   margin-left: -15rem;
   background: ${COLOR.MAIN3};
-  padding: 0 15rem;
+  padding: 2rem 15rem;
+`;
+
+const mssaemListCSS = css`
+  display: flex;
 `;
 
 const mbtiTitleCSS = css`
   font-size: ${FONT.SIZE.TITLE3};
   font-weight: ${FONT.WEIGHT.BOLD};
   color: ${COLOR.MAIN2};
-  padding: 1.5rem 0;
-`;
-
-const titleBoxCSS = css`
-  display: flex;
-  align-items: center;
-  margin: 1rem 0;
-  font-size: ${FONT.SIZE.TITLE3};
-  font-weight: ${FONT.WEIGHT.BOLD};
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid ${COLOR.MAIN};
 `;
 
 const buttonBoxCSS = css`
