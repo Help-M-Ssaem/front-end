@@ -9,6 +9,7 @@ import FONT from "../../styles/font";
 import Button from "../../components/button/Button";
 import { useNavigate } from "react-router";
 import { ArrowIcon } from "../../assets/CommonIcons";
+import { useCreateBoard } from "../../hooks/board/useCreateBoard";
 
 const categoryList = [
   "전체",
@@ -36,6 +37,16 @@ const CreateBoardPage = () => {
   const [openCategory, setOpenCategory] = useState(false);
   const navigate = useNavigate();
 
+  const createMutation = useCreateBoard({
+    postBoardReq: {
+      title: title,
+      content: "",
+      mbti: category,
+      memberId: 0,
+    },
+    image: [],
+  });
+
   const handleCategoryButtonClick = () => {
     setOpenCategory(!openCategory);
   };
@@ -45,6 +56,10 @@ const CreateBoardPage = () => {
   };
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
+  };
+  const handleSubmit = () => {
+    createMutation.mutate();
+    navigate(-1);
   };
 
   const editorRef = useRef<Editor | null>(null);
@@ -85,8 +100,7 @@ const CreateBoardPage = () => {
           useCommandShortcut={true}
           hooks={{
             addImageBlobHook: async (blob, callback) => {
-              console.log(blob); // File {name: '이미지.png', ... }
-
+              console.log(blob);
               // 1. 첨부된 이미지 파일을 서버로 전송후, 이미지 경로 url을 받아온다.
               // const imgUrl = await .... 서버 전송 / 경로 수신 코드 ...
 
@@ -102,7 +116,7 @@ const CreateBoardPage = () => {
           >
             취소하기
           </Button>
-          <Button onClick={() => navigate(-1)}>글 쓰기</Button>
+          <Button onClick={handleSubmit}>글 쓰기</Button>
         </div>
       </Container>
     </div>

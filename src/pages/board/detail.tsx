@@ -1,13 +1,14 @@
 /** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
-import { Board } from "../../interfaces/board";
-import Profile from "../profile/Profile";
-import CommentComponent from "../comment/Comment";
+import { useNavigate } from "react-router";
+import Button from "../../components/button/Button";
+import Container from "../../components/container/Container";
 import COLOR from "../../styles/color";
+import { css } from "@emotion/react";
 import FONT from "../../styles/font";
+import Input from "../../components/input/Input";
+import Profile from "../../components/profile/Profile";
+import CommentComponent from "../../components/comment/Comment";
 import { LikeIcon } from "../../assets/ButtonIcons";
-import Input from "../input/Input";
-import Button from "../button/Button";
 
 // TODO: 댓글 API 연동
 const commentList = [
@@ -46,11 +47,23 @@ const commentList = [
   },
 ];
 
-type BoardDetailProps = {
-  board: Board;
+const board = {
+  id: 1,
+  profile: "https://i.ibb.co/DgVwMvJ/2023-07-03-132904.png",
+  name: "김유리",
+  mbti: "ENFP",
+  badge: "ENFJ",
+  title: "취미가 생겼어요!",
+  content: "hello",
+  createdAt: "2021.09.01",
+  like: 3,
+  isBest: true,
 };
 
-const BoardDetail = ({ board }: BoardDetailProps) => {
+const DetailBoardPage = () => {
+  const navigate = useNavigate();
+  const handleBoardDelete = () => {};
+
   const handleLikeClick = () => {
     alert("공감이 완료되었습니다.");
     // TODO: 공감 API 연동
@@ -62,7 +75,21 @@ const BoardDetail = ({ board }: BoardDetailProps) => {
   };
 
   return (
-    <>
+    <Container
+      style={{
+        marginTop: "1rem",
+      }}
+    >
+      <div css={buttonBoxCSS}>
+        {/* TODO: 로그인 구현되면 수정 */}
+        <Button
+          onClick={() => navigate("/board/update")}
+          style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
+        >
+          수정
+        </Button>
+        <Button onClick={handleBoardDelete}>삭제</Button>
+      </div>
       <div css={detailCSS}>
         <div css={detailHeaderCSS}>
           <Profile
@@ -76,7 +103,7 @@ const BoardDetail = ({ board }: BoardDetailProps) => {
         <div css={titleCSS}>{board.title}</div>
         <div css={contentCSS}>{board.content}</div>
 
-        <div css={buttonBoxCSS}>
+        <div css={likeButtonBoxCSS}>
           <div css={likeCountCSS}>{board.like}</div>
           <LikeIcon onClick={handleLikeClick} />
         </div>
@@ -97,11 +124,11 @@ const BoardDetail = ({ board }: BoardDetailProps) => {
         <Input onSubmit={handleCommentSubmit} />
         <Button style={{ marginLeft: "0.5rem", width: "5rem" }}>등록</Button>
       </form>
-    </>
+    </Container>
   );
 };
 
-export default BoardDetail;
+export default DetailBoardPage;
 
 const detailCSS = css`
   padding: 1.2rem 0;
@@ -135,12 +162,6 @@ const contentCSS = css`
   line-height: 1.4rem;
 `;
 
-const buttonBoxCSS = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 const likeCountCSS = css`
   font-size: ${FONT.SIZE.TITLE1};
   font-weight: ${FONT.WEIGHT.BOLD};
@@ -162,4 +183,17 @@ const hrCSS = css`
 
 const submitButtonBoxCSS = css`
   display: flex;
+`;
+
+const buttonBoxCSS = css`
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+`;
+
+const likeButtonBoxCSS = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0;
 `;

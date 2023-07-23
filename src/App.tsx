@@ -7,6 +7,7 @@ import SigninPage from "./pages/auth/signin";
 
 import BoardPage from "./pages/board/board";
 import MbtiBoardPage from "./pages/board/mbti";
+import DetailBoardPage from "./pages/board/detail";
 import CreateBoardPage from "./pages/board/create";
 import UpdateBoardPage from "./pages/board/update";
 
@@ -48,6 +49,7 @@ function App() {
 
             <Route path="/board" element={<BoardPage />}>
               <Route path="mbti" element={<MbtiBoardPage />} />
+              <Route path=":id" element={<DetailBoardPage />} />
               <Route path="create" element={<CreateBoardPage />} />
               <Route path="update" element={<UpdateBoardPage />} />
             </Route>
