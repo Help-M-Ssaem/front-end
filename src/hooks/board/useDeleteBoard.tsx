@@ -2,22 +2,18 @@ import { useMutation, useQueryClient } from "react-query";
 import { mssaemAxios as axios } from "../../apis/axios";
 import { boardKeys } from "../../constants/boardKey";
 
-async function createBoard(board: FormData): Promise<void> {
-  await axios.post(`/member/board`, board, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+async function deleteBoard(id: number): Promise<void> {
+  await axios.delete(`/member/board/${id}`);
 }
 
-interface UseCreateBoard {
+interface UseDeleteBoard {
   mutate: () => void;
 }
 
-export function useCreateBoard(board: FormData): UseCreateBoard {
+export function useDeleteBoard(id: number): UseDeleteBoard {
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(() => createBoard(board), {
+  const { mutate } = useMutation(() => deleteBoard(id), {
     onSuccess: () => {
       queryClient.invalidateQueries(boardKeys.all);
     },

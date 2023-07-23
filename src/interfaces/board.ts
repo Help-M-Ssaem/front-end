@@ -1,16 +1,5 @@
 import { User } from "./user";
 
-export interface BoardCreate {
-  postBoardReq: {
-    id?: number;
-    title: string;
-    content: string;
-    mbti: string;
-    memberId: number;
-  };
-  image: [];
-}
-
 export interface HotBoard extends User {
   id: number;
   title: string;
