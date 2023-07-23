@@ -8,82 +8,27 @@ import Profile from "../../components/profile/Profile";
 import FONT from "../../styles/font";
 import NotLoginComponent from "../../components/auth/NotLogin";
 import LoginComponent from "../../components/auth/Login";
-
-const mbtiBoardList = [
-  {
-    id: 1,
-    name: "유보라",
-    profile: "https://i.ibb.co/njkbL5W/react-query.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "카페에서 남친이랑 싸웠어",
-    content:
-      "내가 말을 '만약에'라고 시작하면 너무 기빨린대 내가 말을 '만약에'라고 시작하면 너무 기빨린대내가 말을 '만약에'라고 시작하면 너무 기빨린대내가 말을 '만약에'라고 시작하면 너무 기빨린대내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-    createdAt: "1분전",
-    category: "커플 게시판",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 2,
-    name: "김보라",
-    profile: "https://i.ibb.co/BVDQKL0/image.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "엠비티아이 신기하다",
-    content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-    createdAt: "1분전",
-    category: "커플 게시판",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 3,
-    name: "박보라",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "박보라박보라박보라박브레드?",
-    content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-    createdAt: "1분전",
-    category: "커플 게시판",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 4,
-    name: "박보라",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "박보라박보라박보라박브레드?",
-    content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-    createdAt: "1분전",
-    category: "커플 게시판",
-    like: 3,
-    comment: 4,
-  },
-];
+import { HotBoard } from "../../interfaces/board";
+import { useHotDebate } from "../../hooks/main/useHotDebate";
 
 const hotboardlist = [
   {
     id: 1,
     category: "지금의 게시글",
     title: "어제 강남 러쉬에서 만난 대문자 E 직원",
+    hot: true,
   },
   {
     id: 2,
     category: "지금의 게시글",
     title: "어제 강남 러쉬에서 만난 대문자 E 직원",
+    hot: true,
   },
   {
     id: 3,
     category: "지금의 게시글",
     title: "어제 강남 러쉬에서 만난 대문자 E 직원",
+    hot: false,
   },
 ];
 
@@ -96,7 +41,8 @@ const user = {
 };
 
 const MainPage = () => {
-  const HotBoard = useHotBoard();
+  const { hotBoard } = useHotBoard();
+  const { hotDebate } = useHotDebate();
 
   return (
     <>
@@ -105,8 +51,8 @@ const MainPage = () => {
           hotboardlist.map((hotboard) => (
             <Hot board={hotboard} key={hotboard.id} />
           ))}
-        {/* <NotLoginComponent /> */}
-        <LoginComponent user={user} />
+        <NotLoginComponent />
+        {/* <LoginComponent user={user} /> */}
       </div>
 
       <div css={plusBoxCSS}>
@@ -114,32 +60,34 @@ const MainPage = () => {
         <div css={plusCSS}>더보기</div>
       </div>
       <div css={hotBoardBoxCSS}>
-        {mbtiBoardList &&
-          mbtiBoardList.map((board) => (
+        {hotBoard &&
+          hotBoard.map((board: HotBoard) => (
             <div css={containerCSS} key={board.id}>
               <div css={leftCSS}>
                 <div css={profileCSS}>
                   <Profile
-                    image={board.profile}
-                    name={board.name}
-                    mbti={board.mbti}
-                    badge={board.badge}
+                    image={board.memberSimpleInfo.profileImgUrl}
+                    name={board.memberSimpleInfo.nickName}
+                    mbti={board.memberSimpleInfo.mbtiEnum}
+                    badge={board.memberSimpleInfo.badge}
                   />
                 </div>
                 <div css={titleCSS}>{board.title}</div>
                 <div css={contentCSS}>
-                  {board.content.length > 20
-                    ? `${board.content.slice(0, 20)}...`
+                  {board.content.length > 30
+                    ? `${board.content.slice(0, 30)}...`
                     : board.content}
                 </div>
-                <div css={textCSS}>{board.category}</div>
+                <div css={textCSS}>{board.boardMbti}</div>
               </div>
               <div css={rightCSS}>
                 <div css={textCSS}>{board.createdAt}</div>
-                <img src={board.thumbnail} css={imgCSS} alt="thumbnail" />
+                <img css={imgCSS} src={board.imgUrl} alt="thumbnail" />
                 <div css={detailCSS}>
-                  <div css={[textCSS, marginRightCSS]}>공감 {board.like}</div>
-                  <div css={textCSS}>댓글 {board.comment}</div>
+                  <div css={[textCSS, marginRightCSS]}>
+                    공감 {board.likeCount}
+                  </div>
+                  <div css={textCSS}>댓글 {board.commentCount}</div>
                 </div>
               </div>
             </div>
@@ -151,31 +99,6 @@ const MainPage = () => {
         <Text>HOT 토론</Text>
         <div css={plusCSS}>더보기</div>
       </div>
-      <div css={hotBoardBoxCSS}>
-        {mbtiBoardList &&
-          mbtiBoardList.map((board) => (
-            <div css={containerCSS} key={board.id}>
-              <div css={leftCSS}>
-                <div css={profileCSS}>
-                  <Profile
-                    image={board.profile}
-                    name={board.name}
-                    mbti={board.mbti}
-                    badge={board.badge}
-                  />
-                </div>
-                <div css={titleCSS}>{board.title}</div>
-                <div css={contentCSS}>
-                  {board.content.length > 20
-                    ? `${board.content.slice(0, 20)}...`
-                    : board.content}
-                </div>
-                <div css={textCSS}>{board.category}</div>
-              </div>
-            </div>
-          ))}
-      </div>
-
       <hr css={hrCSS} />
     </>
   );
@@ -204,10 +127,11 @@ const hotBoardBoxCSS = css`
 const containerCSS = css`
   display: flex;
   justify-content: space-between;
+  align-items: center;
+
   background: ${COLOR.MAIN3};
   width: calc(50% - 0.5rem);
   margin-bottom: 1rem;
-  align-items: center;
   border-radius: 1.2rem;
   padding: 1.5rem;
 `;
@@ -267,7 +191,7 @@ const textCSS = css`
 const imgCSS = css`
   width: 6rem;
   height: 6rem;
-  margin: 0.5rem 0;
+  margin: 0.5rem 0 0.5rem 0.8rem;
 `;
 
 const marginRightCSS = css`

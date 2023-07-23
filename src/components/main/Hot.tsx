@@ -3,6 +3,7 @@ import { css } from "@emotion/react";
 import Container from "../container/Container";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
+import { HotIcon } from "../../assets/MainIcons";
 
 interface hotProps {
   board: any;
@@ -17,8 +18,14 @@ const Hot = ({ board }: hotProps) => {
         flexDirection: "column",
         justifyContent: "center",
         marginRight: "1.5rem",
+        position: "relative",
       }}
     >
+      {board.hot && (
+        <div css={hotCSS}>
+          <HotIcon />
+        </div>
+      )}
       <div css={categoryCSS}>{board.category}</div>
       <div css={titleCSS}>{board.title}</div>
       <div css={textCSS}>바로가기</div>
@@ -27,6 +34,12 @@ const Hot = ({ board }: hotProps) => {
 };
 
 export default Hot;
+
+const hotCSS = css`
+  position: absolute;
+  top: -1.1rem;
+  left: 1rem;
+`;
 
 const categoryCSS = css`
   color: ${COLOR.GRAY2};
