@@ -50,11 +50,6 @@ const detailCSS = css`
   margin-top: 0.7rem;
   padding: 0 0.2rem;
   cursor: pointer;
-  border-right: 1px solid ${COLOR.GRAY3};
-
-  &:last-child {
-    border-right: none;
-  }
 `;
 
 const verticalBarCSS = css`

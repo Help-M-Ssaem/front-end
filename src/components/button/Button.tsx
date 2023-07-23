@@ -7,9 +7,10 @@ type ButtonProps = {
   children?: React.ReactNode;
   style?: React.CSSProperties;
   onClick?: () => void;
+  type?: string;
 };
 
-const Button = ({ children, style, onClick }: ButtonProps) => {
+const Button = ({ children, style, onClick, }: ButtonProps) => {
   const buttonCSS = css`
     display: flex;
     justify-content: center;
