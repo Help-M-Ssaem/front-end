@@ -10,7 +10,6 @@ import COLOR from "../../styles/color";
 import { useRecoilState } from "recoil";
 import { mbtiState } from "../../states/board";
 import { useEffect, useState } from "react";
-import { Board } from "../../interfaces/board";
 import Text from "../../components/text/Text";
 
 // TODO: mbtiBoardList 서버 연동
