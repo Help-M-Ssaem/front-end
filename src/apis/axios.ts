@@ -10,14 +10,3 @@ export const mssaemAxios = axios.create({
     "Content-Type": "application/json",
   },
 });
-
-async function fetchData() {
-  try {
-    const response = await mssaemAxios.get("/some_endpoint");
-    console.log(response.data);
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
-}
-
-fetchData();
