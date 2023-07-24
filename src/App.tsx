@@ -35,7 +35,7 @@ import HotBoardPage from "./pages/main/hotBoard";
 import HotDebatePage from "./pages/main/hotDebate";
 
 import MyPage from "./pages/mypage/mypage";
-
+import DetailMatchingPage from "./pages/matching/detail";
 
 function App() {
   return (
@@ -64,6 +64,7 @@ function App() {
 
             <Route path="/match" element={<MatchPage />}>
               <Route path="matching" element={<MatchingPage />} />
+              <Route path=":id" element={<DetailMatchingPage />} />
               <Route path="create" element={<CreateMatchingPage />} />
               <Route path="update" element={<UpdateMatchingPage />} />
             </Route>

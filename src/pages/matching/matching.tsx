@@ -129,7 +129,9 @@ const MatchingPage = () => {
   };
 
   // TODO: Matching 고민글 디테일 페이지로 이동
-  const handleMatchingClick = (id: number) => {};
+  const handleMatchingClick = (id: number) => {
+    navigate(`/match/${id}`);
+  };
 
   return (
     <>
