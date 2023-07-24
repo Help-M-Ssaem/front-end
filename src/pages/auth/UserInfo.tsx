@@ -60,15 +60,24 @@ const UserInfo = () => {
   };
 
   const onSubmit = () => {
-    const mbtiValue = getMBTI();
-    const mbtiNum = MBTItoNumbers(mbtiValue);
-
-    setMbti(mbtiValue.toUpperCase());
-    setMbtinum(mbtiNum);
     mutation.mutate(userData);
 
     navigate("/");
   };
+
+  useEffect(() => {
+    const mbtiValue = getMBTI();
+    const mbtiNum = MBTItoNumbers(mbtiValue);
+
+    const mbtiUpperValue = mbtiValue.toUpperCase();
+    console.log(mbtiValue.toUpperCase(), mbtiNum);
+
+    setMbti(mbtiUpperValue);
+    setMbtinum(mbtiNum);
+
+    console.log(mbti, mbtinum);
+    console.log(userData);
+  }, [mbti, mbtinum]);
 
   const getMBTI = () => {
     const { mbtiInputs } = values;
