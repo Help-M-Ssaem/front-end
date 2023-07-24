@@ -124,6 +124,20 @@ export const ArrowIcon = ({ onClick }: ArrowIconProps) => {
   );
 };
 
+export const SmallArrowIcon = () => {
+  return (
+    <svg
+      width="10"
+      height="8"
+      viewBox="0 0 12 9"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M1 1L6 8L11 1" stroke="#7A7A7B" />
+    </svg>
+  );
+};
+
 interface CheckIconProps extends React.SVGProps<SVGAElement> {
   className?: string;
   checked: boolean;
