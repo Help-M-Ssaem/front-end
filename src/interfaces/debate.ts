@@ -47,3 +47,9 @@ export interface HotDebate extends User {
     },
   ];
 }
+
+export interface HotDebateMore extends HotDebate {
+  page: number;
+  totalSize: number;
+  result: HotDebate[];
+}

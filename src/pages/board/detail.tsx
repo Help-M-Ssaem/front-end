@@ -9,6 +9,7 @@ import Input from "../../components/input/Input";
 import Profile from "../../components/profile/Profile";
 import CommentComponent from "../../components/comment/Comment";
 import { LikeIcon } from "../../assets/ButtonIcons";
+import { useDeleteBoard } from "../../hooks/board/useDeleteBoard";
 
 // TODO: 댓글 API 연동
 const commentList = [
@@ -62,7 +63,14 @@ const board = {
 
 const DetailBoardPage = () => {
   const navigate = useNavigate();
-  const handleBoardDelete = () => {};
+
+  // TODO: 게시글 id에 따라 게시글 삭제
+  const deleteMutation = useDeleteBoard(1);
+
+  const handleBoardDelete = () => {
+    deleteMutation.mutate();
+    navigate(-1);
+  };
 
   const handleLikeClick = () => {
     alert("공감이 완료되었습니다.");
@@ -81,7 +89,7 @@ const DetailBoardPage = () => {
       }}
     >
       <div css={buttonBoxCSS}>
-        {/* TODO: 로그인 구현되면 수정 */}
+        {/* TODO: 본인 게시글에만 수정, 삭제 버튼 */}
         <Button
           onClick={() => navigate("/board/update")}
           style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
