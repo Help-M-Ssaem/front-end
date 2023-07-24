@@ -42,17 +42,17 @@ const MainPage = () => {
           <>
             <Hot
               title={hotThree.boardTitle}
-              content={hotThree.boardContent}
+              content={"지금의 게시글"}
               key={hotThree.boardId}
             />
             <Hot
               title={hotThree.discussionTitle}
-              content={hotThree.discussionContent}
+              content={"지금의 토론"}
               key={hotThree.discussionId}
             />
             <Hot
               title={hotThree.worryBoardTitle}
-              content={hotThree.worryBoardContent}
+              content={"고민 그만! M쌤 매칭"}
               key={hotThree.worryBoardId}
             />
           </>

@@ -17,16 +17,20 @@ const Hot = ({ title, content }: hotProps) => {
       style={{
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
+        justifyContent: "space-between",
         marginRight: "1.5rem",
         position: "relative",
       }}
     >
-      {/* <div css={hotCSS}>
-        <HotIcon />
-      </div> */}
-      <div css={categoryCSS}>{title}</div>
-      <div css={titleCSS}>{content}</div>
+      {content && (
+        <div css={hotCSS}>
+          <HotIcon />
+        </div>
+      )}
+      <div>
+        <div css={categoryCSS}>{content}</div>
+        <div css={titleCSS}>{title}</div>
+      </div>
       <div css={textCSS}>바로가기</div>
     </Container>
   );
@@ -44,13 +48,13 @@ const categoryCSS = css`
   color: ${COLOR.GRAY2};
   font-size: ${FONT.SIZE.HEADLINE};
   font-weight: ${FONT.WEIGHT.SEMIBOLD};
-  margin-bottom: 0.5rem;
+  margin: 0.5rem 0;
 `;
 
 const titleCSS = css`
   font-size: ${FONT.SIZE.TITLE3};
   font-weight: ${FONT.WEIGHT.BOLD};
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
   line-height: 1.4rem;
 `;
 
