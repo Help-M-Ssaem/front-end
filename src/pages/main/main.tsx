@@ -11,27 +11,7 @@ import { HotBoard } from "../../interfaces/board";
 import { useHotDebate } from "../../hooks/main/useHotDebate";
 import { useNavigate } from "react-router";
 import HotBoardComponent from "../../components/main/HotBoard";
-
-const hotboardlist = [
-  {
-    id: 1,
-    category: "지금의 게시글",
-    title: "어제 강남 러쉬에서 만난 대문자 E 직원",
-    hot: true,
-  },
-  {
-    id: 2,
-    category: "지금의 게시글",
-    title: "어제 강남 러쉬에서 만난 대문자 E 직원",
-    hot: true,
-  },
-  {
-    id: 3,
-    category: "지금의 게시글",
-    title: "어제 강남 러쉬에서 만난 대문자 E 직원",
-    hot: false,
-  },
-];
+import { useHotThree } from "../../hooks/main/useHotThree";
 
 const user = {
   id: 1,
@@ -42,17 +22,35 @@ const user = {
 };
 
 const MainPage = () => {
+  const { hotThree } = useHotThree();
   const { hotBoards } = useHotBoard();
   const { hotDebates } = useHotDebate();
   const navigate = useNavigate();
 
+  console.log(hotThree);
+
   return (
     <>
       <div css={headerCSS}>
-        {hotboardlist &&
-          hotboardlist.map((hotboard) => (
-            <Hot board={hotboard} key={hotboard.id} />
-          ))}
+        {hotThree && (
+          <>
+            <Hot
+              title={hotThree.boardTitle}
+              content={hotThree.boardContent}
+              key={hotThree.boardId}
+            />
+            <Hot
+              title={hotThree.discussionTitle}
+              content={hotThree.discussionContent}
+              key={hotThree.discussionId}
+            />
+            <Hot
+              title={hotThree.worryBoardTitle}
+              content={hotThree.worryBoardContent}
+              key={hotThree.worryBoardId}
+            />
+          </>
+        )}
         <NotLoginComponent />
         {/* TODO: 로그인 구현되면 수정 <LoginComponent user={user} /> */}
       </div>
