@@ -1,5 +1,17 @@
 import { User } from "./user";
 
+export interface HotThree {
+  boardId?: number;
+  boardTitle?: string;
+  boardContent?: string;
+  discussionId?: number;
+  discussionTitle?: string;
+  discussionContent?: string;
+  worryBoardId?: number;
+  worryBoardTitle?: string;
+  worryBoardContent?: string;
+}
+
 export interface HotBoard extends User {
   id: number;
   title: string;

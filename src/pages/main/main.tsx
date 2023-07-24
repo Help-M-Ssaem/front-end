@@ -11,27 +11,11 @@ import { HotBoard } from "../../interfaces/board";
 import { useHotDebate } from "../../hooks/main/useHotDebate";
 import { useNavigate } from "react-router";
 import HotBoardComponent from "../../components/main/HotBoard";
-
-const hotboardlist = [
-  {
-    id: 1,
-    category: "지금의 게시글",
-    title: "어제 강남 러쉬에서 만난 대문자 E 직원",
-    hot: true,
-  },
-  {
-    id: 2,
-    category: "지금의 게시글",
-    title: "어제 강남 러쉬에서 만난 대문자 E 직원",
-    hot: true,
-  },
-  {
-    id: 3,
-    category: "지금의 게시글",
-    title: "어제 강남 러쉬에서 만난 대문자 E 직원",
-    hot: false,
-  },
-];
+import { useHotThree } from "../../hooks/main/useHotThree";
+import Container from "../../components/container/Container";
+import { useState } from "react";
+import { useMainMatching } from "../../hooks/main/useMainMatching";
+import { useMainTheacher } from "../../hooks/main/useMainTeacher";
 
 const user = {
   id: 1,
@@ -42,17 +26,37 @@ const user = {
 };
 
 const MainPage = () => {
+  const { hotThree } = useHotThree();
   const { hotBoards } = useHotBoard();
   const { hotDebates } = useHotDebate();
+  const { mainMatching } = useMainMatching();
+  const { mainTeacher } = useMainTheacher();
+  const [selected, setSelected] = useState(0);
+
   const navigate = useNavigate();
 
   return (
     <>
       <div css={headerCSS}>
-        {hotboardlist &&
-          hotboardlist.map((hotboard) => (
-            <Hot board={hotboard} key={hotboard.id} />
-          ))}
+        {hotThree && (
+          <>
+            <Hot
+              title={hotThree.boardTitle}
+              content={hotThree.boardContent}
+              key={hotThree.boardId}
+            />
+            <Hot
+              title={hotThree.discussionTitle}
+              content={hotThree.discussionContent}
+              key={hotThree.discussionId}
+            />
+            <Hot
+              title={hotThree.worryBoardTitle}
+              content={hotThree.worryBoardContent}
+              key={hotThree.worryBoardId}
+            />
+          </>
+        )}
         <NotLoginComponent />
         {/* TODO: 로그인 구현되면 수정 <LoginComponent user={user} /> */}
       </div>
@@ -78,6 +82,26 @@ const MainPage = () => {
         </div>
       </div>
       <hr css={hrCSS} />
+
+      <Container style={{ padding: "0" }}>
+        <div css={bottomTitleBoxCSS}>
+          <div
+            css={bottomTitleCSS}
+            onClick={() => setSelected(0)}
+            className={selected === 0 ? "active" : ""}
+          >
+            M샘 매칭을 기다리는 고민
+          </div>
+          <div
+            css={bottomTitleCSS}
+            onClick={() => setSelected(1)}
+            className={selected === 1 ? "active" : ""}
+          >
+            인기 M쌤
+          </div>
+        </div>
+        <div></div>
+      </Container>
     </>
   );
 };
@@ -120,4 +144,29 @@ const hrCSS = css`
   width: 100%;
   border: 1px solid ${COLOR.GRAY4};
   margin-top: 3rem;
+`;
+
+const bottomTitleBoxCSS = css`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+`;
+
+const bottomTitleCSS = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 2rem 0;
+
+  font-size: ${FONT.SIZE.TITLE3};
+  font-weight: ${FONT.WEIGHT.BOLD};
+  border-bottom: 4px solid ${COLOR.MAIN4};
+  color: ${COLOR.GRAY2};
+  cursor: pointer;
+
+  &.active {
+    color: ${COLOR.MAIN2};
+    border-bottom: 4px solid ${COLOR.MAIN};
+  }
 `;

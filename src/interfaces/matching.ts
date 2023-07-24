@@ -9,3 +9,21 @@ export interface Matching {
   color1?: string;
   color2?: string;
 }
+
+export interface MainMatching {
+  title: string;
+  content: string;
+  memberMbti: string;
+  targetMbti: string;
+  createdDate: string;
+  imgUrl: string;
+}
+
+export interface MainTeacher {
+  id: number;
+  nickName: string;
+  mbtiEnum: string;
+  badge: string;
+  profileImgUrl: string;
+  introduction: string;
+}
