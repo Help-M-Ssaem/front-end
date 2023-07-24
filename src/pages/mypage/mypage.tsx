@@ -343,7 +343,7 @@ const MyPage = () => {
                 alt="프로필"
               />
             </div>
-            <p css={profilenameCSS}>유보라 님</p>
+            <p css={profilenameCSS}>먀먀 님</p>
 
             <div css={bedgeContainer}>
               {badge1Array?.map((value, idx) => {
