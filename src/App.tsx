@@ -33,6 +33,8 @@ import Footer from "./components/footer/Footer";
 import ScrollToTop from "./components/scroll/ScrollToTop";
 import KakaoLogin from "./pages/auth/KakaoLogin";
 import UserInfo from "./pages/auth/UserInfo";
+import HotBoardPage from "./pages/main/hotBoard";
+import HotDebatePage from "./pages/main/hotDebate";
 
 
 
@@ -47,6 +49,9 @@ function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<MainPage />} />
+            <Route path="/hotBoard" element={<HotBoardPage />} />
+            <Route path="/hotDebate" element={<HotDebatePage />} />
+
             <Route path="/login" element={<LoginPage />} />
             <Route path="/auth" element={<KakaoLogin />} />
             <Route path="/signin" element={<SigninPage />} />
@@ -60,11 +65,13 @@ function App() {
               <Route path="create" element={<CreateBoardPage />} />
               <Route path="update" element={<UpdateBoardPage />} />
             </Route>
+
             <Route path="/match" element={<MatchPage />}>
               <Route path="matching" element={<MatchingPage />} />
               <Route path="create" element={<CreateMatchingPage />} />
               <Route path="update" element={<UpdateMatchingPage />} />
             </Route>
+
             <Route path="/debate" element={<DebatePage />}>
               <Route path="postlist" element={<PostListDebatePage />} />
               <Route path="create" element={<CreateDebatePage />} />

@@ -9,10 +9,12 @@ async function getHotDebate(): Promise<HotDebate[]> {
 }
 
 interface UseHotDebate {
-  hotDebate?: HotDebate[];
+  hotDebates?: HotDebate[];
 }
 
 export function useHotDebate(): UseHotDebate {
-  const { data: hotDebate } = useQuery(hotDebateKeys.all, () => getHotDebate());
-  return { hotDebate };
+  const { data: hotDebates } = useQuery(hotDebateKeys.all, () =>
+    getHotDebate(),
+  );
+  return { hotDebates };
 }

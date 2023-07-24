@@ -22,6 +22,8 @@ const Header = () => {
     navigate("/search");
   };
 
+  const homeRouteList = ["/", "/hotBoard", "/hotDebate"];
+
   return (
     <header css={headerCSS}>
       <div css={headerTopCSS}>
@@ -41,7 +43,9 @@ const Header = () => {
         <ul css={[listCSS, left]}>
           <li
             onClick={() => navigate("/")}
-            className={location.pathname === "/" ? "active" : ""}
+            className={
+              homeRouteList.includes(location.pathname) ? "active" : ""
+            }
           >
             Home
           </li>

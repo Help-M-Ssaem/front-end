@@ -9,10 +9,10 @@ async function getHotBoard(): Promise<HotBoard[]> {
 }
 
 interface UseHotBoard {
-  hotBoard?: HotBoard[];
+  hotBoards?: HotBoard[];
 }
 
 export function useHotBoard(): UseHotBoard {
-  const { data: hotBoard } = useQuery(hotBoardKeys.all, () => getHotBoard());
-  return { hotBoard };
+  const { data: hotBoards } = useQuery(hotBoardKeys.all, () => getHotBoard());
+  return { hotBoards };
 }
