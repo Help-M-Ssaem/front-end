@@ -5,8 +5,10 @@ import { useForm } from "react-hook-form";
 import FONT from "../../styles/font";
 import COLOR from "../../styles/color";
 import { PolygonIcon } from "../../assets/CommonIcons";
-import { useNickName } from "../../hooks/user/userInfo";
+import { useNickName } from "../../hooks/user/userNickname";
+import { usePostUserInfo } from "../../hooks/user/signup";
 import { useNavigate } from "react-router-dom";
+import { userinfo } from "../../interfaces/signup";
 
 interface InFoInputs {
   nickName: string;
@@ -19,7 +21,13 @@ const UserInfo = () => {
   const [invalidInput, setInvalidInput] = useState<string | null>(null);
   const [nickName, setnickName] = useState("");
   const [result, setResult] = useState<boolean | null>(null);
+  const [mbti, setMbti] = useState<string>("");
+  const [mbtinum, setMbtinum] = useState<string>("");
   const navigate = useNavigate();
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const checkNickNameMutation = useNickName();
+  const mutation = usePostUserInfo();
+
   const {
     register,
     handleSubmit,
@@ -44,11 +52,40 @@ const UserInfo = () => {
     },
   });
 
+  const userData: userinfo = {
+    email: nickName + "@naver.com",
+    nickname: nickName,
+    mbti: mbti,
+    caseSensitivity: mbtinum,
+  };
+
   const onSubmit = () => {
-    // 폼 데이터가 유효한 경우에만 페이지 이동
-    if (result === false) {
-      navigate("/");
-    }
+    const mbtiValue = getMBTI();
+    const mbtiNum = MBTItoNumbers(mbtiValue);
+
+    setMbti(mbtiValue.toUpperCase());
+    setMbtinum(mbtiNum);
+    mutation.mutate(userData);
+
+    navigate("/");
+  };
+
+  const getMBTI = () => {
+    const { mbtiInputs } = values;
+    const selectedMBTI = Object.keys(mbtiInputs)
+      .map((key) => mbtiInputs[key])
+      .join("");
+
+    return selectedMBTI;
+  };
+
+  const MBTItoNumbers = (mbtiString: string) => {
+    const convertedString = mbtiString
+      .split("")
+      .map((char) => (char.toUpperCase() === char ? "1" : "0"))
+      .join("");
+
+    return convertedString;
   };
 
   const handlePolygonClick = (name: string) => {
@@ -57,7 +94,6 @@ const UserInfo = () => {
     const valuesArray = mbtiInputs.find(
       (mbti) => mbti.name === mbtiKey,
     )?.values;
-    console.log(valuesArray);
     if (!valuesArray) return;
     const currentIndex = valuesArray.indexOf(inputValue);
     const updatedValue = valuesArray[(currentIndex + 1) % valuesArray.length];
@@ -101,13 +137,6 @@ const UserInfo = () => {
   };
 
   //닉네임부분
-
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const checkNickNameMutation = useNickName();
-
-  useEffect(() => {
-    console.log("nickName:", nickName);
-  }, [nickName]);
 
   const checkDuplicateNickName = async (nickName: string) => {
     try {
@@ -190,7 +219,7 @@ const UserInfo = () => {
           value="회원가입"
           disabled={result !== false}
           css={buttonCSS}
-          onClick={() => navigate("/")}
+          onClick={() => onSubmit()}
         />
       </form>
     </div>
@@ -218,7 +247,7 @@ const formCSS = css`
   width: 100%;
   max-width: 30rem;
 `;
-const nickNameCSS = (props: any) => css`
+const nickNameCSS = (props: { result: boolean | null }) => css`
   margin-bottom: 2rem;
 
   input {
@@ -226,7 +255,14 @@ const nickNameCSS = (props: any) => css`
     box-sizing: border-box;
     width: 100%;
     border-radius: 1rem;
-    border: 0.2rem solid ${props.result === true ? "red" : COLOR.GRAY4};
+    border: 0.15rem solid
+      ${props.result === true
+        ? "red"
+        : props.result === false
+        ? "green"
+        : props.result === null
+        ? "#A7A7A7"
+        : "#A7A7A7"};
     padding: 0.7rem 1rem;
     font-size: ${FONT.SIZE.TITLE3};
     margin-top: 1rem;

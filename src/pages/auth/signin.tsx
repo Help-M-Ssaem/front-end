@@ -4,8 +4,6 @@ import Checkbox from "../../components/checkbox/checkbox";
 import SelectAllCheckbox from "../../components/checkbox/SelectAllcheckbox";
 import FONT from "../../styles/font";
 import { css } from "@emotion/react";
-import Container from "../../components/container/Container";
-import Button from "../../components/button/Button";
 import COLOR from "../../styles/color";
 import { useNavigate } from "react-router-dom";
 const dummyData = [

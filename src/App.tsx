@@ -19,13 +19,19 @@ import Layout from "./components/layout/Layout";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import ScrollToTop from "./components/scroll/ScrollToTop";
-import KakaoLogin from "./components/auth/KakaoLogin";
 import UserInfo from "./pages/auth/UserInfo";
 import MatchPage from "./pages/matching/match";
 import MatchingPage from "./pages/matching/matching";
 import CreateMatchingPage from "./pages/matching/create";
 import UpdateMatchingPage from "./pages/matching/update";
+import Callback from "./components/auth/Callback";
 
+declare global {
+  interface Window {
+    Kakao: any;
+    naver: any;
+  }
+}
 function App() {
   return (
     <>
@@ -37,7 +43,9 @@ function App() {
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/auth" element={<KakaoLogin />} />
+            <Route path="/kakao/login" element={<Callback />} />
+            <Route path="/naver/login" element={<Callback />} />
+            <Route path="/google/login" element={<Callback />} />
             <Route path="/signin" element={<SigninPage />} />
             <Route path="/signin/user" element={<UserInfo />} />
             <Route path="/signin/user" element={<UserInfo />} />

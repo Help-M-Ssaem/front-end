@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import { css } from "@emotion/react";
@@ -7,26 +7,29 @@ import FONT from "../../styles/font";
 import { useNavigate } from "react-router-dom";
 import { navbarState } from "../../states/navbar";
 import Catlogo from "../../assets/logo/CatLogo.svg";
-
 import Google from "../../assets/logo/Google.svg";
 import Kakao from "../../assets/logo/Kakao.svg";
 import Naver from "../../assets/logo/Naver.svg";
-import KakaoLogin from "../../components/auth/KakaoLogin";
-import GLogin from "../../components/auth/GoogleLogin";
 
 const LoginPage = () => {
-  const [state, setState] = useState({
-    Id: "",
-    password: "",
-  });
-  const setSelectedItem = useRecoilState(navbarState);
-
-  const navigate = useNavigate();
-
-  const handleItemClick = (path: string) => {
-    // setSelectedItem(path);
-    navigate(path);
+  const loginHandler = (URL: string) => {
+    window.location.href = URL;
   };
+
+  function KakaoLogin() {
+    const URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}&response_type=code`;
+    loginHandler(URL);
+  }
+
+  function NaverLogin() {
+    const URL = `https://nid.naver.com/oauth2.0/authorize?client_id=${process.env.REACT_APP_NAVER_API_KEY}&response_type=code&redirect_uri=${process.env.REACT_APP_NAVER_REDIRECT_URI}&state=naver`;
+    loginHandler(URL);
+  }
+
+  function GoogleLogin() {
+    const URL = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&scope=openid%20email&client_id=${process.env.REACT_APP_GOOGLE_API_KEY}&redirect_uri=${process.env.REACT_APP_GOOGLE_REDIRECT_URI}`;
+    loginHandler(URL);
+  }
 
   return (
     <div css={loginCss}>
@@ -38,11 +41,9 @@ const LoginPage = () => {
       <hr css={lineCSS} />
 
       <div css={RectCSS}>
-        {/* <GLogin /> */}
-        <KakaoLogin />
-        {/* <img src={Google} /> */}
-        {/* <img src={Kakao} /> */}
-        {/* <img src={Naver} /> */}
+        <img src={Google} onClick={GoogleLogin} />
+        <img src={Kakao} onClick={KakaoLogin} />
+        <img src={Naver} onClick={NaverLogin} />
       </div>
     </div>
   );
