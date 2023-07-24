@@ -1,17 +1,15 @@
 import { User } from "./user";
 
-export interface Board {
-  id: number;
-  name: string;
-  profile: string;
-  thumbnail: string;
-  mbti: string;
-  badge: string;
-  title: string;
-  content: string;
-  createdAt: string;
-  like: number;
-  comment: number;
+export interface HotThree {
+  boardId?: number;
+  boardTitle?: string;
+  boardContent?: string;
+  discussionId?: number;
+  discussionTitle?: string;
+  discussionContent?: string;
+  worryBoardId?: number;
+  worryBoardTitle?: string;
+  worryBoardContent?: string;
 }
 
 export interface HotBoard extends User {
@@ -24,4 +22,10 @@ export interface HotBoard extends User {
   commentCount: number;
   createdAt: string;
   memberSimpleInfo: User;
+}
+
+export interface HotBoardMore extends HotBoard {
+  page: number;
+  totalSize: number;
+  result: HotBoard[];
 }

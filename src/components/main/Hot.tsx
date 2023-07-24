@@ -6,10 +6,11 @@ import FONT from "../../styles/font";
 import { HotIcon } from "../../assets/MainIcons";
 
 interface hotProps {
-  board: any;
+  title?: string;
+  content?: string;
 }
 
-const Hot = ({ board }: hotProps) => {
+const Hot = ({ title, content }: hotProps) => {
   return (
     <Container
       background={COLOR.WHITE}
@@ -21,13 +22,11 @@ const Hot = ({ board }: hotProps) => {
         position: "relative",
       }}
     >
-      {board.hot && (
-        <div css={hotCSS}>
-          <HotIcon />
-        </div>
-      )}
-      <div css={categoryCSS}>{board.category}</div>
-      <div css={titleCSS}>{board.title}</div>
+      {/* <div css={hotCSS}>
+        <HotIcon />
+      </div> */}
+      <div css={categoryCSS}>{title}</div>
+      <div css={titleCSS}>{content}</div>
       <div css={textCSS}>바로가기</div>
     </Container>
   );

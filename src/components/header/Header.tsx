@@ -19,12 +19,10 @@ const Header = () => {
   };
 
   const handleSearchClick = () => {
-    // 버튼 기능 디자인 만들어지면 수정
+    navigate("/search");
   };
 
-  const boardPaths = ["/board/mbti", "/board/create", "/board/update"];
-  const matchPaths = ["/match/matching", "/match/create", "/match/update"];
-  const debatePaths = ["/debate/postlist", "/debate/create", "/debate/update"];
+  const homeRouteList = ["/", "/hotBoard", "/hotDebate"];
 
   return (
     <header css={headerCSS}>
@@ -45,31 +43,35 @@ const Header = () => {
         <ul css={[listCSS, left]}>
           <li
             onClick={() => navigate("/")}
-            className={location.pathname === "/" ? "active" : ""}
+            className={
+              homeRouteList.includes(location.pathname) ? "active" : ""
+            }
           >
             Home
           </li>
           <li
             onClick={() => navigate("/board/mbti")}
-            className={boardPaths.includes(location.pathname) ? "active" : ""}
+            className={location.pathname.startsWith("/board") ? "active" : ""}
           >
             게시판
           </li>
           <li
             onClick={() => navigate("/match/matching")}
-            className={matchPaths.includes(location.pathname) ? "active" : ""}
+            className={location.pathname.startsWith("/match") ? "active" : ""}
           >
             M쌤 매칭
           </li>
           <li
             onClick={() => navigate("/debate/postlist")}
-            className={debatePaths.includes(location.pathname) ? "active" : ""}
+            className={location.pathname.startsWith("/debate") ? "active" : ""}
           >
             MBTI 과몰입 토론
           </li>
           <li
             onClick={() => navigate("/mbtitype")}
-            className={location.pathname === "/mbtitype" ? "active" : ""}
+            className={
+              location.pathname.startsWith("/mbtitype") ? "active" : ""
+            }
           >
             MBTI 유형
           </li>
@@ -77,19 +79,23 @@ const Header = () => {
         <ul css={[listCSS, right]}>
           <li
             onClick={() => navigate("/chatting")}
-            className={location.pathname === "/chatting" ? "active" : ""}
+            className={
+              location.pathname.startsWith("/chatting") ? "active" : ""
+            }
           >
             채팅
           </li>
           <li
             onClick={() => navigate("/alarm")}
-            className={location.pathname === "/alarm" ? "active" : ""}
+            className={location.pathname.startsWith("/alarm") ? "active" : ""}
           >
             알람
           </li>
           <li
             onClick={() => navigate("/favorites")}
-            className={location.pathname === "/favorites" ? "active" : ""}
+            className={
+              location.pathname.startsWith("/favorites") ? "active" : ""
+            }
           >
             즐겨찾기
           </li>

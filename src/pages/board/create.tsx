@@ -9,9 +9,9 @@ import FONT from "../../styles/font";
 import Button from "../../components/button/Button";
 import { useNavigate } from "react-router";
 import { ArrowIcon } from "../../assets/CommonIcons";
+import { useCreateBoard } from "../../hooks/board/useCreateBoard";
 
 const categoryList = [
-  "전체",
   "ISTJ",
   "ISFJ",
   "INFJ",
@@ -32,7 +32,10 @@ const categoryList = [
 
 const CreateBoardPage = () => {
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("전체");
+  const [content, setContent] = useState("");
+  // TODO: mbti는 로그인한 유저의 mbti로 설정
+  const [category, setCategory] = useState("ISFJ");
+  const [image, setImage] = useState<string[]>([]);
   const [openCategory, setOpenCategory] = useState(false);
   const navigate = useNavigate();
 
@@ -47,7 +50,30 @@ const CreateBoardPage = () => {
     setTitle(e.target.value);
   };
 
-  const editorRef = useRef<Editor | null>(null);
+  const formData = new FormData();
+
+  const data = {
+    title: title,
+    content: content,
+    mbti: category,
+    memberId: 0, // TODO: 로그인한 유저의 id로 설정
+  };
+
+  formData.append(
+    "postBoardReq",
+    new Blob([JSON.stringify(data)], { type: "application/json" }),
+  );
+  formData.append("image", image[0]);
+
+  const editorRef = useRef<any>(null);
+  const handleContentChange = () => {
+    setContent(editorRef.current.getInstance().getHTML());
+  };
+  const createMutation = useCreateBoard(formData);
+  const handleSubmit = () => {
+    createMutation.mutate();
+    navigate(-1);
+  };
 
   return (
     <div css={editorContainerCSS}>
@@ -83,17 +109,17 @@ const CreateBoardPage = () => {
           height="30rem"
           initialEditType="wysiwyg"
           useCommandShortcut={true}
-          hooks={{
-            addImageBlobHook: async (blob, callback) => {
-              console.log(blob); // File {name: '이미지.png', ... }
+          onChange={handleContentChange}
+          // hooks={{
+          //   addImageBlobHook: async (blob, callback) => {
+          //     console.log(blob);
+          //     // 1. 첨부된 이미지 파일을 서버로 전송후, 이미지 경로 url을 받아온다.
+          //     // const imgUrl = await .... 서버 전송 / 경로 수신 코드 ...
 
-              // 1. 첨부된 이미지 파일을 서버로 전송후, 이미지 경로 url을 받아온다.
-              // const imgUrl = await .... 서버 전송 / 경로 수신 코드 ...
-
-              // 2. 첨부된 이미지를 화면에 표시(경로는 임의로 넣었다.)
-              // callback("imgUrl", "이미지");
-            },
-          }}
+          //     // 2. 첨부된 이미지를 화면에 표시(경로는 임의로 넣었다.)
+          //     // callback("imgUrl", "이미지");
+          //   },
+          // }}
         />
         <div css={buttonBoxCSS}>
           <Button
@@ -102,7 +128,7 @@ const CreateBoardPage = () => {
           >
             취소하기
           </Button>
-          <Button onClick={() => navigate(-1)}>글 쓰기</Button>
+          <Button onClick={handleSubmit}>글 쓰기</Button>
         </div>
       </Container>
     </div>

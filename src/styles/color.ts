@@ -7,6 +7,7 @@ const COLOR = {
   MAINDARK: "#222222",
 
   ALARM: "#FF5C5C",
+  YELLOW: "#F5D480",
 
   GRAY1: "#4E4F4E",
   GRAY2: "#7A7A7B",

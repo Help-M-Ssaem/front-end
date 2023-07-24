@@ -1,12 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { Board } from "../../interfaces/board";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import Profile from "../profile/Profile";
 
 interface BoardProps {
-  board: Board;
+  board: any;
   onClick: (id: number) => void;
 }
 
