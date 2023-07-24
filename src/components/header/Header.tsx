@@ -19,7 +19,7 @@ const Header = () => {
   };
 
   const handleSearchClick = () => {
-    // TODO: 버튼 기능 디자인 만들어지면 수정
+    navigate("/search");
   };
 
   const homeRouteList = ["/", "/hotBoard", "/hotDebate"];

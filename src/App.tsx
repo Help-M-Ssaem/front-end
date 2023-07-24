@@ -4,6 +4,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainPage from "./pages/main/main";
 import LoginPage from "./pages/auth/login";
 import SigninPage from "./pages/auth/signin";
+import MyPage from "./pages/mypage/mypage";
+import SearchBar from "./pages/search/search";
 
 import BoardPage from "./pages/board/board";
 import MbtiBoardPage from "./pages/board/mbti";
@@ -34,7 +36,7 @@ import UserInfo from "./pages/auth/UserInfo";
 import HotBoardPage from "./pages/main/hotBoard";
 import HotDebatePage from "./pages/main/hotDebate";
 
-import MyPage from "./pages/mypage/mypage";
+
 
 
 function App() {
@@ -53,7 +55,9 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/auth" element={<KakaoLogin />} />
             <Route path="/signin" element={<SigninPage />} />
-            <Route path="/singin/user" element={<UserInfo />} />
+            <Route path="/signin/user" element={<UserInfo />} />
+            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/search" element={<SearchBar />} />
 
             <Route path="/board" element={<BoardPage />}>
               <Route path="mbti" element={<MbtiBoardPage />} />
@@ -78,8 +82,6 @@ function App() {
             <Route path="/chatting" element={<ChattingPage />} />
             <Route path="/alarm" element={<AlarmPage />} />
             <Route path="/favorites" element={<FavoritesPage />} />
-
-            <Route path="/mypage" element={<MyPage />} />
           </Routes>
         </Layout>
         <Footer />
