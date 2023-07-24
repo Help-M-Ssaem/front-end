@@ -15,6 +15,7 @@ import { useHotThree } from "../../hooks/main/useHotThree";
 import Container from "../../components/container/Container";
 import { useState } from "react";
 import { useMainMatching } from "../../hooks/main/useMainMatching";
+import { useMainTheacher } from "../../hooks/main/useMainTeacher";
 
 const user = {
   id: 1,
@@ -29,11 +30,10 @@ const MainPage = () => {
   const { hotBoards } = useHotBoard();
   const { hotDebates } = useHotDebate();
   const { mainMatching } = useMainMatching();
+  const { mainTeacher } = useMainTheacher();
   const [selected, setSelected] = useState(0);
 
   const navigate = useNavigate();
-
-  console.log(mainMatching);
 
   return (
     <>

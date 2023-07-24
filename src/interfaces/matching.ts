@@ -18,3 +18,12 @@ export interface MainMatching {
   createdDate: string;
   imgUrl: string;
 }
+
+export interface MainTeacher {
+  id: number;
+  nickName: string;
+  mbtiEnum: string;
+  badge: string;
+  profileImgUrl: string;
+  introduction: string;
+}
