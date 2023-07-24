@@ -34,6 +34,9 @@ import UserInfo from "./pages/auth/UserInfo";
 import HotBoardPage from "./pages/main/hotBoard";
 import HotDebatePage from "./pages/main/hotDebate";
 
+import MyPage from "./pages/mypage/mypage";
+
+
 function App() {
   return (
     <>
@@ -75,6 +78,8 @@ function App() {
             <Route path="/chatting" element={<ChattingPage />} />
             <Route path="/alarm" element={<AlarmPage />} />
             <Route path="/favorites" element={<FavoritesPage />} />
+
+            <Route path="/mypage" element={<MyPage />} />
           </Routes>
         </Layout>
         <Footer />
