@@ -12,6 +12,9 @@ import { useHotDebate } from "../../hooks/main/useHotDebate";
 import { useNavigate } from "react-router";
 import HotBoardComponent from "../../components/main/HotBoard";
 import { useHotThree } from "../../hooks/main/useHotThree";
+import Container from "../../components/container/Container";
+import { useState } from "react";
+import { useMainMatching } from "../../hooks/main/useMainMatching";
 
 const user = {
   id: 1,
@@ -25,9 +28,12 @@ const MainPage = () => {
   const { hotThree } = useHotThree();
   const { hotBoards } = useHotBoard();
   const { hotDebates } = useHotDebate();
+  const { mainMatching } = useMainMatching();
+  const [selected, setSelected] = useState(0);
+
   const navigate = useNavigate();
 
-  console.log(hotThree);
+  console.log(mainMatching);
 
   return (
     <>
@@ -76,6 +82,26 @@ const MainPage = () => {
         </div>
       </div>
       <hr css={hrCSS} />
+
+      <Container style={{ padding: "0" }}>
+        <div css={bottomTitleBoxCSS}>
+          <div
+            css={bottomTitleCSS}
+            onClick={() => setSelected(0)}
+            className={selected === 0 ? "active" : ""}
+          >
+            M샘 매칭을 기다리는 고민
+          </div>
+          <div
+            css={bottomTitleCSS}
+            onClick={() => setSelected(1)}
+            className={selected === 1 ? "active" : ""}
+          >
+            인기 M쌤
+          </div>
+        </div>
+        <div></div>
+      </Container>
     </>
   );
 };
@@ -118,4 +144,29 @@ const hrCSS = css`
   width: 100%;
   border: 1px solid ${COLOR.GRAY4};
   margin-top: 3rem;
+`;
+
+const bottomTitleBoxCSS = css`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+`;
+
+const bottomTitleCSS = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 2rem 0;
+
+  font-size: ${FONT.SIZE.TITLE3};
+  font-weight: ${FONT.WEIGHT.BOLD};
+  border-bottom: 4px solid ${COLOR.MAIN4};
+  color: ${COLOR.GRAY2};
+  cursor: pointer;
+
+  &.active {
+    color: ${COLOR.MAIN2};
+    border-bottom: 4px solid ${COLOR.MAIN};
+  }
 `;

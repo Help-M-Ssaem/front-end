@@ -9,3 +9,12 @@ export interface Matching {
   color1?: string;
   color2?: string;
 }
+
+export interface MainMatching {
+  title: string;
+  content: string;
+  memberMbti: string;
+  targetMbti: string;
+  createdDate: string;
+  imgUrl: string;
+}
