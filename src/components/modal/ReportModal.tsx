@@ -18,7 +18,6 @@ const options = [
     { id: "option4", label: "괴롭힘 또는 폭력", value: "option4_value" },
     { id: "option5", label: "권리 침해", value: "option5_value"},
     { id: "option6", label: "기타", value: "option6_value" },
-
   ];
 const ReportModal: React.FC<ModalProps> = ({ isOpen, onClose, onClick }) => {
     const [selectedOption, setSelectedOption] = useState<string>("");

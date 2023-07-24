@@ -3,7 +3,7 @@ import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import ChatContainer from "../../components/container/ChatContainer";
 import FONT from "../../styles/font";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ChattingComponent from "../../components/chatting/ChattingComponent";
 import { ChattingHistory } from "../../interfaces/chatting";
 import Profile from "../../components/profile/Profile";
@@ -11,6 +11,8 @@ import Hamburger from "../../components/hamburger/Hamburger";
 import CurrentChatting from "../../components/chatting/CurrentChatting";
 import CurrentChattingForm from "../../components/chatting/CurrentChattingForm";
 import MessageItem from "../../components/chatting/MessageItem";
+import Button from "../../components/button/Button";
+import { useNavigate } from "react-router-dom";
 
 const chattinglist1 = [
   {
@@ -41,7 +43,22 @@ const chattinglist1 = [
       { userId: "user2", message: "네, 정말 좋은 날씨입니다!", createdAt: "8분전" },
     ],
   },
+  {
+    roomId: 2,
+    name: "배고파요",
+    profile: "https://i.ibb.co/jJt16M0/image.png",
+    mbti: "Infj",
+    badge: "엽떡마스터",
+    latestMessage: "",
+    createdAt: "5분전",
+    text: [
+    ],
+  },
 ];
+
+// const chattinglist1: ChattingHistory[] = [
+// ];
+
 
 // 혹은 interface로 정의 가능
 type Message = {
@@ -52,27 +69,34 @@ type Message = {
 
 const ChattingPage: React.FC = () => {
   const [activeRoomId, setActiveRoomId] = useState<number>(-1);
-  const [selectedChattingData, setSelectedChattingData] = useState<ChattingHistory | undefined>(undefined);
+  const [selectedChattingData, setSelectedChattingData] = useState<ChattingHistory | null>(null);
   const [messageData, setMessageData] = useState<Message[] | null>(null);
+  const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    navigate("/match/maching");
+  };  
   
-  const handleItemClick = (roomId:number) => {
+  const handleItemClick = (roomId: number) => {
     setActiveRoomId((prevId) => (prevId === roomId ? -1 : roomId));
-    const selectedChattingHistory = chattinglist1.find((chattinghistory) => chattinghistory.roomId === roomId) as ChattingHistory;
+  
+    const selectedChattingHistory = 
+    chattinglist1.length > 0
+    ? (chattinglist1.find(
+        (chattinghistory) => chattinghistory.roomId === roomId
+      ) as ChattingHistory)
+    : null;
+  
     setSelectedChattingData(selectedChattingHistory);
+  
     if (selectedChattingHistory) {
-      setMessageData(selectedChattingHistory.text);
+      if(selectedChattingHistory.text.length >0){
+        setMessageData(selectedChattingHistory.text);
+      }else setMessageData(null);
     } else {
       setMessageData(null);
     }
   };
-
-  useEffect(() => {
-    if (selectedChattingData) {
-      setMessageData(selectedChattingData.text);
-    } else {
-      setMessageData([]);
-    }
-  }, [selectedChattingData]);
 
   return (
     <div css={editorContainerCSS}>
@@ -82,6 +106,10 @@ const ChattingPage: React.FC = () => {
           <div css={titleCSS}>채팅목록</div>
           </div>
           <div css = {ChatProfileCSS}>
+          {chattinglist1.length === 0 ? (
+            <div></div>
+            )
+            : (<>
             <div>
           {selectedChattingData && (
               <Profile
@@ -95,12 +123,16 @@ const ChattingPage: React.FC = () => {
 
             <div css={ChatMenuCSS}>
               <Hamburger/>
-            </div>
+            </div></>)}
           </div>
         </div>
 
         <div css={chattingInnerCSS}>
           <div css={chattingLeftCSS}>
+          {chattinglist1.length === 0  ? (
+            <div></div>
+            )
+            : (
             <ul css={ChattingItem}>
               {chattinglist1.map((chattinghistory) =>(
                  <li
@@ -113,13 +145,26 @@ const ChattingPage: React.FC = () => {
                   </li>
                 ))}
             </ul>
+            )}
           </div>
           <div css={chattingRightCSS}>
-           <div css={dateTop}><CurrentChatting/></div>
+          {chattinglist1.length === 0  ? (
+            <div css={noChatCSS}>
+                <img css={smallImgCSS} src="https://i.ibb.co/YRZSTTL/rhdiddl4.png" alt="rhdiddl4"/>
+                <div css={topFontSIZE}>나의 채팅</div>
+                <div css={bottomFontSIZE}>M쌤이 되어 고민을 해결해보세요</div>
+                <Button onClick={handleButtonClick}>고민 보러가기</Button>
+            </div>
+           )
+           : (
+            <>
+            {/* 서버 연결하시면 이것도 바꿔야해여.. 고민글이랑 프로필 받아오는 부분 */}
+           <div css={dateTop}><CurrentChatting profile={selectedChattingData}/></div>
            {/* 채팅창 */}
            <div css={dateMiddle}>
           <div css={{padding:"0.8rem"}}>
-            {messageData &&
+          {messageData !== null ? (
+            messageData &&
               messageData.map((message, index) => (
                 <MessageItem
                   key={index}
@@ -127,12 +172,18 @@ const ChattingPage: React.FC = () => {
                   createdAt={message.createdAt}
                   isCurrentUser={message.userId === "user1"}
                   profile={selectedChattingData?.profile}/>
-                ))}
-                
-          </div>
+                ))
+                ) : (
+                <div css={[noChatCSS,noMassageCSS]}>
+                  <div css={bottomFontSIZE}>익명성을 악욕한 욕설, 비방, 불건전한 정보 유통 등 상대방을 불쾌하게 하는 행위를 저지를 시</div>
+                  <div css={bottomFontSIZE}>커뮤니티 가이드 라인에 따라 불이익을 받거나 심한경우 계정이 해지될 수 있습니다.</div>
+            </div>
+                )}
+                </div>
         </div>
            {/* 보내는 거 */}
            <div css={dateBottom}><CurrentChattingForm/></div>
+           </>)}
           </div>
         </div>
       </ChatContainer>
@@ -239,5 +290,34 @@ const dateBottom = css`
   width: 100%;
   height: 4rem;
   padding: 0.8rem 2rem 0.8rem 2rem;
-  
+`;
+
+const noChatCSS= css`
+  display: flex;
+  width: 100%;
+  height:100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+const smallImgCSS = css`
+  width: 7rem;
+  height: 7rem;
+`;
+
+const topFontSIZE = css`
+  padding-bottom: 0.5rem;
+  font-size: ${FONT.SIZE.TITLE2};
+  color: ${COLOR.GRAY2};
+`;
+const bottomFontSIZE = css`
+  padding-bottom: 0.5rem;
+  font-size: ${FONT.SIZE.HEADLINE};
+  color: ${COLOR.GRAY2};
+`;
+
+const noMassageCSS =css`
+  display: flex;
+  padding-top:7rem;
 `;

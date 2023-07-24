@@ -5,7 +5,9 @@ import FONT from "../../styles/font";
 import Badge from "../badge/Badge";
 import { RightArrowIcon } from "../../assets/CommonIcons";
 import Button from "../button/Button";
-
+import { useState } from "react";
+import { ChattingHistory } from "../../interfaces/chatting";
+import EvaluationModal from "../modal/EvaluationModal";
 //데이터 받아서 해야되는뎅...
 const matching = {
     id: 1,
@@ -18,7 +20,18 @@ const matching = {
     color1: "#94E3F8",
     color2: "#F8CAFF",
 }
-const CurrentChatting = () => {
+type Profile = {
+  profile: ChattingHistory | null;
+};
+
+const CurrentChatting: React.FC<Profile> = ({profile}) => {
+  const [isEvaluationModalOpen, setIsEvaluationModalOpen] = useState(false);
+  const handleEvaluation = () => {
+    setIsEvaluationModalOpen(true); 
+  };
+  const handleCloseModal = () => {
+    setIsEvaluationModalOpen(false);
+  };
   return (
     <div css={MatchingBoxCSS}>
       <div css={leftCSS}>
@@ -30,8 +43,16 @@ const CurrentChatting = () => {
         <div css={titleCSS}>{matching.title}</div>
       </div>
       <div css={rightCSS}>
-      <Button style={{ backgroundColor: COLOR.WHITE, color: COLOR.GRAY2 }}>해결완료</Button>
+      <Button onClick={handleEvaluation} style={{ backgroundColor: COLOR.WHITE, color: COLOR.GRAY2 }}>해결완료</Button>
       </div>
+      {isEvaluationModalOpen && (
+        <EvaluationModal
+          isOpen={isEvaluationModalOpen}
+          onClose={handleCloseModal}
+          onClick={() => {}}
+          profileData = {profile}
+        />
+      )}
     </div>
   );
 };
