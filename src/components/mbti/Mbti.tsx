@@ -6,19 +6,21 @@ import FONT from "../../styles/font";
 import COLOR from "../../styles/color";
 import { useRecoilState } from "recoil";
 import { mbtiState } from "../../states/board";
+import { useCategoryBookmarkUpdate } from "../../hooks/board/category/useCategoryBookmarkUpdate";
 
-type MbtiProps = {
+interface MbtiProps {
   mbti: string;
-};
+}
 
 const Mbti = ({ mbti }: MbtiProps) => {
   const [filled, setFilled] = useState(false);
   const [mbtiSelected, setMbtiSelected] = useRecoilState(mbtiState);
+  const categoryBookmarkMutation = useCategoryBookmarkUpdate(mbti);
 
   const handleStarClick = () => {
     setFilled(!filled);
+    categoryBookmarkMutation.mutate();
   };
-
   const handleMbtiClick = (mbti: string) => {
     setMbtiSelected(mbti);
   };
@@ -32,11 +34,13 @@ const Mbti = ({ mbti }: MbtiProps) => {
       >
         {mbti}
       </div>
-      {filled ? (
-        <FilledStarIcon onClick={handleStarClick} />
-      ) : (
-        <EmptyStarIcon onClick={handleStarClick} />
-      )}
+      <div>
+        {filled ? (
+          <FilledStarIcon onClick={handleStarClick} />
+        ) : (
+          <EmptyStarIcon onClick={handleStarClick} />
+        )}
+      </div>
     </div>
   );
 };
@@ -54,10 +58,11 @@ const mbtiBoxCSS = css`
 
   width: 24%;
   cursor: pointer;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 3rem;
 `;
 
 const mbtiCSS = css`
+  width: 100%;
   &:hover,
   &.active {
     color: ${COLOR.MAINDARK};

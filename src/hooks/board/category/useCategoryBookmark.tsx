@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
-import { mssaemAxios as axios } from "../../apis/axios";
-import { categoryBookmarkKeys } from "../../constants/boardKey";
-import { CategoryBookmark } from "../../interfaces/board";
+import { mssaemAxios as axios } from "../../../apis/axios";
+import { categoryBookmarkKeys } from "../../../constants/boardKey";
+import { CategoryBookmark } from "../../../interfaces/board";
 
 async function getCategoryBookmark(): Promise<CategoryBookmark> {
   const { data } = await axios.get("/member/bookmark");
