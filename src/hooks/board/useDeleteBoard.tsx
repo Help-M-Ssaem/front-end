@@ -3,7 +3,7 @@ import { mssaemAxios as axios } from "../../apis/axios";
 import { boardKeys } from "../../constants/boardKey";
 
 async function deleteBoard(id: number): Promise<void> {
-  await axios.delete(`/member/board/${id}`);
+  await axios.delete(`/member/boards/${id}`);
 }
 
 interface UseDeleteBoard {
