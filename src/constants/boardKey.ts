@@ -2,6 +2,10 @@ export const boardKeys = {
   all: ["board"] as const,
 };
 
+export const categoryBookmarkKeys = {
+  all: ["categoryBookmark"] as const,
+};
+
 export const hotThreeKeys = {
   all: ["hotThree"] as const,
 };

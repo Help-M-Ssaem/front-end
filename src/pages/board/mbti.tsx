@@ -12,6 +12,7 @@ import { mbtiState } from "../../states/board";
 import { useEffect, useState } from "react";
 import Text from "../../components/text/Text";
 import { useBoardList } from "../../hooks/board/useBoardList";
+import { useCategoryBookmark } from "../../hooks/board/useCategoryBookmark";
 
 const mbtiList = [
   "ISTJ",

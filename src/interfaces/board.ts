@@ -17,6 +17,10 @@ export interface BoardList extends Board {
   result: Board[];
 }
 
+export interface CategoryBookmark {
+  mbti: [string];
+}
+
 export interface HotThree {
   boardId?: number;
   boardTitle?: string;
