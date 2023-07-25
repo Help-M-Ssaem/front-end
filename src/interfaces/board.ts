@@ -1,5 +1,22 @@
 import { User } from "./user";
 
+export interface Board extends User {
+  id: number;
+  title: string;
+  content: string;
+  imgUrl: string;
+  boardMbti: string;
+  likeCount: number;
+  createdAt: string;
+  memberSimpleInfo: User;
+}
+
+export interface BoardList extends Board {
+  page: number;
+  totalSize: number;
+  result: Board[];
+}
+
 export interface HotThree {
   boardId?: number;
   boardTitle?: string;
