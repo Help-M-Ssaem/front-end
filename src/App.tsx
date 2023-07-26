@@ -4,7 +4,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainPage from "./pages/main/main";
 import LoginPage from "./pages/auth/login";
 import SigninPage from "./pages/auth/signin";
-import MyPage from "./pages/mypage/mypage";
 import SearchBar from "./pages/search/search";
 
 import BoardPage from "./pages/board/board";
@@ -36,12 +35,16 @@ import HotBoardPage from "./pages/main/hotBoard";
 import HotDebatePage from "./pages/main/hotDebate";
 import Callback from "./components/auth/Callback";
 
+import MyPage from "./pages/mypage/mypage";
+import DetailMatchingPage from "./pages/matching/detail";
+
 declare global {
   interface Window {
     Kakao: any;
     naver: any;
   }
 }
+        
 function App() {
   return (
     <>
@@ -73,6 +76,7 @@ function App() {
 
             <Route path="/match" element={<MatchPage />}>
               <Route path="matching" element={<MatchingPage />} />
+              <Route path=":id" element={<DetailMatchingPage />} />
               <Route path="create" element={<CreateMatchingPage />} />
               <Route path="update" element={<UpdateMatchingPage />} />
             </Route>
