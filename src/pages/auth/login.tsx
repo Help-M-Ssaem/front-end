@@ -1,11 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { useRecoilState } from "recoil";
 import { css } from "@emotion/react";
 import FONT from "../../styles/font";
-import { useNavigate } from "react-router-dom";
-import { navbarState } from "../../states/navbar";
 import Catlogo from "../../assets/logo/CatLogo.svg";
 import Google from "../../assets/logo/Google.svg";
 import Kakao from "../../assets/logo/Kakao.svg";
@@ -27,7 +23,8 @@ const LoginPage = () => {
   }
 
   function GoogleLogin() {
-    const URL = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&scope=openid%20email&client_id=${process.env.REACT_APP_GOOGLE_API_KEY}&redirect_uri=${process.env.REACT_APP_GOOGLE_REDIRECT_URI}`;
+    const URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.REACT_APP_GOOGLE_API_KEY}&redirect_uri=${process.env.REACT_APP_GOOGLE_REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email`;
+    // const URL = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&scope=openid%20email&client_id=${process.env.REACT_APP_GOOGLE_API_KEY}&redirect_uri=${process.env.REACT_APP_GOOGLE_REDIRECT_URI}`;
     loginHandler(URL);
   }
 

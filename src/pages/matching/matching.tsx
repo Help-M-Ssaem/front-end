@@ -197,6 +197,61 @@ const MatchingPage = () => {
           />
         ))}
       </Container>
+
+      {/* 해결 완료된 고민 */}
+
+      <Text>해결 완료된 고민</Text>
+      <Container>
+        <div css={buttonBoxCSS}>
+          <div css={mbtiBoxCSS}>
+            <div css={mbtiSelectBoxCSS}>
+              <div css={mbtiCSS} onClick={handleOpenMbti1}>
+                {mbti1} <SmallArrowIcon />
+              </div>
+              {openMbti1 && (
+                <div css={categoryBoxCSS}>
+                  {mbtiList.map((mbti) => (
+                    <div
+                      css={categoryCSS}
+                      onClick={() => handleMbti1Click(mbti)}
+                    >
+                      {mbti}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <RightArrowIcon />
+
+            <div css={mbtiSelectBoxCSS}>
+              <div css={mbtiCSS} onClick={handleOpenMbti2}>
+                {mbti2} <SmallArrowIcon />
+              </div>
+              {openMbti2 && (
+                <div css={categoryBoxCSS}>
+                  {mbtiList.map((mbti) => (
+                    <div
+                      css={categoryCSS}
+                      onClick={() => handleMbti2Click(mbti)}
+                    >
+                      {mbti}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+          <Button onClick={() => navigate("/match/create")}>글 쓰기</Button>
+        </div>
+        {matchingList.map((matching) => (
+          <MatchingComponent
+            matching={matching}
+            key={matching.id}
+            onClick={() => handleMatchingClick(matching.id)}
+          />
+        ))}
+      </Container>
     </>
   );
 };

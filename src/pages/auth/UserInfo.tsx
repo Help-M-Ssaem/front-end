@@ -9,13 +9,7 @@ import { useNickName } from "../../hooks/user/userNickname";
 import { usePostUserInfo } from "../../hooks/user/signup";
 import { useNavigate } from "react-router-dom";
 import { userinfo } from "../../interfaces/signup";
-
-interface InFoInputs {
-  nickName: string;
-  mbtiInputs: {
-    [mbtiKey: string]: string;
-  };
-}
+import { InFoInputs } from "../../interfaces/userinfo";
 
 const UserInfo = () => {
   const [invalidInput, setInvalidInput] = useState<string | null>(null);
@@ -53,7 +47,7 @@ const UserInfo = () => {
   });
 
   const userData: userinfo = {
-    email: nickName + "@naver.com",
+    email: localStorage.getItem("email"),
     nickname: nickName,
     mbti: mbti,
     caseSensitivity: mbtinum,
@@ -61,22 +55,16 @@ const UserInfo = () => {
 
   const onSubmit = () => {
     mutation.mutate(userData);
-
     navigate("/");
   };
 
   useEffect(() => {
     const mbtiValue = getMBTI();
     const mbtiNum = MBTItoNumbers(mbtiValue);
-
     const mbtiUpperValue = mbtiValue.toUpperCase();
-    console.log(mbtiValue.toUpperCase(), mbtiNum);
 
     setMbti(mbtiUpperValue);
     setMbtinum(mbtiNum);
-
-    console.log(mbti, mbtinum);
-    console.log(userData);
   }, [mbti, mbtinum]);
 
   const getMBTI = () => {
@@ -152,7 +140,6 @@ const UserInfo = () => {
       const result = await (
         await checkNickNameMutation.mutateAsync(nickName)
       ).used;
-      console.log(result);
       setResult(result);
     } catch (error) {
       console.error(error);
