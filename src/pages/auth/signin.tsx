@@ -4,8 +4,6 @@ import Checkbox from "../../components/checkbox/checkbox";
 import SelectAllCheckbox from "../../components/checkbox/SelectAllcheckbox";
 import FONT from "../../styles/font";
 import { css } from "@emotion/react";
-import Container from "../../components/container/Container";
-import Button from "../../components/button/Button";
 import COLOR from "../../styles/color";
 import { useNavigate } from "react-router-dom";
 const dummyData = [
@@ -108,7 +106,8 @@ const sigininCSS = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 1rem;
+  padding-top: 2rem;
+  max-width: 100rem;
 `;
 
 const titleCSS = css`
@@ -122,6 +121,8 @@ const checkboxCSS = css`
   display: flex;
   margin: 1rem;
   margin-bottom: 2rem;
+  padding-top: 1rem;
+  max-width: 30rem;
 `;
 
 const join = css`
@@ -130,8 +131,7 @@ const join = css`
   align-items: center;
 
   width: 100%;
-  max-width: 24rem;
-  height: 2.5rem;
+  height: 3rem;
   color: ${COLOR.WHITE};
   background: #a7a7a7;
 
@@ -156,12 +156,12 @@ const buttonContainer = css`
   margin-top: 2rem;
 `;
 const policyCSS = css`
-  width: 25rem;
+  width: 30rem;
   }
 `;
 
 const containerCSS = css`
-  margin-top: 1rem;
+  // margin-top: 1rem;
   border: 4px solid ${COLOR.GRAY5};
   border-radius: 1.2rem;
   padding: 1rem;

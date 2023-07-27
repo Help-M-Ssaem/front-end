@@ -30,14 +30,21 @@ import Layout from "./components/layout/Layout";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import ScrollToTop from "./components/scroll/ScrollToTop";
-import KakaoLogin from "./pages/auth/KakaoLogin";
 import UserInfo from "./pages/auth/UserInfo";
 import HotBoardPage from "./pages/main/hotBoard";
 import HotDebatePage from "./pages/main/hotDebate";
+import Callback from "./components/auth/Callback";
 
 import MyPage from "./pages/mypage/mypage";
 import DetailMatchingPage from "./pages/matching/detail";
 
+declare global {
+  interface Window {
+    Kakao: any;
+    naver: any;
+  }
+}
+        
 function App() {
   return (
     <>
@@ -52,7 +59,9 @@ function App() {
             <Route path="/hotDebate" element={<HotDebatePage />} />
 
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/auth" element={<KakaoLogin />} />
+            <Route path="/kakao/login" element={<Callback />} />
+            <Route path="/naver/login" element={<Callback />} />
+            <Route path="/google/login" element={<Callback />} />
             <Route path="/signin" element={<SigninPage />} />
             <Route path="/signin/user" element={<UserInfo />} />
             <Route path="/mypage" element={<MyPage />} />
