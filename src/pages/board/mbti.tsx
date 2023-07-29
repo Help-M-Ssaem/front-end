@@ -11,6 +11,7 @@ import { useRecoilState } from "recoil";
 import { mbtiState } from "../../states/board";
 import { useEffect, useState } from "react";
 import Text from "../../components/text/Text";
+import ListPagination from "../../components/Pagination/ListPagination";
 
 // TODO: mbtiBoardList 서버 연동
 const mbtiBoardList = [
@@ -76,6 +77,10 @@ const mbtiList = [
 ];
 
 const MbtiBoardPage = () => {
+  const [limit, setLimit] = useState(10); // 한 페이지에 보여줄 아이템 수
+  const [page, setPage] = useState(1); // 현재 페이지 번호
+  const [blockNum, setBlockNum] = useState(1); // 블록의 번호 (10 페이지씩 묶어서 보여줄 때 사용)
+  const counts = mbtiBoardList.length; // 총
   const navigate = useNavigate();
   const [mbtiSelected, setMbtiSelected] = useRecoilState(mbtiState);
 
@@ -120,6 +125,14 @@ const MbtiBoardPage = () => {
           />
         ))}
       </Container>
+      <ListPagination
+        limit={limit}
+        page={page}
+        setPage={setPage}
+        blockNum={blockNum}
+        setBlockNum={setBlockNum}
+        counts={counts}
+      />
     </>
   );
 };

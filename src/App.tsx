@@ -37,6 +37,8 @@ import Callback from "./components/auth/Callback";
 
 import MyPage from "./pages/mypage/mypage";
 import DetailMatchingPage from "./pages/matching/detail";
+import List from "./components/Pagination/list";
+import ListPagination from "./components/Pagination/ListPagination";
 
 function App() {
   return (
@@ -50,7 +52,6 @@ function App() {
             <Route path="/" element={<MainPage />} />
             <Route path="/hotBoard" element={<HotBoardPage />} />
             <Route path="/hotDebate" element={<HotDebatePage />} />
-
             <Route path="/login" element={<LoginPage />} />
             <Route path="/kakao/login" element={<Callback />} />
             <Route path="/naver/login" element={<Callback />} />
