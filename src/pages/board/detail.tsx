@@ -10,6 +10,8 @@ import Profile from "../../components/profile/Profile";
 import CommentComponent from "../../components/comment/Comment";
 import { LikeIcon } from "../../assets/ButtonIcons";
 import { useDeleteBoard } from "../../hooks/board/useDeleteBoard";
+import { useBoardDetail } from "../../hooks/board/useBoardDetail";
+import { useParams } from "react-router-dom";
 
 // TODO: 댓글 API 연동
 const commentList = [
@@ -48,24 +50,11 @@ const commentList = [
   },
 ];
 
-const board = {
-  id: 1,
-  profile: "https://i.ibb.co/DgVwMvJ/2023-07-03-132904.png",
-  name: "김유리",
-  mbti: "ENFP",
-  badge: "ENFJ",
-  title: "취미가 생겼어요!",
-  content: "hello",
-  createdAt: "2021.09.01",
-  like: 3,
-  isBest: true,
-};
-
 const DetailBoardPage = () => {
   const navigate = useNavigate();
-
-  // TODO: 게시글 id에 따라 게시글 삭제
-  const deleteMutation = useDeleteBoard(1);
+  const { id } = useParams();
+  const { board } = useBoardDetail(parseInt(id!!));
+  const deleteMutation = useDeleteBoard(parseInt(id!!));
 
   const handleBoardDelete = () => {
     deleteMutation.mutate();
@@ -88,50 +77,56 @@ const DetailBoardPage = () => {
         marginTop: "1rem",
       }}
     >
-      <div css={buttonBoxCSS}>
-        {/* TODO: 본인 게시글에만 수정, 삭제 버튼 */}
-        <Button
-          onClick={() => navigate("/board/update")}
-          style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
-        >
-          수정
-        </Button>
-        <Button onClick={handleBoardDelete}>삭제</Button>
-      </div>
-      <div css={detailCSS}>
-        <div css={detailHeaderCSS}>
-          <Profile
-            image={board.profile}
-            name={board.name}
-            mbti={board.mbti}
-            badge={board.badge}
-          />
-          <div css={dateCSS}>{board.createdAt}</div>
-        </div>
-        <div css={titleCSS}>{board.title}</div>
-        <div css={contentCSS}>{board.content}</div>
+      {board && (
+        <>
+          <div css={buttonBoxCSS}>
+            {/* TODO: 본인 게시글에만 수정, 삭제 버튼 */}
+            <Button
+              onClick={() => navigate("/board/update")}
+              style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
+            >
+              수정
+            </Button>
+            <Button onClick={handleBoardDelete}>삭제</Button>
+          </div>
+          <div css={detailCSS}>
+            <div css={detailHeaderCSS}>
+              <Profile
+                image={board.memberSimpleInfo.profileImgUrl}
+                name={board.memberSimpleInfo.nickName}
+                mbti={board.memberSimpleInfo.mbtiEnum}
+                badge={board.memberSimpleInfo.badge}
+              />
+              <div css={dateCSS}>{board.createdAt}</div>
+            </div>
+            <div css={titleCSS}>{board.title}</div>
+            <div css={contentCSS}>{board.content}</div>
 
-        <div css={likeButtonBoxCSS}>
-          <div css={likeCountCSS}>{board.like}</div>
-          <LikeIcon onClick={handleLikeClick} />
-        </div>
+            <div css={likeButtonBoxCSS}>
+              <div css={likeCountCSS}>{board.likeCount}</div>
+              <LikeIcon onClick={handleLikeClick} />
+            </div>
 
-        <div css={commentTextCSS}>
-          전체 댓글 {commentList ? commentList.length : 0}개
-        </div>
-      </div>
-
-      <div>
-        {commentList &&
-          commentList.map((comment) => <CommentComponent comment={comment} />)}
-      </div>
-
-      <div css={commentTextCSS}>댓글 쓰기</div>
-      <hr css={hrCSS} />
-      <form css={submitButtonBoxCSS} onSubmit={handleCommentSubmit}>
-        <Input onSubmit={handleCommentSubmit} />
-        <Button style={{ marginLeft: "0.5rem", width: "5rem" }}>등록</Button>
-      </form>
+            <div css={commentTextCSS}>
+              전체 댓글 {commentList ? commentList.length : 0}개
+            </div>
+          </div>
+          <div>
+            {commentList &&
+              commentList.map((comment) => (
+                <CommentComponent comment={comment} />
+              ))}
+          </div>
+          <div css={commentTextCSS}>댓글 쓰기</div>
+          <hr css={hrCSS} />
+          <form css={submitButtonBoxCSS} onSubmit={handleCommentSubmit}>
+            <Input onSubmit={handleCommentSubmit} />
+            <Button style={{ marginLeft: "0.5rem", width: "5rem" }}>
+              등록
+            </Button>
+          </form>
+        </>
+      )}
     </Container>
   );
 };

@@ -11,6 +11,19 @@ export interface Board extends User {
   memberSimpleInfo: User;
 }
 
+export interface BoardDetail extends User {
+  memberSimpleInfo: User;
+  boardId: number;
+  title: string;
+  content: string;
+  imgUrlList: string[];
+  createdAt: string;
+  likeCount: number;
+  commentCount: number;
+  isAllowed: boolean;
+  isLiked: boolean;
+}
+
 export interface BoardList extends Board {
   page: number;
   totalSize: number;

@@ -1,5 +1,6 @@
 export const boardKeys = {
   all: ["board"] as const,
+  detail: (id: number) => [...boardKeys.all, id] as const,
 };
 
 export const categoryBookmarkKeys = {
