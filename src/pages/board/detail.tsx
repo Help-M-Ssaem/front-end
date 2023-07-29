@@ -8,7 +8,7 @@ import FONT from "../../styles/font";
 import Input from "../../components/input/Input";
 import Profile from "../../components/profile/Profile";
 import CommentComponent from "../../components/comment/Comment";
-import { LikeIcon } from "../../assets/ButtonIcons";
+import { LikeClickedIcon, LikeIcon } from "../../assets/ButtonIcons";
 import { useDeleteBoard } from "../../hooks/board/useDeleteBoard";
 import { useBoardDetail } from "../../hooks/board/useBoardDetail";
 import { useParams } from "react-router-dom";
@@ -103,7 +103,11 @@ const DetailBoardPage = () => {
 
             <div css={likeButtonBoxCSS}>
               <div css={likeCountCSS}>{board.likeCount}</div>
-              <LikeIcon onClick={handleLikeClick} />
+              {board.isLiked ? (
+                <LikeClickedIcon onClick={handleLikeClick} />
+              ) : (
+                <LikeIcon onClick={handleLikeClick} />
+              )}
             </div>
 
             <div css={commentTextCSS}>
