@@ -99,8 +99,10 @@ const DetailBoardPage = () => {
               <div css={dateCSS}>{board.createdAt}</div>
             </div>
             <div css={titleCSS}>{board.title}</div>
-            <div css={contentCSS}>{board.content}</div>
-
+            <div
+              css={contentCSS}
+              dangerouslySetInnerHTML={{ __html: board.content }}
+            />
             <div css={likeButtonBoxCSS}>
               <div css={likeCountCSS}>{board.likeCount}</div>
               {board.isLiked ? (
