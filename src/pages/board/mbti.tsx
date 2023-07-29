@@ -12,6 +12,8 @@ import { mbtiState } from "../../states/board";
 import { useEffect, useState } from "react";
 import Text from "../../components/text/Text";
 import { useBoardList } from "../../hooks/board/useBoardList";
+import { BoardList } from "../../interfaces/board";
+import { mssaemAxios as axios } from "../../apis/axios";
 
 const mbtiList = [
   "ISTJ",
@@ -35,13 +37,26 @@ const mbtiList = [
 const MbtiBoardPage = () => {
   const navigate = useNavigate();
   const [mbtiSelected, setMbtiSelected] = useRecoilState(mbtiState);
+  const [boardList, setBoardList] = useState<BoardList>();
+
+  // TODO: 페이지네이션 구현되면 page, size 수정
+  const { boardListAll } = useBoardList(0, 10);
+
+  useEffect(() => {
+    if (mbtiSelected === "전체") {
+      axios.get(`/boards?page=${0}&size=${10}`).then((res) => {
+        setBoardList(res.data);
+      });
+    } else {
+      axios
+        .get(`/boards/mbti?mbti=${mbtiSelected}&page=${0}&size=${10}`)
+        .then((res) => setBoardList(res.data));
+    }
+  }, [mbtiSelected]);
 
   useEffect(() => {
     setMbtiSelected("전체");
   }, []);
-
-  // TODO: 페이지네이션 구현되면 page, size 수정
-  const { boardList } = useBoardList(0, 10);
 
   return (
     <>
@@ -53,7 +68,7 @@ const MbtiBoardPage = () => {
             onClick={() => setMbtiSelected("전체")}
             className={mbtiSelected === "전체" ? "active" : ""}
           >
-            전체 ({boardList && `${boardList.result.length}`})
+            전체 ({boardListAll && `${boardListAll.result.length}`})
           </div>
           <div css={mbtiCSS}>
             {mbtiList.map((mbti) => (
