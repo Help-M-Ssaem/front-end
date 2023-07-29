@@ -10,6 +10,8 @@ import Button from "../../components/button/Button";
 import { useNavigate } from "react-router";
 import { ArrowIcon } from "../../assets/CommonIcons";
 import { useUpdateBoard } from "../../hooks/board/useUpdateBoard";
+import { useParams } from "react-router-dom";
+import { useBoardDetail } from "../../hooks/board/useBoardDetail";
 
 const categoryList = [
   "ISTJ",
@@ -31,10 +33,12 @@ const categoryList = [
 ];
 
 const UpdateBoardPage = () => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  // TODO: mbti는 로그인한 유저의 mbti로 설정
-  const [category, setCategory] = useState("ISTJ");
+  const { id } = useParams();
+  const { board } = useBoardDetail(parseInt(id!!));
+
+  const [title, setTitle] = useState(board!!.title);
+  const [content, setContent] = useState(board!!.content);
+  const [category, setCategory] = useState(board!!.memberSimpleInfo.mbtiEnum);
   const [image, setImage] = useState<string[]>([]);
   const [openCategory, setOpenCategory] = useState(false);
   const navigate = useNavigate();
@@ -106,7 +110,7 @@ const UpdateBoardPage = () => {
         <div css={contentCSS}>내용을 입력해주세요.</div>
         <Editor
           ref={editorRef}
-          initialValue="수정 페이지" /* TODO: 게시글 id에 따라 초기값 변경 */
+          initialValue={content}
           previewStyle="vertical"
           height="30rem"
           initialEditType="wysiwyg"

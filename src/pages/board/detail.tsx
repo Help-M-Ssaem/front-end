@@ -82,7 +82,7 @@ const DetailBoardPage = () => {
           <div css={buttonBoxCSS}>
             {/* TODO: 본인 게시글에만 수정, 삭제 버튼 */}
             <Button
-              onClick={() => navigate("/board/update")}
+              onClick={() => navigate("update")}
               style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
             >
               수정
