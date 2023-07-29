@@ -52,19 +52,19 @@ const CreateBoardPage = () => {
   };
 
   const formData = new FormData();
-
   const data = {
     title: title,
     content: content,
     mbti: category,
-    memberId: 0, // TODO: 로그인한 유저의 id로 설정
   };
-
   formData.append(
     "postBoardReq",
     new Blob([JSON.stringify(data)], { type: "application/json" }),
   );
-  formData.append("image", image[0]);
+  formData.append(
+    "image",
+    new Blob([JSON.stringify(image)], { type: "application/json" }),
+  );
 
   const editorRef = useRef<any>(null);
   const handleContentChange = () => {
@@ -125,6 +125,7 @@ const CreateBoardPage = () => {
           hooks={{
             addImageBlobHook: async (blob, callback) => {
               const imgUrl = await uploadImage(blob);
+              setImage([...image, imgUrl]);
               callback(imgUrl, "image");
             },
           }}
