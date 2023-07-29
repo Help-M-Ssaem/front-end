@@ -12,6 +12,7 @@ import { LikeIcon } from "../../assets/ButtonIcons";
 import { useDeleteBoard } from "../../hooks/board/useDeleteBoard";
 import { useBoardDetail } from "../../hooks/board/useBoardDetail";
 import { useParams } from "react-router-dom";
+import { useBoardLike } from "../../hooks/board/useBoardLike";
 
 // TODO: 댓글 API 연동
 const commentList = [
@@ -55,20 +56,18 @@ const DetailBoardPage = () => {
   const { id } = useParams();
   const { board } = useBoardDetail(parseInt(id!!));
   const deleteMutation = useDeleteBoard(parseInt(id!!));
+  const likeMutation = useBoardLike(parseInt(id!!));
 
   const handleBoardDelete = () => {
     deleteMutation.mutate();
     navigate(-1);
   };
-
   const handleLikeClick = () => {
-    alert("공감이 완료되었습니다.");
-    // TODO: 공감 API 연동
+    likeMutation.mutate();
   };
-
+  // TODO: 댓글 등록 API 연동
   const handleCommentSubmit = () => {
     alert("댓글이 등록되었습니다.");
-    // TODO: 댓글 등록 API 연동
   };
 
   return (
