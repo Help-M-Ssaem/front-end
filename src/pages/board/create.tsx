@@ -10,6 +10,7 @@ import Button from "../../components/button/Button";
 import { useNavigate } from "react-router";
 import { ArrowIcon } from "../../assets/CommonIcons";
 import { useCreateBoard } from "../../hooks/board/useCreateBoard";
+import { mssaemAxios as axios } from "../../apis/axios";
 
 const categoryList = [
   "ISTJ",
@@ -75,6 +76,17 @@ const CreateBoardPage = () => {
     navigate(-1);
   };
 
+  const uploadImage = async (blob: Blob) => {
+    const formData = new FormData();
+    formData.append("image", blob);
+    const imgUrl = await axios.post("/member/boards/files", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return imgUrl.data;
+  };
+
   return (
     <div css={editorContainerCSS}>
       <Container background="#FFFFFF" style={{ padding: "2.5rem" }}>
@@ -110,16 +122,12 @@ const CreateBoardPage = () => {
           initialEditType="wysiwyg"
           useCommandShortcut={true}
           onChange={handleContentChange}
-          // hooks={{
-          //   addImageBlobHook: async (blob, callback) => {
-          //     console.log(blob);
-          //     // 1. 첨부된 이미지 파일을 서버로 전송후, 이미지 경로 url을 받아온다.
-          //     // const imgUrl = await .... 서버 전송 / 경로 수신 코드 ...
-
-          //     // 2. 첨부된 이미지를 화면에 표시(경로는 임의로 넣었다.)
-          //     // callback("imgUrl", "이미지");
-          //   },
-          // }}
+          hooks={{
+            addImageBlobHook: async (blob, callback) => {
+              const imgUrl = await uploadImage(blob);
+              callback(imgUrl, "image");
+            },
+          }}
         />
         <div css={buttonBoxCSS}>
           <Button
