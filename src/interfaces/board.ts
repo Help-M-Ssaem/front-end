@@ -1,6 +1,6 @@
 import { User } from "./user";
 
-export interface Board extends User {
+export interface Board {
   id: number;
   title: string;
   content: string;
@@ -24,7 +24,7 @@ export interface BoardDetail {
   isLiked: boolean;
 }
 
-export interface BoardList extends Board {
+export interface BoardList {
   page: number;
   totalSize: number;
   result: Board[];
@@ -46,7 +46,7 @@ export interface HotThree {
   worryBoardContent?: string;
 }
 
-export interface HotBoard extends User {
+export interface HotBoard {
   id: number;
   title: string;
   content: string;
@@ -58,7 +58,7 @@ export interface HotBoard extends User {
   memberSimpleInfo: User;
 }
 
-export interface HotBoardMore extends HotBoard {
+export interface HotBoardMore {
   page: number;
   totalSize: number;
   result: HotBoard[];
