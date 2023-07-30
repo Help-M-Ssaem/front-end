@@ -7,6 +7,7 @@ export interface Board extends User {
   imgUrl: string;
   boardMbti: string;
   likeCount: number;
+  commentCount: number;
   createdAt: string;
   memberSimpleInfo: User;
 }
@@ -27,7 +28,7 @@ export interface BoardDetail {
 export interface BoardList extends Board {
   page: number;
   totalSize: number;
-  result: Board[];
+  result: BoardDetail[];
 }
 
 export interface CategoryBookmark {

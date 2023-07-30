@@ -19,6 +19,7 @@ const DetailBoardPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { board } = useBoardDetail(parseInt(id!!));
+  // TODO: 페이지네이션 구현되면 page, size 수정
   const { comments } = useBoardComment(parseInt(id!!), 0, 10);
 
   const deleteMutation = useDeleteBoard(parseInt(id!!));
