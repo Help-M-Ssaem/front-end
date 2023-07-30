@@ -29,7 +29,7 @@ export interface DebateProps {
   debate: Debate;
 }
 
-export interface HotDebate extends User {
+export interface HotDebate {
   id: number;
   title: string;
   content: string;
@@ -48,7 +48,7 @@ export interface HotDebate extends User {
   ];
 }
 
-export interface HotDebateMore extends HotDebate {
+export interface HotDebateMore {
   page: number;
   totalSize: number;
   result: HotDebate[];

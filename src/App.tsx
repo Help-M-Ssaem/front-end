@@ -71,7 +71,7 @@ function App() {
               <Route path="mbti" element={<MbtiBoardPage />} />
               <Route path=":id" element={<DetailBoardPage />} />
               <Route path="create" element={<CreateBoardPage />} />
-              <Route path="update" element={<UpdateBoardPage />} />
+              <Route path=":id/update" element={<UpdateBoardPage />} />
             </Route>
 
             <Route path="/match" element={<MatchPage />}>

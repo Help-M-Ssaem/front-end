@@ -18,7 +18,7 @@ const HotBoardComponent = ({ hotBoard, addCSS }: HotBoardProps) => {
           <Profile
             image={hotBoard.memberSimpleInfo.profileImgUrl}
             name={hotBoard.memberSimpleInfo.nickName}
-            mbti={hotBoard.memberSimpleInfo.mbtiEnum}
+            mbti={hotBoard.memberSimpleInfo.mbti}
             badge={hotBoard.memberSimpleInfo.badge}
           />
         </div>
