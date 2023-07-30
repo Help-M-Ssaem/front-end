@@ -12,6 +12,7 @@ import { ArrowIcon } from "../../assets/CommonIcons";
 import { useUpdateBoard } from "../../hooks/board/useUpdateBoard";
 import { useParams } from "react-router-dom";
 import { useBoardDetail } from "../../hooks/board/useBoardDetail";
+import { mssaemAxios as axios } from "../../apis/axios";
 
 const categoryList = [
   "ISTJ",
@@ -38,7 +39,7 @@ const UpdateBoardPage = () => {
 
   const [title, setTitle] = useState(board!!.title);
   const [content, setContent] = useState(board!!.content);
-  const [category, setCategory] = useState(board!!.memberSimpleInfo.mbtiEnum);
+  const [category, setCategory] = useState(board!!.memberSimpleInfo.mbti);
   const [image, setImage] = useState<string[]>([]);
   const [openCategory, setOpenCategory] = useState(false);
   const navigate = useNavigate();
@@ -55,19 +56,19 @@ const UpdateBoardPage = () => {
   };
 
   const formData = new FormData();
-
   const data = {
     title: title,
     content: content,
     mbti: category,
-    memberId: 0, // TODO: 로그인한 유저의 id로 설정
   };
-
   formData.append(
     "patchBoardReq",
     new Blob([JSON.stringify(data)], { type: "application/json" }),
   );
-  formData.append("image", image[0]);
+  formData.append(
+    "image",
+    new Blob([JSON.stringify(image)], { type: "application/json" }),
+  );
 
   const editorRef = useRef<any>(null);
   const handleContentChange = () => {
@@ -79,6 +80,17 @@ const UpdateBoardPage = () => {
   const handleSubmit = () => {
     updateMutation.mutate();
     navigate(-1);
+  };
+
+  const uploadImage = async (blob: Blob) => {
+    const formData = new FormData();
+    formData.append("image", blob);
+    const imgUrl = await axios.post("/member/boards/files", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return imgUrl.data;
   };
 
   return (
@@ -116,6 +128,13 @@ const UpdateBoardPage = () => {
           initialEditType="wysiwyg"
           onChange={handleContentChange}
           useCommandShortcut={true}
+          hooks={{
+            addImageBlobHook: async (blob, callback) => {
+              const imgUrl = await uploadImage(blob);
+              setImage([...image, imgUrl]);
+              callback(imgUrl, "image");
+            },
+          }}
         />
         <div css={buttonBoxCSS}>
           <Button

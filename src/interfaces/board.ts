@@ -11,7 +11,7 @@ export interface Board extends User {
   memberSimpleInfo: User;
 }
 
-export interface BoardDetail extends User {
+export interface BoardDetail {
   memberSimpleInfo: User;
   boardId: number;
   title: string;
