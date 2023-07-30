@@ -115,10 +115,10 @@ const DetailMatchingPage = () => {
         </div>
       </div>
 
-      <div>
+      {/* <div>
         {commentList &&
           commentList.map((comment) => <CommentComponent comment={comment} />)}
-      </div>
+      </div> */}
 
       <div css={commentTextCSS}>댓글 쓰기</div>
       <hr css={hrCSS} />

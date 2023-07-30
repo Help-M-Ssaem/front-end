@@ -13,48 +13,14 @@ import { useDeleteBoard } from "../../hooks/board/useDeleteBoard";
 import { useBoardDetail } from "../../hooks/board/useBoardDetail";
 import { useParams } from "react-router-dom";
 import { useBoardLike } from "../../hooks/board/useBoardLike";
-
-// TODO: 댓글 API 연동
-const commentList = [
-  {
-    id: 1,
-    profile: "https://i.ibb.co/DgVwMvJ/2023-07-03-132904.png",
-    name: "김유리",
-    mbti: "ENFP",
-    badge: "ENFJ",
-    content: "저도 이런 취미 생겼으면 좋겠어요!",
-    date: "2021.09.01",
-    like: 3,
-    isBest: true,
-  },
-  {
-    id: 2,
-    profile: "https://i.ibb.co/DgVwMvJ/2023-07-03-132904.png",
-    name: "박지운",
-    mbti: "ENFP",
-    badge: "ENFJ",
-    content: "저도 이런 취미 생겼으면 좋겠어요!",
-    date: "2021.09.01",
-    like: 4,
-    isBest: false,
-  },
-  {
-    id: 3,
-    profile: "https://i.ibb.co/DgVwMvJ/2023-07-03-132904.png",
-    name: "송민혁",
-    mbti: "ENFP",
-    badge: "ENFJ",
-    content: "저도 이런 취미 생겼으면 좋겠어요!",
-    date: "2021.09.01",
-    like: 5,
-    isBest: false,
-  },
-];
+import { useBoardComment } from "../../hooks/board/comment/useBoardComment";
 
 const DetailBoardPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { board } = useBoardDetail(parseInt(id!!));
+  const { comments } = useBoardComment(parseInt(id!!), 0, 10);
+
   const deleteMutation = useDeleteBoard(parseInt(id!!));
   const likeMutation = useBoardLike(parseInt(id!!));
 
@@ -113,12 +79,12 @@ const DetailBoardPage = () => {
             </div>
 
             <div css={commentTextCSS}>
-              전체 댓글 {commentList ? commentList.length : 0}개
+              전체 댓글 {comments ? comments.result.length : 0}개
             </div>
           </div>
           <div>
-            {commentList &&
-              commentList.map((comment) => (
+            {comments &&
+              comments.result.map((comment) => (
                 <CommentComponent comment={comment} />
               ))}
           </div>

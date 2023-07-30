@@ -12,20 +12,23 @@ interface CommentProps {
 
 const CommentComponent = ({ comment }: CommentProps) => {
   return (
-    <div css={commentBoxCSS}>
+    <div css={commentBoxCSS} key={comment.commentId}>
       <div css={profileBoxCSS}>
         <div css={profileBestCSS}>
-          {comment.isBest && <BestIcon />}
+          {comment.isAllowed && <BestIcon />}
           <Profile
-            image={comment.profile}
-            name={comment.name}
-            mbti={comment.mbti}
-            badge={comment.badge}
+            image={comment.memberSimpleInfo.profileImgUrl}
+            name={comment.memberSimpleInfo.nickName}
+            mbti={comment.memberSimpleInfo.mbti}
+            badge={comment.memberSimpleInfo.badge}
           />
+          {/* <div>{comment.createdAt}</div>
+          <div>{comment.isLiked}</div>
+          <div>{comment.parentId}</div> */}
         </div>
         <div css={likeCountCSS}>
           <HeartIcon />
-          <div>{comment.like}</div>
+          <div>{comment.likeCount}</div>
         </div>
       </div>
       <div css={contentCSS}>{comment.content}</div>
