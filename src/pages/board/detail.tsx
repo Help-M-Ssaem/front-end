@@ -93,7 +93,7 @@ const DetailBoardPage = () => {
               <Profile
                 image={board.memberSimpleInfo.profileImgUrl}
                 name={board.memberSimpleInfo.nickName}
-                mbti={board.memberSimpleInfo.mbtiEnum}
+                mbti={board.memberSimpleInfo.mbti}
                 badge={board.memberSimpleInfo.badge}
               />
               <div css={dateCSS}>{board.createdAt}</div>

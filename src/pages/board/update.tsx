@@ -39,7 +39,8 @@ const UpdateBoardPage = () => {
 
   const [title, setTitle] = useState(board!!.title);
   const [content, setContent] = useState(board!!.content);
-  const [category, setCategory] = useState(board!!.memberSimpleInfo.mbti);
+  // TODO: 게시판 mbti로 변경
+  const [category, setCategory] = useState("ISTJ");
   const [image, setImage] = useState<string[]>([]);
   const [openCategory, setOpenCategory] = useState(false);
   const navigate = useNavigate();
@@ -74,9 +75,7 @@ const UpdateBoardPage = () => {
   const handleContentChange = () => {
     setContent(editorRef.current.getInstance().getHTML());
   };
-
-  // TODO: 로그인한 유저의 id로 설정
-  const updateMutation = useUpdateBoard(formData, 1);
+  const updateMutation = useUpdateBoard(formData, board!!.boardId);
   const handleSubmit = () => {
     updateMutation.mutate();
     navigate(-1);
