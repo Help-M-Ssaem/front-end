@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { Comment } from "../../interfaces/comment";
-import Profile from "../profile/Profile";
-import FONT from "../../styles/font";
-import COLOR from "../../styles/color";
-import { BestIcon, HeartIcon } from "../../assets/CommonIcons";
+import { Comment } from "../../../interfaces/comment";
+import Profile from "../../profile/Profile";
+import FONT from "../../../styles/font";
+import COLOR from "../../../styles/color";
+import { BestIcon, HeartIcon } from "../../../assets/CommonIcons";
 
 interface CommentProps {
   comment: Comment;

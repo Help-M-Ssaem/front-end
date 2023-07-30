@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
 import Button from "../../components/button/Button";
 import Profile from "../../components/profile/Profile";
-import CommentComponent from "../../components/comment/Comment";
+import CommentComponent from "../../components/board/comment/Comment";
 import Input from "../../components/input/Input";
 
 // TODO: 댓글 API 연동

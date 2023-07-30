@@ -7,7 +7,7 @@ import { css } from "@emotion/react";
 import FONT from "../../styles/font";
 import Input from "../../components/input/Input";
 import Profile from "../../components/profile/Profile";
-import CommentComponent from "../../components/comment/Comment";
+import CommentComponent from "../../components/board/comment/Comment";
 import { LikeClickedIcon, LikeIcon } from "../../assets/ButtonIcons";
 import { useDeleteBoard } from "../../hooks/board/useDeleteBoard";
 import { useBoardDetail } from "../../hooks/board/useBoardDetail";
