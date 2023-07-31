@@ -10,6 +10,9 @@ import Button from "../../components/button/Button";
 import { useNavigate } from "react-router";
 import { ArrowIcon } from "../../assets/CommonIcons";
 import { useUpdateBoard } from "../../hooks/board/useUpdateBoard";
+import { useParams } from "react-router-dom";
+import { useBoardDetail } from "../../hooks/board/useBoardDetail";
+import { mssaemAxios as axios } from "../../apis/axios";
 
 const categoryList = [
   "ISTJ",
@@ -31,9 +34,12 @@ const categoryList = [
 ];
 
 const UpdateBoardPage = () => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  // TODO: mbti는 로그인한 유저의 mbti로 설정
+  const { id } = useParams();
+  const { board } = useBoardDetail(parseInt(id!!));
+
+  const [title, setTitle] = useState(board!!.title);
+  const [content, setContent] = useState(board!!.content);
+  // TODO: 게시판 mbti로 변경
   const [category, setCategory] = useState("ISTJ");
   const [image, setImage] = useState<string[]>([]);
   const [openCategory, setOpenCategory] = useState(false);
@@ -51,30 +57,39 @@ const UpdateBoardPage = () => {
   };
 
   const formData = new FormData();
-
   const data = {
     title: title,
     content: content,
     mbti: category,
-    memberId: 0, // TODO: 로그인한 유저의 id로 설정
   };
-
   formData.append(
     "patchBoardReq",
     new Blob([JSON.stringify(data)], { type: "application/json" }),
   );
-  formData.append("image", image[0]);
+  formData.append(
+    "image",
+    new Blob([JSON.stringify(image)], { type: "application/json" }),
+  );
 
   const editorRef = useRef<any>(null);
   const handleContentChange = () => {
     setContent(editorRef.current.getInstance().getHTML());
   };
-
-  // TODO: 로그인한 유저의 id로 설정
-  const updateMutation = useUpdateBoard(formData, 1);
+  const updateMutation = useUpdateBoard(formData, board!!.boardId);
   const handleSubmit = () => {
     updateMutation.mutate();
     navigate(-1);
+  };
+
+  const uploadImage = async (blob: Blob) => {
+    const formData = new FormData();
+    formData.append("image", blob);
+    const imgUrl = await axios.post("/member/boards/files", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return imgUrl.data;
   };
 
   return (
@@ -106,12 +121,19 @@ const UpdateBoardPage = () => {
         <div css={contentCSS}>내용을 입력해주세요.</div>
         <Editor
           ref={editorRef}
-          initialValue="수정 페이지" /* TODO: 게시글 id에 따라 초기값 변경 */
+          initialValue={content}
           previewStyle="vertical"
           height="30rem"
           initialEditType="wysiwyg"
           onChange={handleContentChange}
           useCommandShortcut={true}
+          hooks={{
+            addImageBlobHook: async (blob, callback) => {
+              const imgUrl = await uploadImage(blob);
+              setImage([...image, imgUrl]);
+              callback(imgUrl, "image");
+            },
+          }}
         />
         <div css={buttonBoxCSS}>
           <Button

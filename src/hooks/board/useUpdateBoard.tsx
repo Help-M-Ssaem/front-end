@@ -3,7 +3,7 @@ import { mssaemAxios as axios } from "../../apis/axios";
 import { boardKeys } from "../../constants/boardKey";
 
 async function updateBoard(board: FormData, id: number): Promise<void> {
-  await axios.patch(`/member/board/${id}`, board, {
+  await axios.patch(`/member/boards/${id}`, board, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

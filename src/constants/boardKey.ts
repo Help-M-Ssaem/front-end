@@ -1,5 +1,10 @@
 export const boardKeys = {
   all: ["board"] as const,
+  detail: (id: number) => [...boardKeys.all, id] as const,
+};
+
+export const categoryBookmarkKeys = {
+  all: ["categoryBookmark"] as const,
 };
 
 export const hotThreeKeys = {

@@ -13,49 +13,9 @@ import { useEffect, useState } from "react";
 import Text from "../../components/text/Text";
 import ListPagination from "../../components/Pagination/ListPagination";
 import SelectBox from "../../components/Pagination/SelectBox";
-// TODO: mbtiBoardList 서버 연동
-const mbtiBoardList = [
-  {
-    id: 1,
-    name: "유보라",
-    profile: "https://i.ibb.co/njkbL5W/react-query.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "카페에서 남친이랑 싸웠어",
-    content:
-      "내가 말을 '만약에'라고 시작하면 너무 기빨린대 내가 말을 '만약에'라고 시작하면 너무 기빨린대내가 말을 '만약에'라고 시작하면 너무 기빨린대내가 말을 '만약에'라고 시작하면 너무 기빨린대내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-    createdAt: "2023.06.14 19:07",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 2,
-    name: "김보라",
-    profile: "https://i.ibb.co/BVDQKL0/image.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "엠비티아이 신기하다",
-    content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-    createdAt: "2023.06.14 19:07",
-    like: 4,
-    comment: 4,
-  },
-  {
-    id: 3,
-    name: "박보라",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "박보라박보라박보라박브레드?",
-    content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-    createdAt: "2023.06.14 19:07",
-    like: 5,
-    comment: 4,
-  },
-];
+import { useBoardList } from "../../hooks/board/useBoardList";
+import { BoardList } from "../../interfaces/board";
+import { mssaemAxios as axios } from "../../apis/axios";
 
 const mbtiList = [
   "ISTJ",
@@ -79,6 +39,22 @@ const mbtiList = [
 const MbtiBoardPage = () => {
   const navigate = useNavigate();
   const [mbtiSelected, setMbtiSelected] = useRecoilState(mbtiState);
+  const [boardList, setBoardList] = useState<BoardList>();
+
+  // TODO: 페이지네이션 구현되면 page, size 수정
+  const { boardListAll } = useBoardList(0, 10);
+
+  useEffect(() => {
+    if (mbtiSelected === "전체") {
+      axios.get(`/boards?page=${0}&size=${10}`).then((res) => {
+        setBoardList(res.data);
+      });
+    } else {
+      axios
+        .get(`/boards/mbti?mbti=${mbtiSelected}&page=${0}&size=${10}`)
+        .then((res) => setBoardList(res.data));
+    }
+  }, [mbtiSelected]);
 
   const limit = 6; //한 페이지당 아이템의 개수
   const totalPage = 2; //전체 페이지 수
@@ -99,11 +75,7 @@ const MbtiBoardPage = () => {
             onClick={() => setMbtiSelected("전체")}
             className={mbtiSelected === "전체" ? "active" : ""}
           >
-            전체 (
-            {mbtiBoardList &&
-              mbtiBoardList.length > 0 &&
-              `${mbtiBoardList.length}`}
-            )
+            전체 ({boardListAll && `${boardListAll.result.length}`})
           </div>
           <div css={mbtiCSS}>
             {mbtiList.map((mbti) => (
@@ -118,13 +90,14 @@ const MbtiBoardPage = () => {
         <div css={buttonBoxCSS}>
           <Button onClick={() => navigate("/board/create")}>글 쓰기</Button>
         </div>
-        {mbtiBoardList.map((board) => (
-          <BoardComponent
-            board={board}
-            key={board.id}
-            onClick={() => navigate(`/board/${board.id}`)}
-          />
-        ))}
+        {boardList &&
+          boardList.result.map((board) => (
+            <BoardComponent
+              board={board}
+              key={board.id}
+              onClick={() => navigate(`/board/${board.id}`)}
+            />
+          ))}
         <ListPagination
           limit={limit}
           page={page}

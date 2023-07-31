@@ -1,5 +1,39 @@
 import { User } from "./user";
 
+export interface Board {
+  id: number;
+  title: string;
+  content: string;
+  imgUrl: string;
+  boardMbti: string;
+  likeCount: number;
+  createdAt: string;
+  memberSimpleInfo: User;
+}
+
+export interface BoardDetail {
+  memberSimpleInfo: User;
+  boardId: number;
+  title: string;
+  content: string;
+  imgUrlList: string[];
+  createdAt: string;
+  likeCount: number;
+  commentCount: number;
+  isAllowed: boolean;
+  isLiked: boolean;
+}
+
+export interface BoardList {
+  page: number;
+  totalSize: number;
+  result: Board[];
+}
+
+export interface CategoryBookmark {
+  mbti: [string];
+}
+
 export interface HotThree {
   boardId?: number;
   boardTitle?: string;
@@ -12,7 +46,7 @@ export interface HotThree {
   worryBoardContent?: string;
 }
 
-export interface HotBoard extends User {
+export interface HotBoard {
   id: number;
   title: string;
   content: string;
@@ -24,7 +58,7 @@ export interface HotBoard extends User {
   memberSimpleInfo: User;
 }
 
-export interface HotBoardMore extends HotBoard {
+export interface HotBoardMore {
   page: number;
   totalSize: number;
   result: HotBoard[];

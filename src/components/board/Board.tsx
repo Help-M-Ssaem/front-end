@@ -29,7 +29,10 @@ const BoardComponent = ({ board, onClick }: BoardProps) => {
           />
         </div>
         <div css={titleCSS}>{board.title}</div>
-        <div css={contentCSS}>{truncatedContent}</div>
+        <div
+          css={contentCSS}
+          dangerouslySetInnerHTML={{ __html: truncatedContent }}
+        />
         <div css={detailCSS}>
           <div css={marginRightCSS}>{board.createdAt}</div>
           <div css={marginRightCSS}>공감 {board.like}</div>
