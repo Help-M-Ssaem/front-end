@@ -100,7 +100,7 @@ const WraperCSS = css`
   justify-content: center;
 `;
 const buttonCSS = css`
-  padding: 0 8rem;
+  padding: 0 3rem;
   color: ${COLOR.GRAY2};
   background-color: transparent;
   border: none;
@@ -112,11 +112,10 @@ const pageBtnWrapperCSS = css`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 15rem;
+  // width: 15rem;
   hegiht: 2rem;
 `;
 const pageBtnCSS = css`
-  // margin: 0 0.6rem;
   border: none;
   color: ${COLOR.GRAY2};
   font-size: ${FONT.SIZE.TITLE3};

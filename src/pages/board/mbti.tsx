@@ -41,25 +41,25 @@ const MbtiBoardPage = () => {
   const [mbtiSelected, setMbtiSelected] = useRecoilState(mbtiState);
   const [boardList, setBoardList] = useState<BoardList>();
 
-  // TODO: 페이지네이션 구현되면 page, size 수정
-  const { boardListAll } = useBoardList(0, 10);
+  const limit = 10; //한 페이지당 아이템의 개수
+  const { boardListAll } = useBoardList(1, limit);
+
+  const totalPage = boardListAll ? boardListAll.totalSize : 1; //전체 페이지 수
+  const pageNum = boardListAll ? boardListAll.page : 1;
+  const [page, setPage] = useState(pageNum); // 현재 페이지 설정하는 함수
+  const [blockNum, setBlockNum] = useState(0); //블록 설정하는 함수
 
   useEffect(() => {
     if (mbtiSelected === "전체") {
-      axios.get(`/boards?page=${0}&size=${10}`).then((res) => {
+      axios.get(`/boards?page=${0}&size=${limit}`).then((res) => {
         setBoardList(res.data);
       });
     } else {
       axios
-        .get(`/boards/mbti?mbti=${mbtiSelected}&page=${0}&size=${10}`)
+        .get(`/boards/mbti?mbti=${mbtiSelected}&page=${0}&size=${limit}`)
         .then((res) => setBoardList(res.data));
     }
   }, [mbtiSelected]);
-
-  const limit = 6; //한 페이지당 아이템의 개수
-  const totalPage = 2; //전체 페이지 수
-  const [page, setPage] = useState(1); // 현재 페이지 설정하는 함수
-  const [blockNum, setBlockNum] = useState(0); //블록 설정하는 함수
 
   useEffect(() => {
     setMbtiSelected("전체");
