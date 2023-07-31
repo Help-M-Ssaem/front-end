@@ -8,7 +8,7 @@ import Button from "../../components/button/Button";
 import Profile from "../../components/profile/Profile";
 import CommentComponent from "../../components/comment/Comment";
 import Input from "../../components/input/Input";
-
+import { useDeleteBoard } from "../../hooks/worry/useDeleteWorry";
 // TODO: 댓글 API 연동
 const commentList = [
   {
@@ -62,8 +62,10 @@ const matching = {
 const DetailMatchingPage = () => {
   const navigate = useNavigate();
 
+  const deleteMutation = useDeleteBoard(1);
   const handleMatchingDelete = () => {
     // TODO: 게시글 삭제 API 연동
+    deleteMutation.mutate();
     navigate(-1);
   };
 
@@ -86,7 +88,7 @@ const DetailMatchingPage = () => {
       <div css={buttonBoxCSS}>
         {/* TODO: 본인 게시글에만 수정, 삭제 버튼 */}
         <Button
-          onClick={() => navigate("/matching/update")}
+          onClick={() => navigate("/match/update")}
           style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
         >
           수정

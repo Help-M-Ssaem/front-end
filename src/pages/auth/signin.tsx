@@ -60,7 +60,7 @@ const SigninPage = () => {
 
   const handleNext = () => {
     if (areAllRequiredChecked) {
-      navigate("/main");
+      navigate("/signin/user");
     }
   };
   return (

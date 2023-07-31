@@ -38,13 +38,6 @@ import Callback from "./components/auth/Callback";
 import MyPage from "./pages/mypage/mypage";
 import DetailMatchingPage from "./pages/matching/detail";
 
-declare global {
-  interface Window {
-    Kakao: any;
-    naver: any;
-  }
-}
-        
 function App() {
   return (
     <>
