@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "react-query";
 import { mssaemAxios as axios } from "../../apis/axios";
-import { boardKeys } from "../../constants/boardKey";
+import { worryKeys } from "../../constants/matchingKey";
 
 async function deleteBoard(id: number): Promise<void> {
   await axios.delete(`/member/worry-board/${id}`);
@@ -15,7 +15,7 @@ export function useDeleteBoard(id: number): UseDeleteBoard {
 
   const { mutate } = useMutation(() => deleteBoard(id), {
     onSuccess: () => {
-      queryClient.invalidateQueries(boardKeys.all);
+      queryClient.invalidateQueries(worryKeys.all);
     },
   });
   return { mutate };
