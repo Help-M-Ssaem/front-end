@@ -8,7 +8,7 @@ import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import { Editor } from "@toast-ui/react-editor";
 import { useCreateBoard } from "../../hooks/worry/useCreateWorry";
-
+import { mssaemAxios as axios } from "../../apis/axios";
 const categoryList = [
   "ISTJ",
   "ISFJ",
@@ -60,7 +60,11 @@ const CreateMatchingPage = () => {
     "postWorryReq",
     new Blob([JSON.stringify(data)], { type: "application/json" }),
   );
-  formData.append("image", image[0]);
+  formData.append(
+    "image",
+    new Blob([JSON.stringify(image)], { type: "application/json" }),
+  );
+
 
   const editorRef = useRef<any>(null);
   const handleContentChange = () => {
@@ -70,6 +74,16 @@ const CreateMatchingPage = () => {
   const handleSubmit = () => {
     createMutation.mutate();
     navigate(-1);
+  };
+  const uploadImage = async (blob: Blob) => {
+    const formData = new FormData();
+    formData.append("image", blob);
+    const imgUrl = await axios.post("/member/worry-board/files", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return imgUrl.data;
   };
 
   return (
@@ -116,6 +130,13 @@ const CreateMatchingPage = () => {
           initialEditType="wysiwyg"
           useCommandShortcut={true}
           onChange={handleContentChange}
+          hooks={{
+            addImageBlobHook: async (blob, callback) => {
+              const imgUrl = await uploadImage(blob);
+              setImage([...image, imgUrl]);
+              callback(imgUrl, "image");
+            },
+          }}
         />
         <div css={buttonBoxCSS}>
           <Button
