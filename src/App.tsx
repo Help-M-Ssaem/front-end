@@ -37,8 +37,6 @@ import Callback from "./components/auth/Callback";
 
 import MyPage from "./pages/mypage/mypage";
 import DetailMatchingPage from "./pages/matching/detail";
-import List from "./components/Pagination/list";
-import ListPagination from "./components/Pagination/ListPagination";
 
 function App() {
   return (

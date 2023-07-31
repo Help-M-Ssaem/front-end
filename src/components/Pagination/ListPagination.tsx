@@ -3,14 +3,16 @@ import React, { useEffect, useState, useRef } from "react";
 import { css } from "@emotion/react";
 
 import { ListPaginationProps } from "../../interfaces/listpagination";
+import FONT from "../../styles/font";
+import COLOR from "../../styles/color";
 
 const ListPagination = ({
   limit,
-  page,
-  setPage,
-  blockNum,
-  setBlockNum,
-  counts,
+  page, //현재 페이지 번호
+  setPage, //현제 페이지 번호 업데이트 하는 함수
+  blockNum, //현재 블록 번호
+  setBlockNum, //현재 블록 번호 업데이트 하는 함수
+  totalPage, // 총 페이지의 수
 }: ListPaginationProps): JSX.Element => {
   const createArr = (n: number) => {
     const iArr: number[] = new Array(n);
@@ -18,11 +20,10 @@ const ListPagination = ({
     return iArr;
   };
 
-  const pageLimit = 10;
-  const totalPage: number = Math.ceil(counts / limit);
-  const blockArea: number = Number(blockNum * pageLimit);
-  const nArr = createArr(Number(totalPage));
-  let pArr = nArr?.slice(blockArea, Number(pageLimit) + blockArea);
+  const pageLimit = limit;
+  const blockArea: number = blockNum * pageLimit;
+  const nArr = createArr(totalPage);
+  const pArr = nArr.slice(blockArea, blockArea + pageLimit);
 
   const prevPage = () => {
     if (page <= 1) {
@@ -38,11 +39,15 @@ const ListPagination = ({
     if (page >= totalPage) {
       return;
     }
-    if (pageLimit * Number(blockNum + 1) < Number(page + 1)) {
+    if (
+      page % pageLimit === 0 &&
+      blockNum < Math.ceil(totalPage / pageLimit) - 1
+    ) {
       setBlockNum((n: number) => n + 1);
     }
     setPage((n: number) => n + 1);
   };
+
   return (
     <>
       <div className="ListPagenationWrapper" css={WraperCSS}>
@@ -54,10 +59,9 @@ const ListPagination = ({
           }}
           disabled={page === 1}
         >
-          &lt;
+          이전
         </button>
-        <div className="pageBtnWrapper" css={pageBtnCSS}>
-          {/* pArr 배열의 각 페이지 버튼을 렌더링합니다. */}
+        <div className="pageBtnWrapper" css={pageBtnWrapperCSS}>
           {pArr?.map((n: number) => (
             <button
               className="pageBtn"
@@ -80,7 +84,7 @@ const ListPagination = ({
           }}
           disabled={page === totalPage}
         >
-          &gt;
+          다음
         </button>
       </div>
     </>
@@ -90,46 +94,49 @@ const ListPagination = ({
 export default ListPagination;
 
 const WraperCSS = css`
+  padding-top: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 37px;
-  margin: 38px 94px 38px 88px;
 `;
 const buttonCSS = css`
-  color: #5a5a5a;
+  padding: 0 8rem;
+  color: ${COLOR.GRAY2};
   background-color: transparent;
   border: none;
-  font-size: 25px;
   cursor: pointer;
+  font-size: ${FONT.SIZE.TITLE3};
+`;
+
+const pageBtnWrapperCSS = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 15rem;
+  hegiht: 2rem;
 `;
 const pageBtnCSS = css`
-  width: 49px;
-  height: 49px;
-  margin: 0 10px;
+  // margin: 0 0.6rem;
   border: none;
-  color: black;
-  font-size: 20px;
-  opacity: 0.2;
-
-  &:hover {
-    background-color: #b42954;
-    cursor: pointer;
-    transform: translateY(-2px);
-  }
-
-  &[disbled] {
-    background-color: #e2e2e2;
-    cursor: revert;
-    transform: revert;
-  }
+  color: ${COLOR.GRAY2};
+  font-size: ${FONT.SIZE.TITLE3};
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
 
   &[aria-current] {
-    background-color: #f5d3dd;
-    font-weight: bold;
-    cursor: revert;
-    transform: revert;
+    cursor: pointer;
     opacity: 1;
+    color: black;
+    border: 0.1rem solid ${COLOR.MAIN2};
+    background-color: ${COLOR.MAIN4};
+    border-radius: 0.3rem;
+    box-sizing: border-box;
+    width: 2rem;
+    height: 2rem;
+    align-items: center;
+    margin: 0 0.5rem;
+    justify-content: center;
   }
 `;

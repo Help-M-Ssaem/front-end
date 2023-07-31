@@ -4,5 +4,5 @@ export interface ListPaginationProps {
   setPage: Function;
   blockNum: number;
   setBlockNum: Function;
-  counts: number;
+  totalPage: number;
 }

@@ -12,7 +12,7 @@ import { mbtiState } from "../../states/board";
 import { useEffect, useState } from "react";
 import Text from "../../components/text/Text";
 import ListPagination from "../../components/Pagination/ListPagination";
-
+import SelectBox from "../../components/Pagination/SelectBox";
 // TODO: mbtiBoardList 서버 연동
 const mbtiBoardList = [
   {
@@ -77,12 +77,13 @@ const mbtiList = [
 ];
 
 const MbtiBoardPage = () => {
-  const [limit, setLimit] = useState(10); // 한 페이지에 보여줄 아이템 수
-  const [page, setPage] = useState(1); // 현재 페이지 번호
-  const [blockNum, setBlockNum] = useState(1); // 블록의 번호 (10 페이지씩 묶어서 보여줄 때 사용)
-  const counts = mbtiBoardList.length; // 총
   const navigate = useNavigate();
   const [mbtiSelected, setMbtiSelected] = useRecoilState(mbtiState);
+
+  const limit = 6; //한 페이지당 아이템의 개수
+  const totalPage = 2; //전체 페이지 수
+  const [page, setPage] = useState(1); // 현재 페이지 설정하는 함수
+  const [blockNum, setBlockNum] = useState(0); //블록 설정하는 함수
 
   useEffect(() => {
     setMbtiSelected("전체");
@@ -124,15 +125,16 @@ const MbtiBoardPage = () => {
             onClick={() => navigate(`/board/${board.id}`)}
           />
         ))}
+        <ListPagination
+          limit={limit}
+          page={page}
+          setPage={setPage}
+          blockNum={blockNum}
+          setBlockNum={setBlockNum}
+          totalPage={totalPage}
+        />
+        <SelectBox />
       </Container>
-      <ListPagination
-        limit={limit}
-        page={page}
-        setPage={setPage}
-        blockNum={blockNum}
-        setBlockNum={setBlockNum}
-        counts={counts}
-      />
     </>
   );
 };
@@ -189,3 +191,5 @@ const buttonBoxCSS = css`
   justify-content: flex-end;
   margin-bottom: 1rem;
 `;
+
+const selectCSS = css``;
