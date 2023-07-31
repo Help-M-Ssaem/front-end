@@ -3,18 +3,22 @@ import { css } from "@emotion/react";
 import Badge from "../badge/Badge";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
+import { HotTeacher } from "../../interfaces/worry";
 
-// TODO: mssaem interface 수정
-const Mssaem = ({ mssaem }: any) => {
+interface MssaemProps {
+  mssaem: HotTeacher;
+}
+
+const Mssaem: React.FC<MssaemProps> = ({ mssaem }) => {
   return (
     <div css={mssaemCSS}>
-      <img css={profileCSS} src={mssaem.profile} alt={"profile"} />
-      <div css={nameCSS}>{mssaem.name} 님</div>
+      <img css={profileCSS} src={mssaem.profileImgUrl} alt={"profile"} />
+      <div css={nameCSS}>{mssaem.nickName} 님</div>
       <div css={badgeBoxCSS}>
         <Badge mbti={mssaem.mbti} />
-        <Badge mbti={mssaem.badge} color={"#5BE1A9"} />
+        {mssaem.badge &&<Badge mbti={mssaem.badge} color={"#5BE1A9"} />}
       </div>
-      <div css={titleCSS}>{mssaem.title}</div>
+      <div css={titleCSS}>{mssaem.introduction}</div>
     </div>
   );
 };

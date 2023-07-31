@@ -2,30 +2,32 @@
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
-import { Matching } from "../../interfaces/matching";
+import { WorryBoard } from "../../interfaces/worry";
 import Badge from "../badge/Badge";
 import { RightArrowIcon } from "../../assets/CommonIcons";
 
 interface MatchingProps {
-  matching: Matching;
+  matching: WorryBoard;
+  solve: string;
   onClick: (id: number) => void;
 }
 
-const MatchingComponent = ({ matching, onClick }: MatchingProps) => {
+const MatchingComponent = ({ matching, solve, onClick }: MatchingProps) => {
   return (
     <div css={MatchingBoxCSS} onClick={() => onClick(matching.id)}>
       <div css={leftCSS}>
         <div css={mbtiBoxCSS}>
-          <Badge mbti={matching.mbti1} color={matching.color1} />
+        {solve==="solved"&&<Badge mbti={"해결 완료"} color={COLOR.GRAY2} />}
+          <Badge mbti={matching.memberMbti} color={COLOR.MAIN4} />
           <RightArrowIcon />
-          <Badge mbti={matching.mbti2} color={matching.color2} />
-          <div css={createAtCSS}>{matching.createdAt}</div>
+          <Badge mbti={matching.targetMbti} color={COLOR.YELLOW} />
+          <div css={createAtCSS}>{matching.createDate}</div>
         </div>
         <div css={titleCSS}>{matching.title}</div>
         <div css={contentCSS}>{matching.content}</div>
       </div>
       <div css={rightCSS}>
-        <img css={thumbnailCSS} src={matching.thumbnail} alt="thumbnail" />
+        {matching.imgUrl !== "default" &&<img css={thumbnailCSS} src={matching.imgUrl} alt="default" />}
       </div>
     </div>
   );

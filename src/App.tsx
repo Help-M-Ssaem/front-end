@@ -19,6 +19,7 @@ import UpdateMatchingPage from "./pages/matching/update";
 
 import DebatePage from "./pages/debate/debate";
 import PostListDebatePage from "./pages/debate/postlist";
+import DetailDebatePage from "./pages/debate/detail";
 import UpdateDebatePage from "./pages/debate/update";
 import CreateDebatePage from "./pages/debate/create";
 
@@ -30,10 +31,10 @@ import Layout from "./components/layout/Layout";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import ScrollToTop from "./components/scroll/ScrollToTop";
+import KakaoLogin from "./pages/auth/KakaoLogin";
 import UserInfo from "./pages/auth/UserInfo";
 import HotBoardPage from "./pages/main/hotBoard";
 import HotDebatePage from "./pages/main/hotDebate";
-import Callback from "./components/auth/Callback";
 
 import MyPage from "./pages/mypage/mypage";
 import DetailMatchingPage from "./pages/matching/detail";
@@ -52,9 +53,7 @@ function App() {
             <Route path="/hotDebate" element={<HotDebatePage />} />
 
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/kakao/login" element={<Callback />} />
-            <Route path="/naver/login" element={<Callback />} />
-            <Route path="/google/login" element={<Callback />} />
+            <Route path="/auth" element={<KakaoLogin />} />
             <Route path="/signin" element={<SigninPage />} />
             <Route path="/signin/user" element={<UserInfo />} />
             <Route path="/mypage" element={<MyPage />} />
@@ -62,22 +61,23 @@ function App() {
 
             <Route path="/board" element={<BoardPage />}>
               <Route path="mbti" element={<MbtiBoardPage />} />
-              <Route path=":id" element={<DetailBoardPage />} />
+              <Route path=":id/update" element={<DetailBoardPage />} />
               <Route path="create" element={<CreateBoardPage />} />
-              <Route path=":id/update" element={<UpdateBoardPage />} />
+              <Route path="update" element={<UpdateBoardPage />} />
             </Route>
 
             <Route path="/match" element={<MatchPage />}>
               <Route path="matching" element={<MatchingPage />} />
               <Route path=":id" element={<DetailMatchingPage />} />
               <Route path="create" element={<CreateMatchingPage />} />
-              <Route path="update" element={<UpdateMatchingPage />} />
+              <Route path=":id/update" element={<UpdateMatchingPage />} />
             </Route>
 
             <Route path="/debate" element={<DebatePage />}>
               <Route path="postlist" element={<PostListDebatePage />} />
+              <Route path=":id" element={<DetailDebatePage />} />
               <Route path="create" element={<CreateDebatePage />} />
-              <Route path="update" element={<UpdateDebatePage />} />
+              <Route path=":id/update" element={<UpdateDebatePage />} />
             </Route>
 
             <Route path="/mbtitype" element={<MbtiTypePage />} />
