@@ -87,8 +87,8 @@ const MbtiBoardPage = () => {
           boardList.result.map((board) => (
             <BoardComponent
               board={board}
-              key={board.boardId}
-              onClick={() => navigate(`/board/${board.boardId}`)}
+              key={board.id}
+              onClick={() => navigate(`/board/${board.id}`)}
             />
           ))}
       </Container>

@@ -28,7 +28,7 @@ export interface BoardDetail {
 export interface BoardList {
   page: number;
   totalSize: number;
-  result: BoardDetail[];
+  result: Board[];
 }
 
 export interface CategoryBookmark {
