@@ -5,13 +5,22 @@ import Profile from "../../profile/Profile";
 import FONT from "../../../styles/font";
 import COLOR from "../../../styles/color";
 import { BestIcon, HeartIcon } from "../../../assets/CommonIcons";
+import { useBoardCommentLike } from "../../../hooks/board/comment/useBoardCommentLike";
+import { useParams } from "react-router";
 
 interface CommentProps {
-  comment: any;
+  comment: any; // TODO: Comment 타입 오류 처리
   best?: boolean;
 }
 
 const CommentComponent = ({ comment, best }: CommentProps) => {
+  const { id } = useParams();
+
+  const likeMutation = useBoardCommentLike(Number(id), comment.commentId);
+  const handleLikeClick = () => {
+    likeMutation.mutate();
+  };
+
   return (
     <div css={commentBoxCSS} key={comment.commentId}>
       <div css={profileBoxCSS}>
@@ -27,7 +36,7 @@ const CommentComponent = ({ comment, best }: CommentProps) => {
           <div>{comment.isLiked}</div>
           <div>{comment.parentId}</div> */}
         </div>
-        <div css={likeCountCSS}>
+        <div css={likeCountCSS} onClick={handleLikeClick}>
           <HeartIcon />
           <div>{comment.likeCount}</div>
         </div>
@@ -69,4 +78,5 @@ const likeCountCSS = css`
   font-size: ${FONT.SIZE.TITLE3};
   font-weight: ${FONT.WEIGHT.SEMIBOLD};
   color: ${COLOR.GRAY2};
+  cursor: pointer;
 `;
