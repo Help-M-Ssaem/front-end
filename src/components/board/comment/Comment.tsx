@@ -32,10 +32,8 @@ const CommentComponent = ({ comment, best }: CommentProps) => {
             mbti={comment.memberSimpleInfo.mbti}
             badge={comment.memberSimpleInfo.badge}
           />
-          {/* <div>{comment.createdAt}</div>
-          <div>{comment.isLiked}</div>
-          <div>{comment.parentId}</div> */}
         </div>
+        {/* TODO: 본인 댓글에만 좋아요 대신 삭제 버튼 */}
         <div css={likeCountCSS} onClick={handleLikeClick}>
           <HeartIcon />
           <div>{comment.likeCount}</div>
