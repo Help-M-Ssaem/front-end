@@ -14,6 +14,7 @@ import { useBoardDetail } from "../../hooks/board/useBoardDetail";
 import { useParams } from "react-router-dom";
 import { useBoardLike } from "../../hooks/board/useBoardLike";
 import { useBoardComment } from "../../hooks/board/comment/useBoardComment";
+import { useBoardBestComment } from "../../hooks/board/comment/useBoardBestComment";
 
 const DetailBoardPage = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const DetailBoardPage = () => {
   const { board } = useBoardDetail(parseInt(id!!));
   // TODO: 페이지네이션 구현되면 page, size 수정
   const { comments } = useBoardComment(parseInt(id!!), 0, 10);
+  const { bestComments } = useBoardBestComment(parseInt(id!!));
 
   const deleteMutation = useDeleteBoard(parseInt(id!!));
   const likeMutation = useBoardLike(parseInt(id!!));
@@ -84,6 +86,10 @@ const DetailBoardPage = () => {
             </div>
           </div>
           <div>
+            {bestComments &&
+              bestComments.map((comment) => (
+                <CommentComponent comment={comment} best={true} />
+              ))}
             {comments &&
               comments.result.map((comment) => (
                 <CommentComponent comment={comment} />

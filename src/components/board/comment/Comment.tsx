@@ -7,15 +7,16 @@ import COLOR from "../../../styles/color";
 import { BestIcon, HeartIcon } from "../../../assets/CommonIcons";
 
 interface CommentProps {
-  comment: Comment;
+  comment: any;
+  best?: boolean;
 }
 
-const CommentComponent = ({ comment }: CommentProps) => {
+const CommentComponent = ({ comment, best }: CommentProps) => {
   return (
     <div css={commentBoxCSS} key={comment.commentId}>
       <div css={profileBoxCSS}>
         <div css={profileBestCSS}>
-          {comment.isAllowed && <BestIcon />}
+          {best && <BestIcon />}
           <Profile
             image={comment.memberSimpleInfo.profileImgUrl}
             name={comment.memberSimpleInfo.nickName}
