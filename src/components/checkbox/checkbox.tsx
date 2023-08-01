@@ -62,7 +62,7 @@ const checkboxLabelStyles = css`
     top: 0.2rem;
     // height: 30px;
     position: relative;
-    // cursor: pointer;
+    margin-bottom: 0.5rem;
   }
 `;
 

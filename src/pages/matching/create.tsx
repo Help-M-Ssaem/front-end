@@ -7,6 +7,7 @@ import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import { Editor } from "@toast-ui/react-editor";
+import { useCreateBoard } from "../../hooks/worry/useCreateWorry";
 
 const categoryList = [
   "ISTJ",
@@ -52,12 +53,11 @@ const CreateMatchingPage = () => {
   const data = {
     title: title,
     content: content,
-    mbti: category,
-    memberId: 0, // TODO: 로그인한 유저의 id로 설정
+    targetMbti: category,
   };
 
   formData.append(
-    "postBoardReq",
+    "postWorryReq",
     new Blob([JSON.stringify(data)], { type: "application/json" }),
   );
   formData.append("image", image[0]);
@@ -66,7 +66,9 @@ const CreateMatchingPage = () => {
   const handleContentChange = () => {
     setContent(editorRef.current.getInstance().getHTML());
   };
+  const createMutation = useCreateBoard(formData);
   const handleSubmit = () => {
+    createMutation.mutate();
     navigate(-1);
   };
 
