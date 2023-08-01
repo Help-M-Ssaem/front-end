@@ -9,7 +9,11 @@ import MatchingComponent from "../../components/matching/Matching";
 import Text from "../../components/text/Text";
 import Mssaem from "../../components/matching/Mssaem";
 import { RightArrowIcon, SmallArrowIcon } from "../../assets/CommonIcons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { GetWorryBoard } from "../../hooks/worry/worryWating";
+import BoardComponent from "../../components/board/Board";
+import { MainMatching, Matching } from "../../interfaces/matching";
+import ListPagination from "../../components/Pagination/ListPagination";
 
 // TODO: matchingList 서버 연동
 const matchingList = [

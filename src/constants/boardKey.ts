@@ -18,3 +18,7 @@ export const hotBoardKeys = {
 export const hotDebateKeys = {
   all: ["hotDebate"] as const,
 };
+
+export const worryBoardKeys = {
+  all: ["worryBoard"] as const,
+};
