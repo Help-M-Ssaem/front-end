@@ -4,11 +4,12 @@ import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 
 interface InputProps {
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string;
 }
 
-const Input = ({ onSubmit }: InputProps) => {
-  return <input type="text" css={inputCSS} />;
+const Input = ({ onChange, value }: InputProps) => {
+  return <input type="text" css={inputCSS} onChange={onChange} value={value} />;
 };
 
 const inputCSS = css`

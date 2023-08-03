@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
 import Button from "../../components/button/Button";
 import Profile from "../../components/profile/Profile";
-import CommentComponent from "../../components/comment/Comment";
+import CommentComponent from "../../components/board/comment/Comment";
 import Input from "../../components/input/Input";
 import { useDeleteBoard } from "../../hooks/worry/useDeleteWorry";
 // TODO: 댓글 API 연동
@@ -117,15 +117,15 @@ const DetailMatchingPage = () => {
         </div>
       </div>
 
-      <div>
+      {/* <div>
         {commentList &&
           commentList.map((comment) => <CommentComponent comment={comment} />)}
-      </div>
+      </div> */}
 
       <div css={commentTextCSS}>댓글 쓰기</div>
       <hr css={hrCSS} />
       <form css={submitButtonBoxCSS} onSubmit={handleCommentSubmit}>
-        <Input onSubmit={handleCommentSubmit} />
+        <Input />
         <Button style={{ marginLeft: "0.5rem", width: "5rem" }}>등록</Button>
       </form>
     </Container>

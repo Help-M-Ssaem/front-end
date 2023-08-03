@@ -9,7 +9,6 @@ import BoardComponent from "../../components/board/Board";
 import Profile from "../../components/profile/Profile";
 import ActivityList from "../../components/mypage/MyPage";
 
-
 const badge1Array = [
   { title: "EsFP", type: 1 },
   { title: "엠비티어른", type: 2 },
@@ -305,7 +304,6 @@ const myPostArray5 = [
   },
 ];
 
-
 const MyPage = () => {
   const [menuSelected, setMenuSelected] = useState(1);
   const clickMenu = (type: number) => {
@@ -391,7 +389,7 @@ const MyPage = () => {
           })}
         </div>
 
-        {menuSelected === 1 &&
+        {/* {menuSelected === 1 &&
           myPostArray?.map((board) => (
             <BoardComponent board={board} onClick={() => {}} key={board.id} />
           ))}
@@ -410,7 +408,7 @@ const MyPage = () => {
         {menuSelected === 5 &&
           myPostArray5?.map((board) => (
             <BoardComponent board={board} onClick={() => {}} key={board.id} />
-          ))}
+          ))} */}
       </div>
     </div>
   );
@@ -611,4 +609,3 @@ const menuBox = css`
   flex: 1;
   padding: 30px 41px;
 `;
-

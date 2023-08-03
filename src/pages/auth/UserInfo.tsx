@@ -8,8 +8,8 @@ import { PolygonIcon } from "../../assets/CommonIcons";
 import { useNickName } from "../../hooks/user/userNickname";
 import { usePostUserInfo } from "../../hooks/user/signup";
 import { useNavigate } from "react-router-dom";
-import { userinfo } from "../../interfaces/signup";
-import { InFoInputs } from "../../interfaces/userinfo";
+// import { userinfo } from "../../interfaces/signup";
+// import { InFoInputs } from "../../interfaces/userinfo";
 
 const UserInfo = () => {
   const [invalidInput, setInvalidInput] = useState<string | null>(null);
@@ -22,11 +22,12 @@ const UserInfo = () => {
   const checkNickNameMutation = useNickName();
   const mutation = usePostUserInfo();
 
+  // TODO: InFoInputs 타입 오류 처리
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<InFoInputs>();
+  } = useForm<any>();
 
   const mbtiInputs = [
     { name: "mbti_1", values: ["i", "I", "e", "E"] },
@@ -36,7 +37,8 @@ const UserInfo = () => {
   ];
 
   // 나중에 API 한 번에 쏠수도 있으니 일단
-  const [values, setValues] = useState<InFoInputs>({
+  // TODO: InFoInputs 타입 오류 처리
+  const [values, setValues] = useState<any>({
     nickName: "",
     mbtiInputs: {
       mbti_1: mbtiInputs[0].values[3],
@@ -46,7 +48,8 @@ const UserInfo = () => {
     },
   });
 
-  const userData: userinfo = {
+  // TODO: userinfo 타입 오류 처리
+  const userData: any = {
     email: localStorage.getItem("email"),
     nickname: nickName,
     mbti: mbti,
@@ -101,7 +104,7 @@ const UserInfo = () => {
       setInvalidInput(null);
     }
 
-    setValues((prevValues) => ({
+    setValues((prevValues: any) => ({
       ...prevValues,
       mbtiInputs: {
         ...prevValues.mbtiInputs,
@@ -124,7 +127,7 @@ const UserInfo = () => {
       setInvalidInput(null);
     }
 
-    setValues((prevValues) => ({
+    setValues((prevValues: any) => ({
       ...prevValues,
       mbtiInputs: {
         ...prevValues.mbtiInputs,

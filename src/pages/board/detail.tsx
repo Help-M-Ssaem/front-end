@@ -7,56 +7,29 @@ import { css } from "@emotion/react";
 import FONT from "../../styles/font";
 import Input from "../../components/input/Input";
 import Profile from "../../components/profile/Profile";
-import CommentComponent from "../../components/comment/Comment";
+import CommentComponent from "../../components/board/comment/Comment";
 import { LikeClickedIcon, LikeIcon } from "../../assets/ButtonIcons";
 import { useDeleteBoard } from "../../hooks/board/useDeleteBoard";
 import { useBoardDetail } from "../../hooks/board/useBoardDetail";
 import { useParams } from "react-router-dom";
 import { useBoardLike } from "../../hooks/board/useBoardLike";
-
-// TODO: 댓글 API 연동
-const commentList = [
-  {
-    id: 1,
-    profile: "https://i.ibb.co/DgVwMvJ/2023-07-03-132904.png",
-    name: "김유리",
-    mbti: "ENFP",
-    badge: "ENFJ",
-    content: "저도 이런 취미 생겼으면 좋겠어요!",
-    date: "2021.09.01",
-    like: 3,
-    isBest: true,
-  },
-  {
-    id: 2,
-    profile: "https://i.ibb.co/DgVwMvJ/2023-07-03-132904.png",
-    name: "박지운",
-    mbti: "ENFP",
-    badge: "ENFJ",
-    content: "저도 이런 취미 생겼으면 좋겠어요!",
-    date: "2021.09.01",
-    like: 4,
-    isBest: false,
-  },
-  {
-    id: 3,
-    profile: "https://i.ibb.co/DgVwMvJ/2023-07-03-132904.png",
-    name: "송민혁",
-    mbti: "ENFP",
-    badge: "ENFJ",
-    content: "저도 이런 취미 생겼으면 좋겠어요!",
-    date: "2021.09.01",
-    like: 5,
-    isBest: false,
-  },
-];
+import { useBoardComment } from "../../hooks/board/comment/useBoardComment";
+import { useBoardBestComment } from "../../hooks/board/comment/useBoardBestComment";
+import { useState } from "react";
+import { useBoardCommentCreate } from "../../hooks/board/comment/useBoardCommentCreate";
 
 const DetailBoardPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { board } = useBoardDetail(parseInt(id!!));
-  const deleteMutation = useDeleteBoard(parseInt(id!!));
-  const likeMutation = useBoardLike(parseInt(id!!));
+  const boardId = Number(id);
+  const { board } = useBoardDetail(boardId);
+  // TODO: 페이지네이션 구현되면 page, size 수정
+  const { comments } = useBoardComment(boardId, 0, 10);
+  const { bestComments } = useBoardBestComment(boardId);
+  const [content, setContent] = useState("");
+
+  const deleteMutation = useDeleteBoard(boardId);
+  const likeMutation = useBoardLike(boardId);
 
   const handleBoardDelete = () => {
     deleteMutation.mutate();
@@ -65,9 +38,20 @@ const DetailBoardPage = () => {
   const handleLikeClick = () => {
     likeMutation.mutate();
   };
-  // TODO: 댓글 등록 API 연동
-  const handleCommentSubmit = () => {
-    alert("댓글이 등록되었습니다.");
+
+  const formData = new FormData();
+  const data = {
+    content: content,
+  };
+  formData.append(
+    "postBoardCommentReq",
+    new Blob([JSON.stringify(data)], { type: "application/json" }),
+  );
+  const createMutation = useBoardCommentCreate(boardId, formData);
+  const handleCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    createMutation.mutate();
+    setContent("");
   };
 
   return (
@@ -113,19 +97,26 @@ const DetailBoardPage = () => {
             </div>
 
             <div css={commentTextCSS}>
-              전체 댓글 {commentList ? commentList.length : 0}개
+              전체 댓글 {comments ? comments.result.length : 0}개
             </div>
           </div>
           <div>
-            {commentList &&
-              commentList.map((comment) => (
+            {bestComments &&
+              bestComments.map((comment) => (
+                <CommentComponent comment={comment} best={true} />
+              ))}
+            {comments &&
+              comments.result.map((comment) => (
                 <CommentComponent comment={comment} />
               ))}
           </div>
           <div css={commentTextCSS}>댓글 쓰기</div>
           <hr css={hrCSS} />
           <form css={submitButtonBoxCSS} onSubmit={handleCommentSubmit}>
-            <Input onSubmit={handleCommentSubmit} />
+            <Input
+              onChange={(e) => setContent(e.target.value)}
+              value={content}
+            />
             <Button style={{ marginLeft: "0.5rem", width: "5rem" }}>
               등록
             </Button>
