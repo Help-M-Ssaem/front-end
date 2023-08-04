@@ -3,7 +3,7 @@ import { User } from "./user";
 export interface Option {
   id: number;
   content: string;
-  imgUrl?: string;
+  imgUrl?: string|null;
   selectedPercent?: string;
   selected?: boolean;
 };
@@ -19,7 +19,8 @@ export interface Debate {
   options: Option[];
 }
 
-export interface DebateDitail extends Debate{
+export interface DebateDetail {
+  discussionSimpleInfo: Debate;
   isEditAllowed: boolean;
 }
 export interface DebateList {
