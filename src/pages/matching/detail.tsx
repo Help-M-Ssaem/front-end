@@ -9,7 +9,7 @@ import Profile from "../../components/profile/Profile";
 import CommentComponent from "../../components/board/comment/Comment";
 import Input from "../../components/input/Input";
 import { useDeleteBoard } from "../../hooks/worry/useDeleteWorry";
-import { useWorryBoard } from"../../hooks/worry/useDetailPost";
+import { useWorryBoard } from "../../hooks/worry/useDetailPost";
 import { useParams } from "react-router-dom";
 
 const DetailMatchingPage = () => {
@@ -18,7 +18,7 @@ const DetailMatchingPage = () => {
 
   const navigate = useNavigate();
   const handleStartChatting = () => {
-    if (!worryBoard){
+    if (!worryBoard) {
       return;
     }
     navigate(`/chatting/${worryBoard.worryBoardId}`);
@@ -29,7 +29,11 @@ const DetailMatchingPage = () => {
     deleteMutation.mutate();
     navigate(-1);
   };
-  
+
+  const handleCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
   if (!worryBoard) {
     return <div>없따</div>;
   }
@@ -43,7 +47,7 @@ const DetailMatchingPage = () => {
       <div css={buttonBoxCSS}>
         {/* TODO: 본인 게시글에만 수정, 삭제 버튼 */}
         <Button
-           onClick={() =>  navigate(`/match/${id}/update`)}
+          onClick={() => navigate(`/match/${id}/update`)}
           //  navigate("/match/update")}
           style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
         >
@@ -63,14 +67,20 @@ const DetailMatchingPage = () => {
         </div>
         <div css={titleCSS}>{worryBoard.title}</div>
         <div
-              css={contentCSS}
-              dangerouslySetInnerHTML={{ __html: worryBoard.content }}
-            />
+          css={contentCSS}
+          dangerouslySetInnerHTML={{ __html: worryBoard.content }}
+        />
         {/* 이미지 찍는걸 어케하지 */}
         <div css={startButtonBoxCSS} onClick={handleStartChatting}>
           <Button>채팅 시작</Button>
         </div>
-        </div>
+      </div>
+      <div css={commentTextCSS}>댓글 쓰기</div>
+      <hr css={hrCSS} />
+      <form css={submitButtonBoxCSS} onSubmit={handleCommentSubmit}>
+        <Input />
+        <Button style={{ marginLeft: "0.5rem", width: "5rem" }}>등록</Button>
+      </form>
     </Container>
   );
 };
@@ -122,4 +132,20 @@ const startButtonBoxCSS = css`
   margin: 2rem 0;
   border-top: 1px solid ${COLOR.MAIN};
   padding-top: 2rem;
+`;
+
+const commentTextCSS = css`
+  font-size: ${FONT.SIZE.HEADLINE};
+  font-weight: ${FONT.WEIGHT.BOLD};
+  color: ${COLOR.MAINDARK};
+  margin-top: 3rem;
+`;
+
+const hrCSS = css`
+  border: 1px solid ${COLOR.MAIN};
+  margin: 1rem 0;
+`;
+
+const submitButtonBoxCSS = css`
+  display: flex;
 `;
