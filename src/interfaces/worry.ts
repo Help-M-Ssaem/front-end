@@ -16,7 +16,7 @@ export interface WorryBoard {//차피 받아온 배열을 result로 줄거니깐
   content: string;
   memberMbti: string;//user에서 받아오기
   targetMbti: string;
-  createDate: number;
+  createdDate: string;
   imgUrl: string;
 }
 
@@ -26,6 +26,7 @@ export interface UseWorryBoard {
   departMbti: string,
   endMbti: string,
   result: WorryBoard[];
+}
 
 export interface DetailWorry {
   memberSimpleInfo: User;
