@@ -7,15 +7,7 @@ import Button from "../button/Button";
 
 const NotLoginComponent = () => {
   return (
-    <Container
-      background={COLOR.WHITE}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        textAlign: "center",
-        justifyContent: "center",
-      }}
-    >
+    <Container addCSS={containerCSS}>
       <div css={textCSS}>M쌤이 되어 더 자유롭게 이용하세요</div>
       <Button>로그인하고 이용하기</Button>
       <div css={detailBoxCSS}>
@@ -30,6 +22,14 @@ const NotLoginComponent = () => {
 };
 
 export default NotLoginComponent;
+
+const containerCSS = css`
+  background: ${COLOR.WHITE};
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+`;
 
 const textCSS = css`
   font-weight: ${FONT.WEIGHT.REGULAR};

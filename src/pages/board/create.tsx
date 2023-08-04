@@ -89,7 +89,7 @@ const CreateBoardPage = () => {
 
   return (
     <div css={editorContainerCSS}>
-      <Container background="#FFFFFF" style={{ padding: "2.5rem" }}>
+      <Container addCSS={containerCSS}>
         <div css={titleBoxCSS}>
           <div css={titleCSS}>{category} 게시판</div>
           <ArrowIcon onClick={handleCategoryButtonClick} />
@@ -145,6 +145,11 @@ const CreateBoardPage = () => {
 };
 
 export default CreateBoardPage;
+
+const containerCSS = css`
+  background: ${COLOR.WHITE};
+  padding: 2.5rem;
+`;
 
 const editorContainerCSS = css`
   width: calc(100% + 30rem);

@@ -9,15 +9,14 @@ import { useNavigate } from "react-router";
 import { Option, PostData } from "../../interfaces/debate";
 import PlusButton from "../../components/debate/plusbutton/PlusButton";
 
-
 const CreateDebatePage = () => {
   //로그인을 통해 작성자의 정보를 받아서 글에 올려줄 것.
   const [postData, setPostData] = useState<PostData>({
     title: "",
     content: "",
     selectedOptions: [
-      { textContent: "", imageContent: undefined ,voteCount: 0,},
-      { textContent: "", imageContent: undefined ,voteCount: 0,},
+      { textContent: "", imageContent: undefined, voteCount: 0 },
+      { textContent: "", imageContent: undefined, voteCount: 0 },
     ],
     selectedOptionIndex: -1,
     totalVotes: 0,
@@ -27,7 +26,7 @@ const CreateDebatePage = () => {
 
   const handleInputChange = (
     key: keyof PostData,
-    value: string | File | Option[] | undefined
+    value: string | File | Option[] | undefined,
   ) => {
     setPostData((prevData) => ({
       ...prevData,
@@ -45,7 +44,7 @@ const CreateDebatePage = () => {
 
   const handleOptionTextChange = (
     index: number,
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const updatedOptions = [...postData.selectedOptions];
     updatedOptions[index].textContent = e.target.value;
@@ -54,7 +53,7 @@ const CreateDebatePage = () => {
 
   const handleImageChange = (
     index: number,
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -91,48 +90,78 @@ const CreateDebatePage = () => {
   };
   return (
     <div css={editorContainerCSS}>
-      <Container background="#FFFFFF" style={{ padding: "2.5rem" }}>
+      <Container addCSS={containerCSS}>
         <div css={titleCSS}>과몰입 토론</div>
         <div css={contentCSS}>제목을 입력해주세요.</div>
-        <input type="text" value={postData.title} onChange={handleTitleChange} css={inputCSS}/>
+        <input
+          type="text"
+          value={postData.title}
+          onChange={handleTitleChange}
+          css={inputCSS}
+        />
         <div css={imagecontentCSS}>선택지를 선택해주세요. (2~4개)</div>
         <div css={selectuplodGrid}>
           {postData.selectedOptions.map((option, index) => (
-          <div css={selectuplodGridinContents} key={index}>
-            <div css={selectuplodGridinContentsBox}>
-              <div css={controlSize}>
-                <div css={controlSizetop}>
-                {postData.selectedOptions.length > 2 && (<Button onClick={() => handleRemoveOption(index)}>
-                  X
-                  </Button>
-                ) }
+            <div css={selectuplodGridinContents} key={index}>
+              <div css={selectuplodGridinContentsBox}>
+                <div css={controlSize}>
+                  <div css={controlSizetop}>
+                    {postData.selectedOptions.length > 2 && (
+                      <Button onClick={() => handleRemoveOption(index)}>
+                        X
+                      </Button>
+                    )}
+                  </div>
+
+                  <label css={uploadLabelCSS}>
+                    {option.imageContent ? (
+                      <img
+                        src={URL.createObjectURL(option.imageContent)}
+                        alt="Selected"
+                        css={imageCSS}
+                      />
+                    ) : (
+                      <PlusButton>+</PlusButton>
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImageChange(index, e)}
+                      css={uploadInputCSS}
+                    />
+                  </label>
+
+                  <input
+                    type="text"
+                    value={option.textContent}
+                    onChange={(e) => handleOptionTextChange(index, e)}
+                    css={optionInputCSS}
+                  />
                 </div>
-
-                <label css={uploadLabelCSS}>
-                {option.imageContent ? (<img src={URL.createObjectURL(option.imageContent)} alt="Selected" css={imageCSS} />) 
-                : (<PlusButton>+</PlusButton>)}
-                <input type="file" accept="image/*" onChange={(e) => handleImageChange(index, e)} css={uploadInputCSS} />
-                </label>
-                
-                <input type="text" value={option.textContent} onChange={(e) => handleOptionTextChange(index, e)} css={optionInputCSS} />
-
               </div>
             </div>
-          </div>
           ))}
-          {postData.selectedOptions.length < 4 
-          && (<Button onClick={handleAddOption}>+</Button>)}
+          {postData.selectedOptions.length < 4 && (
+            <Button onClick={handleAddOption}>+</Button>
+          )}
         </div>
 
         <div css={contentCSS}>내용을 입력해주세요. (선택)</div>
-        <textarea value={postData.content} onChange={handleContentChange} css={textareaCSS} />
+        <textarea
+          value={postData.content}
+          onChange={handleContentChange}
+          css={textareaCSS}
+        />
 
         <div css={buttonBoxCSS}>
-          <Button style={{ marginRight: "0.5rem", background: COLOR.MAIN }} onClick={() => navigate(-1)}>
+          <Button
+            style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
+            onClick={() => navigate(-1)}
+          >
             취소하기
           </Button>
 
-          <Button onClick={()=>handleSubmit}>글 쓰기</Button>
+          <Button onClick={() => handleSubmit}>글 쓰기</Button>
         </div>
       </Container>
     </div>
@@ -140,6 +169,11 @@ const CreateDebatePage = () => {
 };
 
 export default CreateDebatePage;
+
+const containerCSS = css`
+  background: ${COLOR.WHITE};
+  padding: 2.5rem;
+`;
 
 const editorContainerCSS = css`
   width: calc(100% + 30rem);
@@ -173,7 +207,7 @@ const selectuplodGrid = css`
 
 const selectuplodGridinContents = css`
   background-color: ${COLOR.WHITE};
-  width: 100%; 
+  width: 100%;
   height: 100%;
   min-height: 18rem;
   border-radius: 1.4rem;
@@ -181,7 +215,7 @@ const selectuplodGridinContents = css`
   padding: 0.7rem;
 `;
 
-const selectuplodGridinContentsBox= css`
+const selectuplodGridinContentsBox = css`
   width: 100%;
   height: 100%;
   minheight: 10rem;
@@ -203,10 +237,10 @@ const uploadInputCSS = css`
   display: none;
 `;
 const imageCSS = css`
-  width: 11rem; 
-  height: auto; 
+  width: 11rem;
+  height: auto;
   max-height: 9rem;
-  object-fit: contain; 
+  object-fit: contain;
 `;
 const contentCSS = css`
   font-size: ${FONT.SIZE.HEADLINE};
@@ -249,12 +283,12 @@ const buttonBoxCSS = css`
 `;
 
 const controlSize = css`
-flex-direction: column;
+  flex-direction: column;
 
-align-items: center;
-justify-content: center;
-width: auto;
-height: 70%;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: 70%;
 `;
 
 const controlSizetop = css`

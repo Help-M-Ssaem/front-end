@@ -83,7 +83,7 @@ const MainPage = () => {
       </div>
       <hr css={hrCSS} />
 
-      <Container style={{ padding: "0" }}>
+      <Container addCSS={containerCSS}>
         <div css={bottomTitleBoxCSS}>
           <div
             css={bottomTitleCSS}
@@ -107,6 +107,10 @@ const MainPage = () => {
 };
 
 export default MainPage;
+
+const containerCSS = css`
+  padding: 0rem;
+`;
 
 const headerCSS = css`
   width: calc(100% + 30rem);

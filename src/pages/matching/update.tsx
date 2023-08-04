@@ -73,7 +73,7 @@ const UpdateMatchingPage = () => {
   const handleContentChange = () => {
     setContent(editorRef.current.getInstance().getHTML());
   };
-  
+
   const updateMutation = useUpdateWorry(formData, worryBoard!!.worryBoardId);
   const handleSubmit = () => {
     updateMutation.mutate();
@@ -91,7 +91,7 @@ const UpdateMatchingPage = () => {
   };
   return (
     <div css={editorContainerCSS}>
-      <Container background="#FFFFFF" style={{ padding: "2.5rem" }}>
+      <Container addCSS={containerCSS}>
         <div css={titleBoxCSS}>
           <div css={titleCSS}>M쌤 매칭 고민글</div>
         </div>
@@ -156,6 +156,11 @@ const UpdateMatchingPage = () => {
 };
 
 export default UpdateMatchingPage;
+
+const containerCSS = css`
+  background: ${COLOR.WHITE};
+  padding: 2.5rem;
+`;
 
 const editorContainerCSS = css`
   width: calc(100% + 30rem);

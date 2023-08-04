@@ -63,11 +63,7 @@ const DetailBoardPage = () => {
   };
 
   return (
-    <Container
-      style={{
-        marginTop: "1rem",
-      }}
-    >
+    <Container addCSS={containerCSS}>
       {board && (
         <>
           <div css={buttonBoxCSS}>
@@ -151,6 +147,10 @@ const DetailBoardPage = () => {
 };
 
 export default DetailBoardPage;
+
+const containerCSS = css`
+  margin-top: 1rem;
+`;
 
 const detailCSS = css`
   padding: 1.2rem 0;

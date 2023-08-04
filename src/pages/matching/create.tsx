@@ -65,7 +65,6 @@ const CreateMatchingPage = () => {
     new Blob([JSON.stringify(image)], { type: "application/json" }),
   );
 
-
   const editorRef = useRef<any>(null);
   const handleContentChange = () => {
     setContent(editorRef.current.getInstance().getHTML());
@@ -88,7 +87,7 @@ const CreateMatchingPage = () => {
 
   return (
     <div css={editorContainerCSS}>
-      <Container background="#FFFFFF" style={{ padding: "2.5rem" }}>
+      <Container addCSS={containerCSS}>
         <div css={titleBoxCSS}>
           <div css={titleCSS}>M쌤 매칭 고민글</div>
         </div>
@@ -153,6 +152,11 @@ const CreateMatchingPage = () => {
 };
 
 export default CreateMatchingPage;
+
+const containerCSS = css`
+  background: ${COLOR.WHITE};
+  pading: 2.5rem;
+`;
 
 const editorContainerCSS = css`
   width: calc(100% + 30rem);

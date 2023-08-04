@@ -39,11 +39,7 @@ const DetailMatchingPage = () => {
   }
 
   return (
-    <Container
-      style={{
-        marginTop: "1rem",
-      }}
-    >
+    <Container addCSS={containerCSS}>
       <div css={buttonBoxCSS}>
         {/* TODO: 본인 게시글에만 수정, 삭제 버튼 */}
         <Button
@@ -86,6 +82,10 @@ const DetailMatchingPage = () => {
 };
 
 export default DetailMatchingPage;
+
+const containerCSS = css`
+  margin-top: 1rem;
+`;
 
 const detailCSS = css`
   padding: 1.2rem 0;
