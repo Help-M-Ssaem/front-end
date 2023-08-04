@@ -8,13 +8,16 @@ import { BestIcon, HeartIcon } from "../../../assets/CommonIcons";
 import { useBoardCommentLike } from "../../../hooks/board/comment/useBoardCommentLike";
 import { useParams } from "react-router";
 import { useBoardCommentDelete } from "../../../hooks/board/comment/useBoardCommentDelete";
+import { ReplyIcon } from "../../../assets/CommentIcons";
 
 interface CommentProps {
   comment: any; // TODO: Comment 타입으로 수정
+  onClick?: () => void;
   best?: boolean;
+  reply?: boolean;
 }
 
-const CommentComponent = ({ comment, best }: CommentProps) => {
+const CommentComponent = ({ comment, onClick, best, reply }: CommentProps) => {
   const { id } = useParams();
   const boardId = Number(id);
 
@@ -32,6 +35,7 @@ const CommentComponent = ({ comment, best }: CommentProps) => {
       <div css={profileBoxCSS}>
         <div css={profileBestCSS}>
           {best && <BestIcon />}
+          {reply && <ReplyIcon />}
           <Profile
             image={comment.memberSimpleInfo.profileImgUrl}
             name={comment.memberSimpleInfo.nickName}
@@ -50,7 +54,9 @@ const CommentComponent = ({ comment, best }: CommentProps) => {
           </div>
         )}
       </div>
-      <div css={contentCSS}>{comment.content}</div>
+      <div css={contentCSS} onClick={onClick}>
+        {comment.content}
+      </div>
     </div>
   );
 };
@@ -79,6 +85,7 @@ const contentCSS = css`
   font-size: ${FONT.SIZE.HEADLINE};
   font-weight: ${FONT.WEIGHT.REGULAR};
   line-height: 1.4rem;
+  cursor: pointer;
 `;
 
 const likeCountCSS = css`

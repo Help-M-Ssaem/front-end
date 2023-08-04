@@ -27,6 +27,9 @@ const DetailBoardPage = () => {
   const { comments } = useBoardComment(boardId, 0, 10);
   const { bestComments } = useBoardBestComment(boardId);
   const [content, setContent] = useState("");
+  const [replyCommentId, setReplyCommentId] = useState(0);
+  const [replyContent, setReplyContent] = useState("");
+  const [replyCommentOpen, setReplyCommentOpen] = useState(false);
 
   const deleteMutation = useDeleteBoard(boardId);
   const likeMutation = useBoardLike(boardId);
@@ -40,18 +43,19 @@ const DetailBoardPage = () => {
   };
 
   const formData = new FormData();
-  const data = {
-    content: content,
-  };
   formData.append(
     "postBoardCommentReq",
-    new Blob([JSON.stringify(data)], { type: "application/json" }),
+    new Blob([JSON.stringify(content)], { type: "application/json" }),
   );
   const createMutation = useBoardCommentCreate(boardId, formData);
   const handleCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     createMutation.mutate();
     setContent("");
+  };
+  const handleCommentClick = (commentId: number) => {
+    setReplyCommentOpen(!replyCommentOpen);
+    setReplyCommentId(commentId);
   };
 
   return (
@@ -103,11 +107,32 @@ const DetailBoardPage = () => {
           <div>
             {bestComments &&
               bestComments.map((comment) => (
-                <CommentComponent comment={comment} best={true} />
+                <>
+                  <CommentComponent comment={comment} best={true} />
+                </>
               ))}
             {comments &&
               comments.result.map((comment) => (
-                <CommentComponent comment={comment} />
+                <div key={comment.commentId}>
+                  <CommentComponent
+                    comment={comment}
+                    onClick={() => handleCommentClick(comment.commentId)}
+                  />
+                  {replyCommentOpen && replyCommentId === comment.commentId && (
+                    <form
+                      css={submitButtonBoxCSS}
+                      onSubmit={handleCommentSubmit}
+                    >
+                      <Input
+                        onChange={(e) => setContent(e.target.value)}
+                        value={replyContent}
+                      />
+                      <Button style={{ marginLeft: "0.5rem", width: "5rem" }}>
+                        등록
+                      </Button>
+                    </form>
+                  )}
+                </div>
               ))}
           </div>
           <div css={commentTextCSS}>댓글 쓰기</div>
