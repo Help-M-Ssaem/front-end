@@ -12,6 +12,8 @@ interface ContainerProps {
 
 const Container = ({ children, addCSS }: ContainerProps) => {
   const containerCSS = css`
+    width: 100%;
+    height: 100%;
     background: ${COLOR.MAIN3};
     border-radius: 1.2rem;
     padding: 1.5rem;
