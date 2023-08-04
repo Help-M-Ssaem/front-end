@@ -7,6 +7,7 @@ export interface Board {
   imgUrl: string;
   boardMbti: string;
   likeCount: number;
+  commentCount: number;
   createdAt: string;
   memberSimpleInfo: User;
 }

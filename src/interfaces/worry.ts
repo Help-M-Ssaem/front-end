@@ -1,3 +1,4 @@
+import { MainMatching } from "./matching";
 import { User } from "./user";
 
 export interface worry {
@@ -25,7 +26,6 @@ export interface UseWorryBoard {
   departMbti: string,
   endMbti: string,
   result: WorryBoard[];
-}
 
 export interface DetailWorry {
   memberSimpleInfo: User;

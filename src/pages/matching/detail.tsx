@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
 import Button from "../../components/button/Button";
 import Profile from "../../components/profile/Profile";
+import CommentComponent from "../../components/board/comment/Comment";
+import Input from "../../components/input/Input";
 import { useDeleteBoard } from "../../hooks/worry/useDeleteWorry";
 import { useWorryBoard } from"../../hooks/worry/useDetailPost";
 import { useParams } from "react-router-dom";
@@ -69,6 +71,12 @@ const DetailMatchingPage = () => {
           <Button>채팅 시작</Button>
         </div>
         </div>
+      <div css={commentTextCSS}>댓글 쓰기</div>
+      <hr css={hrCSS} />
+      <form css={submitButtonBoxCSS} onSubmit={handleCommentSubmit}>
+        <Input />
+        <Button style={{ marginLeft: "0.5rem", width: "5rem" }}>등록</Button>
+      </form>
     </Container>
   );
 };

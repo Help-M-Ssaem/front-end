@@ -3,9 +3,10 @@ import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import Profile from "../profile/Profile";
+import { Board } from "../../interfaces/board";
 
 interface BoardProps {
-  board: any;
+  board: Board;
   onClick: (id: number) => void;
 }
 
@@ -22,10 +23,10 @@ const BoardComponent = ({ board, onClick }: BoardProps) => {
       <div css={leftCSS}>
         <div css={profileBoxCSS}>
           <Profile
-            image={board.profile}
-            name={board.name}
-            mbti={board.mbti}
-            badge={board.badge}
+            image={board.memberSimpleInfo.profileImgUrl}
+            name={board.memberSimpleInfo.nickName}
+            mbti={board.memberSimpleInfo.mbti}
+            badge={board.memberSimpleInfo.badge}
           />
         </div>
         <div css={titleCSS}>{board.title}</div>
@@ -35,12 +36,12 @@ const BoardComponent = ({ board, onClick }: BoardProps) => {
         />
         <div css={detailCSS}>
           <div css={marginRightCSS}>{board.createdAt}</div>
-          <div css={marginRightCSS}>공감 {board.like}</div>
-          <div>댓글 {board.comment}</div>
+          <div css={marginRightCSS}>공감 {board.likeCount}</div>
+          <div>댓글 {board.commentCount}</div>
         </div>
       </div>
       <div css={rightCSS}>
-        <img css={thumbnailCSS} src={board.thumbnail} alt="thumbnail" />
+        <img css={thumbnailCSS} src={board.imgUrl} alt="thumbnail" />
       </div>
     </div>
   );
