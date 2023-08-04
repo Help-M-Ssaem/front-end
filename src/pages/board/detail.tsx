@@ -71,14 +71,17 @@ const DetailBoardPage = () => {
       {board && (
         <>
           <div css={buttonBoxCSS}>
-            {/* TODO: 본인 게시글에만 수정, 삭제 버튼 */}
-            <Button
-              onClick={() => navigate("update")}
-              style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
-            >
-              수정
-            </Button>
-            <Button onClick={handleBoardDelete}>삭제</Button>
+            {board.isAllowed && (
+              <>
+                <Button
+                  onClick={() => navigate("update")}
+                  style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
+                >
+                  수정
+                </Button>
+                <Button onClick={handleBoardDelete}>삭제</Button>
+              </>
+            )}
           </div>
           <div css={detailCSS}>
             <div css={detailHeaderCSS}>
