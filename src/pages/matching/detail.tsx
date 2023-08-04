@@ -71,12 +71,6 @@ const DetailMatchingPage = () => {
           <Button>채팅 시작</Button>
         </div>
         </div>
-      <div css={commentTextCSS}>댓글 쓰기</div>
-      <hr css={hrCSS} />
-      <form css={submitButtonBoxCSS} onSubmit={handleCommentSubmit}>
-        <Input />
-        <Button style={{ marginLeft: "0.5rem", width: "5rem" }}>등록</Button>
-      </form>
     </Container>
   );
 };
