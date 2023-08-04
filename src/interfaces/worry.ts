@@ -10,17 +10,33 @@ export interface worry {
   image: [string];
 }
 
-export interface WorryBoard extends User {
+export interface WorryBoard {
+  //차피 받아온 배열을 result로 줄거니깐 이걸로 처리
+  id: number;
   title: string;
   content: string;
-  imgUrl: string;
-  memberMbti: string;
+  memberMbti: string; //user에서 받아오기
   targetMbti: string;
   createDate: number;
+  imgUrl: string;
 }
 
-export interface UseWorryBoard extends WorryBoard {
+export interface UseWorryBoard {
   page: number;
   totalSize: number;
-  result: MainMatching[];
+  departMbti: string;
+  endMbti: string;
+  result: WorryBoard[];
+}
+
+export interface DetailWorry {
+  memberSimpleInfo: User;
+  worryBoardId: number;
+  targetMbti: string;
+  title: string;
+  content: string;
+  createdAt: string;
+  imgList: string[];
+  isEditAllowed: boolean;
+  isChatAllowed: boolean;
 }

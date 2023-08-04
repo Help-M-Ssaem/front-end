@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from "react-query";
 import { mssaemAxios as axios } from "../../apis/axios";
-import { boardKeys } from "../../constants/boardKey";
+import { worryKeys } from "../../constants/matchingKey";
+
+//405 error 수정값이 반영이 안돼...
 
 async function updateWorry(board: FormData, id: number): Promise<void> {
   await axios.patch(`/member/worry-board/${id}`, board, {
@@ -19,7 +21,7 @@ export function useUpdateWorry(board: FormData, id: number): UseUpdateWorry {
 
   const { mutate } = useMutation(() => updateWorry(board, id), {
     onSuccess: () => {
-      queryClient.invalidateQueries(boardKeys.all);
+      queryClient.invalidateQueries(worryKeys.all);
     },
   });
   return { mutate };
