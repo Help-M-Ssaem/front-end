@@ -19,6 +19,7 @@ import UpdateMatchingPage from "./pages/matching/update";
 
 import DebatePage from "./pages/debate/debate";
 import PostListDebatePage from "./pages/debate/postlist";
+import DetailDebatePage from "./pages/debate/detail";
 import UpdateDebatePage from "./pages/debate/update";
 import CreateDebatePage from "./pages/debate/create";
 
@@ -75,6 +76,7 @@ function App() {
 
             <Route path="/debate" element={<DebatePage />}>
               <Route path="postlist" element={<PostListDebatePage />} />
+              <Route path=":id" element={<DetailDebatePage />} />
               <Route path="create" element={<CreateDebatePage />} />
               <Route path=":id/update" element={<UpdateDebatePage />} />
             </Route>

@@ -10,7 +10,14 @@ interface ButtonProps{
 };
 
 const PlusButton =({ children, style, onClick }: ButtonProps) =>{
-  const PlusButtonCSS = css`
+  return (
+    <div css={PlusButtonCSS}>
+      <div css={plusCSS}>{children}</div>
+    </div>
+  );
+};
+
+const PlusButtonCSS = css`
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
@@ -19,16 +26,12 @@ const PlusButton =({ children, style, onClick }: ButtonProps) =>{
   justify-content: center;
   align-items: center;
   cursor: pointer;
+`;
+
+const plusCSS = css`
   font-size: ${FONT.SIZE.BIGTITLE};
   font-weight: ${FONT.WEIGHT.BOLD};
   color: ${COLOR.WHITE};
 `;
-  
-  return (
-    <div css={PlusButtonCSS} onClick={onClick} style={style}>
-      {children}
-    </div>
-  );
-};
 
 export default PlusButton;
