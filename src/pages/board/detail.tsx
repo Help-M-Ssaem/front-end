@@ -5,7 +5,6 @@ import Container from "../../components/container/Container";
 import COLOR from "../../styles/color";
 import { css } from "@emotion/react";
 import FONT from "../../styles/font";
-import Input from "../../components/input/Input";
 import Profile from "../../components/profile/Profile";
 import CommentComponent from "../../components/board/comment/Comment";
 import { LikeClickedIcon, LikeIcon } from "../../assets/ButtonIcons";
@@ -49,14 +48,28 @@ const DetailBoardPage = () => {
     "postBoardCommentReq",
     new Blob([JSON.stringify(content)], { type: "application/json" }),
   );
+
+  const replyFormData = new FormData();
+  replyFormData.append(
+    "postBoardCommentReq",
+    new Blob([JSON.stringify(replyContent)], { type: "application/json" }),
+  );
+
   const createMutation = useBoardCommentCreate(boardId, formData);
+  const createReplyMutation = useBoardCommentCreate(boardId, replyFormData);
+
   const handleCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     createMutation.mutate();
     setContent("");
+  };
+  const handleReplyCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    createReplyMutation.mutate();
     setReplyContent("");
     setReplyCommentOpen(false);
   };
+
   const handleCommentClick = (commentId: number) => {
     setReplyCommentOpen(!replyCommentOpen);
     setReplyCommentId(commentId);
@@ -108,11 +121,25 @@ const DetailBoardPage = () => {
             </div>
           </div>
           <div>
+            {/* TODO: 서버에게 isBest 추가 요청*/}
             {bestComments &&
               bestComments.map((comment) => (
-                <>
-                  <CommentComponent comment={comment} best={true} />
-                </>
+                <div key={comment.commentId}>
+                  <CommentComponent
+                    comment={comment}
+                    best={true}
+                    onClick={() => handleCommentClick(comment.commentId)}
+                  />
+                  {replyCommentOpen && replyCommentId === comment.commentId && (
+                    <CommentCreate
+                      onSubmit={handleReplyCommentSubmit}
+                      content={replyContent}
+                      setContent={setReplyContent}
+                      addCSS={replyComment}
+                      reply={true}
+                    />
+                  )}
+                </div>
               ))}
             {comments &&
               comments.result.map((comment) => (
@@ -120,10 +147,11 @@ const DetailBoardPage = () => {
                   <CommentComponent
                     comment={comment}
                     onClick={() => handleCommentClick(comment.commentId)}
+                    reply={comment.commentId === comment.parentId}
                   />
                   {replyCommentOpen && replyCommentId === comment.commentId && (
                     <CommentCreate
-                      onSubmit={handleCommentSubmit}
+                      onSubmit={handleReplyCommentSubmit}
                       content={replyContent}
                       setContent={setReplyContent}
                       addCSS={replyComment}
