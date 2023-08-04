@@ -9,75 +9,30 @@ import Profile from "../../components/profile/Profile";
 import CommentComponent from "../../components/board/comment/Comment";
 import Input from "../../components/input/Input";
 import { useDeleteBoard } from "../../hooks/worry/useDeleteWorry";
-// TODO: 댓글 API 연동
-const commentList = [
-  {
-    id: 1,
-    profile: "https://i.ibb.co/DgVwMvJ/2023-07-03-132904.png",
-    name: "김유리",
-    mbti: "ENFP",
-    badge: "ENFJ",
-    content: "저도 이런 취미 생겼으면 좋겠어요!",
-    date: "2021.09.01",
-    like: 3,
-    isBest: true,
-  },
-  {
-    id: 2,
-    profile: "https://i.ibb.co/DgVwMvJ/2023-07-03-132904.png",
-    name: "박지운",
-    mbti: "ENFP",
-    badge: "ENFJ",
-    content: "저도 이런 취미 생겼으면 좋겠어요!",
-    date: "2021.09.01",
-    like: 4,
-    isBest: false,
-  },
-  {
-    id: 3,
-    profile: "https://i.ibb.co/DgVwMvJ/2023-07-03-132904.png",
-    name: "송민혁",
-    mbti: "ENFP",
-    badge: "ENFJ",
-    content: "저도 이런 취미 생겼으면 좋겠어요!",
-    date: "2021.09.01",
-    like: 5,
-    isBest: false,
-  },
-];
-
-const matching = {
-  id: 1,
-  profile: "https://i.ibb.co/DgVwMvJ/2023-07-03-132904.png",
-  name: "김유리",
-  mbti: "ENFP",
-  badge: "ENFJ",
-  title: "취미가 생겼어요!",
-  content: "hello",
-  createdAt: "2021.09.01",
-  like: 3,
-  isBest: true,
-};
+import { useWorryBoard } from"../../hooks/worry/useDetailPost";
+import { useParams } from "react-router-dom";
 
 const DetailMatchingPage = () => {
-  const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
+  const { worryBoard } = useWorryBoard(Number(id));
 
-  const deleteMutation = useDeleteBoard(1);
+  const navigate = useNavigate();
+  const handleStartChatting = () => {
+    if (!worryBoard){
+      return;
+    }
+    navigate(`/chatting/${worryBoard.worryBoardId}`);
+  };
+  const deleteMutation = useDeleteBoard(Number(id));
   const handleMatchingDelete = () => {
     // TODO: 게시글 삭제 API 연동
     deleteMutation.mutate();
     navigate(-1);
   };
-
-  const handleLikeClick = () => {
-    alert("공감이 완료되었습니다.");
-    // TODO: 공감 API 연동
-  };
-
-  const handleCommentSubmit = () => {
-    alert("댓글이 등록되었습니다.");
-    // TODO: 댓글 등록 API 연동
-  };
+  
+  if (!worryBoard) {
+    return <div>없따</div>;
+  }
 
   return (
     <Container
@@ -88,7 +43,8 @@ const DetailMatchingPage = () => {
       <div css={buttonBoxCSS}>
         {/* TODO: 본인 게시글에만 수정, 삭제 버튼 */}
         <Button
-          onClick={() => navigate("/match/update")}
+           onClick={() =>  navigate(`/match/${id}/update`)}
+          //  navigate("/match/update")}
           style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
         >
           수정
@@ -98,30 +54,23 @@ const DetailMatchingPage = () => {
       <div css={detailCSS}>
         <div css={detailHeaderCSS}>
           <Profile
-            image={matching.profile}
-            name={matching.name}
-            mbti={matching.mbti}
-            badge={matching.badge}
+            image={worryBoard.memberSimpleInfo.profileImgUrl}
+            name={worryBoard.memberSimpleInfo.nickName}
+            mbti={worryBoard.memberSimpleInfo.mbti}
+            badge={worryBoard.memberSimpleInfo.badge}
           />
-          <div css={dateCSS}>{matching.createdAt}</div>
+          <div css={dateCSS}>{worryBoard.createdAt}</div>
         </div>
-        <div css={titleCSS}>{matching.title}</div>
-        <div css={contentCSS}>{matching.content}</div>
-
-        <div css={startButtonBoxCSS} onClick={() => navigate("/chatting")}>
+        <div css={titleCSS}>{worryBoard.title}</div>
+        <div
+              css={contentCSS}
+              dangerouslySetInnerHTML={{ __html: worryBoard.content }}
+            />
+        {/* 이미지 찍는걸 어케하지 */}
+        <div css={startButtonBoxCSS} onClick={handleStartChatting}>
           <Button>채팅 시작</Button>
         </div>
-
-        <div css={commentTextCSS}>
-          전체 댓글 {commentList ? commentList.length : 0}개
         </div>
-      </div>
-
-      {/* <div>
-        {commentList &&
-          commentList.map((comment) => <CommentComponent comment={comment} />)}
-      </div> */}
-
       <div css={commentTextCSS}>댓글 쓰기</div>
       <hr css={hrCSS} />
       <form css={submitButtonBoxCSS} onSubmit={handleCommentSubmit}>
@@ -164,22 +113,6 @@ const contentCSS = css`
   font-weight: ${FONT.WEIGHT.REGULAR};
   padding-bottom: 3rem;
   line-height: 1.4rem;
-`;
-
-const commentTextCSS = css`
-  font-size: ${FONT.SIZE.HEADLINE};
-  font-weight: ${FONT.WEIGHT.BOLD};
-  color: ${COLOR.MAINDARK};
-  margin-top: 3rem;
-`;
-
-const hrCSS = css`
-  border: 1px solid ${COLOR.MAIN};
-  margin: 1rem 0;
-`;
-
-const submitButtonBoxCSS = css`
-  display: flex;
 `;
 
 const buttonBoxCSS = css`

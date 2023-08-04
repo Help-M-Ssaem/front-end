@@ -70,13 +70,13 @@ function App() {
               <Route path="matching" element={<MatchingPage />} />
               <Route path=":id" element={<DetailMatchingPage />} />
               <Route path="create" element={<CreateMatchingPage />} />
-              <Route path="update" element={<UpdateMatchingPage />} />
+              <Route path=":id/update" element={<UpdateMatchingPage />} />
             </Route>
 
             <Route path="/debate" element={<DebatePage />}>
               <Route path="postlist" element={<PostListDebatePage />} />
               <Route path="create" element={<CreateDebatePage />} />
-              <Route path="update" element={<UpdateDebatePage />} />
+              <Route path=":id/update" element={<UpdateDebatePage />} />
             </Route>
 
             <Route path="/mbtitype" element={<MbtiTypePage />} />

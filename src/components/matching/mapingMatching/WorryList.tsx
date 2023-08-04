@@ -1,0 +1,124 @@
+/** @jsxImportSource @emotion/react */
+import { useEffect, useState } from "react";
+import MatchingComponent from "../Matching";
+import { css } from "@emotion/react";
+import COLOR from "../../../styles/color";
+import FONT from "../../../styles/font";
+import { useNavigate } from "react-router-dom";
+import Text from "../../../components/text/Text";
+import Container from "../../../components/container/Container";
+import { RightArrowIcon, SmallArrowIcon } from "../../../assets/CommonIcons";
+import Button from "../../button/Button";
+import useFetchWorryBoardList from "../../../hooks/worry/UseFetchBoardList";
+import MbtiList from "../mapingMatching/MbtiList";
+import React from "react";
+
+interface WorryProps {
+  pathMove: string;
+  SaW: string;
+}
+
+const WorryList: React.FC<WorryProps> = ({ pathMove, SaW }) => {
+  const navigate = useNavigate();
+  const [openMbti1, setOpenMbti1] = useState(false);
+  const [mbti1, setMbti1] = useState("전체");
+  const [openMbti2, setOpenMbti2] = useState(false);
+  const [mbti2, setMbti2] = useState("전체");
+
+  const handleOpenMbti1 = () => {
+    setOpenMbti1(!openMbti1);
+    setOpenMbti2(false);
+  };
+  const handleOpenMbti2 = () => {
+    setOpenMbti2(!openMbti2);
+    setOpenMbti1(false);
+  };
+
+  const handleMbti1Click = (mbti: string) => {
+    setOpenMbti1(false);
+    setMbti1(mbti);
+  };
+  const handleMbti2Click = (mbti: string) => {
+    setOpenMbti2(false);
+    setMbti2(mbti);
+  };
+
+  const handleMatchingClick = (id: number) => {
+    navigate(`/match/${id}`);
+  };
+  const worryBoardList = useFetchWorryBoardList(mbti1, mbti2, pathMove);
+  useEffect(() => {
+    setMbti1("전체");
+    setMbti2("전체");
+  }, []);
+  return (
+    <>
+      <Text>{SaW}</Text>
+      <Container>
+      <div css={buttonBoxCSS}>
+          <div css={mbtiBoxCSS}>
+            <div css={mbtiSelectBoxCSS}>
+              <div css={mbtiCSS} onClick={handleOpenMbti1}>
+                {mbti1} <SmallArrowIcon />
+              </div>
+              {openMbti1 && <MbtiList onClick={handleMbti1Click} />}
+            </div>
+            <RightArrowIcon />
+            <div css={mbtiSelectBoxCSS}>
+              <div css={mbtiCSS} onClick={handleOpenMbti2}>
+                {mbti2} <SmallArrowIcon />
+              </div>
+              {openMbti2 && <MbtiList onClick={handleMbti2Click} />}
+            </div>
+          </div>
+          <Button onClick={() => navigate("/match/create")}>글 쓰기</Button>
+        </div>
+        {worryBoardList &&
+            worryBoardList.result.map((matching) => (
+          <MatchingComponent
+            matching={matching}
+            solve={pathMove}
+            key={matching.id}
+            onClick={() => handleMatchingClick(matching.id)}
+          />
+          ))}
+      </Container>
+    </>
+  );
+};
+
+export default WorryList;
+
+const mbtiBoxCSS = css`
+  display: flex;
+  align-items: center;
+`;
+
+const mbtiSelectBoxCSS = css`
+  display: flex;
+  align-items: center;
+  position: relative;
+`;
+
+const mbtiCSS = css`
+  dispaly: flex;
+  align-items: center;
+
+  background: ${COLOR.WHITE};
+  border: 1px solid ${COLOR.GRAY4};
+
+  font-weight: ${FONT.WEIGHT.REGULAR};
+  font-size: ${FONT.SIZE.BODY};
+  color: ${COLOR.GRAY2};
+
+  padding: 0.3rem 0.5rem;
+  margin-right: 0.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+`;
+
+const buttonBoxCSS = css`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+`;
