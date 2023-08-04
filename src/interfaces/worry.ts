@@ -1,3 +1,4 @@
+import { MainMatching } from "./matching";
 import { User } from "./user";
 
 export interface worry {
@@ -18,8 +19,8 @@ export interface WorryBoard extends User {
   createDate: number;
 }
 
-export interface UseWarryBoard extends WorryBoard {
+export interface UseWorryBoard extends WorryBoard {
   page: number;
   totalSize: number;
-  result: WorryBoard[];
+  result: MainMatching[];
 }

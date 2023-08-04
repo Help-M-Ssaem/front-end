@@ -3,14 +3,13 @@ import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 
-type ButtonProps = {
+interface ButtonProps {
   children?: React.ReactNode;
   style?: React.CSSProperties;
   onClick?: () => void;
-  type?: string;
-};
+}
 
-const Button = ({ children, style, onClick, }: ButtonProps) => {
+const Button = ({ children, style, onClick }: ButtonProps) => {
   const buttonCSS = css`
     display: flex;
     justify-content: center;

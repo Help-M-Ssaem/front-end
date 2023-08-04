@@ -5,28 +5,36 @@ import Profile from "../../profile/Profile";
 import FONT from "../../../styles/font";
 import COLOR from "../../../styles/color";
 import { BestIcon, HeartIcon } from "../../../assets/CommonIcons";
+import { useBoardCommentLike } from "../../../hooks/board/comment/useBoardCommentLike";
+import { useParams } from "react-router";
 
 interface CommentProps {
-  comment: Comment;
+  comment: any; // TODO: Comment 타입 오류 처리
+  best?: boolean;
 }
 
-const CommentComponent = ({ comment }: CommentProps) => {
+const CommentComponent = ({ comment, best }: CommentProps) => {
+  const { id } = useParams();
+
+  const likeMutation = useBoardCommentLike(Number(id), comment.commentId);
+  const handleLikeClick = () => {
+    likeMutation.mutate();
+  };
+
   return (
     <div css={commentBoxCSS} key={comment.commentId}>
       <div css={profileBoxCSS}>
         <div css={profileBestCSS}>
-          {comment.isAllowed && <BestIcon />}
+          {best && <BestIcon />}
           <Profile
             image={comment.memberSimpleInfo.profileImgUrl}
             name={comment.memberSimpleInfo.nickName}
             mbti={comment.memberSimpleInfo.mbti}
             badge={comment.memberSimpleInfo.badge}
           />
-          {/* <div>{comment.createdAt}</div>
-          <div>{comment.isLiked}</div>
-          <div>{comment.parentId}</div> */}
         </div>
-        <div css={likeCountCSS}>
+        {/* TODO: 본인 댓글에만 좋아요 대신 삭제 버튼 */}
+        <div css={likeCountCSS} onClick={handleLikeClick}>
           <HeartIcon />
           <div>{comment.likeCount}</div>
         </div>
@@ -68,4 +76,5 @@ const likeCountCSS = css`
   font-size: ${FONT.SIZE.TITLE3};
   font-weight: ${FONT.WEIGHT.SEMIBOLD};
   color: ${COLOR.GRAY2};
+  cursor: pointer;
 `;

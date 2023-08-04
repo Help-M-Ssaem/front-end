@@ -1,3 +1,4 @@
 export const commentKeys = {
-  all: ["board"] as const,
+  all: ["comment"] as const,
+  best: ["bestComment"] as const,
 };

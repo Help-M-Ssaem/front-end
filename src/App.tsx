@@ -50,7 +50,6 @@ function App() {
             <Route path="/" element={<MainPage />} />
             <Route path="/hotBoard" element={<HotBoardPage />} />
             <Route path="/hotDebate" element={<HotDebatePage />} />
-
             <Route path="/login" element={<LoginPage />} />
             <Route path="/kakao/login" element={<Callback />} />
             <Route path="/naver/login" element={<Callback />} />

@@ -14,16 +14,22 @@ import { useBoardDetail } from "../../hooks/board/useBoardDetail";
 import { useParams } from "react-router-dom";
 import { useBoardLike } from "../../hooks/board/useBoardLike";
 import { useBoardComment } from "../../hooks/board/comment/useBoardComment";
+import { useBoardBestComment } from "../../hooks/board/comment/useBoardBestComment";
+import { useState } from "react";
+import { useBoardCommentCreate } from "../../hooks/board/comment/useBoardCommentCreate";
 
 const DetailBoardPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { board } = useBoardDetail(parseInt(id!!));
+  const boardId = Number(id);
+  const { board } = useBoardDetail(boardId);
   // TODO: 페이지네이션 구현되면 page, size 수정
-  const { comments } = useBoardComment(parseInt(id!!), 0, 10);
+  const { comments } = useBoardComment(boardId, 0, 10);
+  const { bestComments } = useBoardBestComment(boardId);
+  const [content, setContent] = useState("");
 
-  const deleteMutation = useDeleteBoard(parseInt(id!!));
-  const likeMutation = useBoardLike(parseInt(id!!));
+  const deleteMutation = useDeleteBoard(boardId);
+  const likeMutation = useBoardLike(boardId);
 
   const handleBoardDelete = () => {
     deleteMutation.mutate();
@@ -32,9 +38,20 @@ const DetailBoardPage = () => {
   const handleLikeClick = () => {
     likeMutation.mutate();
   };
-  // TODO: 댓글 등록 API 연동
-  const handleCommentSubmit = () => {
-    alert("댓글이 등록되었습니다.");
+
+  const formData = new FormData();
+  const data = {
+    content: content,
+  };
+  formData.append(
+    "postBoardCommentReq",
+    new Blob([JSON.stringify(data)], { type: "application/json" }),
+  );
+  const createMutation = useBoardCommentCreate(boardId, formData);
+  const handleCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    createMutation.mutate();
+    setContent("");
   };
 
   return (
@@ -84,6 +101,10 @@ const DetailBoardPage = () => {
             </div>
           </div>
           <div>
+            {bestComments &&
+              bestComments.map((comment) => (
+                <CommentComponent comment={comment} best={true} />
+              ))}
             {comments &&
               comments.result.map((comment) => (
                 <CommentComponent comment={comment} />
@@ -92,7 +113,10 @@ const DetailBoardPage = () => {
           <div css={commentTextCSS}>댓글 쓰기</div>
           <hr css={hrCSS} />
           <form css={submitButtonBoxCSS} onSubmit={handleCommentSubmit}>
-            <Input onSubmit={handleCommentSubmit} />
+            <Input
+              onChange={(e) => setContent(e.target.value)}
+              value={content}
+            />
             <Button style={{ marginLeft: "0.5rem", width: "5rem" }}>
               등록
             </Button>
