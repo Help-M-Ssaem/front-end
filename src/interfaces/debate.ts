@@ -1,33 +1,33 @@
 import { User } from "./user";
 
 export interface Option {
-  imageContent?: File;
-  imageContentURL?: string;
-  textContent: string;
-  voteCount: number;
-}
+  id: number;
+  content: string;
+  imgUrl?: string;
+  selectedPercent?: string;
+  selected?: boolean;
+};
 
-export interface PostData {
+export interface Debate {
+  id: number;
   title: string;
   content: string;
-  selectedOptions: Option[];
-  selectedOptionIndex: number;
-  totalVotes: number;
-  voted: boolean;
+  participantCount: number;
+  commentCount: number;
+  createdAt: string;
+  memberSimpleInfo: User;
+  options: Option[];
 }
 
-export interface Debate extends PostData {
-  id: number;
-  name: string;
-  profile: string;
-  mbti: string;
-  badge: string;
-  createdAt: string;
-  comment: number;
+export interface DebateDitail extends Debate{
+  isEditAllowed: boolean;
 }
-export interface DebateProps {
-  debate: Debate;
+export interface DebateList {
+  page: number;
+  totalSize: number;
+  result: Debate[];
 }
+
 
 export interface HotDebate {
   id: number;
@@ -40,7 +40,7 @@ export interface HotDebate {
   options: [
     {
       id: number;
-      title: string;
+      content: string;
       imgUrl: string;
       selectedPercent: string;
       selected: boolean;
