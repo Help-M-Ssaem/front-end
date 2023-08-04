@@ -39,16 +39,16 @@ const CommentComponent = ({ comment, best }: CommentProps) => {
             badge={comment.memberSimpleInfo.badge}
           />
         </div>
-        {/* TODO: 본인 댓글에만 좋아요 대신 삭제 버튼 */}
-        <div css={detailCSS}>
+        {comment.isAllowed ? (
           <div css={deleteCSS} onClick={handleCommentDeleteClick}>
             삭제
           </div>
+        ) : (
           <div css={likeCountCSS} onClick={handleLikeClick}>
             <HeartIcon />
             <div>{comment.likeCount}</div>
           </div>
-        </div>
+        )}
       </div>
       <div css={contentCSS}>{comment.content}</div>
     </div>
@@ -90,14 +90,9 @@ const likeCountCSS = css`
   cursor: pointer;
 `;
 
-const detailCSS = css`
-  display: flex;
-  align-items: center;
+const deleteCSS = css`
+  cursor: pointer;
   font-size: ${FONT.SIZE.BODY};
   font-weight: ${FONT.WEIGHT.REGULAR};
   color: ${COLOR.GRAY2};
-`;
-
-const deleteCSS = css`
-  cursor: pointer;
 `;
