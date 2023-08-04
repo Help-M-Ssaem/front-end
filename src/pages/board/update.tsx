@@ -136,10 +136,7 @@ const UpdateBoardPage = () => {
           }}
         />
         <div css={buttonBoxCSS}>
-          <Button
-            style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
-            onClick={() => navigate(-1)}
-          >
+          <Button addCSS={buttonCSS} onClick={() => navigate(-1)}>
             취소하기
           </Button>
           <Button onClick={handleSubmit}>글 쓰기</Button>
@@ -224,4 +221,9 @@ const buttonBoxCSS = css`
   display: flex;
   justify-content: flex-end;
   margin-top: 1rem;
+`;
+
+const buttonCSS = css`
+  margin-right: 0.5rem;
+  background: ${COLOR.MAIN};
 `;

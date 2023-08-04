@@ -1,15 +1,15 @@
 /** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
+import { SerializedStyles, css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 
 interface ButtonProps {
   children?: React.ReactNode;
-  style?: React.CSSProperties;
   onClick?: () => void;
+  addCSS?: SerializedStyles;
 }
 
-const Button = ({ children, style, onClick }: ButtonProps) => {
+const Button = ({ children, onClick, addCSS }: ButtonProps) => {
   const buttonCSS = css`
     display: flex;
     justify-content: center;
@@ -25,7 +25,7 @@ const Button = ({ children, style, onClick }: ButtonProps) => {
   `;
 
   return (
-    <button css={buttonCSS} onClick={onClick} style={style}>
+    <button css={[buttonCSS, addCSS]} onClick={onClick}>
       {children}
     </button>
   );

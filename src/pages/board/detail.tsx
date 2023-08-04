@@ -82,10 +82,7 @@ const DetailBoardPage = () => {
           <div css={buttonBoxCSS}>
             {board.isAllowed && (
               <>
-                <Button
-                  onClick={() => navigate("update")}
-                  style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
-                >
+                <Button onClick={() => navigate("update")} addCSS={buttonCSS}>
                   수정
                 </Button>
                 <Button onClick={handleBoardDelete}>삭제</Button>
@@ -235,6 +232,11 @@ const buttonBoxCSS = css`
   display: flex;
   justify-content: flex-end;
   margin-bottom: 1rem;
+`;
+
+const buttonCSS = css`
+  margin-right: 0.5rem;
+  background: ${COLOR.MAIN};
 `;
 
 const likeButtonBoxCSS = css`

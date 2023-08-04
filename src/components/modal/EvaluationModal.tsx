@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
@@ -10,63 +10,76 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   onClick: () => void;
-  profileData: ChattingHistory|null;
+  profileData: ChattingHistory | null;
 }
 const options = [
-    { id: "option1", label: "좋아요", value: "option1_value" },
-    { id: "option2", label: "유익해요", value: "option2_value" },
-    { id: "option3", label: "재밌어요", value: "option3_value" },
-    { id: "option4", label: "성의있어요", value: "option4_value" },
-    { id: "option5", label: "화끈해요", value: "option5_value"},
-  ];
+  { id: "option1", label: "좋아요", value: "option1_value" },
+  { id: "option2", label: "유익해요", value: "option2_value" },
+  { id: "option3", label: "재밌어요", value: "option3_value" },
+  { id: "option4", label: "성의있어요", value: "option4_value" },
+  { id: "option5", label: "화끈해요", value: "option5_value" },
+];
 
-const EvaluationModal: React.FC<ModalProps> = ({ isOpen, onClose, onClick, profileData}) => {
-    const [selectedOption, setSelectedOption] = useState<string>("");
-    if (!isOpen) return null;
-    const handleOptionClick = (optionValue: string) => {
-        setSelectedOption(optionValue);
-      };
-    return (
+const EvaluationModal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  onClick,
+  profileData,
+}) => {
+  const [selectedOption, setSelectedOption] = useState<string>("");
+  if (!isOpen) return null;
+  const handleOptionClick = (optionValue: string) => {
+    setSelectedOption(optionValue);
+  };
+  return (
     <div css={modalBackground} onClick={onClose}>
       <div css={modalMain} onClick={(e) => e.stopPropagation()}>
         <div css={modalHeader}>
-            <div css={modaltext}>M쌤이 도움이 되셨나요?</div>
+          <div css={modaltext}>M쌤이 도움이 되셨나요?</div>
         </div>
-        {/* <div css={optionBoxCSS}>
-        </div> */}
         <div css={contentBackBoxCSS}>
-            <div css={[boXTopCSS,boXCSS]}>
-                    <div>
-                        <img css= {profileImgCSS} src={profileData?.profile}/>
-                        <div css={profileDetailCSS}>{profileData?.name}</div>
-                        <div css={[profileDetailCSS, marginLeftCSS]}>
-                        <Badge mbti={profileData?.mbti||""} color={"#F8CAFF"} />
-                        <Badge mbti={profileData?.badge||""} color={"#5BE1A9"} />
-                        </div>
+          <div css={[boXTopCSS, boXCSS]}>
+            <div>
+              <img
+                css={profileImgCSS}
+                src={profileData?.profile}
+                alt={profileData?.profile}
+              />
+              <div css={profileDetailCSS}>{profileData?.name}</div>
+              <div css={[profileDetailCSS, marginLeftCSS]}>
+                <Badge mbti={profileData?.mbti || ""} color={"#F8CAFF"} />
+                <Badge mbti={profileData?.badge || ""} color={"#5BE1A9"} />
+              </div>
+            </div>
+          </div>
+          <div css={[boXBottomCSS, boXCSS]}>
+            <div>어울리는 키워드를 골라주세요. (0~5개)</div>
+            <div css={buttonBoxCSS}>
+              {options.map((option) => (
+                <div
+                  css={marginLeftCSS}
+                  key={option.id}
+                  onClick={() => handleOptionClick(option.value)}
+                >
+                  <button
+                    css={buttonCSS}
+                    className={`optionItem ${
+                      selectedOption === option.value ? "selected" : ""
+                    }`}
+                  >
+                    {option.label}
+                  </button>
                 </div>
+              ))}
             </div>
-            <div css={[boXBottomCSS,boXCSS]}>
-                <div>어울리는 키워드를 골라주세요. (0~5개)</div>
-                <div css={buttonBoxCSS}>
-                {options.map((option) => (
-            <div 
-                css={marginLeftCSS}
-                key={option.id} 
-                onClick={() => handleOptionClick(option.value)}>
-              <button 
-              css={buttonCSS}
-              className={`optionItem ${selectedOption === option.value ? 'selected' : ''}`}
-              >{option.label}</button>
-            </div>
-          ))}
-                </div>
-            </div>
+          </div>
         </div>
         <div css={bottombuttonBoxCSS}>
-                <Button onClick={onClose} style={{ marginRight: "0.5rem", background: COLOR.MAIN }}>제출하기</Button>
-                </div>
-        
+          <Button onClick={onClose} addCSS={submitButtonCSS}>
+            제출하기
+          </Button>
         </div>
+      </div>
     </div>
   );
 };
@@ -75,7 +88,10 @@ export default EvaluationModal;
 
 const modalBackground = css`
   position: fixed;
-  top:0; left: 0; bottom: 0; right: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -84,13 +100,13 @@ const modalBackground = css`
 `;
 
 const modalMain = css`
-    position: absolute;
-    display: flex;
-    width: 35rem;
-    height: 30rem;
-    background-color: ${COLOR.WHITE};
-    border-radius: 1rem;
-    flex-direction: column;
+  position: absolute;
+  display: flex;
+  width: 35rem;
+  height: 30rem;
+  background-color: ${COLOR.WHITE};
+  border-radius: 1rem;
+  flex-direction: column;
 `;
 
 const modalHeader = css`
@@ -125,37 +141,36 @@ const buttonBoxCSS = css`
 `;
 
 const contentBackBoxCSS = css`
-justify-content: center;
-align-items: center;
-width:100%;
-min-height: 22rem;
-display: flex;
-flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 22rem;
+  display: flex;
+  flex-direction: column;
 `;
 
 const boXCSS = css`
-display: flex;
-align-items: center;
-justify-content: center;
-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 `;
 
 const boXTopCSS = css`
-display: flex;
-justify-content: center;
-width: 15rem;
-min-height: 13rem;
+  display: flex;
+  justify-content: center;
+  width: 15rem;
+  min-height: 13rem;
 `;
 
 const boXBottomCSS = css`
-width: 100%;
-min-height: 7rem;
-justify-content: center;
-flex-direction: column;
-padding-top: 0.8rem;
+  width: 100%;
+  min-height: 7rem;
+  justify-content: center;
+  flex-direction: column;
+  padding-top: 0.8rem;
 `;
 
-//-------------------------------------------
 const profileImgCSS = css`
   width: 10rem;
   height: 10rem;
@@ -174,21 +189,26 @@ const marginLeftCSS = css`
 `;
 
 const buttonCSS = css`
-display: flex;
-justify-content: center;
-align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-color: ${COLOR.BLACK};
-background: ${COLOR.GRAY4};
-font-size: ${FONT.SIZE.BODY};
-font-weight: ${FONT.WEIGHT.BOLD};
+  color: ${COLOR.BLACK};
+  background: ${COLOR.GRAY4};
+  font-size: ${FONT.SIZE.BODY};
+  font-weight: ${FONT.WEIGHT.BOLD};
 
-padding: 0.5rem 1rem;
-border-radius: 2rem;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
 `;
 
 const bottombuttonBoxCSS = css`
   display: flex;
   justify-content: flex-end;
   padding: 0 1rem 0.8rem 0;
+`;
+
+const submitButtonCSS = css`
+  margin-right: 0.5rem;
+  background: ${COLOR.MAIN};
 `;

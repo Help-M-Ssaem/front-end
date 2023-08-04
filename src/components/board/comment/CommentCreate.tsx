@@ -24,7 +24,7 @@ const CommentCreate = ({
       {reply && <ReplyIcon />}
       <form css={submitButtonBoxCSS} onSubmit={onSubmit}>
         <Input onChange={(e) => setContent(e.target.value)} value={content} />
-        <Button style={{ marginLeft: "0.5rem", width: "5rem" }}>등록</Button>
+        <Button addCSS={buttonCSS}>등록</Button>
       </form>
     </div>
   );
@@ -39,4 +39,9 @@ const submitButtonBoxCSS = css`
 
 const commentCreateBoxCSS = css`
   display: flex;
+`;
+
+const buttonCSS = css`
+  margin-left: 0.5rem;
+  width: 5rem;
 `;

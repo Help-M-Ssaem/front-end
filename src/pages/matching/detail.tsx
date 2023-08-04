@@ -45,7 +45,7 @@ const DetailMatchingPage = () => {
         <Button
           onClick={() => navigate(`/match/${id}/update`)}
           //  navigate("/match/update")}
-          style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
+          addCSS={updateButtonCSS}
         >
           수정
         </Button>
@@ -75,7 +75,7 @@ const DetailMatchingPage = () => {
       <hr css={hrCSS} />
       <form css={submitButtonBoxCSS} onSubmit={handleCommentSubmit}>
         <Input />
-        <Button style={{ marginLeft: "0.5rem", width: "5rem" }}>등록</Button>
+        <Button addCSS={submitButtonCSS}>등록</Button>
       </form>
     </Container>
   );
@@ -148,4 +148,14 @@ const hrCSS = css`
 
 const submitButtonBoxCSS = css`
   display: flex;
+`;
+
+const updateButtonCSS = css`
+  margin-right: 0.5rem;
+  background: ${COLOR.MAIN};
+`;
+
+const submitButtonCSS = css`
+  margin-left: 0.5rem;
+  width: 5rem;
 `;
