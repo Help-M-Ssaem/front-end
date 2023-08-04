@@ -17,6 +17,7 @@ import { useBoardComment } from "../../hooks/board/comment/useBoardComment";
 import { useBoardBestComment } from "../../hooks/board/comment/useBoardBestComment";
 import { useState } from "react";
 import { useBoardCommentCreate } from "../../hooks/board/comment/useBoardCommentCreate";
+import CommentCreate from "../../components/board/comment/CommentCreate";
 
 const DetailBoardPage = () => {
   const navigate = useNavigate();
@@ -27,8 +28,9 @@ const DetailBoardPage = () => {
   const { comments } = useBoardComment(boardId, 0, 10);
   const { bestComments } = useBoardBestComment(boardId);
   const [content, setContent] = useState("");
-  const [replyCommentId, setReplyCommentId] = useState(0);
+
   const [replyContent, setReplyContent] = useState("");
+  const [replyCommentId, setReplyCommentId] = useState(0);
   const [replyCommentOpen, setReplyCommentOpen] = useState(false);
 
   const deleteMutation = useDeleteBoard(boardId);
@@ -52,6 +54,8 @@ const DetailBoardPage = () => {
     e.preventDefault();
     createMutation.mutate();
     setContent("");
+    setReplyContent("");
+    setReplyCommentOpen(false);
   };
   const handleCommentClick = (commentId: number) => {
     setReplyCommentOpen(!replyCommentOpen);
@@ -119,33 +123,24 @@ const DetailBoardPage = () => {
                     onClick={() => handleCommentClick(comment.commentId)}
                   />
                   {replyCommentOpen && replyCommentId === comment.commentId && (
-                    <form
-                      css={submitButtonBoxCSS}
+                    <CommentCreate
                       onSubmit={handleCommentSubmit}
-                    >
-                      <Input
-                        onChange={(e) => setContent(e.target.value)}
-                        value={replyContent}
-                      />
-                      <Button style={{ marginLeft: "0.5rem", width: "5rem" }}>
-                        등록
-                      </Button>
-                    </form>
+                      content={replyContent}
+                      setContent={setReplyContent}
+                      addCSS={replyComment}
+                      reply={true}
+                    />
                   )}
                 </div>
               ))}
           </div>
           <div css={commentTextCSS}>댓글 쓰기</div>
           <hr css={hrCSS} />
-          <form css={submitButtonBoxCSS} onSubmit={handleCommentSubmit}>
-            <Input
-              onChange={(e) => setContent(e.target.value)}
-              value={content}
-            />
-            <Button style={{ marginLeft: "0.5rem", width: "5rem" }}>
-              등록
-            </Button>
-          </form>
+          <CommentCreate
+            onSubmit={handleCommentSubmit}
+            content={content}
+            setContent={setContent}
+          />
         </>
       )}
     </Container>
@@ -205,10 +200,6 @@ const hrCSS = css`
   margin: 1rem 0;
 `;
 
-const submitButtonBoxCSS = css`
-  display: flex;
-`;
-
 const buttonBoxCSS = css`
   display: flex;
   justify-content: flex-end;
@@ -220,4 +211,8 @@ const likeButtonBoxCSS = css`
   justify-content: center;
   align-items: center;
   margin: 2rem 0;
+`;
+
+const replyComment = css`
+  margin-top: 1rem;
 `;
