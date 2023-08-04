@@ -28,7 +28,7 @@ const MatchingComponent = ({ matching, solve, onClick }: MatchingProps) => {
           <Badge mbti={matching.memberMbti} color={COLOR.MAIN4} />
           <RightArrowIcon />
           <Badge mbti={matching.targetMbti} color={COLOR.YELLOW} />
-          <div css={createAtCSS}>{matching.createDate}</div>
+          <div css={createAtCSS}>{matching.createdDate}</div>
         </div>
         <div css={titleCSS}>{matching.title}</div>
         <div css={contentCSS}
@@ -85,9 +85,12 @@ const mbtiBoxCSS = css`
 `;
 
 const createAtCSS = css`
-  font-size: ${FONT.SIZE.FOOTNOTE};
-  font-weight: ${FONT.WEIGHT.REGULAR};
-  color: ${COLOR.GRAY2};
+display: flex;
+font-size: 0.9rem;
+color: ${COLOR.GRAY2};
+padding-left: 0.5rem;
+font-size: ${FONT.SIZE.FOOTNOTE};
+font-weight: ${FONT.WEIGHT.REGULAR};
 `;
 
 export default MatchingComponent;

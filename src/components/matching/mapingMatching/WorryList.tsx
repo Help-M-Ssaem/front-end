@@ -71,7 +71,7 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW }) => {
               {openMbti2 && <MbtiList onClick={handleMbti2Click} />}
             </div>
           </div>
-          <Button onClick={() => navigate("/match/create")}>글 쓰기</Button>
+          {pathMove === "waiting" && <Button onClick={() => navigate("/match/create")}>글 쓰기</Button>}
         </div>
         {worryBoardList &&
             worryBoardList.result.map((matching) => (
