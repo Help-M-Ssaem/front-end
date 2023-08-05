@@ -56,7 +56,11 @@ const DetailBoardPage = () => {
   );
 
   const createMutation = useBoardCommentCreate(boardId, formData);
-  const createReplyMutation = useBoardCommentCreate(boardId, replyFormData);
+  const createReplyMutation = useBoardCommentCreate(
+    boardId,
+    replyFormData,
+    replyCommentId,
+  );
 
   const handleCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -73,6 +77,7 @@ const DetailBoardPage = () => {
   const handleCommentClick = (commentId: number) => {
     setReplyCommentOpen(!replyCommentOpen);
     setReplyCommentId(commentId);
+    console.log(commentId);
   };
 
   return (
@@ -119,7 +124,7 @@ const DetailBoardPage = () => {
           </div>
           <div>
             {/* TODO: 서버에게 isBest 추가 요청*/}
-            {bestComments &&
+            {/* {bestComments &&
               bestComments.map((comment) => (
                 <div key={comment.commentId}>
                   <CommentComponent
@@ -137,7 +142,7 @@ const DetailBoardPage = () => {
                     />
                   )}
                 </div>
-              ))}
+              ))} */}
             {comments &&
               comments.result.map((comment) => (
                 <div key={comment.commentId}>

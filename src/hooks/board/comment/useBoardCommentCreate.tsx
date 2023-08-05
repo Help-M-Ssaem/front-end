@@ -5,8 +5,13 @@ import { commentKeys } from "../../../constants/commentKey";
 async function createBoardComment(
   boardId: number,
   comment: FormData,
+  commentId?: number,
 ): Promise<void> {
-  await axios.post(`/member/boards/${boardId}/comments?commentId`, comment, {
+  let url = `/member/boards/${boardId}/comments`;
+  if (commentId !== undefined) {
+    url += `?commentId=${commentId}`;
+  }
+  await axios.post(url, comment, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -20,6 +25,7 @@ interface UseBoardCommentCreate {
 export function useBoardCommentCreate(
   boardId: number,
   comment: FormData,
+  commentId?: number,
 ): UseBoardCommentCreate {
   const queryClient = useQueryClient();
 
