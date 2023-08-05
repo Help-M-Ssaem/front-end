@@ -90,7 +90,7 @@ const ChattingPage = () => {
   const [inputMessage, setInputMessage] = useState(""); // 사용자가 입력한 메세지를 저장하는 상태 변수
   const [stompClient, setStompClient] = useState<Stomp.Client | null>(null); // STOMP 클라이언트를 저장하는 상태 변수
 
-  useEffect(() => {
+  const connectAndSendMessages = (roomId: number, inputMessage: string) => {
     // 웹 소켓을 생성하고, STOMP 클라이언트를 생성하여 서버와 연결
     const socket = new WebSocket("wss://m-ssaem.com:8080/stomp/chat");
     const client = Stomp.over(socket);
@@ -98,6 +98,15 @@ const ChattingPage = () => {
     client.connect({}, () => {
       setStompClient(client);
       client.subscribe(`/sub/chat/room/${activeRoomId}`, onMessageReceived);
+
+      // 메세지를 보내는 함수
+      const sendMessage = () => {
+        if (inputMessage.trim() !== "") {
+          client.send("", {}, inputMessage);
+          setInputMessage("");
+        }
+      };
+      sendMessage();
     });
     // 컴포넌트가 언마운트될 때 연결을 종료
     return () => {
@@ -105,6 +114,12 @@ const ChattingPage = () => {
         console.log("Disconnected");
       }, []);
     };
+  };
+
+  useEffect(() => {
+    if (activeRoomId !== -1) {
+      connectAndSendMessages(activeRoomId, inputMessage);
+    }
   }, [activeRoomId]);
 
   // 채팅 메세지를 받았을 때 호출되는 콜백 함수
