@@ -5,35 +5,38 @@ import { useNavigate } from "react-router";
 import FONT from "../../styles/font";
 import Container from "../../components/container/Container";
 import { Debate } from "../../interfaces/debate";
-import { User } from "../../interfaces/user";
 import { useDebateList } from "../../hooks/debate/useDebateList";
-
+import COLOR from "../../styles/color";
 
 const PostListDebatePage = () => {
   const navigate = useNavigate();
-  const {debateList} = useDebateList(0,6);
+  const { debateList } = useDebateList(0, 6);
   return (
-    <Container background={"white"}>
+    <Container addCSS={containerCSS}>
       <div css={headerCSS}>
         <div css={titleBoxCSS}>MBTI 과몰입 토론</div>
-        </div>
+      </div>
 
       <div>
         {debateList &&
-         debateList.result.map((debate: Debate, index) => (
-          <DebateComponent 
-            debate={debate}
-            key={debate.id}
-            onClick={() => navigate(`/debate/${debate.id}`)}
-            index ={index}
-           />
-        ))}
+          debateList.result.map((debate: Debate, index) => (
+            <DebateComponent
+              debate={debate}
+              key={debate.id}
+              onClick={() => navigate(`/debate/${debate.id}`)}
+              index={index}
+            />
+          ))}
       </div>
-      </Container>
+    </Container>
   );
 };
 
 export default PostListDebatePage;
+
+const containerCSS = css`
+  background: ${COLOR.WHITE};
+`;
 
 const headerCSS = css`
   display: flex;

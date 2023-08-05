@@ -22,7 +22,7 @@ const DetailDebatePage = () => {
   const { id } = useParams();
   const debateId = Number(id);
   const { debate } = useDebateDetail(debateId);
-    // TODO: 페이지네이션 구현되면 page, size 수정
+  // TODO: 페이지네이션 구현되면 page, size 수정
   const { comments } = useDebateComment(debateId, 0, 10);
   const { bestComments } = useDebateBestComment(debateId);
   const [content, setContent] = useState("");
@@ -51,36 +51,43 @@ const DetailDebatePage = () => {
       style={{
         marginTop: "1rem",
       }}
-    > {debate && (
-      <>
-      <div css={buttonBoxCSS}>
-        {/* TODO: 본인 게시글에만 수정, 삭제 버튼 */}
-        <Button
-          onClick={() => navigate("/debate/update")}
-          style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
-        >
-          수정
-        </Button>
-        <Button onClick={handleDebateDelete}>삭제</Button>
-      </div>
-      <div css={detailCSS}>
-        <div css={detailHeaderCSS}>
-          <Profile
-                image={debate.discussionSimpleInfo.memberSimpleInfo.profileImgUrl}
+    >
+      {" "}
+      {debate && (
+        <>
+          <div css={buttonBoxCSS}>
+            {/* TODO: 본인 게시글에만 수정, 삭제 버튼 */}
+            <Button
+              onClick={() => navigate("/debate/update")}
+              addCSS={updateButtonCSS}
+            >
+              수정
+            </Button>
+            <Button onClick={handleDebateDelete}>삭제</Button>
+          </div>
+          <div css={detailCSS}>
+            <div css={detailHeaderCSS}>
+              <Profile
+                image={
+                  debate.discussionSimpleInfo.memberSimpleInfo.profileImgUrl
+                }
                 name={debate.discussionSimpleInfo.memberSimpleInfo.nickName}
                 mbti={debate.discussionSimpleInfo.memberSimpleInfo.mbti}
                 badge={debate.discussionSimpleInfo.memberSimpleInfo.badge}
-          />
-          <div css={dateCSS}>{debate.discussionSimpleInfo.createdAt}</div>
-        </div>
-        <div css={titleCSS}>{debate.discussionSimpleInfo.title}</div>
-        <div css={contentCSS}>{debate.discussionSimpleInfo.content}</div>
-        <VoteItemList options={debate.discussionSimpleInfo.options} debateId={debate.discussionSimpleInfo.id}/>
-        <div css={commentTextCSS}>
+              />
+              <div css={dateCSS}>{debate.discussionSimpleInfo.createdAt}</div>
+            </div>
+            <div css={titleCSS}>{debate.discussionSimpleInfo.title}</div>
+            <div css={contentCSS}>{debate.discussionSimpleInfo.content}</div>
+            <VoteItemList
+              options={debate.discussionSimpleInfo.options}
+              debateId={debate.discussionSimpleInfo.id}
+            />
+            <div css={commentTextCSS}>
               전체 댓글 {comments ? comments.result.length : 0}개
             </div>
-      </div>
-      <div>
+          </div>
+          <div>
             {bestComments &&
               bestComments.map((comment) => (
                 <CommentComponent comment={comment} best={true} />
@@ -97,12 +104,10 @@ const DetailDebatePage = () => {
               onChange={(e) => setContent(e.target.value)}
               value={content}
             />
-            <Button style={{ marginLeft: "0.5rem", width: "5rem" }}>
-              등록
-            </Button>
+            <Button addCSS={buttonCSS}>등록</Button>
           </form>
-      </>
-    )}
+        </>
+      )}
     </Container>
   );
 };
@@ -141,7 +146,6 @@ const contentCSS = css`
   line-height: 1.4rem;
 `;
 
-
 const commentTextCSS = css`
   font-size: ${FONT.SIZE.HEADLINE};
   font-weight: ${FONT.WEIGHT.BOLD};
@@ -162,4 +166,14 @@ const buttonBoxCSS = css`
   display: flex;
   justify-content: flex-end;
   margin-bottom: 1rem;
+`;
+
+const buttonCSS = css`
+  margin-left: 0.5rem;
+  width: 5rem;
+`;
+
+const updateButtonCSS = css`
+  margin-right: 0.5rem;
+  background: ${COLOR.MAIN};
 `;
