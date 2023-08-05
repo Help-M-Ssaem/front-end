@@ -146,7 +146,7 @@ const CreateDebatePage = () => {
                 <input type="text" value={option.content} onChange={(e) => handleOptionTextChange(index, e)} css={optionInputCSS} />
                   <input
                     type="text"
-                    value={option.textContent}
+                    value={option.content}
                     onChange={(e) => handleOptionTextChange(index, e)}
                     css={optionInputCSS}
                   />

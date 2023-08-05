@@ -47,12 +47,8 @@ const DetailDebatePage = () => {
     setContent("");
   };
   return (
-    <Container
-      style={{
-        marginTop: "1rem",
-      }}
+    <Container css={ContainerCSS}
     >
-      {" "}
       {debate && (
         <>
           <div css={buttonBoxCSS}>
@@ -114,6 +110,9 @@ const DetailDebatePage = () => {
 
 export default DetailDebatePage;
 
+const ContainerCSS= css`
+  margin-top: 1rem;
+`;
 const detailCSS = css`
   padding: 1.2rem 0;
   border-top: 1px solid ${COLOR.MAIN};
