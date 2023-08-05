@@ -4,6 +4,8 @@ import { useState } from "react";
 import COLOR from "../../styles/color";
 import ExitModal from "../modal/ExitModal";
 import ReportModal from "../modal/ReportModal";
+import { HamburgerIcon } from "../../assets/ChattingIcons";
+
 const Hamburger = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
@@ -12,18 +14,14 @@ const Hamburger = () => {
   const handleMenuToggle = () => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
   };
-
   const handleReport = () => {
-    setIsReportModalOpen(true); 
-    setIsOpen(false); 
+    setIsReportModalOpen(true);
+    setIsOpen(false);
   };
-
   const handleExit = () => {
-    setIsExitModalOpen(true); 
-    setIsOpen(false); 
+    setIsExitModalOpen(true);
+    setIsOpen(false);
   };
-
- 
   const handleCloseModal = () => {
     setIsReportModalOpen(false);
     setIsExitModalOpen(false);
@@ -32,22 +30,24 @@ const Hamburger = () => {
   return (
     <div css={hamburgerMenuCSS}>
       <div css={hamburgerIconCSS} onClick={handleMenuToggle}>
-        <div css={hamburgerBarCSS} />
-        <div css={hamburgerBarCSS} />
-        <div css={hamburgerBarCSS} />
+        <HamburgerIcon />
       </div>
       {isOpen && (
         <div css={menuItemsCSS} onClick={(e) => e.stopPropagation()}>
-          <div css={topCSS} onClick={handleExit}>채팅 나가기</div>
-          <div css={bottomCSS} onClick={handleReport}>신고하기</div>
+          <div css={topCSS} onClick={handleExit}>
+            채팅 나가기
+          </div>
+          <div css={bottomCSS} onClick={handleReport}>
+            신고하기
+          </div>
         </div>
       )}
       {isReportModalOpen && (
-      <ReportModal
-        isOpen={isReportModalOpen}
-        onClose={handleCloseModal}
-        onClick={() => {}}
-      />
+        <ReportModal
+          isOpen={isReportModalOpen}
+          onClose={handleCloseModal}
+          onClick={() => {}}
+        />
       )}
 
       {/* 채팅 나가기 모달 */}
@@ -64,24 +64,15 @@ const Hamburger = () => {
 
 export default Hamburger;
 
-// 스타일
 const hamburgerMenuCSS = css`
   position: relative;
 `;
 
 const hamburgerIconCSS = css`
-  width: 2rem;
-  height: 1.3rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   cursor: pointer;
-`;
-
-const hamburgerBarCSS = css`
-  width: 100%;
-  height: 1px;
-  background-color: ${COLOR.GRAY1};
 `;
 
 const menuItemsCSS = css`

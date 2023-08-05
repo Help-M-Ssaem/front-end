@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
-import ChatContainer from "../../components/container/ChatContainer";
 import FONT from "../../styles/font";
 import { useState } from "react";
 import ChattingComponent from "../../components/chatting/ChattingComponent";
@@ -13,14 +12,15 @@ import CurrentChattingForm from "../../components/chatting/CurrentChattingForm";
 import MessageItem from "../../components/chatting/MessageItem";
 import Button from "../../components/button/Button";
 import { useNavigate } from "react-router-dom";
+import Container from "../../components/container/Container";
 
 const chattinglist1 = [
   {
     roomId: 0,
-    name: "신강희짱",
+    name: "신강희",
     profile: "https://i.ibb.co/jJt16M0/image.png",
     mbti: "Infj",
-    badge: "비추마스터",
+    badge: "마스터",
     latestMessage: "카페에서 남자친구랑 싸웠어요..저도아이유최고얌",
     createdAt: "3분전",
     text: [
@@ -34,10 +34,10 @@ const chattinglist1 = [
   },
   {
     roomId: 1,
-    name: "신강희양",
+    name: "신강희",
     profile: "https://i.ibb.co/jJt16M0/image.png",
     mbti: "Infj",
-    badge: "비추마스터",
+    badge: "마스터",
     latestMessage: "네, 정말 좋은 날씨입니다!",
     createdAt: "5분전",
     text: [
@@ -61,7 +61,7 @@ const chattinglist1 = [
   },
   {
     roomId: 2,
-    name: "배고파요",
+    name: "배고파",
     profile: "https://i.ibb.co/jJt16M0/image.png",
     mbti: "Infj",
     badge: "엽떡마스터",
@@ -71,15 +71,11 @@ const chattinglist1 = [
   },
 ];
 
-// const chattinglist1: ChattingHistory[] = [
-// ];
-
-// 혹은 interface로 정의 가능
-type Message = {
+interface Message {
   userId: string;
   message: string;
   createdAt: string;
-};
+}
 
 const ChattingPage: React.FC = () => {
   const [activeRoomId, setActiveRoomId] = useState<number>(-1);
@@ -115,7 +111,7 @@ const ChattingPage: React.FC = () => {
 
   return (
     <div css={editorContainerCSS}>
-      <ChatContainer background="#FFFFFF">
+      <Container addCSS={containerCSS}>
         <div css={alignmentCSS}>
           <div css={boderRightCSS}>
             <div css={titleCSS}>채팅목록</div>
@@ -218,12 +214,17 @@ const ChattingPage: React.FC = () => {
             )}
           </div>
         </div>
-      </ChatContainer>
+      </Container>
     </div>
   );
 };
 
 export default ChattingPage;
+
+const containerCSS = css`
+  background: ${COLOR.WHITE};
+  padding: 0;
+`;
 
 const editorContainerCSS = css`
   width: calc(100% + 30rem);
@@ -265,7 +266,7 @@ const alignmentCSS = css`
   display: grid;
   grid-template-columns: 1.91fr 5fr; //스크롤바때문에 조금 다르게 나온다..
   grid-template-rows: 1fr;
-  height: 6rem;
+  height: 5rem;
 `;
 
 const chattingInnerCSS = css`
