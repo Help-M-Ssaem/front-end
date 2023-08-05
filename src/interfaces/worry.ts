@@ -21,12 +21,15 @@ export interface WorryBoard {
   imgUrl: string;
 }
 
-export interface UseWorryBoard {
+export interface WorryList{
   page: number;
   totalSize: number;
-  departMbti: string;
-  endMbti: string;
   result: WorryBoard[];
+}
+
+export interface UseWorryBoard extends WorryList{
+  departMbti: string,
+  endMbti: string,
 }
 
 export interface DetailWorry {
