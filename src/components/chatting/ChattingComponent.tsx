@@ -7,41 +7,39 @@ import { ChattingProps } from "../../interfaces/chatting";
 
 const ChattingComponent = ({ Chattinghistory }: ChattingProps) => {
   return (
-    <li css={[dateTop]}>
-      <div css={profileBoxCSS}>
-        <img
-          css={[profileImgCSS, leftCSS]}
-          src={Chattinghistory.profile}
-          alt="profile"
-        />
-        <div css={[profileCSS]}>
-          <div css={rightCSS}>
-            <div css={nameCSS}>{Chattinghistory.name} 님</div>
-            <div css={profileDetailCSS}>
-              <Badge mbti={Chattinghistory.mbti} color={"#F8CAFF"} />
-              <Badge mbti={Chattinghistory.badge} color={"#5BE1A9"} />
-            </div>
-            <div css={marginRightCSS}>{Chattinghistory.createdAt}</div>
+    <div css={chattingItemCSS}>
+      <img
+        css={[profileImgCSS, leftCSS]}
+        src={Chattinghistory.profile}
+        alt="profile"
+      />
+      <div css={[profileCSS]}>
+        <div css={rightCSS}>
+          <div css={nameCSS}>{Chattinghistory.name} 님</div>
+          <div css={profileDetailCSS}>
+            <Badge mbti={Chattinghistory.mbti} color={"#F8CAFF"} />
+            <Badge mbti={Chattinghistory.badge} color={"#5BE1A9"} />
           </div>
-          <div css={latestMessageCSS}>{Chattinghistory.latestMessage}</div>
+          <div css={marginRightCSS}>{Chattinghistory.createdAt}</div>
         </div>
+        <div css={latestMessageCSS}>{Chattinghistory.latestMessage}</div>
       </div>
-    </li>
+    </div>
   );
 };
 
 export default ChattingComponent;
 
-const dateTop = css`
+const chattingItemCSS = css`
   display: flex;
   align-items: center;
   border-bottom: 1px solid ${COLOR.GRAY4};
   padding: 0.8rem;
-`;
-
-const profileBoxCSS = css`
-  display: flex;
-  align-items: center;
+  cursor: pointer;
+  &:hover {
+    background-color: ${COLOR.MAIN4};
+    transition: 0.3s;
+  }
 `;
 
 const leftCSS = css`

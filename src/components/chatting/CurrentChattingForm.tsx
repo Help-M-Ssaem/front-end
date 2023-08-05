@@ -2,31 +2,27 @@
 import { css } from "@emotion/react";
 import Input from "../input/Input";
 import Button from "../button/Button";
+import { PhotoIcon } from "../../assets/ChattingIcons";
 
 const CurrentChattingForm = () => {
-  const imageSrc =
-    "https://cdn.icon-icons.com/icons2/2483/PNG/512/image_file_icon_149928.png";
-
   const handleChattingSubmit = () => {
     alert("전송");
   };
   return (
     <form css={submitButtonBoxCSS} onSubmit={handleChattingSubmit}>
-      <Input css={inlineInputCSS} />
-      <label css={labelContainerCSS}>
-        <img
-          src={imageSrc}
-          alt="사진 추가"
-          style={{ marginRight: "0.5rem", width: "20px", height: "20px" }}
-        />
-        <input
-          type="file"
-          name="photo"
-          id="photo"
-          accept="image/*"
-          style={{ display: "none" }}
-        />
-      </label>
+      <div css={inlineInputCSS}>
+        <Input />
+        <label css={labelContainerCSS}>
+          <PhotoIcon />
+          <input
+            type="file"
+            name="photo"
+            id="photo"
+            accept="image/*"
+            css={fileInputCSS}
+          />
+        </label>
+      </div>
       <Button addCSS={buttonCSS}>등록</Button>
     </form>
   );
@@ -47,12 +43,21 @@ const submitButtonBoxCSS = css`
 `;
 
 const inlineInputCSS = css`
+  display: flex;
+  width: 100%;
   position: relative;
 `;
+
 const labelContainerCSS = css`
   display: flex;
   cursor: pointer;
   position: absolute;
+  top: 0;
+  bottom: 0;
   right: 1rem;
   align-items: center;
+`;
+
+const fileInputCSS = css`
+  display: none;
 `;

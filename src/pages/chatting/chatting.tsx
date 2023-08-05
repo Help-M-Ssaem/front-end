@@ -117,9 +117,7 @@ const ChattingPage: React.FC = () => {
             <div css={titleCSS}>채팅목록</div>
           </div>
           <div css={ChatProfileCSS}>
-            {chattinglist1.length === 0 ? (
-              <div></div>
-            ) : (
+            {chattinglist1.length !== 0 && (
               <>
                 <div>
                   {selectedChattingData && (
@@ -131,7 +129,6 @@ const ChattingPage: React.FC = () => {
                     />
                   )}
                 </div>
-
                 <div css={ChatMenuCSS}>
                   <Hamburger />
                 </div>
@@ -142,10 +139,8 @@ const ChattingPage: React.FC = () => {
 
         <div css={chattingInnerCSS}>
           <div css={chattingLeftCSS}>
-            {chattinglist1.length === 0 ? (
-              <div></div>
-            ) : (
-              <ul css={ChattingItem}>
+            {chattinglist1.length !== 0 && (
+              <ul>
                 {chattinglist1.map((chattinghistory) => (
                   <li
                     key={chattinghistory.roomId}
@@ -288,15 +283,6 @@ const chattingLeftCSS = css`
 
 const chattingRightCSS = css`
   border-left: 1px solid ${COLOR.GRAY4};
-`;
-
-const ChattingItem = css`
-  li {
-    cursor: pointer;
-  }
-  li:hover {
-    background-color: ${COLOR.MAIN4};
-  }
 `;
 
 const activeStyle = css`
