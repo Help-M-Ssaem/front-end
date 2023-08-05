@@ -12,6 +12,8 @@ import Button from "../../button/Button";
 import useFetchWorryBoardList from "../../../hooks/worry/UseFetchBoardList";
 import MbtiList from "../mapingMatching/MbtiList";
 import React from "react";
+import SelectBox from "../../Pagination/SelectBox";
+import ListPagination from "../../Pagination/ListPagination";
 
 interface WorryProps {
   pathMove: string;
@@ -24,6 +26,12 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW }) => {
   const [mbti1, setMbti1] = useState("전체");
   const [openMbti2, setOpenMbti2] = useState(false);
   const [mbti2, setMbti2] = useState("전체");
+
+  const [blockNum, setBlockNum] = useState(0); //블록 설정하는 함수
+  const [page, setPage] = useState(1);
+  const worryBoardLists = useFetchWorryBoardList(mbti1, mbti2, pathMove, page);
+  const limit = 10; //한 페이지당 아이템의 개수
+  const totalPage = worryBoardLists ? worryBoardLists.totalSize : 1; //전체 페이지 수
 
   const handleOpenMbti1 = () => {
     setOpenMbti1(!openMbti1);
@@ -46,7 +54,7 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW }) => {
   const handleMatchingClick = (id: number) => {
     navigate(`/match/${id}`);
   };
-  const worryBoardList = useFetchWorryBoardList(mbti1, mbti2, pathMove);
+  const worryBoardList = useFetchWorryBoardList(mbti1, mbti2, pathMove, page-1);
   useEffect(() => {
     setMbti1("전체");
     setMbti2("전체");
@@ -82,6 +90,15 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW }) => {
             onClick={() => handleMatchingClick(matching.id)}
           />
           ))}
+        <ListPagination
+          limit={limit}
+          page={page}
+          setPage={setPage}
+          blockNum={blockNum}
+          setBlockNum={setBlockNum}
+          totalPage={totalPage}
+        />
+        <SelectBox />
       </Container>
     </>
   );
