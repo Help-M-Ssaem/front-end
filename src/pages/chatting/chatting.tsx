@@ -2,7 +2,7 @@
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ChattingComponent from "../../components/chatting/ChattingComponent";
 import { ChattingHistory } from "../../interfaces/chatting";
 import Profile from "../../components/profile/Profile";
@@ -13,6 +13,7 @@ import MessageItem from "../../components/chatting/MessageItem";
 import Button from "../../components/button/Button";
 import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
+import Stomp from "stompjs";
 
 const chattinglist1 = [
   {
@@ -77,17 +78,55 @@ interface Message {
   createdAt: string;
 }
 
-const ChattingPage: React.FC = () => {
-  const [activeRoomId, setActiveRoomId] = useState<number>(-1);
+const ChattingPage = () => {
   const [selectedChattingData, setSelectedChattingData] =
     useState<ChattingHistory | null>(null);
   const [messageData, setMessageData] = useState<Message[] | null>(null);
   const navigate = useNavigate();
 
+  // 채팅서버연결
+  const [activeRoomId, setActiveRoomId] = useState<number>(-1); // 현재 선택된 채팅방의 아이디를 저장하는 상태 변수
+  const [message, setMessage] = useState<string[]>([]); // 채팅 메세지를 저장하는 상태 변수
+  const [inputMessage, setInputMessage] = useState(""); // 사용자가 입력한 메세지를 저장하는 상태 변수
+  const [stompClient, setStompClient] = useState<Stomp.Client | null>(null); // STOMP 클라이언트를 저장하는 상태 변수
+
+  useEffect(() => {
+    // 웹 소켓을 생성하고, STOMP 클라이언트를 생성하여 서버와 연결
+    const socket = new WebSocket("wss://m-ssaem.com:8080/stomp/chat");
+    const client = Stomp.over(socket);
+    // 서버와 연결이 성공하면 STOMP 클라이언트를 저장하고, 채팅 메세지 구독
+    client.connect({}, () => {
+      setStompClient(client);
+      client.subscribe(`/sub/chat/room/${activeRoomId}`, onMessageReceived);
+    });
+    // 컴포넌트가 언마운트될 때 연결을 종료
+    return () => {
+      client.disconnect(() => {
+        console.log("Disconnected");
+      }, []);
+    };
+  }, [activeRoomId]);
+
+  // 채팅 메세지를 받았을 때 호출되는 콜백 함수
+  const onMessageReceived = (message: Stomp.Message) => {
+    setMessage((prevMessage) => [...prevMessage, message.body]);
+  };
+  // 입력 필드에 변화가 있을 때 호출되는 함수
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputMessage(e.target.value);
+  };
+  // 메세지를 보내는 함수
+  const sendMessage = () => {
+    // STOMP 클라이언트가 있고, 입력한 메세지가 비어있지 않을 경우에만 메세지 전송
+    if (stompClient && inputMessage.trim() !== "") {
+      stompClient.send("", {}, inputMessage);
+      setInputMessage("");
+    }
+  };
+
   const handleButtonClick = () => {
     navigate("/match/maching");
   };
-
   const handleItemClick = (roomId: number) => {
     setActiveRoomId((prevId) => (prevId === roomId ? -1 : roomId));
 
@@ -259,7 +298,7 @@ const alignmentCSS = css`
   align-items: center;
   border-bottom: 1px solid ${COLOR.GRAY4};
   display: grid;
-  grid-template-columns: 1.91fr 5fr; //스크롤바때문에 조금 다르게 나온다..
+  grid-template-columns: 1.91fr 5fr;
   grid-template-rows: 1fr;
   height: 5rem;
 `;
