@@ -6,34 +6,53 @@ import { useState } from "react";
 import FONT from "../../styles/font";
 import Button from "../../components/button/Button";
 import { useNavigate } from "react-router";
-import { Option, PostData } from "../../interfaces/debate";
-import PlusButton from "../../components/debate/plusbutton/PlusButton";
+import { Debate, Option } from "../../interfaces/debate";
+import { User } from "../../interfaces/user";
+import PlusButton from "../../components/button/plusbutton/PlusButton";
 
+//서버연결 x
 const CreateDebatePage = () => {
   //로그인을 통해 작성자의 정보를 받아서 글에 올려줄 것.
-  const [postData, setPostData] = useState<PostData>({
-    title: "",
-    content: "",
-    selectedOptions: [
-      { textContent: "", imageContent: undefined, voteCount: 0 },
-      { textContent: "", imageContent: undefined, voteCount: 0 },
-    ],
-    selectedOptionIndex: -1,
-    totalVotes: 0,
-    voted: false,
+  const [userData,setUserData] = useState<User>({
+    id: 0,
+    nickName: "",
+    mbti: "",
+    badge: "",
+    profileImgUrl: "",
+  })
+  const [debateData, setDebateData] = useState<Debate>(() => {
+    const initialOptions: Option[] = [];
+    while (initialOptions.length < 2) {
+      initialOptions.push({
+        id: initialOptions.length,
+        content: "",
+        imgUrl: undefined,
+        selectedPercent: "",
+        selected: false,
+      });
+    }
+    return {
+      id: 0,
+      title: "",
+      content: "",
+      participantCount: 0,
+      commentCount: 0,
+      createdAt: "",
+      memberSimpleInfo: userData,
+      options: initialOptions,
+    };
   });
+  
   const navigate = useNavigate();
-
   const handleInputChange = (
-    key: keyof PostData,
-    value: string | File | Option[] | undefined,
+    key: keyof Debate,
+    value: string | File |number |undefined|Option[]|null
   ) => {
-    setPostData((prevData) => ({
+    setDebateData((prevData) => ({
       ...prevData,
       [key]: value,
     }));
   };
-
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     handleInputChange("title", e.target.value);
   };
@@ -41,14 +60,13 @@ const CreateDebatePage = () => {
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     handleInputChange("content", e.target.value);
   };
-
   const handleOptionTextChange = (
     index: number,
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    const updatedOptions = [...postData.selectedOptions];
-    updatedOptions[index].textContent = e.target.value;
-    handleInputChange("selectedOptions", updatedOptions);
+    const updatedOptions = [...debateData.options];
+    // updatedOptions[index].title = e.target.value;
+    handleInputChange("options", updatedOptions[index].content);
   };
 
   const handleImageChange = (
@@ -57,80 +75,75 @@ const CreateDebatePage = () => {
   ) => {
     const file = e.target.files?.[0];
     if (file) {
-      const updatedOptions = [...postData.selectedOptions];
-      updatedOptions[index].imageContent = file;
-      handleInputChange("selectedOptions", updatedOptions);
+      const updatedOptions = [...debateData.options];
+      // updatedOptions[index].imgContent = file;
+      handleInputChange("options", updatedOptions[index].imgUrl);
     }
   };
-
-  //항목 추가/삭제
   const handleAddOption = () => {
-    if (postData.selectedOptions.length < 4) {
+    if (debateData.options.length < 4) {
+      const newIndex = debateData.options.length;
       const updatedOptions = [
-        ...postData.selectedOptions,
-        { textContent: "", imageContent: undefined, voteCount: 0 },
+        ...debateData.options,
+        { 
+          id: newIndex,
+          content: "",
+          imgUrl: undefined,
+          imgContent: undefined,
+          selectedCount: 0,
+          selectedPercent: "",
+          selected: false,
+        }
       ];
-      handleInputChange("selectedOptions", updatedOptions);
+      handleInputChange("options",updatedOptions);
     }
   };
 
   const handleRemoveOption = (index: number) => {
-    if (postData.selectedOptions.length > 2) {
-      const updatedOptions = [...postData.selectedOptions];
+    if (debateData.options.length > 2) {
+      const updatedOptions = [...debateData.options];
       updatedOptions.splice(index, 1);
-      handleInputChange("selectedOptions", updatedOptions);
+      handleInputChange("options", updatedOptions);
     }
   };
 
-  //제출
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    //데이터 그래서 어떻게함..?
-    navigate(-1);
-  };
+    //제출
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      //데이터 그래서 어떻게함..?
+      navigate(-1);
+    };
+
   return (
     <div css={editorContainerCSS}>
       <Container addCSS={containerCSS}>
         <div css={titleCSS}>과몰입 토론</div>
         <div css={contentCSS}>제목을 입력해주세요.</div>
-        <input
-          type="text"
-          value={postData.title}
-          onChange={handleTitleChange}
-          css={inputCSS}
-        />
+        <input 
+          type="text" 
+          value={debateData.title} 
+          onChange={handleTitleChange} 
+          css={inputCSS}/>
         <div css={imagecontentCSS}>선택지를 선택해주세요. (2~4개)</div>
         <div css={selectuplodGrid}>
-          {postData.selectedOptions.map((option, index) => (
-            <div css={selectuplodGridinContents} key={index}>
-              <div css={selectuplodGridinContentsBox}>
-                <div css={controlSize}>
-                  <div css={controlSizetop}>
-                    {postData.selectedOptions.length > 2 && (
-                      <Button onClick={() => handleRemoveOption(index)}>
-                        X
-                      </Button>
-                    )}
-                  </div>
+          {debateData.options.map((option, index) => (
+          <div css={selectuplodGridinContents} key={index}>
+            <div css={selectuplodGridinContentsBox}>
+              <div css={controlSize}>
+                <div css={controlSizetop}>
+                {debateData.options.length > 2 && (<Button onClick={() => handleRemoveOption(index)}>
+                  X
+                  </Button>
+                ) }
+                </div>
 
-                  <label css={uploadLabelCSS}>
-                    {option.imageContent ? (
-                      <img
-                        src={URL.createObjectURL(option.imageContent)}
-                        alt="Selected"
-                        css={imageCSS}
-                      />
-                    ) : (
-                      <PlusButton>+</PlusButton>
-                    )}
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => handleImageChange(index, e)}
-                      css={uploadInputCSS}
-                    />
-                  </label>
-
+                <label css={uploadLabelCSS}>
+                {option.imgUrl ? (<img src={option.imgUrl} alt="Selected" css={imageCSS} />) 
+                : (<PlusButton>+</PlusButton>)}
+                <input type="file" accept="image/*" onChange={(e) => handleImageChange(index, e)} css={uploadInputCSS} />
+                </label>
+                
+                <input type="text" value={option.content} onChange={(e) => handleOptionTextChange(index, e)} css={optionInputCSS} />
                   <input
                     type="text"
                     value={option.textContent}
@@ -141,17 +154,12 @@ const CreateDebatePage = () => {
               </div>
             </div>
           ))}
-          {postData.selectedOptions.length < 4 && (
-            <Button onClick={handleAddOption}>+</Button>
-          )}
+          {debateData.options.length < 4 
+            && (<Button onClick={handleAddOption}>+</Button>)}
         </div>
 
         <div css={contentCSS}>내용을 입력해주세요. (선택)</div>
-        <textarea
-          value={postData.content}
-          onChange={handleContentChange}
-          css={textareaCSS}
-        />
+        <textarea value={debateData.content} onChange={handleContentChange} css={textareaCSS} />
 
         <div css={buttonBoxCSS}>
           <Button addCSS={buttonCSS} onClick={() => navigate(-1)}>

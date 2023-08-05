@@ -17,7 +17,7 @@ export interface WorryBoard {
   content: string;
   memberMbti: string; //user에서 받아오기
   targetMbti: string;
-  createDate: number;
+  createdDate: string;
   imgUrl: string;
 }
 

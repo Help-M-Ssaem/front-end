@@ -4,7 +4,7 @@ import { MainTeacher } from "../../interfaces/matching";
 import { mainTeacherKeys } from "../../constants/matchingKey";
 
 async function getMainTheacher(): Promise<MainTeacher[]> {
-  const { data } = await axios.get("/worry-board/home");
+  const { data } = await axios.get("/teacher");
   return data;
 }
 
