@@ -8,9 +8,8 @@ async function createBoardComment(
   commentId?: number,
 ): Promise<void> {
   let url = `/member/boards/${boardId}/comments`;
-  if (commentId !== undefined) {
-    url += `?commentId=${commentId}`;
-  }
+  commentId && (url += `?commentId=${commentId}`);
+
   await axios.post(url, comment, {
     headers: {
       "Content-Type": "multipart/form-data",
@@ -29,10 +28,13 @@ export function useBoardCommentCreate(
 ): UseBoardCommentCreate {
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(() => createBoardComment(boardId, comment), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(commentKeys.all);
+  const { mutate } = useMutation(
+    () => createBoardComment(boardId, comment, commentId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(commentKeys.all);
+      },
     },
-  });
+  );
   return { mutate };
 }

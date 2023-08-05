@@ -69,15 +69,16 @@ const DetailBoardPage = () => {
   };
   const handleReplyCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log("reply", replyCommentId);
     createReplyMutation.mutate();
     setReplyContent("");
     setReplyCommentOpen(false);
   };
 
-  const handleCommentClick = (commentId: number) => {
+  const handleCommentClick = (commentId: number, parentId: number) => {
     setReplyCommentOpen(!replyCommentOpen);
     setReplyCommentId(commentId);
-    console.log(commentId);
+    console.log(parentId, commentId);
   };
 
   return (
@@ -148,8 +149,10 @@ const DetailBoardPage = () => {
                 <div key={comment.commentId}>
                   <CommentComponent
                     comment={comment}
-                    onClick={() => handleCommentClick(comment.commentId)}
-                    reply={comment.commentId === comment.parentId}
+                    onClick={() =>
+                      handleCommentClick(comment.commentId, comment.parentId)
+                    }
+                    reply={comment.parentId !== 0}
                   />
                   {replyCommentOpen && replyCommentId === comment.commentId && (
                     <CommentCreate
