@@ -39,17 +39,13 @@ const DetailMatchingPage = () => {
   }
 
   return (
-    <Container
-      style={{
-        marginTop: "1rem",
-      }}
-    >
+    <Container addCSS={containerCSS}>
       <div css={buttonBoxCSS}>
         {/* TODO: 본인 게시글에만 수정, 삭제 버튼 */}
         <Button
           onClick={() => navigate(`/match/${id}/update`)}
           //  navigate("/match/update")}
-          style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
+          addCSS={updateButtonCSS}
         >
           수정
         </Button>
@@ -79,13 +75,17 @@ const DetailMatchingPage = () => {
       <hr css={hrCSS} />
       <form css={submitButtonBoxCSS} onSubmit={handleCommentSubmit}>
         <Input />
-        <Button style={{ marginLeft: "0.5rem", width: "5rem" }}>등록</Button>
+        <Button addCSS={submitButtonCSS}>등록</Button>
       </form>
     </Container>
   );
 };
 
 export default DetailMatchingPage;
+
+const containerCSS = css`
+  margin-top: 1rem;
+`;
 
 const detailCSS = css`
   padding: 1.2rem 0;
@@ -148,4 +148,14 @@ const hrCSS = css`
 
 const submitButtonBoxCSS = css`
   display: flex;
+`;
+
+const updateButtonCSS = css`
+  margin-right: 0.5rem;
+  background: ${COLOR.MAIN};
+`;
+
+const submitButtonCSS = css`
+  margin-left: 0.5rem;
+  width: 5rem;
 `;

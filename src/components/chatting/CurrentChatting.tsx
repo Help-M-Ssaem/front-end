@@ -10,24 +10,24 @@ import { ChattingHistory } from "../../interfaces/chatting";
 import EvaluationModal from "../modal/EvaluationModal";
 //데이터 받아서 해야되는뎅...
 const matching = {
-    id: 1,
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    title: "학생회장 선배 도와주세요ㅠㅠ",
-    content: "마음이 있는 것 같나요?",
-    createdAt: "2분전",
-    mbti1: "EsFP",
-    mbti2: "ISTJ",
-    color1: "#94E3F8",
-    color2: "#F8CAFF",
-}
+  id: 1,
+  thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
+  title: "학생회장 선배 도와주세요ㅠㅠ",
+  content: "마음이 있는 것 같나요?",
+  createdAt: "2분전",
+  mbti1: "EsFP",
+  mbti2: "ISTJ",
+  color1: "#94E3F8",
+  color2: "#F8CAFF",
+};
 type Profile = {
   profile: ChattingHistory | null;
 };
 
-const CurrentChatting: React.FC<Profile> = ({profile}) => {
+const CurrentChatting: React.FC<Profile> = ({ profile }) => {
   const [isEvaluationModalOpen, setIsEvaluationModalOpen] = useState(false);
   const handleEvaluation = () => {
-    setIsEvaluationModalOpen(true); 
+    setIsEvaluationModalOpen(true);
   };
   const handleCloseModal = () => {
     setIsEvaluationModalOpen(false);
@@ -43,19 +43,26 @@ const CurrentChatting: React.FC<Profile> = ({profile}) => {
         <div css={titleCSS}>{matching.title}</div>
       </div>
       <div css={rightCSS}>
-      <Button onClick={handleEvaluation} style={{ backgroundColor: COLOR.WHITE, color: COLOR.GRAY2 }}>해결완료</Button>
+        <Button onClick={handleEvaluation} addCSS={buttonCSS}>
+          해결완료
+        </Button>
       </div>
       {isEvaluationModalOpen && (
         <EvaluationModal
           isOpen={isEvaluationModalOpen}
           onClose={handleCloseModal}
           onClick={() => {}}
-          profileData = {profile}
+          profileData={profile}
         />
       )}
     </div>
   );
 };
+
+const buttonCSS = css`
+  background: ${COLOR.WHITE};
+  color: ${COLOR.GRAY2};
+`;
 
 const MatchingBoxCSS = css`
   display: flex;
@@ -69,9 +76,8 @@ const leftCSS = css`
 `;
 
 const rightCSS = css`
-  display:flex;
+  display: flex;
   align-items: center;
-
 `;
 
 const titleCSS = css`

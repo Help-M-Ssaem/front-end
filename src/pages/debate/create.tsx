@@ -62,7 +62,7 @@ const CreateDebatePage = () => {
   };
   const handleOptionTextChange = (
     index: number,
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const updatedOptions = [...debateData.options];
     // updatedOptions[index].title = e.target.value;
@@ -71,7 +71,7 @@ const CreateDebatePage = () => {
 
   const handleImageChange = (
     index: number,
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -116,7 +116,7 @@ const CreateDebatePage = () => {
 
   return (
     <div css={editorContainerCSS}>
-      <Container background="#FFFFFF" style={{ padding: "2.5rem" }}>
+      <Container addCSS={containerCSS}>
         <div css={titleCSS}>과몰입 토론</div>
         <div css={contentCSS}>제목을 입력해주세요.</div>
         <input 
@@ -144,10 +144,15 @@ const CreateDebatePage = () => {
                 </label>
                 
                 <input type="text" value={option.content} onChange={(e) => handleOptionTextChange(index, e)} css={optionInputCSS} />
-
+                  <input
+                    type="text"
+                    value={option.textContent}
+                    onChange={(e) => handleOptionTextChange(index, e)}
+                    css={optionInputCSS}
+                  />
+                </div>
               </div>
             </div>
-          </div>
           ))}
           {debateData.options.length < 4 
             && (<Button onClick={handleAddOption}>+</Button>)}
@@ -157,11 +162,11 @@ const CreateDebatePage = () => {
         <textarea value={debateData.content} onChange={handleContentChange} css={textareaCSS} />
 
         <div css={buttonBoxCSS}>
-          <Button style={{ marginRight: "0.5rem", background: COLOR.MAIN }} onClick={() => navigate(-1)}>
+          <Button addCSS={buttonCSS} onClick={() => navigate(-1)}>
             취소하기
           </Button>
 
-          <Button onClick={()=>handleSubmit}>글 쓰기</Button>
+          <Button onClick={() => handleSubmit}>글 쓰기</Button>
         </div>
       </Container>
     </div>
@@ -169,6 +174,11 @@ const CreateDebatePage = () => {
 };
 
 export default CreateDebatePage;
+
+const containerCSS = css`
+  background: ${COLOR.WHITE};
+  padding: 2.5rem;
+`;
 
 const editorContainerCSS = css`
   width: calc(100% + 30rem);
@@ -202,7 +212,7 @@ const selectuplodGrid = css`
 
 const selectuplodGridinContents = css`
   background-color: ${COLOR.WHITE};
-  width: 100%; 
+  width: 100%;
   height: 100%;
   min-height: 18rem;
   border-radius: 1.4rem;
@@ -210,7 +220,7 @@ const selectuplodGridinContents = css`
   padding: 0.7rem;
 `;
 
-const selectuplodGridinContentsBox= css`
+const selectuplodGridinContentsBox = css`
   width: 100%;
   height: 100%;
   minheight: 10rem;
@@ -232,10 +242,10 @@ const uploadInputCSS = css`
   display: none;
 `;
 const imageCSS = css`
-  width: 11rem; 
-  height: auto; 
+  width: 11rem;
+  height: auto;
   max-height: 9rem;
-  object-fit: contain; 
+  object-fit: contain;
 `;
 const contentCSS = css`
   font-size: ${FONT.SIZE.HEADLINE};
@@ -277,13 +287,18 @@ const buttonBoxCSS = css`
   margin-top: 1rem;
 `;
 
-const controlSize = css`
-flex-direction: column;
+const buttonCSS = css`
+  margin-right: 0.5rem;
+  background: ${COLOR.MAIN};
+`;
 
-align-items: center;
-justify-content: center;
-width: auto;
-height: 70%;
+const controlSize = css`
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: 70%;
 `;
 
 const controlSizetop = css`

@@ -27,12 +27,17 @@ const CurrentChattingForm = () => {
           style={{ display: "none" }}
         />
       </label>
-      <Button style={{ marginLeft: "0.5rem", width: "5rem" }}>등록</Button>
+      <Button addCSS={buttonCSS}>등록</Button>
     </form>
   );
 };
 
 export default CurrentChattingForm;
+
+const buttonCSS = css`
+  margin-left: 0.5rem;
+  width: 5rem;
+`;
 
 const submitButtonBoxCSS = css`
   display: flex;

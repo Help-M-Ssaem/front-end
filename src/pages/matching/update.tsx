@@ -12,6 +12,7 @@ import { useUpdateWorry } from "../../hooks/worry/useUpdatedWorry";
 import { useWorryBoard } from "../../hooks/worry/useDetailPost";
 import { useParams } from "react-router-dom";
 import { mssaemAxios as axios } from "../../apis/axios";
+
 const categoryList = [
   "ISTJ",
   "ISFJ",
@@ -73,7 +74,7 @@ const UpdateMatchingPage = () => {
   const handleContentChange = () => {
     setContent(editorRef.current.getInstance().getHTML());
   };
-  
+
   const updateMutation = useUpdateWorry(formData, worryBoard!!.worryBoardId);
   const handleSubmit = () => {
     updateMutation.mutate();
@@ -91,7 +92,7 @@ const UpdateMatchingPage = () => {
   };
   return (
     <div css={editorContainerCSS}>
-      <Container background="#FFFFFF" style={{ padding: "2.5rem" }}>
+      <Container addCSS={containerCSS}>
         <div css={titleBoxCSS}>
           <div css={titleCSS}>M쌤 매칭 고민글</div>
         </div>
@@ -142,10 +143,7 @@ const UpdateMatchingPage = () => {
           }}
         />
         <div css={buttonBoxCSS}>
-          <Button
-            style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
-            onClick={() => navigate(-1)}
-          >
+          <Button addCSS={buttonCSS} onClick={() => navigate(-1)}>
             취소하기
           </Button>
           <Button onClick={handleSubmit}>글 쓰기</Button>
@@ -156,6 +154,11 @@ const UpdateMatchingPage = () => {
 };
 
 export default UpdateMatchingPage;
+
+const containerCSS = css`
+  background: ${COLOR.WHITE};
+  padding: 2.5rem;
+`;
 
 const editorContainerCSS = css`
   width: calc(100% + 30rem);
@@ -227,6 +230,11 @@ const buttonBoxCSS = css`
   display: flex;
   justify-content: flex-end;
   margin-top: 1rem;
+`;
+
+const buttonCSS = css`
+  margin-right: 0.5rem;
+  background: ${COLOR.MAIN};
 `;
 
 const pointerCSS = css`

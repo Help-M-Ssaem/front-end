@@ -12,16 +12,7 @@ interface hotProps {
 
 const Hot = ({ title, content }: hotProps) => {
   return (
-    <Container
-      background={COLOR.WHITE}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        marginRight: "1.5rem",
-        position: "relative",
-      }}
-    >
+    <Container addCSS={containerCSS}>
       {content && (
         <div css={hotCSS}>
           <HotIcon />
@@ -37,6 +28,15 @@ const Hot = ({ title, content }: hotProps) => {
 };
 
 export default Hot;
+
+const containerCSS = css`
+  background: ${COLOR.WHITE};
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-right: 1.5rem;
+  position: relative;
+`;
 
 const hotCSS = css`
   position: absolute;

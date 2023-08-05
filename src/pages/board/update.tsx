@@ -94,7 +94,7 @@ const UpdateBoardPage = () => {
 
   return (
     <div css={editorContainerCSS}>
-      <Container background="#FFFFFF" style={{ padding: "2.5rem" }}>
+      <Container addCSS={containerCSS}>
         <div css={titleBoxCSS}>
           <div css={titleCSS}>{category} 게시판</div>
           <ArrowIcon onClick={handleCategoryButtonClick} />
@@ -136,10 +136,7 @@ const UpdateBoardPage = () => {
           }}
         />
         <div css={buttonBoxCSS}>
-          <Button
-            style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
-            onClick={() => navigate(-1)}
-          >
+          <Button addCSS={buttonCSS} onClick={() => navigate(-1)}>
             취소하기
           </Button>
           <Button onClick={handleSubmit}>글 쓰기</Button>
@@ -150,6 +147,11 @@ const UpdateBoardPage = () => {
 };
 
 export default UpdateBoardPage;
+
+const containerCSS = css`
+  background: ${COLOR.WHITE};
+  padding: 2.5rem;
+`;
 
 const editorContainerCSS = css`
   width: calc(100% + 30rem);
@@ -219,4 +221,9 @@ const buttonBoxCSS = css`
   display: flex;
   justify-content: flex-end;
   margin-top: 1rem;
+`;
+
+const buttonCSS = css`
+  margin-right: 0.5rem;
+  background: ${COLOR.MAIN};
 `;

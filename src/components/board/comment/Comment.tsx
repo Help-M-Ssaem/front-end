@@ -7,18 +7,27 @@ import COLOR from "../../../styles/color";
 import { BestIcon, HeartIcon } from "../../../assets/CommonIcons";
 import { useBoardCommentLike } from "../../../hooks/board/comment/useBoardCommentLike";
 import { useParams } from "react-router";
+import { useBoardCommentDelete } from "../../../hooks/board/comment/useBoardCommentDelete";
+import { ReplyIcon } from "../../../assets/CommentIcons";
 
 interface CommentProps {
-  comment: any; // TODO: Comment 타입 오류 처리
+  comment: any; // TODO: Comment 타입으로 수정
+  onClick?: () => void;
   best?: boolean;
+  reply?: boolean;
 }
 
-const CommentComponent = ({ comment, best }: CommentProps) => {
+const CommentComponent = ({ comment, onClick, best, reply }: CommentProps) => {
   const { id } = useParams();
+  const boardId = Number(id);
 
-  const likeMutation = useBoardCommentLike(Number(id), comment.commentId);
+  const likeMutation = useBoardCommentLike(boardId, comment.commentId);
   const handleLikeClick = () => {
     likeMutation.mutate();
+  };
+  const deleteMutation = useBoardCommentDelete(boardId, comment.commentId);
+  const handleCommentDeleteClick = () => {
+    deleteMutation.mutate();
   };
 
   return (
@@ -26,6 +35,7 @@ const CommentComponent = ({ comment, best }: CommentProps) => {
       <div css={profileBoxCSS}>
         <div css={profileBestCSS}>
           {best && <BestIcon />}
+          {reply && <ReplyIcon />}
           <Profile
             image={comment.memberSimpleInfo.profileImgUrl}
             name={comment.memberSimpleInfo.nickName}
@@ -33,13 +43,20 @@ const CommentComponent = ({ comment, best }: CommentProps) => {
             badge={comment.memberSimpleInfo.badge}
           />
         </div>
-        {/* TODO: 본인 댓글에만 좋아요 대신 삭제 버튼 */}
-        <div css={likeCountCSS} onClick={handleLikeClick}>
-          <HeartIcon />
-          <div>{comment.likeCount}</div>
-        </div>
+        {comment.isAllowed ? (
+          <div css={deleteCSS} onClick={handleCommentDeleteClick}>
+            삭제
+          </div>
+        ) : (
+          <div css={likeCountCSS} onClick={handleLikeClick}>
+            <HeartIcon />
+            <div>{comment.likeCount}</div>
+          </div>
+        )}
       </div>
-      <div css={contentCSS}>{comment.content}</div>
+      <div css={contentCSS} onClick={onClick}>
+        {comment.content}
+      </div>
     </div>
   );
 };
@@ -68,6 +85,7 @@ const contentCSS = css`
   font-size: ${FONT.SIZE.HEADLINE};
   font-weight: ${FONT.WEIGHT.REGULAR};
   line-height: 1.4rem;
+  cursor: pointer;
 `;
 
 const likeCountCSS = css`
@@ -77,4 +95,11 @@ const likeCountCSS = css`
   font-weight: ${FONT.WEIGHT.SEMIBOLD};
   color: ${COLOR.GRAY2};
   cursor: pointer;
+`;
+
+const deleteCSS = css`
+  cursor: pointer;
+  font-size: ${FONT.SIZE.BODY};
+  font-weight: ${FONT.WEIGHT.REGULAR};
+  color: ${COLOR.GRAY2};
 `;
