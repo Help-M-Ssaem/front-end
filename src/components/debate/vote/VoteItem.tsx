@@ -73,7 +73,7 @@ const ImgBoxCSS = css`
   cursor: pointer;
   position: relative;
   border: 1px solid ${COLOR.GRAY4};
-
+  transition: background-color 0.3s, color 0.3s;
   color: ${COLOR.BLACK};
 
   &:hover {
