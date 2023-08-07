@@ -100,18 +100,18 @@ const SearchBar: React.FC = () => {
 };
 
 const trendingKeywordWrapper = css`
-  padding-bottom: 20px;
+  padding-bottom: 1.25rem;
 `;
 
 const indexStyle = css`
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
   color: #222;
-  margin-right: 20px;
+  margin-right: 1.25rem;
 `;
 
 const trendingKeyword = css`
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 400;
   color: #222;
 `;
@@ -119,49 +119,49 @@ const trendingKeyword = css`
 const trendingTitleWrapper = css`
   display: flex;
   align-items: baseline;
-  margin-bottom: 30px;
+  margin-bottom: 1.875rem;
 `;
 
 const historyKeyword = css`
   background-color: #f4efff;
-  padding: 10px;
+  padding: 0.625rem;
   color: #a7a7a7;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
-  border-radius: 30px;
-  margin-right: 10px;
+  border-radius: 1.875rem;
+  margin-right: 0.625rem;
 `;
 
 const searchHistoryKeyword = css`
   display: flex;
-  margin-top: 11px;
+  margin-top: 0.6875rem;
 `;
 const searchBarContainer = css`
   display: flex;
   align-items: center;
-  border-bottom: 1px solid black;
+  border-bottom: 0.0625rem solid black;
 `;
 
 const searchContainer = css`
-  padding: 60px 170px 0 170px;
+  padding: 3.75rem 10.625rem 0 10.625rem;
   display: flex;
   flex-direction: column;
 `;
 
 const searchInput = css`
   border: none;
-  padding: 4px 12px 4px 0;
-  font-size: 18px;
+  padding: 0.25rem 0.75rem 0.25rem 0;
+  font-size: 1.125rem;
   width: 100%;
   &::placeholder {
     color: #d4d3d3;
-    font-size: 18px;
+    font-size: 1.125rem;
     font-weight: 700;
   }
 `;
 
 const searchHistoryContainer = css`
-  margin-top: 20px;
+  margin-top: 1.25rem;
   h2 {
     font-weight: 700;
     color: #222;
@@ -169,18 +169,18 @@ const searchHistoryContainer = css`
 `;
 
 const trendingKeywordsContainer = css`
-  margin-top: 70px;
+  margin-top: 4.375rem;
   h2 {
     color: #222;
-    font-size: 18px;
+    font-size: 1.125rem;
     font-weight: 700;
-    margin-right: 7px;
+    margin-right: 0.4375rem;
   }
 `;
 
 const timeNow = css`
   color: #a7a7a7;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 400;
 `;
 
