@@ -1,14 +1,31 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState } from 'react';
-import { css } from '@emotion/react';
+import React, { useState } from "react";
+import { css } from "@emotion/react";
 import { SearchIcon } from "../../assets/CommonIcons";
 
 const SearchBar: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchHistory, setSearchHistory] = useState<string[]>( ['연애', '썸', '스트레스', '친구'] );
-  const trendingKeywords: string[] = ['ESFP', 'INTP', 'ISFP', 'ISFP', 'ISFP', 'ISFP', 'ISFP', 'ISFP', 'ISFP', 'ISFP', 'ISFP'];
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchHistory, setSearchHistory] = useState<string[]>([
+    "연애",
+    "썸",
+    "스트레스",
+    "친구",
+  ]);
+  const trendingKeywords: string[] = [
+    "ESFP",
+    "INTP",
+    "ISFP",
+    "ISFP",
+    "ISFP",
+    "ISFP",
+    "ISFP",
+    "ISFP",
+    "ISFP",
+    "ISFP",
+    "ISFP",
+  ];
 
-  const handleSearch = () => {    
+  const handleSearch = () => {
     if (searchQuery) {
       setSearchHistory((prevHistory) => [searchQuery, ...prevHistory]);
     }
@@ -26,60 +43,61 @@ const SearchBar: React.FC = () => {
 
   function formatDate(date: Date) {
     const year = String(date.getFullYear());
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-  
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
     return `${year}.${month}.${day} ${hours}:${minutes} 기준`;
   }
 
   const formattedDate = formatDate(currentDate);
-  
+
   return (
     <div css={searchContainer}>
-        <div css={searchBarContainer}>
-            <input
-            type="text"
-            value={searchQuery}
-            onChange={handleInputChange}
-            placeholder="검색어를 입력하세요"
-            css={searchInput}
+      <div css={searchBarContainer}>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={handleInputChange}
+          placeholder="검색어를 입력하세요"
+          css={searchInput}
         />
-          <button onClick={handleSearch} css={searchIconContainer}><SearchIcon/></button>
-        </div>
-     
+        <button onClick={handleSearch} css={searchIconContainer}>
+          <SearchIcon />
+        </button>
+      </div>
+
       <div css={searchHistoryContainer}>
         <h2>이전 검색어</h2>
         <div css={searchHistoryKeyword}>
-        {searchHistory.map((query, index) => (
-          <div css={historyKeyword} key={index}>{query}</div>
-        ))}
-        {/* {searchHistory.length > 0 && (
+          {searchHistory.map((query, index) => (
+            <div css={historyKeyword} key={index}>
+              {query}
+            </div>
+          ))}
+          {/* {searchHistory.length > 0 && (
           <button onClick={clearSearchHistory}>지우기</button>
         )} */}
         </div>
-        
       </div>
 
       <div css={trendingKeywordsContainer}>
         <div css={trendingTitleWrapper}>
-            <h2>인기 검색어</h2>
-            <span css={timeNow}>{formattedDate}</span>
+          <h2>인기 검색어</h2>
+          <span css={timeNow}>{formattedDate}</span>
         </div>
-        
+
         {trendingKeywords.map((keyword, index) => (
-            <div css={trendingKeywordWrapper} key={index}>
-                <span css={indexStyle}>{index+1}</span>
-                <span css={trendingKeyword}>{keyword}</span>
-            </div>
+          <div css={trendingKeywordWrapper} key={index}>
+            <span css={indexStyle}>{index + 1}</span>
+            <span css={trendingKeyword}>{keyword}</span>
+          </div>
         ))}
-        
       </div>
     </div>
   );
 };
-
 
 const trendingKeywordWrapper = css`
   padding-bottom: 20px;
@@ -98,7 +116,6 @@ const trendingKeyword = css`
   color: #222;
 `;
 
-
 const trendingTitleWrapper = css`
   display: flex;
   align-items: baseline;
@@ -106,9 +123,9 @@ const trendingTitleWrapper = css`
 `;
 
 const historyKeyword = css`
-  background-color: #F4EFFF;
-  padding: 10px; 
-  color: #A7A7A7;
+  background-color: #f4efff;
+  padding: 10px;
+  color: #a7a7a7;
   font-size: 16px;
   font-weight: 600;
   border-radius: 30px;
@@ -137,7 +154,7 @@ const searchInput = css`
   font-size: 18px;
   width: 100%;
   &::placeholder {
-    color: #D4D3D3;
+    color: #d4d3d3;
     font-size: 18px;
     font-weight: 700;
   }
@@ -162,14 +179,13 @@ const trendingKeywordsContainer = css`
 `;
 
 const timeNow = css`
-  color: #A7A7A7;
+  color: #a7a7a7;
   font-size: 12px;
   font-weight: 400;
 `;
 
-
 const searchIconContainer = css`
   margin-left: auto;
-`
+`;
 
 export default SearchBar;

@@ -1,13 +1,17 @@
 /** @jsxImportSource @emotion/react */
-import { useRef, useState } from "react";
-import Button from "../../components/button/Button";
-import { useNavigate } from "react-router-dom";
-import Container from "../../components/container/Container";
+import "@toast-ui/editor/dist/toastui-editor.css";
+import { Editor } from "@toast-ui/react-editor";
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
+import Container from "../../components/container/Container";
+import { useRef, useState } from "react";
 import FONT from "../../styles/font";
-import { Editor } from "@toast-ui/react-editor";
+import Button from "../../components/button/Button";
+import { useNavigate } from "react-router";
 import { useUpdateWorry } from "../../hooks/worry/useUpdatedWorry";
+import { useWorryBoard } from "../../hooks/worry/useDetailPost";
+import { useParams } from "react-router-dom";
+import { mssaemAxios as axios } from "../../apis/axios";
 
 const categoryList = [
   "ISTJ",
@@ -27,12 +31,15 @@ const categoryList = [
   "ENFJ",
   "ENTJ",
 ];
+
 const UpdateMatchingPage = () => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const { id } = useParams();
+  const { worryBoard } = useWorryBoard(parseInt(id!!));
+  const [title, setTitle] = useState(worryBoard!!.title);
+  const [content, setContent] = useState(worryBoard!!.content);
   // TODO: mbti는 로그인한 유저의 mbti로 설정
-  const [category, setCategory] = useState("ISFJ");
-  const [image, setImage] = useState<string[]>([]);
+  const [category, setCategory] = useState(worryBoard!!.targetMbti);
+  const [image, setImage] = useState<string[]>(worryBoard!!.imgList);
   const [openCategory, setOpenCategory] = useState(false);
   const navigate = useNavigate();
 
@@ -59,21 +66,33 @@ const UpdateMatchingPage = () => {
     "patchWorryReq",
     new Blob([JSON.stringify(data)], { type: "application/json" }),
   );
-  formData.append("image", image[0]);
-
+  formData.append(
+    "image",
+    new Blob([JSON.stringify(image)], { type: "application/json" }),
+  );
   const editorRef = useRef<any>(null);
   const handleContentChange = () => {
     setContent(editorRef.current.getInstance().getHTML());
   };
-  const updateMutation = useUpdateWorry(formData, 1);
+
+  const updateMutation = useUpdateWorry(formData, worryBoard!!.worryBoardId);
   const handleSubmit = () => {
     updateMutation.mutate();
     navigate(-1);
   };
-
+  const uploadImage = async (blob: Blob) => {
+    const formData = new FormData();
+    formData.append("image", blob);
+    const imgUrl = await axios.post("/member//worry-board/files", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return imgUrl.data;
+  };
   return (
     <div css={editorContainerCSS}>
-      <Container background="#FFFFFF" style={{ padding: "2.5rem" }}>
+      <Container addCSS={containerCSS}>
         <div css={titleBoxCSS}>
           <div css={titleCSS}>M쌤 매칭 고민글</div>
         </div>
@@ -109,18 +128,22 @@ const UpdateMatchingPage = () => {
         <div css={contentCSS}>내용을 입력해주세요.</div>
         <Editor
           ref={editorRef}
-          initialValue="M쌤 매칭 고민글 수정"
+          initialValue={content}
           previewStyle="vertical"
           height="30rem"
           initialEditType="wysiwyg"
           useCommandShortcut={true}
           onChange={handleContentChange}
+          hooks={{
+            addImageBlobHook: async (blob, callback) => {
+              const imgUrl = await uploadImage(blob);
+              setImage([...image, imgUrl]);
+              callback(imgUrl, "image");
+            },
+          }}
         />
         <div css={buttonBoxCSS}>
-          <Button
-            style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
-            onClick={() => navigate(-1)}
-          >
+          <Button addCSS={buttonCSS} onClick={() => navigate(-1)}>
             취소하기
           </Button>
           <Button onClick={handleSubmit}>글 쓰기</Button>
@@ -131,6 +154,11 @@ const UpdateMatchingPage = () => {
 };
 
 export default UpdateMatchingPage;
+
+const containerCSS = css`
+  background: ${COLOR.WHITE};
+  padding: 2.5rem;
+`;
 
 const editorContainerCSS = css`
   width: calc(100% + 30rem);
@@ -157,12 +185,10 @@ const categoryBoxCSS = css`
   display: flex;
   flex-wrap: wrap;
   width: 40%;
-
   border: 1px solid ${COLOR.GRAY4};
   border-radius: 1rem;
   padding: 1rem 1rem 1rem 2rem;
   margin-bottom: 1rem;
-
   position: absolute;
   left: 0;
   top: 2.8rem;
@@ -204,6 +230,11 @@ const buttonBoxCSS = css`
   display: flex;
   justify-content: flex-end;
   margin-top: 1rem;
+`;
+
+const buttonCSS = css`
+  margin-right: 0.5rem;
+  background: ${COLOR.MAIN};
 `;
 
 const pointerCSS = css`

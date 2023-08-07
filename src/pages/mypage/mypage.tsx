@@ -11,6 +11,11 @@ import ActivityList from "../../components/mypage/MyPage";
 import { useGetProfile } from "../../hooks/user/useProfile";
 import { SettingIcon } from "../../assets/CommonIcons";
 import { useNavigate } from "react-router-dom";
+import Container from "../../components/container/Container";
+import { useBoardListMember } from "../../hooks/board/useBoardListMember";
+import { useWorryPostListMember } from "../../hooks/worry/useWorryPostListMember";
+import { useWorrySolveListMember } from "../../hooks/worry/useWorrySolveListMember";
+import MatchingComponent from "../../components/matching/Matching";
 
 const badge1Array = [
   { title: "EsFP", type: 1 },
@@ -31,7 +36,7 @@ const menuTabBar = [
   { type: 5, title: "내가 해결한 고민" },
 ];
 
-// 가져올 컴포넌트들 임시로
+// 가져올 컴포넌트들 임시로 - 토론
 const myPostArray = [
   {
     id: 1,
@@ -86,7 +91,7 @@ const myPostArray = [
     comment: 4,
   },
 ];
-// 가져올 컴포넌트들 임시로
+// 가져올 컴포넌트들 임시로 - 댓글
 const myPostArray2 = [
   {
     id: 1,
@@ -309,6 +314,9 @@ const myPostArray5 = [
 
 const MyPage = () => {
   const navigate = useNavigate();
+  const { boardList } = useBoardListMember(1, 0, 6);
+  const { worryPostList } = useWorryPostListMember(1, 0, 6);
+  const { worrySolveList } = useWorrySolveListMember(1, 0, 2);
   const { getProfileData } = useGetProfile(1);
   console.log("getProfileData", getProfileData);
 
@@ -390,7 +398,7 @@ const MyPage = () => {
         <ActivityList getProfileData={getProfileData}></ActivityList>
       </div>
 
-      <div css={myContentContainer}>
+      <Container>
         <div css={menuButtonContainer}>
           {menuTabBar?.map((value, idx) => {
             return (
@@ -408,27 +416,44 @@ const MyPage = () => {
           })}
         </div>
 
-        {/* {menuSelected === 1 &&
-          myPostArray?.map((board) => (
-            <BoardComponent board={board} onClick={() => {}} key={board.id} />
+        {menuSelected === 1 &&
+          boardList &&
+          boardList.result.map((board) => (
+            <BoardComponent
+              board={board}
+              key={board.id}
+              onClick={() => navigate(`/board/${board.id}`)}
+            />
           ))}
-        {menuSelected === 2 &&
+        {/* {menuSelected === 2 &&
           myPostArray2?.map((board) => (
             <BoardComponent board={board} onClick={() => {}} key={board.id} />
-          ))}
+          ))} */}
         {menuSelected === 3 &&
-          myPostArray3?.map((board) => (
-            <BoardComponent board={board} onClick={() => {}} key={board.id} />
+          worryPostList &&
+          worryPostList.result.map((worryPost) => (
+            <MatchingComponent
+              matching={worryPost}
+              solve={"waiting"}
+              onClick={() => navigate(`/worry-board/${worryPost.id}`)}
+              key={worryPost.id}
+            />
           ))}
-        {menuSelected === 4 &&
+        {/* {menuSelected === 4 &&
           myPostArray4?.map((board) => (
             <BoardComponent board={board} onClick={() => {}} key={board.id} />
-          ))}
-        {menuSelected === 5 &&
-          myPostArray5?.map((board) => (
-            <BoardComponent board={board} onClick={() => {}} key={board.id} />
           ))} */}
-      </div>
+        {menuSelected === 5 &&
+          worrySolveList &&
+          worrySolveList.result.map((worrySolve) => (
+            <MatchingComponent
+              matching={worrySolve}
+              solve={"solved"}
+              onClick={() => navigate(`/worry-board/${worrySolve.id}`)}
+              key={worrySolve.id}
+            />
+          ))}
+      </Container>
     </div>
   );
 };
@@ -632,12 +657,12 @@ const menuButtonContainer = css`
   }
   li:hover {
     color: ${COLOR.MAIN1};
-    border-bottom: 0.0625rem solid ${COLOR.MAIN1};
+    border-bottom: 0.25rem solid ${COLOR.MAIN1};
   }
 
   li.active {
     color: ${COLOR.MAIN1};
-    border-bottom: 0.0625rem solid ${COLOR.MAIN1};
+    border-bottom: 0.25rem solid ${COLOR.MAIN1};
   }
   list-style-type: none;
 `;

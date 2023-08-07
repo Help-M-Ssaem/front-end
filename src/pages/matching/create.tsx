@@ -8,7 +8,7 @@ import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import { Editor } from "@toast-ui/react-editor";
 import { useCreateBoard } from "../../hooks/worry/useCreateWorry";
-
+import { mssaemAxios as axios } from "../../apis/axios";
 const categoryList = [
   "ISTJ",
   "ISFJ",
@@ -60,7 +60,10 @@ const CreateMatchingPage = () => {
     "postWorryReq",
     new Blob([JSON.stringify(data)], { type: "application/json" }),
   );
-  formData.append("image", image[0]);
+  formData.append(
+    "image",
+    new Blob([JSON.stringify(image)], { type: "application/json" }),
+  );
 
   const editorRef = useRef<any>(null);
   const handleContentChange = () => {
@@ -71,10 +74,20 @@ const CreateMatchingPage = () => {
     createMutation.mutate();
     navigate(-1);
   };
+  const uploadImage = async (blob: Blob) => {
+    const formData = new FormData();
+    formData.append("image", blob);
+    const imgUrl = await axios.post("/member/worry-board/files", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return imgUrl.data;
+  };
 
   return (
     <div css={editorContainerCSS}>
-      <Container background="#FFFFFF" style={{ padding: "2.5rem" }}>
+      <Container addCSS={containerCSS}>
         <div css={titleBoxCSS}>
           <div css={titleCSS}>M쌤 매칭 고민글</div>
         </div>
@@ -116,12 +129,16 @@ const CreateMatchingPage = () => {
           initialEditType="wysiwyg"
           useCommandShortcut={true}
           onChange={handleContentChange}
+          hooks={{
+            addImageBlobHook: async (blob, callback) => {
+              const imgUrl = await uploadImage(blob);
+              setImage([...image, imgUrl]);
+              callback(imgUrl, "image");
+            },
+          }}
         />
         <div css={buttonBoxCSS}>
-          <Button
-            style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
-            onClick={() => navigate(-1)}
-          >
+          <Button addCSS={buttonCSS} onClick={() => navigate(-1)}>
             취소하기
           </Button>
           <Button onClick={handleSubmit}>글 쓰기</Button>
@@ -132,6 +149,11 @@ const CreateMatchingPage = () => {
 };
 
 export default CreateMatchingPage;
+
+const containerCSS = css`
+  background: ${COLOR.WHITE};
+  pading: 2.5rem;
+`;
 
 const editorContainerCSS = css`
   width: calc(100% + 30rem);
@@ -205,6 +227,11 @@ const buttonBoxCSS = css`
   display: flex;
   justify-content: flex-end;
   margin-top: 1rem;
+`;
+
+const buttonCSS = css`
+  margin-right: 0.5rem;
+  background: ${COLOR.MAIN};
 `;
 
 const pointerCSS = css`

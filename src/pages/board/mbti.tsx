@@ -61,10 +61,6 @@ const MbtiBoardPage = () => {
     }
   }, [mbtiSelected]);
 
-  useEffect(() => {
-    setMbtiSelected("전체");
-  }, []);
-
   return (
     <>
       <div css={headerCSS}>

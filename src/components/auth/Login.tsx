@@ -12,14 +12,7 @@ interface userProps {
 
 const LoginComponent = ({ user }: userProps) => {
   return (
-    <Container
-      background={COLOR.WHITE}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-      }}
-    >
+    <Container addCSS={containerCSS}>
       <div css={textCSS}>로그아웃</div>
       <div css={profileCSS}>
         <Profile
@@ -43,6 +36,13 @@ const LoginComponent = ({ user }: userProps) => {
 };
 
 export default LoginComponent;
+
+const containerCSS = css`
+  background: ${COLOR.WHITE};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
 
 const textCSS = css`
   font-weight: ${FONT.WEIGHT.REGULAR};
