@@ -36,6 +36,7 @@ import HotDebatePage from "./pages/main/hotDebate";
 import Callback from "./components/auth/Callback";
 
 import MyPage from "./pages/mypage/mypage";
+import MyPageUpdate from "./pages/mypage/update";
 import DetailMatchingPage from "./pages/matching/detail";
 
 function App() {
@@ -57,6 +58,7 @@ function App() {
             <Route path="/signin" element={<SigninPage />} />
             <Route path="/signin/user" element={<UserInfo />} />
             <Route path="/mypage" element={<MyPage />} />
+            <Route path="/mypage/update" element={<MyPageUpdate />} />
             <Route path="/search" element={<SearchBar />} />
 
             <Route path="/board" element={<BoardPage />}>
