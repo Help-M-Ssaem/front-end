@@ -9,7 +9,7 @@ export async function getDebateDetail(id: number): Promise<DebateDetail> {
 }
 
 interface UseDebateDetail {
-  debate?: DebateDetail;
+    debate?: DebateDetail;
 }
 
 export function useDebateDetail(id: number): UseDebateDetail {

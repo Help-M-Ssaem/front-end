@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import { mssaemAxios as axios } from "../../apis/axios";
 import { worryKeys } from "../../constants/matchingKey";
-import { WorryList } from "../../interfaces/worry";
+import { WorryList } from "../../interfaces/worry"
 
 async function getWorryPostListMember(
   id: number,
@@ -9,13 +9,13 @@ async function getWorryPostListMember(
   size: number,
 ): Promise<WorryList> {
   const { data } = await axios.get(
-    `/worry-board/post-list?memberId=${id}&page=${page}&size=${size}`,
+    `/worry-board/post-list?memberId=${id}&page=${page}&size=${size}`
   );
   return data;
 }
 
 interface UseWorryListMember {
-  worryPostList?: WorryList;
+    worryPostList?: WorryList;
 }
 
 export function useWorryPostListMember(

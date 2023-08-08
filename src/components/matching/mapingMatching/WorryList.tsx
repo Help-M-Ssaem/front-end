@@ -54,16 +54,7 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW }) => {
   const handleMatchingClick = (id: number) => {
     navigate(`/match/${id}`);
   };
-<<<<<<< HEAD
-  const worryBoardList = useFetchWorryBoardList(
-    mbti1,
-    mbti2,
-    pathMove,
-    page - 1,
-  );
-=======
   const worryBoardList = useFetchWorryBoardList(mbti1, mbti2, pathMove, page-1);
->>>>>>> a26b40dc81d50aca2999cdd802c4f3e7c4b8c32f
   useEffect(() => {
     setMbti1("전체");
     setMbti2("전체");
@@ -72,11 +63,7 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW }) => {
     <>
       <Text>{SaW}</Text>
       <Container>
-<<<<<<< HEAD
-        <div css={buttonBoxCSS}>
-=======
       <div css={buttonBoxCSS}>
->>>>>>> a26b40dc81d50aca2999cdd802c4f3e7c4b8c32f
           <div css={mbtiBoxCSS}>
             <div css={mbtiSelectBoxCSS}>
               <div css={mbtiCSS} onClick={handleOpenMbti1}>
@@ -92,20 +79,6 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW }) => {
               {openMbti2 && <MbtiList onClick={handleMbti2Click} />}
             </div>
           </div>
-<<<<<<< HEAD
-          {pathMove === "waiting" && (
-            <Button onClick={() => navigate("/match/create")}>글 쓰기</Button>
-          )}
-        </div>
-        {worryBoardList &&
-          worryBoardList.result.map((matching) => (
-            <MatchingComponent
-              matching={matching}
-              solve={pathMove}
-              key={matching.id}
-              onClick={() => handleMatchingClick(matching.id)}
-            />
-=======
           {pathMove === "waiting" && <Button onClick={() => navigate("/match/create")}>글 쓰기</Button>}
         </div>
         {worryBoardList &&
@@ -116,7 +89,6 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW }) => {
             key={matching.id}
             onClick={() => handleMatchingClick(matching.id)}
           />
->>>>>>> a26b40dc81d50aca2999cdd802c4f3e7c4b8c32f
           ))}
         <ListPagination
           limit={limit}
