@@ -3,7 +3,7 @@ import { mssaemAxios as axios } from "../../apis/axios";
 import { debateKeys } from "../../constants/debateKey";
 
 async function deleteDebate(id: number): Promise<void> {
-  await axios.delete(`/member/debate/${id}`);
+  await axios.delete(`/member/discussion/${id}`);
 }
 interface UseDeleteDebate {
   mutate: () => void;
