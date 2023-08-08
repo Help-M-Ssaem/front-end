@@ -1,14 +1,13 @@
-import Container from "../../components/container/Container";
 import Text from "../../components/text/Text";
-import { useHotDebateMore } from "../../hooks/main/useHotDebateMore";
+import PageDebate from "../../components/debate/pageMapingDebate/PageDebate";
 
 const HotDebatePage = () => {
-  const { hotDebateMore } = useHotDebateMore(1, 6);
-
   return (
     <>
-      <Text>HOT 게시글</Text>
-      <Container></Container>
+      <Text>HOT 토론글</Text>
+      <PageDebate
+      pathMov = {"hotDiscusstion"}
+      />
     </>
   );
 };

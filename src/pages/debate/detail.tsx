@@ -16,13 +16,12 @@ import CommentComponent from "../../components/board/comment/Comment";
 import { useDebateComment } from "../../hooks/debate/comment/useDebateComment";
 import { useDebateBestComment } from "../../hooks/debate/comment/useDebateBestComment";
 import { useDebateCommentCreate } from "../../hooks/debate/comment/useDebateCommentCreate";
-
+import RedButton from "../../components/button/plusbutton/RedButton";
 const DetailDebatePage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const debateId = Number(id);
   const { debate } = useDebateDetail(debateId);
-  // TODO: 페이지네이션 구현되면 page, size 수정
   const { comments } = useDebateComment(debateId, 0, 10);
   const { bestComments } = useDebateBestComment(debateId);
   const [content, setContent] = useState("");
@@ -37,7 +36,7 @@ const DetailDebatePage = () => {
     content: content,
   };
   formData.append(
-    "postBoardCommentReq",
+    "postDiscussionCommentReq",
     new Blob([JSON.stringify(data)], { type: "application/json" }),
   );
   const createMutation = useDebateCommentCreate(debateId, formData);
@@ -47,8 +46,7 @@ const DetailDebatePage = () => {
     setContent("");
   };
   return (
-    <Container css={ContainerCSS}
-    >
+    <Container css={ContainerCSS}>
       {debate && (
         <>
           <div css={buttonBoxCSS}>
@@ -79,6 +77,9 @@ const DetailDebatePage = () => {
               options={debate.discussionSimpleInfo.options}
               debateId={debate.discussionSimpleInfo.id}
             />
+            <div css={BottomdetailCSS}>
+            <RedButton count = {`${debate.discussionSimpleInfo.participantCount}명이 참여중`}></RedButton>
+            </div>
             <div css={commentTextCSS}>
               전체 댓글 {comments ? comments.result.length : 0}개
             </div>
@@ -110,7 +111,7 @@ const DetailDebatePage = () => {
 
 export default DetailDebatePage;
 
-const ContainerCSS= css`
+const ContainerCSS = css`
   margin-top: 1rem;
 `;
 const detailCSS = css`
@@ -175,4 +176,11 @@ const buttonCSS = css`
 const updateButtonCSS = css`
   margin-right: 0.5rem;
   background: ${COLOR.MAIN};
+`;
+
+const BottomdetailCSS = css`
+margin-top:1rem;
+display: flex;
+justify-content: space-between;
+align-items: center;
 `;

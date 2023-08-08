@@ -59,7 +59,7 @@ function App() {
             <Route path="/signin" element={<SigninPage />} />
             <Route path="/signin/user" element={<UserInfo />} />
             <Route path="/mypage" element={<MyPage />} />
-            {/* <Route path="/mypage/update" element={<MyPageUpdate />} /> */}
+            <Route path="/mypage/update" element={<MyPageUpdate />} />
             <Route path="/search" element={<SearchBar />} />
 
             <Route path="/board" element={<BoardPage />}>

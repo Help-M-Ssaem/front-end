@@ -5,7 +5,6 @@ import FONT from "../../styles/font";
 import Mssaem from "../../components/matching/Mssaem";
 import WorryList from "../../components/matching/mapingMatching/WorryList";
 import { useMainTheacher } from "../../hooks/main/useMainTeacher";
-        
 const MatchingPage = () => {
   const { mainTeacher } = useMainTheacher();
   return (
@@ -20,16 +19,9 @@ const MatchingPage = () => {
             ))}
         </div>
       </div>
-      <WorryList
-        pathMove={"waiting"}
-        SaW={"M쌤 매칭을 기다리는 고민"}
-        />
+      <WorryList pathMove={"waiting"} SaW={"M쌤 매칭을 기다리는 고민"} />
 
-      <WorryList
-        pathMove={"solved"}
-        SaW={"해결 완료된 고민"}
-      />
-      
+      <WorryList pathMove={"solved"} SaW={"해결 완료된 고민"} />
     </>
   );
 };

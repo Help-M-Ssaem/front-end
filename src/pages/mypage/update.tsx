@@ -11,11 +11,6 @@ import ActivityList from "../../components/mypage/MyPage";
 import { useGetProfile } from "../../hooks/user/useProfile";
 import { SettingIcon } from "../../assets/CommonIcons";
 import { useNavigate } from "react-router-dom";
-import Container from "../../components/container/Container";
-import { useBoardListMember } from "../../hooks/board/useBoardListMember";
-import { useWorryPostListMember } from "../../hooks/worry/useWorryPostListMember";
-import { useWorrySolveListMember } from "../../hooks/worry/useWorrySolveListMember";
-import MatchingComponent from "../../components/matching/Matching";
 
 const badge1Array = [
   { title: "EsFP", type: 1 },
@@ -36,7 +31,7 @@ const menuTabBar = [
   { type: 5, title: "내가 해결한 고민" },
 ];
 
-// 가져올 컴포넌트들 임시로 - 토론
+// 가져올 컴포넌트들 임시로
 const myPostArray = [
   {
     id: 1,
@@ -91,7 +86,7 @@ const myPostArray = [
     comment: 4,
   },
 ];
-// 가져올 컴포넌트들 임시로 - 댓글
+// 가져올 컴포넌트들 임시로
 const myPostArray2 = [
   {
     id: 1,
@@ -312,11 +307,8 @@ const myPostArray5 = [
   },
 ];
 
-const MyPage = () => {
+const MyPageUpdate = () => {
   const navigate = useNavigate();
-  const { boardList } = useBoardListMember(1, 0, 6);
-  const { worryPostList } = useWorryPostListMember(1, 0, 6);
-  const { worrySolveList } = useWorrySolveListMember(1, 0, 2);
   const { getProfileData } = useGetProfile(1);
   console.log("getProfileData", getProfileData);
 
@@ -397,68 +389,11 @@ const MyPage = () => {
         {/* box3 */}
         <ActivityList getProfileData={getProfileData}></ActivityList>
       </div>
-
-      <Container>
-        <div css={menuButtonContainer}>
-          {menuTabBar?.map((value, idx) => {
-            return (
-              <li
-                onClick={() => {
-                  clickMenu(value.type);
-                }}
-                key={idx}
-                css={menuBox}
-                className={menuSelected === value.type ? "active" : ""}
-              >
-                {value.title}
-              </li>
-            );
-          })}
-        </div>
-
-        {menuSelected === 1 &&
-          boardList &&
-          boardList.result.map((board) => (
-            <BoardComponent
-              board={board}
-              key={board.id}
-              onClick={() => navigate(`/board/${board.id}`)}
-            />
-          ))}
-        {/* {menuSelected === 2 &&
-          myPostArray2?.map((board) => (
-            <BoardComponent board={board} onClick={() => {}} key={board.id} />
-          ))} */}
-        {menuSelected === 3 &&
-          worryPostList &&
-          worryPostList.result.map((worryPost) => (
-            <MatchingComponent
-              matching={worryPost}
-              solve={"waiting"}
-              onClick={() => navigate(`/worry-board/${worryPost.id}`)}
-              key={worryPost.id}
-            />
-          ))}
-        {/* {menuSelected === 4 &&
-          myPostArray4?.map((board) => (
-            <BoardComponent board={board} onClick={() => {}} key={board.id} />
-          ))} */}
-        {menuSelected === 5 &&
-          worrySolveList &&
-          worrySolveList.result.map((worrySolve) => (
-            <MatchingComponent
-              matching={worrySolve}
-              solve={"solved"}
-              onClick={() => navigate(`/worry-board/${worrySolve.id}`)}
-              key={worrySolve.id}
-            />
-          ))}
-      </Container>
     </div>
   );
 };
 
-export default MyPage;
+export default MyPageUpdate;
 
 const mainTitleCSS = css`
   display: flex;
@@ -649,7 +584,7 @@ const menuButtonContainer = css`
   display: flex;
   justify-content: space-between;
   border-bottom: 0.0625rem solid ${COLOR.MAIN1};
-  height: 3.5rem;
+  height: 5.125rem;
   li {
     cursor: pointer;
     position: relative;
@@ -666,9 +601,8 @@ const menuButtonContainer = css`
   }
   list-style-type: none;
 `;
-
 const menuBox = css`
   text-align: center;
   flex: 1;
-  padding: 0.5rem 2.5625rem;
+  padding: 1.875rem 2.5625rem;
 `;
