@@ -37,6 +37,8 @@ import Callback from "./components/auth/Callback";
 
 import MyPage from "./pages/mypage/mypage";
 import DetailMatchingPage from "./pages/matching/detail";
+import PrivacyPolicy from "./components/auth/PrivacyPolicy";
+import CommunityPolicy from "./components/auth/CommunityPolicy";
 
 function App() {
   return (
@@ -58,6 +60,8 @@ function App() {
             <Route path="/signin/user" element={<UserInfo />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/search" element={<SearchBar />} />
+            <Route path="/policy/privacy" element={<PrivacyPolicy />} />
+            <Route path="/policy/community" element={<CommunityPolicy />} />
 
             <Route path="/board" element={<BoardPage />}>
               <Route path="mbti" element={<MbtiBoardPage />} />
