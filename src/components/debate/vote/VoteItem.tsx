@@ -18,7 +18,17 @@ const VoteItem = ({
     PostId,
 }: VoteItemProps ) => {
     const [isHovered, setIsHovered] = useState(false);
-
+    const fetchData = async () => {
+        try {
+          const response = await axios.get(`/discussions/${PostId}`);
+          const data = response.data;
+          const optionList = data.discussionSimpleInfo.options;
+          const isAnyOptionSelected = optionList.some((option: { selected: boolean; }) => option.selected === true);
+          return isAnyOptionSelected;
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    }
     const handleMouseEnter = () => {
         setIsHovered(true);
     };
@@ -27,8 +37,7 @@ const VoteItem = ({
     };
 
     const handleClick = () => {
-        
-        if(selected!==true){
+        if(!fetchData() && selected!==true){
             axios.post(`/member/discussions/${PostId}/discussion-options/${id}`,selected=true)
               };
     };
@@ -73,7 +82,7 @@ const ImgBoxCSS = css`
   cursor: pointer;
   position: relative;
   border: 1px solid ${COLOR.GRAY4};
-
+  transition: background-color 0.3s, color 0.3s;
   color: ${COLOR.BLACK};
 
   &:hover {
