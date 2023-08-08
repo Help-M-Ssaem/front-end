@@ -226,6 +226,11 @@ const containerCSS = css`
   padding: 0;
 `;
 
+// const containerCSS = css`
+//   background: ${COLOR.WHITE};
+//   padding: 2.5rem;
+// `;
+
 const editorContainerCSS = css`
   width: calc(100% + 30rem);
   margin-left: -15rem;
@@ -288,6 +293,22 @@ const chattingLeftCSS = css`
 
 const chattingRightCSS = css`
   border-left: 1px solid ${COLOR.GRAY4};
+  width: 100%;
+  height: 100%;
+  min-height: 18rem;
+  border-radius: 1.4rem;
+  border: 1.5px solid ${COLOR.GRAY4};
+  padding: 0.7rem;
+`;
+
+const selectuplodGridinContentsBox = css`
+  width: 100%;
+  height: 100%;
+  minheight: 10rem;
+  border-radius: 1.4rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7rem;
 `;
 
 const ChattingItem = css`
@@ -349,10 +370,41 @@ const topFontSIZE = css`
 const bottomFontSIZE = css`
   padding-bottom: 0.5rem;
   font-size: ${FONT.SIZE.HEADLINE};
+`;
+
+const imageCSS = css`
+  width: 11rem;
+  height: auto;
+  max-height: 9rem;
+  object-fit: contain;
+`;
+const contentCSS = css`
+  font-size: ${FONT.SIZE.HEADLINE};
+  font-weight: ${FONT.WEIGHT.REGULAR};
   color: ${COLOR.GRAY2};
 `;
 
 const noMassageCSS = css`
   display: flex;
   padding-top: 7rem;
+`;
+
+const buttonCSS = css`
+  margin-right: 0.5rem;
+  background: ${COLOR.MAIN};
+`;
+
+const controlSize = css`
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: 70%;
+`;
+
+const controlSizetop = css`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 `;

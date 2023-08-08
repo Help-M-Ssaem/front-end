@@ -4,6 +4,7 @@ import COLOR from "../../../styles/color";
 import FONT from "../../../styles/font";
 
 const mbtiList = [
+<<<<<<< HEAD
   "전체",
   "ISTJ",
   "ISFJ",
@@ -27,6 +28,32 @@ interface MbtiListProps {
   onClick: (mbti: string) => void;
 }
 
+=======
+    "전체",
+    "ISTJ",
+    "ISFJ",
+    "INFJ",
+    "INTJ",
+    "ISTP",
+    "ISFP",
+    "INFP",
+    "INTP",
+    "ESTP",
+    "ESFP",
+    "ENFP",
+    "ENTP",
+    "ESTJ",
+    "ESFJ",
+    "ENFJ",
+    "ENTJ",
+  ];
+
+  interface MbtiListProps {
+    onClick: (mbti: string) => void;
+  }
+
+  
+>>>>>>> a26b40dc81d50aca2999cdd802c4f3e7c4b8c32f
 const MbtiList: React.FC<MbtiListProps> = ({ onClick }) => {
   return (
     <div css={categoryBoxCSS}>

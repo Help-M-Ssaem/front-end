@@ -21,15 +21,25 @@ export interface WorryBoard {
   imgUrl: string;
 }
 
+<<<<<<< HEAD
 export interface WorryList {
+=======
+export interface WorryList{
+>>>>>>> a26b40dc81d50aca2999cdd802c4f3e7c4b8c32f
   page: number;
   totalSize: number;
   result: WorryBoard[];
 }
 
+<<<<<<< HEAD
 export interface UseWorryBoard extends WorryList {
   departMbti: string;
   endMbti: string;
+=======
+export interface UseWorryBoard extends WorryList{
+  departMbti: string,
+  endMbti: string,
+>>>>>>> a26b40dc81d50aca2999cdd802c4f3e7c4b8c32f
 }
 
 export interface DetailWorry {

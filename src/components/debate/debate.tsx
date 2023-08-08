@@ -75,14 +75,24 @@ const bottomLineCSS = css`
 const leftCSS = css`
   display: flex;
   flex-direction: column;
+<<<<<<< HEAD
   flex-grow: 1;
+=======
+  flex-grow: 1; 
+>>>>>>> a26b40dc81d50aca2999cdd802c4f3e7c4b8c32f
   padding-top: 1.4rem;
 `;
 
 const dateTop = css`
+<<<<<<< HEAD
   display: flex;
   justify-content: space-between;
   align-items: center;
+=======
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+>>>>>>> a26b40dc81d50aca2999cdd802c4f3e7c4b8c32f
 `;
 
 const titleCSS = css`

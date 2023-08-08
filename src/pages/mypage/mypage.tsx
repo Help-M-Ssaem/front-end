@@ -4,9 +4,7 @@ import { useState } from "react";
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
-import Badge from "../../components/badge/Badge";
 import BoardComponent from "../../components/board/Board";
-import Profile from "../../components/profile/Profile";
 import ActivityList from "../../components/mypage/MyPage";
 import { useGetProfile } from "../../hooks/user/useProfile";
 import { SettingIcon } from "../../assets/CommonIcons";
@@ -36,62 +34,7 @@ const menuTabBar = [
   { type: 5, title: "내가 해결한 고민" },
 ];
 
-// 가져올 컴포넌트들 임시로 - 토론
-const myPostArray = [
-  {
-    id: 1,
-    name: "유보라",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "카페에서 남친이랑 싸웠어",
-    content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 2,
-    name: "유보라",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "카페에서 남친이랑 싸웠어",
-    content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 3,
-    name: "유보라",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "카페에서 남친이랑 싸웠어",
-    content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 4,
-    name: "유보라",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "카페에서 남친이랑 싸웠어",
-    content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-];
-// 가져올 컴포넌트들 임시로 - 댓글
+//토론
 const myPostArray2 = [
   {
     id: 1,
@@ -146,62 +89,7 @@ const myPostArray2 = [
     comment: 4,
   },
 ];
-// 가져올 컴포넌트들 임시로
-const myPostArray3 = [
-  {
-    id: 1,
-    name: "유저3",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "고민고민 할 예정",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 2,
-    name: "유저3",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "고민고민 할 예정",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 3,
-    name: "유저3",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "고민고민 할 예정",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 4,
-    name: "유저3",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "고민고민 할 예정",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-];
-// 가져올 컴포넌트들 임시로
+//댓글
 const myPostArray4 = [
   {
     id: 1,
@@ -251,61 +139,6 @@ const myPostArray4 = [
     badge: "엠비티어론",
     title: "이거시 내 댓글이지 암",
     content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-];
-// 가져올 컴포넌트들 임시로
-const myPostArray5 = [
-  {
-    id: 1,
-    name: "유저5",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "내가 고민 해결왕이다",
-    content: "예에",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 2,
-    name: "유저5",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "내가 고민 해결왕이다",
-    content: "예에",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 3,
-    name: "유저5",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "내가 고민 해결왕이다",
-    content: "예에",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 4,
-    name: "유저5",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "내가 고민 해결왕이다",
-    content: "예에",
     createdAt: "23.06.21",
     like: 3,
     comment: 4,
@@ -608,41 +441,13 @@ const badgeCSS4 = css`
   width: fit-content;
 `;
 
-const spaceBetween = css`
-  display: flex;
-  justify-content: space-between;
-`;
-const spaceBetweenWithMargin = css`
-  display: flex;
-  justify-content: space-between;
-  margin-top: 2.8125rem;
-`;
-
-const contentContainer = css`
-  margin: 1.25rem 0;
-  display: flex;
-  flex-direction: column;
-  row-gap: 0.625rem;
-`;
-
-const contentBox = css`
-  display: flex;
-  justify-content: space-between;
-  width: 7.1875rem;
-`;
-
-const contentNumber = css`
-  font-weight: ${FONT.WEIGHT.SEMIBOLD};
-`;
-
 const myContentContainer = css`
-  margin-top: 4.125rem;
-  max-width: 80rem;
-  min-width: 65.625rem;
-  min-height: 31.25rem;
-  background: ${COLOR.MAIN3};
-  border-radius: 1.2rem;
-  /* padding: 1.5rem; */
+  // margin-top: 66px;
+  // width: 1180px;
+  // min-height: 500px;
+  // background: ${COLOR.MAIN3};
+  // border-radius: 1.2rem;
+  // /* padding: 1.5rem; */
 `;
 
 const menuButtonContainer = css`

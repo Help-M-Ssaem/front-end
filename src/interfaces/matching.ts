@@ -22,8 +22,8 @@ export interface MainMatching {
 export interface MainTeacher {
   id: number;
   nickName: string;
-  mbtiEnum: string;
+  mbti: string;
   badge: string;
-  profileImgUrl: string;
-  introduction: string;
+  profileImgUrl:string;
+  introduction:string;
 }
