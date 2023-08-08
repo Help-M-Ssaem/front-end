@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainPage from "./pages/main/main";
 import LoginPage from "./pages/auth/login";
 import SigninPage from "./pages/auth/signin";
-import SearchBar from "./pages/search/search";
+import Search from "./pages/search/search";
 
 import BoardPage from "./pages/board/board";
 import MbtiBoardPage from "./pages/board/mbti";
@@ -60,7 +60,7 @@ function App() {
             <Route path="/signin/user" element={<UserInfo />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/mypage/update" element={<MyPageUpdate />} />
-            <Route path="/search" element={<SearchBar />} />
+            <Route path="/search" element={<Search />} />
 
             <Route path="/board" element={<BoardPage />}>
               <Route path="mbti" element={<MbtiBoardPage />} />
