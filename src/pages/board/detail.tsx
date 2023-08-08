@@ -157,7 +157,7 @@ const DetailBoardPage = () => {
                             <CommentComponent
                               comment={replyComment}
                               onClick={() =>
-                                handleCommentClick(replyComment.commentId)
+                                handleCommentClick(replyComment.parentId)
                               }
                               reply={true}
                             />
