@@ -11,7 +11,7 @@ const communityPolicy = () => {
     <div css={communityCSS} className="policy">
       <Container>
         <h1 css={titleCSS}>커뮤니티 이용 약관</h1>
-        <ReactMarkdown css={contentCSS} children={CommunityPolicy[0]} />
+        <ReactMarkdown css={contentCSS} children={CommunityPolicy} />
       </Container>
     </div>
   );
