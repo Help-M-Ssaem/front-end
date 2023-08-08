@@ -23,7 +23,7 @@ const DetailBoardPage = () => {
   const { id } = useParams();
   const boardId = Number(id);
   const { board } = useBoardDetail(boardId);
-  // TODO: 페이지네이션 구현되면 page, size 수정
+  // TODO: 더보기 구현되면 page, size 수정
   const { comments } = useBoardComment(boardId, 0, 10);
   const { bestComments } = useBoardBestComment(boardId);
   const [content, setContent] = useState("");
@@ -69,16 +69,14 @@ const DetailBoardPage = () => {
   };
   const handleReplyCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("reply", replyCommentId);
     createReplyMutation.mutate();
     setReplyContent("");
     setReplyCommentOpen(false);
   };
 
-  const handleCommentClick = (commentId: number, parentId: number) => {
+  const handleCommentClick = (commentId: number) => {
     setReplyCommentOpen(!replyCommentOpen);
     setReplyCommentId(commentId);
-    console.log(parentId, commentId);
   };
 
   return (
@@ -147,13 +145,26 @@ const DetailBoardPage = () => {
             {comments &&
               comments.result.map((comment) => (
                 <div key={comment.commentId}>
-                  <CommentComponent
-                    comment={comment}
-                    onClick={() =>
-                      handleCommentClick(comment.commentId, comment.parentId)
-                    }
-                    reply={comment.parentId !== 0}
-                  />
+                  {comment.parentId === 0 && (
+                    <>
+                      <CommentComponent
+                        comment={comment}
+                        onClick={() => handleCommentClick(comment.commentId)}
+                      />
+                      {comments.result.map(
+                        (replyComment) =>
+                          replyComment.parentId === comment.commentId && (
+                            <CommentComponent
+                              comment={replyComment}
+                              onClick={() =>
+                                handleCommentClick(replyComment.commentId)
+                              }
+                              reply={true}
+                            />
+                          ),
+                      )}
+                    </>
+                  )}
                   {replyCommentOpen && replyCommentId === comment.commentId && (
                     <CommentCreate
                       onSubmit={handleReplyCommentSubmit}
