@@ -16,27 +16,32 @@ const MAX_CONTENT_LENGTH = 60;
 
 const MatchingComponent = ({ matching, solve, onClick }: MatchingProps) => {
   const truncatedContent =
-  matching.content.length > MAX_CONTENT_LENGTH
-    ? matching.content.substring(0, MAX_CONTENT_LENGTH) + "..."
-    : matching.content;
+    matching.content.length > MAX_CONTENT_LENGTH
+      ? matching.content.substring(0, MAX_CONTENT_LENGTH) + "..."
+      : matching.content;
 
   return (
     <div css={MatchingBoxCSS} onClick={() => onClick(matching.id)}>
       <div css={leftCSS}>
         <div css={mbtiBoxCSS}>
-        {solve==="solved"&&<Badge mbti={"해결 완료"} color={COLOR.GRAY2} />}
+          {solve === "solved" && (
+            <Badge mbti={"해결 완료"} color={COLOR.GRAY2} />
+          )}
           <Badge mbti={matching.memberMbti} color={COLOR.MAIN4} />
           <RightArrowIcon />
           <Badge mbti={matching.targetMbti} color={COLOR.YELLOW} />
           <div css={createAtCSS}>{matching.createdDate}</div>
         </div>
         <div css={titleCSS}>{matching.title}</div>
-        <div css={contentCSS}
+        <div
+          css={contentCSS}
           dangerouslySetInnerHTML={{ __html: truncatedContent }}
-          />
+        />
       </div>
       <div css={rightCSS}>
-        {matching.imgUrl !== "default" &&<img css={thumbnailCSS} src={matching.imgUrl} alt="default" />}
+        {matching.imgUrl !== "default" && (
+          <img css={thumbnailCSS} src={matching.imgUrl} alt="default" />
+        )}
       </div>
     </div>
   );
@@ -85,12 +90,12 @@ const mbtiBoxCSS = css`
 `;
 
 const createAtCSS = css`
-display: flex;
-font-size: 0.9rem;
-color: ${COLOR.GRAY2};
-padding-left: 0.5rem;
-font-size: ${FONT.SIZE.FOOTNOTE};
-font-weight: ${FONT.WEIGHT.REGULAR};
+  display: flex;
+  font-size: 0.9rem;
+  color: ${COLOR.GRAY2};
+  padding-left: 0.5rem;
+  font-size: ${FONT.SIZE.FOOTNOTE};
+  font-weight: ${FONT.WEIGHT.REGULAR};
 `;
 
 export default MatchingComponent;

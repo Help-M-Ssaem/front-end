@@ -19,10 +19,21 @@ export function useDebateCommentDelete(
 ): UseDebateCommentDelete {
   const queryClient = useQueryClient();
 
+<<<<<<< HEAD
+  const { mutate } = useMutation(
+    () => deleteDebateComment(boardId, commentId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(commentKeys.all);
+      },
+    },
+  );
+=======
   const { mutate } = useMutation(() => deleteDebateComment(boardId, commentId), {
     onSuccess: () => {
       queryClient.invalidateQueries(commentKeys.all);
     },
   });
+>>>>>>> a26b40dc81d50aca2999cdd802c4f3e7c4b8c32f
   return { mutate };
 }

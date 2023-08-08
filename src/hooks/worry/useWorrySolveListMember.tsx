@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import { mssaemAxios as axios } from "../../apis/axios";
 import { worryKeys } from "../../constants/matchingKey";
-import { WorryList } from "../../interfaces/worry"
+import { WorryList } from "../../interfaces/worry";
 
 async function getWorrySolveListMember(
   id: number,
@@ -9,13 +9,13 @@ async function getWorrySolveListMember(
   size: number,
 ): Promise<WorryList> {
   const { data } = await axios.get(
-    `/worry-board/solve-list?memberId=${id}&page=${page}&size=${size}`
+    `/worry-board/solve-list?memberId=${id}&page=${page}&size=${size}`,
   );
   return data;
 }
 
 interface UseWorrySolveListMember {
-    worrySolveList?: WorryList;
+  worrySolveList?: WorryList;
 }
 
 export function useWorrySolveListMember(
@@ -23,7 +23,7 @@ export function useWorrySolveListMember(
   page: number,
   size: number,
 ): UseWorrySolveListMember {
-  const { data:  worrySolveList } = useQuery(worryKeys.all, () =>
+  const { data: worrySolveList } = useQuery(worryKeys.all, () =>
     getWorrySolveListMember(id, page, size),
   );
   return { worrySolveList };
