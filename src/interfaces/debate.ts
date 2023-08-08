@@ -3,10 +3,10 @@ import { User } from "./user";
 export interface Option {
   id: number;
   content: string;
-  imgUrl?: string | null;
+  imgUrl?: string|null;
   selectedPercent?: string;
   selected?: boolean;
-}
+};
 
 export interface Debate {
   id: number;
@@ -28,6 +28,7 @@ export interface DebateList {
   totalSize: number;
   result: Debate[];
 }
+
 
 export interface HotDebate {
   id: number;
