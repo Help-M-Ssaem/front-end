@@ -34,7 +34,7 @@ const menuTabBar = [
   { type: 5, title: "내가 해결한 고민" },
 ];
 
-//토론
+//토론(완료)
 const myPostArray2 = [
   {
     id: 1,
