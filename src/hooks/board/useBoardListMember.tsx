@@ -9,7 +9,7 @@ async function getBoardListMember(
   size: number,
 ): Promise<BoardList> {
   const { data } = await axios.get(
-    `/boards/member?memberId=${id}page=${page}&size=${size}`,
+    `/boards/member?memberId=${id}&page=${page}&size=${size}`,
   );
   return data;
 }
