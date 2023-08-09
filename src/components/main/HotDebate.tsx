@@ -17,16 +17,16 @@ const HotDebateComponent = ({ hotDebate, addCSS }: HotDebateProps) => {
   return (
     <div css={[containerCSS, addCSS]} key={hotDebate.id}>
       <div css={leftCSS} onClick={() => navigate(`/debate/${hotDebate.id}`)}>
-      <div css={dateTop}>
-        <div css={profileCSS}>
-          <Profile
-            image={hotDebate.memberSimpleInfo.profileImgUrl}
-            name={hotDebate.memberSimpleInfo.nickName}
-            mbti={hotDebate.memberSimpleInfo.mbti}
-            badge={hotDebate.memberSimpleInfo.badge}
-          />
-        </div>
-        <div css={[textCSS,marginRightCSS]}>{hotDebate.createdAt}</div>
+        <div css={dateTop}>
+          <div css={profileCSS}>
+            <Profile
+              image={hotDebate.memberSimpleInfo.profileImgUrl}
+              name={hotDebate.memberSimpleInfo.nickName}
+              mbti={hotDebate.memberSimpleInfo.mbti}
+              badge={hotDebate.memberSimpleInfo.badge}
+            />
+          </div>
+          <div css={[textCSS, marginRightCSS]}>{hotDebate.createdAt}</div>
         </div>
         <div css={titleCSS}>{hotDebate.title}</div>
         <div css={contentCSS}>
@@ -34,15 +34,16 @@ const HotDebateComponent = ({ hotDebate, addCSS }: HotDebateProps) => {
             ? `${hotDebate.content.slice(0, 30)}...`
             : hotDebate.content}
         </div>
-        <VoteItemList options={hotDebate.options} debateId={hotDebate.id}/>
+        <VoteItemList options={hotDebate.options} debateId={hotDebate.id} />
         <div css={detailCSS}>
-            <RedButton count = {`${hotDebate.participantCount}명이 참여중`}></RedButton>
-            <div css={[textCSS]}>댓글 {hotDebate.commentCount}</div>
-          </div>
+          <RedButton
+            count={`${hotDebate.participantCount}명이 참여중`}
+          ></RedButton>
+          <div css={[textCSS]}>댓글 {hotDebate.commentCount}</div>
+        </div>
       </div>
       <div css={bottomLineCSS}>&nbsp;</div>
-      </div>
-    
+    </div>
   );
 };
 
@@ -55,12 +56,14 @@ const containerCSS = css`
   border-radius: 1.2rem;
   padding: 1.5rem;
   position: relative;
+
+  cursor: pointer;
 `;
 
 const leftCSS = css`
   display: flex;
   flex-direction: column;
-  flex-grow: 1; 
+  flex-grow: 1;
   padding-top: 1.4rem;
 `;
 
@@ -82,10 +85,10 @@ const contentCSS = css`
 `;
 
 const detailCSS = css`
-margin-top:1rem;
-display: flex;
-justify-content: space-between;
-align-items: center;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const textCSS = css`
@@ -104,9 +107,9 @@ const marginRightCSS = css`
 `;
 
 const dateTop = css`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const bottomLineCSS = css`
