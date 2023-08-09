@@ -5,8 +5,12 @@ import { commentKeys } from "../../../constants/commentKey";
 async function createBoardComment(
   boardId: number,
   comment: FormData,
+  commentId?: number,
 ): Promise<void> {
-  await axios.post(`/member/boards/${boardId}/comments?commentId`, comment, {
+  let url = `/member/boards/${boardId}/comments`;
+  commentId && (url += `?commentId=${commentId}`);
+
+  await axios.post(url, comment, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -20,13 +24,17 @@ interface UseBoardCommentCreate {
 export function useBoardCommentCreate(
   boardId: number,
   comment: FormData,
+  commentId?: number,
 ): UseBoardCommentCreate {
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(() => createBoardComment(boardId, comment), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(commentKeys.all);
+  const { mutate } = useMutation(
+    () => createBoardComment(boardId, comment, commentId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(commentKeys.all);
+      },
     },
-  });
+  );
   return { mutate };
 }
