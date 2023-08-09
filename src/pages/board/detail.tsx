@@ -17,12 +17,22 @@ import { useBoardBestComment } from "../../hooks/board/comment/useBoardBestComme
 import { useState } from "react";
 import { useBoardCommentCreate } from "../../hooks/board/comment/useBoardCommentCreate";
 import CommentCreate from "../../components/board/comment/CommentCreate";
+import { useBoardList } from "../../hooks/board/useBoardList";
+import BoardComponent from "../../components/board/Board";
+import ListPagination from "../../components/Pagination/ListPagination";
 
 const DetailBoardPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const boardId = Number(id);
   const { board } = useBoardDetail(boardId);
+
+  const limit = 10;
+  const [page, setPage] = useState(0);
+  const [blockNum, setBlockNum] = useState(0);
+  const { boardList } = useBoardList(page, limit, boardId);
+  const totalPage = boardList ? boardList.totalSize - 1 : 1;
+
   // TODO: 더보기 구현되면 page, size 수정
   const { comments } = useBoardComment(boardId, 0, 10);
   const { bestComments } = useBoardBestComment(boardId);
@@ -80,113 +90,118 @@ const DetailBoardPage = () => {
   };
 
   return (
-    <Container addCSS={containerCSS}>
-      {board && (
-        <>
-          <div css={buttonBoxCSS}>
-            {board.isAllowed && (
-              <>
-                <Button onClick={() => navigate("update")} addCSS={buttonCSS}>
-                  수정
-                </Button>
-                <Button onClick={handleBoardDelete}>삭제</Button>
-              </>
-            )}
-          </div>
-          <div css={detailCSS}>
-            <div css={detailHeaderCSS}>
-              <Profile
-                image={board.memberSimpleInfo.profileImgUrl}
-                name={board.memberSimpleInfo.nickName}
-                mbti={board.memberSimpleInfo.mbti}
-                badge={board.memberSimpleInfo.badge}
-              />
-              <div css={dateCSS}>{board.createdAt}</div>
-            </div>
-            <div css={titleCSS}>{board.title}</div>
-            <div
-              css={contentCSS}
-              dangerouslySetInnerHTML={{ __html: board.content }}
-            />
-            <div css={likeButtonBoxCSS}>
-              <div css={likeCountCSS}>{board.likeCount}</div>
-              {board.isLiked ? (
-                <LikeClickedIcon onClick={handleLikeClick} />
-              ) : (
-                <LikeIcon onClick={handleLikeClick} />
+    <>
+      <Container addCSS={containerCSS}>
+        {board && (
+          <>
+            <div css={buttonBoxCSS}>
+              {board.isAllowed && (
+                <>
+                  <Button onClick={() => navigate("update")} addCSS={buttonCSS}>
+                    수정
+                  </Button>
+                  <Button onClick={handleBoardDelete}>삭제</Button>
+                </>
               )}
             </div>
+            <div css={detailCSS}>
+              <div css={detailHeaderCSS}>
+                <Profile
+                  image={board.memberSimpleInfo.profileImgUrl}
+                  name={board.memberSimpleInfo.nickName}
+                  mbti={board.memberSimpleInfo.mbti}
+                  badge={board.memberSimpleInfo.badge}
+                />
+                <div css={dateCSS}>{board.createdAt}</div>
+              </div>
+              <div css={titleCSS}>{board.title}</div>
+              <div
+                css={contentCSS}
+                dangerouslySetInnerHTML={{ __html: board.content }}
+              />
+              <div css={likeButtonBoxCSS}>
+                <div css={likeCountCSS}>{board.likeCount}</div>
+                {board.isLiked ? (
+                  <LikeClickedIcon onClick={handleLikeClick} />
+                ) : (
+                  <LikeIcon onClick={handleLikeClick} />
+                )}
+              </div>
 
-            <div css={commentTextCSS}>
-              전체 댓글 {comments ? comments.result.length : 0}개
+              <div css={commentTextCSS}>
+                전체 댓글 {comments ? comments.result.length : 0}개
+              </div>
             </div>
-          </div>
-          <div>
-            {/* TODO: 서버에게 isBest 추가 요청*/}
-            {/* {bestComments &&
-              bestComments.map((comment) => (
-                <div key={comment.commentId}>
-                  <CommentComponent
-                    comment={comment}
-                    best={true}
-                    onClick={() => handleCommentClick(comment.commentId)}
-                  />
-                  {replyCommentOpen && replyCommentId === comment.commentId && (
-                    <CommentCreate
-                      onSubmit={handleReplyCommentSubmit}
-                      content={replyContent}
-                      setContent={setReplyContent}
-                      addCSS={replyComment}
-                      reply={true}
-                    />
-                  )}
-                </div>
-              ))} */}
-            {comments &&
-              comments.result.map((comment) => (
-                <div key={comment.commentId}>
-                  {comment.parentId === 0 && (
-                    <>
-                      <CommentComponent
-                        comment={comment}
-                        onClick={() => handleCommentClick(comment.commentId)}
-                      />
-                      {comments.result.map(
-                        (replyComment) =>
-                          replyComment.parentId === comment.commentId && (
-                            <CommentComponent
-                              comment={replyComment}
-                              onClick={() =>
-                                handleCommentClick(replyComment.parentId)
-                              }
-                              reply={true}
-                            />
-                          ),
+            <div>
+              {comments &&
+                comments.result.map((comment) => (
+                  <div key={comment.commentId}>
+                    {comment.parentId === 0 && (
+                      <>
+                        <CommentComponent
+                          comment={comment}
+                          onClick={() => handleCommentClick(comment.commentId)}
+                        />
+                        {comments.result.map(
+                          (replyComment) =>
+                            replyComment.parentId === comment.commentId && (
+                              <CommentComponent
+                                comment={replyComment}
+                                onClick={() =>
+                                  handleCommentClick(replyComment.parentId)
+                                }
+                                reply={true}
+                              />
+                            ),
+                        )}
+                      </>
+                    )}
+                    {replyCommentOpen &&
+                      replyCommentId === comment.commentId && (
+                        <CommentCreate
+                          onSubmit={handleReplyCommentSubmit}
+                          content={replyContent}
+                          setContent={setReplyContent}
+                          addCSS={replyComment}
+                          reply={true}
+                        />
                       )}
-                    </>
-                  )}
-                  {replyCommentOpen && replyCommentId === comment.commentId && (
-                    <CommentCreate
-                      onSubmit={handleReplyCommentSubmit}
-                      content={replyContent}
-                      setContent={setReplyContent}
-                      addCSS={replyComment}
-                      reply={true}
-                    />
-                  )}
-                </div>
-              ))}
-          </div>
-          <div css={commentTextCSS}>댓글 쓰기</div>
-          <hr css={hrCSS} />
-          <CommentCreate
-            onSubmit={handleCommentSubmit}
-            content={content}
-            setContent={setContent}
-          />
-        </>
-      )}
-    </Container>
+                  </div>
+                ))}
+            </div>
+            <div css={commentTextCSS}>댓글 쓰기</div>
+            <hr css={hrCSS} />
+            <CommentCreate
+              onSubmit={handleCommentSubmit}
+              content={content}
+              setContent={setContent}
+            />
+          </>
+        )}
+      </Container>
+
+      <Container addCSS={containerCSS}>
+        <div css={buttonBoxCSS}>
+          <Button onClick={() => navigate("/board/create")}>글 쓰기</Button>
+        </div>
+        {boardList &&
+          boardList.result.map((board) => (
+            <BoardComponent
+              board={board}
+              key={board.id}
+              onClick={() => navigate(`/board/${board.id}`)}
+            />
+          ))}
+        <ListPagination
+          limit={limit}
+          page={page}
+          setPage={setPage}
+          blockNum={blockNum}
+          setBlockNum={setBlockNum}
+          totalPage={totalPage}
+        />
+      </Container>
+    </>
   );
 };
 

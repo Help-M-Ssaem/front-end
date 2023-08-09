@@ -42,9 +42,7 @@ const MbtiBoardPage = () => {
   const [boardList, setBoardList] = useState<BoardList>();
 
   const limit = 10;
-  const { boardListAll } = useBoardList(0, limit);
   const totalPage = boardList ? boardList.totalSize - 1 : 1;
-
   const [page, setPage] = useState(0);
   const [blockNum, setBlockNum] = useState(0);
 
@@ -70,7 +68,7 @@ const MbtiBoardPage = () => {
             onClick={() => setMbtiSelected("전체")}
             className={mbtiSelected === "전체" ? "active" : ""}
           >
-            전체 ({boardListAll && `${boardListAll.result.length}`})
+            전체
           </div>
           <div css={mbtiCSS}>
             {mbtiList.map((mbti) => (
