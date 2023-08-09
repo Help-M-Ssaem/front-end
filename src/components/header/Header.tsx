@@ -62,14 +62,6 @@ const Header = () => {
           >
             MBTI 과몰입 토론
           </li>
-          <li
-            onClick={() => navigate("/mbtitype")}
-            className={
-              location.pathname.startsWith("/mbtitype") ? "active" : ""
-            }
-          >
-            MBTI 유형
-          </li>
         </ul>
         <ul css={[listCSS, right]}>
           <li
