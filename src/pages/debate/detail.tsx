@@ -17,6 +17,8 @@ import { useDebateComment } from "../../hooks/debate/comment/useDebateComment";
 import { useDebateBestComment } from "../../hooks/debate/comment/useDebateBestComment";
 import { useDebateCommentCreate } from "../../hooks/debate/comment/useDebateCommentCreate";
 import RedButton from "../../components/button/plusbutton/RedButton";
+import DeleteModal from "../../components/modal/DeletModal";
+
 const DetailDebatePage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -25,6 +27,14 @@ const DetailDebatePage = () => {
   const { comments } = useDebateComment(debateId, 0, 10);
   const { bestComments } = useDebateBestComment(debateId);
   const [content, setContent] = useState("");
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const handleDeleteOpen = () => {
+    setIsDeleteModalOpen(true);
+  };
+  const handleDeleteClose = () => {
+    setIsDeleteModalOpen(false);
+  };
 
   const deleteMutation = useDeleteDebate(debateId);
   const handleDebateDelete = () => {
@@ -57,7 +67,7 @@ const DetailDebatePage = () => {
             >
               수정
             </Button>
-            <Button onClick={handleDebateDelete}>삭제</Button>
+            <Button onClick={handleDeleteOpen}>삭제</Button>
           </div>
           <div css={detailCSS}>
             <div css={detailHeaderCSS}>
@@ -105,7 +115,14 @@ const DetailDebatePage = () => {
           </form>
         </>
       )}
+          {isDeleteModalOpen && 
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={handleDeleteClose}
+        onClick={handleDebateDelete}/>
+      }
     </Container>
+
   );
 };
 

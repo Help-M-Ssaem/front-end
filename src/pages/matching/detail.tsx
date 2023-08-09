@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
+import { useState } from "react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import { useNavigate } from "react-router-dom";
@@ -11,11 +12,18 @@ import Input from "../../components/input/Input";
 import { useDeleteBoard } from "../../hooks/worry/useDeleteWorry";
 import { useWorryBoard } from "../../hooks/worry/useDetailPost";
 import { useParams } from "react-router-dom";
+import DeleteModal from "../../components/modal/DeletModal";
 
 const DetailMatchingPage = () => {
   const { id } = useParams<{ id: string }>();
   const { worryBoard } = useWorryBoard(Number(id));
-
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const handleDeleteOpen = () => {
+    setIsDeleteModalOpen(true);
+  };
+  const handleDeleteClose = () => {
+    setIsDeleteModalOpen(false);
+  };
   const navigate = useNavigate();
   const handleStartChatting = () => {
     if (!worryBoard) {
@@ -25,7 +33,6 @@ const DetailMatchingPage = () => {
   };
   const deleteMutation = useDeleteBoard(Number(id));
   const handleMatchingDelete = () => {
-    // TODO: 게시글 삭제 API 연동
     deleteMutation.mutate();
     navigate(-1);
   };
@@ -49,7 +56,7 @@ const DetailMatchingPage = () => {
         >
           수정
         </Button>
-        <Button onClick={handleMatchingDelete}>삭제</Button>
+        <Button onClick={handleDeleteOpen}>삭제</Button>
       </div>
       <div css={detailCSS}>
         <div css={detailHeaderCSS}>
@@ -77,6 +84,12 @@ const DetailMatchingPage = () => {
         <Input />
         <Button addCSS={submitButtonCSS}>등록</Button>
       </form>
+      {isDeleteModalOpen && 
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={handleDeleteClose}
+        onClick={handleMatchingDelete}/>
+      }
     </Container>
   );
 };

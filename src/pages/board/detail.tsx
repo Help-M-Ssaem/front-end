@@ -17,12 +17,21 @@ import { useBoardBestComment } from "../../hooks/board/comment/useBoardBestComme
 import { useState } from "react";
 import { useBoardCommentCreate } from "../../hooks/board/comment/useBoardCommentCreate";
 import CommentCreate from "../../components/board/comment/CommentCreate";
+import DeleteModal from "../../components/modal/DeletModal";
 
 const DetailBoardPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const boardId = Number(id);
   const { board } = useBoardDetail(boardId);
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const handleDeleteOpen = () => {
+    setIsDeleteModalOpen(true);
+  };
+  const handleDeleteClose = () => {
+    setIsDeleteModalOpen(false);
+  };
   // TODO: 더보기 구현되면 page, size 수정
   const { comments } = useBoardComment(boardId, 0, 10);
   const { bestComments } = useBoardBestComment(boardId);
@@ -39,6 +48,7 @@ const DetailBoardPage = () => {
     deleteMutation.mutate();
     navigate(-1);
   };
+
   const handleLikeClick = () => {
     likeMutation.mutate();
   };
@@ -89,7 +99,7 @@ const DetailBoardPage = () => {
                 <Button onClick={() => navigate("update")} addCSS={buttonCSS}>
                   수정
                 </Button>
-                <Button onClick={handleBoardDelete}>삭제</Button>
+                <Button onClick={handleDeleteOpen}>삭제</Button>
               </>
             )}
           </div>
@@ -186,6 +196,12 @@ const DetailBoardPage = () => {
           />
         </>
       )}
+    {isDeleteModalOpen && 
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={handleDeleteClose}
+        onClick={handleBoardDelete}/>
+      }
     </Container>
   );
 };
