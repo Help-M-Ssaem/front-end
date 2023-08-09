@@ -6,18 +6,26 @@ import { BoardList } from "../../interfaces/board";
 export async function getBoardList(
   page: number,
   size: number,
+  boardId?: number,
 ): Promise<BoardList> {
-  const { data } = await axios.get(`/boards?page=${page}&size=${size}`);
+  let url = `/boards?page=${page}&size=${size}`;
+  boardId && (url += `&boardId=${boardId}`);
+
+  const { data } = await axios.get(url);
   return data;
 }
 
 interface UseBoardList {
-  boardListAll?: BoardList;
+  boardList?: BoardList;
 }
 
-export function useBoardList(page: number, size: number): UseBoardList {
-  const { data: boardListAll } = useQuery(boardKeys.all, () =>
-    getBoardList(page, size),
+export function useBoardList(
+  page: number,
+  size: number,
+  boardId?: number,
+): UseBoardList {
+  const { data: boardList } = useQuery(boardKeys.all, () =>
+    getBoardList(page, size, boardId),
   );
-  return { boardListAll };
+  return { boardList };
 }

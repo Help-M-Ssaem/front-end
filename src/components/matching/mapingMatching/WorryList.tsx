@@ -54,17 +54,22 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW }) => {
   const handleMatchingClick = (id: number) => {
     navigate(`/match/${id}`);
   };
-  const worryBoardList = useFetchWorryBoardList(mbti1, mbti2, pathMove, page-1);
+  const worryBoardList = useFetchWorryBoardList(
+    mbti1,
+    mbti2,
+    pathMove,
+    page - 1,
+  );
   useEffect(() => {
     setMbti1("전체");
     setMbti2("전체");
   }, []);
   return (
     <>
-      <Text>{SaW}</Text>
-      <Container>
-      <div css={buttonBoxCSS}>
+      <Container addCSS={containerCSS}>
+        <div css={buttonBoxCSS}>
           <div css={mbtiBoxCSS}>
+            <Text>{SaW}</Text>
             <div css={mbtiSelectBoxCSS}>
               <div css={mbtiCSS} onClick={handleOpenMbti1}>
                 {mbti1} <SmallArrowIcon />
@@ -79,16 +84,18 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW }) => {
               {openMbti2 && <MbtiList onClick={handleMbti2Click} />}
             </div>
           </div>
-          {pathMove === "waiting" && <Button onClick={() => navigate("/match/create")}>글 쓰기</Button>}
+          {pathMove === "waiting" && (
+            <Button onClick={() => navigate("/match/create")}>글 쓰기</Button>
+          )}
         </div>
         {worryBoardList &&
-            worryBoardList.result.map((matching) => (
-          <MatchingComponent
-            matching={matching}
-            solve={pathMove}
-            key={matching.id}
-            onClick={() => handleMatchingClick(matching.id)}
-          />
+          worryBoardList.result.map((matching) => (
+            <MatchingComponent
+              matching={matching}
+              solve={pathMove}
+              key={matching.id}
+              onClick={() => handleMatchingClick(matching.id)}
+            />
           ))}
         <ListPagination
           limit={limit}
@@ -106,6 +113,10 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW }) => {
 
 export default WorryList;
 
+const containerCSS = css`
+  margin-top: 1rem;
+`;
+
 const mbtiBoxCSS = css`
   display: flex;
   align-items: center;
@@ -115,6 +126,7 @@ const mbtiSelectBoxCSS = css`
   display: flex;
   align-items: center;
   position: relative;
+  margin-left: 0.5rem;
 `;
 
 const mbtiCSS = css`
