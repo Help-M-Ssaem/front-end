@@ -130,8 +130,12 @@ const DetailBoardPage = () => {
                 )}
               </div>
 
-              <div css={commentTextCSS}>
-                전체 댓글 {comments ? comments.result.length : 0}개
+              <div css={commentBoxCSS}>
+                <div>전체 댓글 {comments ? comments.result.length : 0}개</div>
+                <div css={shareDeclarationCSS}>
+                  <div css={shareCSS}>공유</div>
+                  <div css={declarationCSS}>신고</div>
+                </div>
               </div>
             </div>
             <div>
@@ -254,11 +258,32 @@ const likeCountCSS = css`
   margin-right: 1rem;
 `;
 
+const commentBoxCSS = css`
+  display: flex;
+  justify-content: space-between;
+  font-size: ${FONT.SIZE.BODY};
+  font-weight: ${FONT.WEIGHT.BOLD};
+`;
+
 const commentTextCSS = css`
   font-size: ${FONT.SIZE.HEADLINE};
   font-weight: ${FONT.WEIGHT.BOLD};
   color: ${COLOR.MAINDARK};
   margin-top: 3rem;
+`;
+
+const shareDeclarationCSS = css`
+  display: flex;
+  color: ${COLOR.GRAY2};
+`;
+
+const shareCSS = css`
+  margin-right: 0.5rem;
+  cursor: pointer;
+`;
+
+const declarationCSS = css`
+  cursor: pointer;
 `;
 
 const hrCSS = css`
