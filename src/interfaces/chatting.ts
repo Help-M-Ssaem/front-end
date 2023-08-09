@@ -27,3 +27,7 @@ export interface ChattingTitle {
 export interface ChattingProps {
   Chattinghistory: ChattingHistory;
 }
+export interface EvaluationProps {
+  worryBoardId: number;
+  evaluations: string[];
+}

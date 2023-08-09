@@ -68,22 +68,26 @@ const EvaluationModal: React.FC<ModalProps> = ({
                 <Badge mbti={profileData?.badge || ""} color={"#5BE1A9"} />
               </div>
             </div>
-            <div css={[boXBottomCSS,boXCSS]}>
-                <div>어울리는 키워드를 골라주세요. (0~5개)</div>
-                <div css={buttonBoxCSS}>
+            <div css={[boXBottomCSS, boXCSS]}>
+              <div>어울리는 키워드를 골라주세요. (0~5개)</div>
+              <div css={buttonBoxCSS}>
                 {options.map((option) => (
-            <div 
-                css={marginLeftCSS}
-                key={option.id} 
-                onClick={() => handleOptionClick(option.value)}>
-              <button 
-              css={buttonCSS}
-              className={`optionItem ${selectedOption === option.value ? 'selected' : ''}`}
-              >{option.label}</button>
-            </div>
-          ))}
-                </div>
-              ))}
+                  <div
+                    css={marginLeftCSS}
+                    key={option.id}
+                    onClick={() => handleOptionClick(option.value)}
+                  >
+                    <button
+                      css={buttonCSS}
+                      className={`optionItem ${
+                        selectedOption === option.value ? "selected" : ""
+                      }`}
+                    >
+                      {option.label}
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
