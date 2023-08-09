@@ -42,10 +42,10 @@ const MbtiBoardPage = () => {
   const [boardList, setBoardList] = useState<BoardList>();
 
   const limit = 10;
-  const { boardListAll } = useBoardList(1, limit);
-  const totalPage = boardListAll ? boardListAll.totalSize : 1;
+  const { boardListAll } = useBoardList(0, limit);
+  const totalPage = boardList ? boardList.totalSize - 1 : 1;
 
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [blockNum, setBlockNum] = useState(0);
 
   useEffect(() => {
@@ -58,7 +58,7 @@ const MbtiBoardPage = () => {
         .get(`/boards/mbti?mbti=${mbtiSelected}&page=${page}&size=${limit}`)
         .then((res) => setBoardList(res.data));
     }
-  }, [mbtiSelected, page, limit]);
+  }, [mbtiSelected, page]);
 
   return (
     <>
