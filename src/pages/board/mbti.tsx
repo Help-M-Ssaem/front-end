@@ -13,7 +13,6 @@ import { useEffect, useState } from "react";
 import Text from "../../components/text/Text";
 import ListPagination from "../../components/Pagination/ListPagination";
 import SelectBox from "../../components/Pagination/SelectBox";
-import { useBoardList } from "../../hooks/board/useBoardList";
 import { BoardList } from "../../interfaces/board";
 import { mssaemAxios as axios } from "../../apis/axios";
 
@@ -45,6 +44,12 @@ const MbtiBoardPage = () => {
   const totalPage = boardList ? boardList.totalSize : 1;
   const [page, setPage] = useState(1);
   const [blockNum, setBlockNum] = useState(0);
+
+  const [containerKey, setContainerKey] = useState(0);
+
+  useEffect(() => {
+    setContainerKey((prevKey) => prevKey + 1);
+  }, [mbtiSelected]);
 
   useEffect(() => {
     if (mbtiSelected === "전체") {
@@ -83,7 +88,7 @@ const MbtiBoardPage = () => {
       </div>
 
       <Text>{mbtiSelected} 게시판</Text>
-      <Container>
+      <Container key={containerKey}>
         <div css={buttonBoxCSS}>
           <Button onClick={() => navigate("/board/create")}>글 쓰기</Button>
         </div>
