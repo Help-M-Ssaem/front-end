@@ -23,11 +23,10 @@ const HotBoardComponent = ({ hotBoard, addCSS }: HotBoardProps) => {
           />
         </div>
         <div css={titleCSS}>{hotBoard.title}</div>
-        <div css={contentCSS}>
-          {hotBoard.content.length > 30
-            ? `${hotBoard.content.slice(0, 30)}...`
-            : hotBoard.content}
-        </div>
+        <div
+          css={contentCSS}
+          dangerouslySetInnerHTML={{ __html: hotBoard.content }}
+        />
         <div css={textCSS}>{hotBoard.boardMbti}</div>
       </div>
       <div css={rightCSS}>
