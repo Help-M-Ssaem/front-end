@@ -14,7 +14,7 @@ import { useParams } from "react-router-dom";
 import { useBoardLike } from "../../hooks/board/useBoardLike";
 import { useBoardComment } from "../../hooks/board/comment/useBoardComment";
 import { useBoardBestComment } from "../../hooks/board/comment/useBoardBestComment";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useBoardCommentCreate } from "../../hooks/board/comment/useBoardCommentCreate";
 import CommentCreate from "../../components/board/comment/CommentCreate";
 import { useBoardList } from "../../hooks/board/useBoardList";

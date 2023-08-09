@@ -42,18 +42,18 @@ const MbtiBoardPage = () => {
   const [boardList, setBoardList] = useState<BoardList>();
 
   const limit = 10;
-  const totalPage = boardList ? boardList.totalSize - 1 : 1;
-  const [page, setPage] = useState(0);
+  const totalPage = boardList ? boardList.totalSize : 1;
+  const [page, setPage] = useState(1);
   const [blockNum, setBlockNum] = useState(0);
 
   useEffect(() => {
     if (mbtiSelected === "전체") {
-      axios.get(`/boards?page=${page}&size=${limit}`).then((res) => {
+      axios.get(`/boards?page=${page - 1}&size=${limit}`).then((res) => {
         setBoardList(res.data);
       });
     } else {
       axios
-        .get(`/boards/mbti?mbti=${mbtiSelected}&page=${page}&size=${limit}`)
+        .get(`/boards/mbti?mbti=${mbtiSelected}&page=${page - 1}&size=${limit}`)
         .then((res) => setBoardList(res.data));
     }
   }, [mbtiSelected, page]);
@@ -161,5 +161,3 @@ const buttonBoxCSS = css`
   justify-content: flex-end;
   margin-bottom: 1rem;
 `;
-
-const selectCSS = css``;
