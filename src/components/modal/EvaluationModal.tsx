@@ -6,12 +6,29 @@ import FONT from "../../styles/font";
 import Button from "../button/Button";
 import { ChattingHistory } from "../../interfaces/chatting";
 import Badge from "../badge/Badge";
+
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   onClick: () => void;
   profileData: ChattingHistory | null;
 }
+
+// enum OptionValue {
+//   LIKE = "좋아요",
+//   USEFUL = "유익해요",
+//   FUN = "재밌어요",
+//   SINCERE = "성의있어요",
+//   HOT = "화끈해요",
+// }
+// const options = [
+//   { id: "option1", label: "좋아요", value: OptionValue.LIKE },
+//   { id: "option2", label: "유익해요", value: OptionValue.USEFUL },
+//   { id: "option3", label: "재밌어요", value: OptionValue.FUN },
+//   { id: "option4", label: "성의있어요", value: OptionValue.SINCERE },
+//   { id: "option5", label: "화끈해요", value: OptionValue.HOT },
+// ];
+
 const options = [
   { id: "option1", label: "좋아요", value: "option1_value" },
   { id: "option2", label: "유익해요", value: "option2_value" },
@@ -51,26 +68,26 @@ const EvaluationModal: React.FC<ModalProps> = ({
                 <Badge mbti={profileData?.badge || ""} color={"#5BE1A9"} />
               </div>
             </div>
-          </div>
-          <div css={[boXBottomCSS, boXCSS]}>
-            <div>어울리는 키워드를 골라주세요. (0~5개)</div>
-            <div css={buttonBoxCSS}>
-              {options.map((option) => (
-                <div
-                  css={marginLeftCSS}
-                  key={option.id}
-                  onClick={() => handleOptionClick(option.value)}
-                >
-                  <button
-                    css={buttonCSS}
-                    className={`optionItem ${
-                      selectedOption === option.value ? "selected" : ""
-                    }`}
+            <div css={[boXBottomCSS, boXCSS]}>
+              <div>어울리는 키워드를 골라주세요. (0~5개)</div>
+              <div css={buttonBoxCSS}>
+                {options.map((option) => (
+                  <div
+                    css={marginLeftCSS}
+                    key={option.id}
+                    onClick={() => handleOptionClick(option.value)}
                   >
-                    {option.label}
-                  </button>
-                </div>
-              ))}
+                    <button
+                      css={buttonCSS}
+                      className={`optionItem ${
+                        selectedOption === option.value ? "selected" : ""
+                      }`}
+                    >
+                      {option.label}
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -129,15 +146,17 @@ const modaltext = css`
 const buttonBoxCSS = css`
   display: flex;
   padding: 0.9rem;
+
   .optionItem {
     cursor: pointer;
     &:hover {
       background-color: ${COLOR.MAIN4};
     }
-    &:selected {
-      background-color: ${COLOR.MAIN4};
-    }
   }
+`;
+
+const selectedButtonCSS = css`
+  background-color: ${COLOR.MAIN4};
 `;
 
 const contentBackBoxCSS = css`

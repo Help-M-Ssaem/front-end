@@ -8,6 +8,7 @@ import Button from "../button/Button";
 import { useState } from "react";
 import { ChattingHistory } from "../../interfaces/chatting";
 import EvaluationModal from "../modal/EvaluationModal";
+import { useCreateEvaluation } from "../../hooks/worry/useEvaluation";
 //데이터 받아서 해야되는뎅...
 const matching = {
   id: 1,
@@ -26,19 +27,41 @@ type Profile = {
 
 const CurrentChatting: React.FC<Profile> = ({ profile }) => {
   const [isEvaluationModalOpen, setIsEvaluationModalOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const handleEvaluation = () => {
     setIsEvaluationModalOpen(true);
   };
   const handleCloseModal = () => {
     setIsEvaluationModalOpen(false);
+    setIsSubmitted(true);
   };
+
+  const formData = {
+    worryBoardId: matching.id,
+    evaluations: [selectedOption],
+  };
+
+  const createMutation = useCreateEvaluation(formData);
+
+  const handleSubmit = (selectedOption: string) => {
+    setSelectedOption(selectedOption);
+
+    if (selectedOption) {
+      createMutation.mutate();
+    }
+  };
+
   return (
     <div css={MatchingBoxCSS}>
       <div css={leftCSS}>
-        <div css={mbtiBoxCSS}>
-          <Badge mbti={matching.mbti1} color={matching.color1} />
-          <RightArrowIcon />
-          <Badge mbti={matching.mbti2} color={matching.color2} />
+        <div css={solveCSS}>
+          {isSubmitted && <Badge mbti="해결 완료" color={COLOR.MAIN1} />}
+          <div css={mbtiBoxCSS}>
+            <Badge mbti={matching.mbti1} color={matching.color1} />
+            <RightArrowIcon />
+            <Badge mbti={matching.mbti2} color={matching.color2} />
+          </div>
         </div>
         <div css={titleCSS}>{matching.title}</div>
       </div>
@@ -89,7 +112,14 @@ const titleCSS = css`
 const mbtiBoxCSS = css`
   display: flex;
   align-items: center;
+`;
+
+const solveCSS = css`
+  display: flex;
+  color: ${COLOR.GRAY2};
+  width: 5rem;
   margin: 0.3rem 0 0.8rem 0;
+  align-items: center;
 `;
 
 export default CurrentChatting;

@@ -6,34 +6,37 @@ import FONT from "../../styles/font";
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import { useNavigate } from "react-router-dom";
-const dummyData = [
+import CommunityPolicyText from "../../components/auth/CommunityPolicyText";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import PolicyPrivacyText from "../../components/auth/PrivacyPolicyText";
+const agreementList = [
   {
     id: 1,
     vital: true,
     desc: "[필수] 이용 약관",
-    content:
-      "이용약관1.회원 가입 시 이름, 생년월일, 휴대전화번호 등의 정보를 허위로 기재해서는 안 됩니다. \
-     회원 계정에 등록된 정보는 항상 정확한 최신 정보가 유지될 수 있도록 관리해 주세요. \
-     자신의 계정을 다른 사람에게 판매, 양도, 대여 또는 담보로 제공하거나 다른 사람에게 그 사용을 허락해서는 안 됩니다.\
-     아울러 자신의 계정이 아닌 타인의 계정을 무단으로 사용해서는 안 됩니다. 이에 관한 상세한 내용은 계정 운영 정책을 참고해 주시기 바랍니다.",
+    content: CommunityPolicyText,
   },
+
   {
     id: 2,
-    vital: false,
-    desc: "[선택] 이용 약관",
-    content:
-      "이용약관2,회원 가입 시 이름, 생년월일, 휴대전화번호 등의 정보를 허위로 기재해서는 안 됩니다. \
-    회원 계정에 등록된 정보는 항상 정확한 최신 정보가 유지될 수 있도록 관리해 주세요. \
-    자신의 계정을 다른 사람에게 판매, 양도, 대여 또는 담보로 제공하거나 다른 사람에게 그 사용을 허락해서는 안 됩니다.\
-    아울러 자신의 계정이 아닌 타인의 계정을 무단으로 사용해서는 안 됩니다. 이에 관한 상세한 내용은 계정 운영 정책을 참고해 주시기 바랍니다.",
+    vital: true,
+    desc: "[필수] 개인 정보 취급 방침",
+    content: PolicyPrivacyText,
+  },
+  {
+    id: 3,
+    vital: true,
+    desc: "[필수] 만 14세 이상 본인입니다",
+    content: "",
   },
 ];
-
 const SigninPage = () => {
-  const [checkedItems, setCheckedItems] = useState(dummyData.map(() => false));
+  const [checkedItems, setCheckedItems] = useState(
+    agreementList.map(() => false),
+  );
 
   const areAllRequiredChecked = checkedItems
-    .filter((item, index) => dummyData[index].vital)
+    .filter((item, index) => agreementList[index].vital)
     .every((item) => item);
 
   const isSelectAllChecked = checkedItems.every((item) => item);
@@ -53,7 +56,7 @@ const SigninPage = () => {
   };
 
   const handleSelectAllChange = (checked: boolean) => {
-    const updatedCheckedItems = dummyData.map(() => checked);
+    const updatedCheckedItems = agreementList.map(() => checked);
 
     setCheckedItems(updatedCheckedItems);
   };
@@ -67,7 +70,7 @@ const SigninPage = () => {
     <div css={sigininCSS}>
       <h1 css={titleCSS}>이용 약관 </h1>
       <form css={policyCSS}>
-        {dummyData.map((item, index) => (
+        {agreementList.map((item, index) => (
           <div css={checkboxCSS}>
             <Checkbox
               key={item.id}
@@ -75,7 +78,12 @@ const SigninPage = () => {
               onChange={(checked) => handleCheckboxChange(index, checked)}
               desc={item.desc}
             >
-              <div css={containerCSS}>{item.content}</div>
+              {item.id !== 3 ? (
+                <ReactMarkdown
+                  css={containerCSS}
+                  children={item.content.toString()}
+                />
+              ) : null}
             </Checkbox>
           </div>
         ))}
@@ -108,6 +116,7 @@ const sigininCSS = css`
   align-items: center;
   padding-top: 2rem;
   max-width: 100rem;
+  font: unset;
 `;
 
 const titleCSS = css`
@@ -123,6 +132,7 @@ const checkboxCSS = css`
   margin-bottom: 2rem;
   padding-top: 1rem;
   max-width: 30rem;
+  font: unset;
 `;
 
 const join = css`
@@ -161,8 +171,9 @@ const policyCSS = css`
 `;
 
 const containerCSS = css`
-  // margin-top: 1rem;
   border: 4px solid ${COLOR.GRAY5};
   border-radius: 1.2rem;
   padding: 1rem;
+  overflow: scroll;
+  height: 10rem;
 `;

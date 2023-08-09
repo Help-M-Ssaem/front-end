@@ -158,6 +158,7 @@ const MyPage = () => {
   };
 
   const [menuSelected, setMenuSelected] = useState(1);
+
   const clickMenu = (type: number) => {
     setMenuSelected(type);
   };
