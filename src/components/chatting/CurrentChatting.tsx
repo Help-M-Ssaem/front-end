@@ -28,17 +28,20 @@ type Profile = {
 const CurrentChatting: React.FC<Profile> = ({ profile }) => {
   const [isEvaluationModalOpen, setIsEvaluationModalOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const handleEvaluation = () => {
     setIsEvaluationModalOpen(true);
   };
   const handleCloseModal = () => {
     setIsEvaluationModalOpen(false);
+    setIsSubmitted(true);
   };
 
   const formData = {
     worryBoardId: matching.id,
     evaluations: [selectedOption],
   };
+
   const createMutation = useCreateEvaluation(formData);
 
   const handleSubmit = (selectedOption: string) => {
@@ -52,17 +55,24 @@ const CurrentChatting: React.FC<Profile> = ({ profile }) => {
   return (
     <div css={MatchingBoxCSS}>
       <div css={leftCSS}>
-        <div css={mbtiBoxCSS}>
-          <Badge mbti={matching.mbti1} color={matching.color1} />
-          <RightArrowIcon />
-          <Badge mbti={matching.mbti2} color={matching.color2} />
+        <div css={solveCSS}>
+          {isSubmitted && <Badge mbti="해결 완료" color={COLOR.MAIN1} />}
+          <div css={mbtiBoxCSS}>
+            <Badge mbti={matching.mbti1} color={matching.color1} />
+            <RightArrowIcon />
+            <Badge mbti={matching.mbti2} color={matching.color2} />
+          </div>
         </div>
         <div css={titleCSS}>{matching.title}</div>
       </div>
       <div css={rightCSS}>
         <Button
           onClick={handleEvaluation}
-          style={{ backgroundColor: COLOR.WHITE, color: COLOR.GRAY2 }}
+          style={{
+            backgroundColor: isSubmitted ? COLOR.WHITE : COLOR.MAIN2,
+            color: isSubmitted ? COLOR.GRAY2 : COLOR.WHITE,
+          }}
+          // disabled={isSubmitted}
         >
           해결완료
         </Button>
@@ -104,7 +114,14 @@ const titleCSS = css`
 const mbtiBoxCSS = css`
   display: flex;
   align-items: center;
+`;
+
+const solveCSS = css`
+  display: flex;
+  color: ${COLOR.GRAY2};
+  width: 5rem;
   margin: 0.3rem 0 0.8rem 0;
+  align-items: center;
 `;
 
 export default CurrentChatting;

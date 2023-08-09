@@ -87,7 +87,10 @@ const EvaluationModal: React.FC<ModalProps> = ({
                   onClick={() => handleOptionClick(option.value)}
                 >
                   <button
-                    css={buttonCSS}
+                    css={[
+                      buttonCSS,
+                      selectedOption === option.value && selectedButtonCSS,
+                    ]}
                     className={`optionItem ${
                       selectedOption === option.value ? "selected" : ""
                     }`}
@@ -102,7 +105,7 @@ const EvaluationModal: React.FC<ModalProps> = ({
         <div css={bottombuttonBoxCSS}>
           <Button
             onClick={handleSubmit}
-            style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
+            style={{ marginRight: "0.5rem", background: COLOR.MAIN2 }}
           >
             제출하기
           </Button>
@@ -163,10 +166,11 @@ const buttonBoxCSS = css`
     &:hover {
       background-color: ${COLOR.MAIN4};
     }
-    &:selected {
-      background-color: ${COLOR.MAIN4};
-    }
   }
+`;
+
+const selectedButtonCSS = css`
+  background-color: ${COLOR.MAIN4};
 `;
 
 const contentBackBoxCSS = css`
