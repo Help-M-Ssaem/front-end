@@ -21,3 +21,14 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+!apis/.gitkeep
+!components/.gitkeep
+!constants/.gitkeep
+!hooks/.gitkeep
+!interface/.gitkeep
+!pages/.gitkeep
+!states/.gitkeep
+!utils/.gitkeep
+
+.env
