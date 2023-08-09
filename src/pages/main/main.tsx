@@ -64,7 +64,7 @@ const MainPage = () => {
       </div>
 
       <div css={plusBoxCSS}>
-        <Text>HOT 게시글</Text>
+        <Text addCSS={textCSS}>HOT 게시글</Text>
         <div css={plusCSS} onClick={() => navigate("hotBoard")}>
           더보기
         </div>
@@ -78,7 +78,7 @@ const MainPage = () => {
       <hr css={hrCSS} />
 
       <div css={plusBoxCSS}>
-        <Text>HOT 토론</Text>
+        <Text addCSS={textCSS}>HOT 토론</Text>
         <div css={plusCSS} onClick={() => navigate("hotDebate")}>
           더보기
         </div>
@@ -118,6 +118,10 @@ export default MainPage;
 
 const containerCSS = css`
   padding: 0rem;
+`;
+
+const textCSS = css`
+  margin: 1rem 0;
 `;
 
 const headerCSS = css`

@@ -1,13 +1,14 @@
 /** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
+import { SerializedStyles, css } from "@emotion/react";
 import FONT from "../../styles/font";
 
 interface TextProps {
   children: React.ReactNode;
+  addCSS?: SerializedStyles;
 }
 
-const Text = ({ children }: TextProps) => {
-  return <div css={textCSS}>{children}</div>;
+const Text = ({ children, addCSS }: TextProps) => {
+  return <div css={[textCSS, addCSS]}>{children}</div>;
 };
 
 export default Text;

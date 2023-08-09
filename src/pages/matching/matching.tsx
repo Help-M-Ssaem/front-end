@@ -5,14 +5,15 @@ import FONT from "../../styles/font";
 import Mssaem from "../../components/matching/Mssaem";
 import WorryList from "../../components/matching/mapingMatching/WorryList";
 import { useMainTheacher } from "../../hooks/main/useMainTeacher";
+
 const MatchingPage = () => {
   const { mainTeacher } = useMainTheacher();
+
   return (
     <>
       <div css={headerCSS}>
         <div css={mbtiTitleCSS}>인기 M쌤</div>
         <div css={mssaemListCSS}>
-          {/* M쌤 리스트 나오면 연동 */}
           {mainTeacher &&
             mainTeacher.map((mssaem) => (
               <Mssaem mssaem={mssaem} key={mssaem.id} />
