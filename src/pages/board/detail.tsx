@@ -183,7 +183,7 @@ const DetailBoardPage = () => {
       </Container>
 
       <Container addCSS={containerCSS}>
-        <div css={buttonBoxCSS}>
+        <div css={createButtonCSS}>
           <Button onClick={() => navigate("/board/create")}>글 쓰기</Button>
         </div>
         {boardList &&
@@ -275,6 +275,11 @@ const buttonBoxCSS = css`
 
 const buttonsCSS = css`
   display: flex;
+`;
+
+const createButtonCSS = css`
+  display: flex;
+  justify-content: flex-end;
 `;
 
 const buttonCSS = css`
