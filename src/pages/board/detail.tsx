@@ -261,7 +261,7 @@ const likeCountCSS = css`
 const commentBoxCSS = css`
   display: flex;
   justify-content: space-between;
-  font-size: ${FONT.SIZE.BODY};
+  font-size: ${FONT.SIZE.HEADLINE};
   font-weight: ${FONT.WEIGHT.BOLD};
 `;
 
@@ -305,6 +305,7 @@ const buttonsCSS = css`
 const createButtonCSS = css`
   display: flex;
   justify-content: flex-end;
+  margin-bottom: 1rem;
 `;
 
 const buttonCSS = css`
