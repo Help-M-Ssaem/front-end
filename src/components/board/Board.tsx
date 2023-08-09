@@ -41,7 +41,9 @@ const BoardComponent = ({ board, onClick }: BoardProps) => {
         </div>
       </div>
       <div css={rightCSS}>
-        <img css={thumbnailCSS} src={board.imgUrl} alt="thumbnail" />
+        {board.imgUrl && (
+          <img css={thumbnailCSS} src={board.imgUrl} alt="thumbnail" />
+        )}
       </div>
     </div>
   );

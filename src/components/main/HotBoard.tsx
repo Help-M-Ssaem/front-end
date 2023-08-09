@@ -31,7 +31,9 @@ const HotBoardComponent = ({ hotBoard, addCSS }: HotBoardProps) => {
       </div>
       <div css={rightCSS}>
         <div css={textCSS}>{hotBoard.createdAt}</div>
-        <img css={imgCSS} src={hotBoard.imgUrl} alt="thumbnail" />
+        {hotBoard.imgUrl && (
+          <img css={imgCSS} src={hotBoard.imgUrl} alt="thumbnail" />
+        )}
         <div css={detailCSS}>
           <div css={[textCSS, marginRightCSS]}>공감 {hotBoard.likeCount}</div>
           <div css={textCSS}>댓글 {hotBoard.commentCount}</div>
@@ -61,9 +63,11 @@ const leftCSS = css`
 `;
 
 const rightCSS = css`
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  justify-content: space-between;
 `;
 
 const profileCSS = css`
