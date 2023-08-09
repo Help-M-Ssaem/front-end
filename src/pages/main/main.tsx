@@ -16,6 +16,8 @@ import Container from "../../components/container/Container";
 import { useState } from "react";
 import { useMainMatching } from "../../hooks/main/useMainMatching";
 import { useMainTheacher } from "../../hooks/main/useMainTeacher";
+import { HotDebate } from "../../interfaces/debate";
+import HotDebateComponent from "../../components/main/HotDebate";
 
 const user = {
   id: 1,
@@ -80,6 +82,12 @@ const MainPage = () => {
         <div css={plusCSS} onClick={() => navigate("hotDebate")}>
           더보기
         </div>
+      </div>
+      <div css={hotBoardBoxCSS}>
+        {Array.isArray(hotDebates) &&
+          hotDebates.map((hotDebate: HotDebate) => (
+            <HotDebateComponent hotDebate={hotDebate} key={hotDebate.id} />
+          ))}
       </div>
       <hr css={hrCSS} />
 

@@ -1,5 +1,4 @@
 /** @jsxImportSource @emotion/react */
-import { MouseEvent } from "react";
 import { css } from "@emotion/react";
 import COLOR from "../../../styles/color"; 
 import FONT from "../../../styles/font";
@@ -18,7 +17,19 @@ const VoteItem = ({
     PostId,
 }: VoteItemProps ) => {
     const [isHovered, setIsHovered] = useState(false);
-
+    const fetchData = async () => {
+        try {
+          const response = await axios.get(`/discussions/${PostId}`);
+          const data = response.data;
+          const optionList = data.discussionSimpleInfo.options;
+          const isAnyOptionSelected = optionList.some((option: { selected: boolean; }) => option.selected === true);
+          if (!isAnyOptionSelected) {
+            axios.post(`/member/discussions/${PostId}/discussion-options/${id}`,selected=true);
+          }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    }
     const handleMouseEnter = () => {
         setIsHovered(true);
     };
@@ -27,10 +38,7 @@ const VoteItem = ({
     };
 
     const handleClick = () => {
-        
-        if(selected!==true){
-            axios.post(`/member/discussions/${PostId}/discussion-options/${id}`,selected=true)
-              };
+        fetchData();
     };
 
     return(
@@ -73,7 +81,7 @@ const ImgBoxCSS = css`
   cursor: pointer;
   position: relative;
   border: 1px solid ${COLOR.GRAY4};
-
+  transition: background-color 0.3s, color 0.3s;
   color: ${COLOR.BLACK};
 
   &:hover {

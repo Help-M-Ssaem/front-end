@@ -4,16 +4,13 @@ import { useState } from "react";
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
+import Badge from "../../components/badge/Badge";
 import BoardComponent from "../../components/board/Board";
+import Profile from "../../components/profile/Profile";
 import ActivityList from "../../components/mypage/MyPage";
 import { useGetProfile } from "../../hooks/user/useProfile";
 import { SettingIcon } from "../../assets/CommonIcons";
 import { useNavigate } from "react-router-dom";
-import Container from "../../components/container/Container";
-import { useBoardListMember } from "../../hooks/board/useBoardListMember";
-import { useWorryPostListMember } from "../../hooks/worry/useWorryPostListMember";
-import { useWorrySolveListMember } from "../../hooks/worry/useWorrySolveListMember";
-import MatchingComponent from "../../components/matching/Matching";
 
 const badge1Array = [
   { title: "EsFP", type: 1 },
@@ -34,7 +31,62 @@ const menuTabBar = [
   { type: 5, title: "내가 해결한 고민" },
 ];
 
-//토론(완료)
+// 가져올 컴포넌트들 임시로
+const myPostArray = [
+  {
+    id: 1,
+    name: "유보라",
+    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
+    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
+    mbti: "EsFP",
+    badge: "엠비티어론",
+    title: "카페에서 남친이랑 싸웠어",
+    content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
+    createdAt: "23.06.21",
+    like: 3,
+    comment: 4,
+  },
+  {
+    id: 2,
+    name: "유보라",
+    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
+    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
+    mbti: "EsFP",
+    badge: "엠비티어론",
+    title: "카페에서 남친이랑 싸웠어",
+    content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
+    createdAt: "23.06.21",
+    like: 3,
+    comment: 4,
+  },
+  {
+    id: 3,
+    name: "유보라",
+    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
+    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
+    mbti: "EsFP",
+    badge: "엠비티어론",
+    title: "카페에서 남친이랑 싸웠어",
+    content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
+    createdAt: "23.06.21",
+    like: 3,
+    comment: 4,
+  },
+  {
+    id: 4,
+    name: "유보라",
+    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
+    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
+    mbti: "EsFP",
+    badge: "엠비티어론",
+    title: "카페에서 남친이랑 싸웠어",
+    content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
+    createdAt: "23.06.21",
+    like: 3,
+    comment: 4,
+  },
+];
+// 가져올 컴포넌트들 임시로
 const myPostArray2 = [
   {
     id: 1,
@@ -89,7 +141,62 @@ const myPostArray2 = [
     comment: 4,
   },
 ];
-//댓글
+// 가져올 컴포넌트들 임시로
+const myPostArray3 = [
+  {
+    id: 1,
+    name: "유저3",
+    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
+    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
+    mbti: "EsFP",
+    badge: "엠비티어론",
+    title: "고민고민 할 예정",
+    content: "ㅎㅎㅎ",
+    createdAt: "23.06.21",
+    like: 3,
+    comment: 4,
+  },
+  {
+    id: 2,
+    name: "유저3",
+    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
+    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
+    mbti: "EsFP",
+    badge: "엠비티어론",
+    title: "고민고민 할 예정",
+    content: "ㅎㅎㅎ",
+    createdAt: "23.06.21",
+    like: 3,
+    comment: 4,
+  },
+  {
+    id: 3,
+    name: "유저3",
+    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
+    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
+    mbti: "EsFP",
+    badge: "엠비티어론",
+    title: "고민고민 할 예정",
+    content: "ㅎㅎㅎ",
+    createdAt: "23.06.21",
+    like: 3,
+    comment: 4,
+  },
+  {
+    id: 4,
+    name: "유저3",
+    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
+    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
+    mbti: "EsFP",
+    badge: "엠비티어론",
+    title: "고민고민 할 예정",
+    content: "ㅎㅎㅎ",
+    createdAt: "23.06.21",
+    like: 3,
+    comment: 4,
+  },
+];
+// 가져올 컴포넌트들 임시로
 const myPostArray4 = [
   {
     id: 1,
@@ -144,12 +251,64 @@ const myPostArray4 = [
     comment: 4,
   },
 ];
+// 가져올 컴포넌트들 임시로
+const myPostArray5 = [
+  {
+    id: 1,
+    name: "유저5",
+    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
+    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
+    mbti: "EsFP",
+    badge: "엠비티어론",
+    title: "내가 고민 해결왕이다",
+    content: "예에",
+    createdAt: "23.06.21",
+    like: 3,
+    comment: 4,
+  },
+  {
+    id: 2,
+    name: "유저5",
+    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
+    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
+    mbti: "EsFP",
+    badge: "엠비티어론",
+    title: "내가 고민 해결왕이다",
+    content: "예에",
+    createdAt: "23.06.21",
+    like: 3,
+    comment: 4,
+  },
+  {
+    id: 3,
+    name: "유저5",
+    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
+    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
+    mbti: "EsFP",
+    badge: "엠비티어론",
+    title: "내가 고민 해결왕이다",
+    content: "예에",
+    createdAt: "23.06.21",
+    like: 3,
+    comment: 4,
+  },
+  {
+    id: 4,
+    name: "유저5",
+    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
+    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
+    mbti: "EsFP",
+    badge: "엠비티어론",
+    title: "내가 고민 해결왕이다",
+    content: "예에",
+    createdAt: "23.06.21",
+    like: 3,
+    comment: 4,
+  },
+];
 
-const MyPage = () => {
+const MyPageUpdate = () => {
   const navigate = useNavigate();
-  const { boardList } = useBoardListMember(1, 0, 6);
-  const { worryPostList } = useWorryPostListMember(1, 0, 6);
-  const { worrySolveList } = useWorrySolveListMember(1, 0, 2);
   const { getProfileData } = useGetProfile(1);
   console.log("getProfileData", getProfileData);
 
@@ -230,68 +389,11 @@ const MyPage = () => {
         {/* box3 */}
         <ActivityList getProfileData={getProfileData}></ActivityList>
       </div>
-
-      <Container>
-        <div css={menuButtonContainer}>
-          {menuTabBar?.map((value, idx) => {
-            return (
-              <li
-                onClick={() => {
-                  clickMenu(value.type);
-                }}
-                key={idx}
-                css={menuBox}
-                className={menuSelected === value.type ? "active" : ""}
-              >
-                {value.title}
-              </li>
-            );
-          })}
-        </div>
-
-        {menuSelected === 1 &&
-          boardList &&
-          boardList.result.map((board) => (
-            <BoardComponent
-              board={board}
-              key={board.id}
-              onClick={() => navigate(`/board/${board.id}`)}
-            />
-          ))}
-        {/* {menuSelected === 2 &&
-          myPostArray2?.map((board) => (
-            <BoardComponent board={board} onClick={() => {}} key={board.id} />
-          ))} */}
-        {menuSelected === 3 &&
-          worryPostList &&
-          worryPostList.result.map((worryPost) => (
-            <MatchingComponent
-              matching={worryPost}
-              solve={"waiting"}
-              onClick={() => navigate(`/worry-board/${worryPost.id}`)}
-              key={worryPost.id}
-            />
-          ))}
-        {/* {menuSelected === 4 &&
-          myPostArray4?.map((board) => (
-            <BoardComponent board={board} onClick={() => {}} key={board.id} />
-          ))} */}
-        {menuSelected === 5 &&
-          worrySolveList &&
-          worrySolveList.result.map((worrySolve) => (
-            <MatchingComponent
-              matching={worrySolve}
-              solve={"solved"}
-              onClick={() => navigate(`/worry-board/${worrySolve.id}`)}
-              key={worrySolve.id}
-            />
-          ))}
-      </Container>
     </div>
   );
 };
 
-export default MyPage;
+export default MyPageUpdate;
 
 const mainTitleCSS = css`
   display: flex;
@@ -441,13 +543,41 @@ const badgeCSS4 = css`
   width: fit-content;
 `;
 
+const spaceBetween = css`
+  display: flex;
+  justify-content: space-between;
+`;
+const spaceBetweenWithMargin = css`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2.8125rem;
+`;
+
+const contentContainer = css`
+  margin: 1.25rem 0;
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.625rem;
+`;
+
+const contentBox = css`
+  display: flex;
+  justify-content: space-between;
+  width: 7.1875rem;
+`;
+
+const contentNumber = css`
+  font-weight: ${FONT.WEIGHT.SEMIBOLD};
+`;
+
 const myContentContainer = css`
-  // margin-top: 66px;
-  // width: 1180px;
-  // min-height: 500px;
-  // background: ${COLOR.MAIN3};
-  // border-radius: 1.2rem;
-  // /* padding: 1.5rem; */
+  margin-top: 4.125rem;
+  max-width: 80rem;
+  min-width: 65.625rem;
+  min-height: 31.25rem;
+  background: ${COLOR.MAIN3};
+  border-radius: 1.2rem;
+  /* padding: 1.5rem; */
 `;
 
 const menuButtonContainer = css`
@@ -462,12 +592,12 @@ const menuButtonContainer = css`
   }
   li:hover {
     color: ${COLOR.MAIN1};
-    border-bottom: 0.25rem solid ${COLOR.MAIN1};
+    border-bottom: 0.0625rem solid ${COLOR.MAIN1};
   }
 
   li.active {
     color: ${COLOR.MAIN1};
-    border-bottom: 0.25rem solid ${COLOR.MAIN1};
+    border-bottom: 0.0625rem solid ${COLOR.MAIN1};
   }
   list-style-type: none;
 `;
