@@ -18,14 +18,7 @@ import { useMainMatching } from "../../hooks/main/useMainMatching";
 import { useMainTheacher } from "../../hooks/main/useMainTeacher";
 import { HotDebate } from "../../interfaces/debate";
 import HotDebateComponent from "../../components/main/HotDebate";
-
-const user = {
-  id: 1,
-  name: "김보라",
-  image: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-  mbti: "EsFP",
-  badge: "엠비티어론",
-};
+import useMemberInfo from "../../hooks/user/useMemberInfo";
 
 const MainPage = () => {
   const { hotThree } = useHotThree();
@@ -34,6 +27,7 @@ const MainPage = () => {
   const { mainMatching } = useMainMatching();
   const { mainTeacher } = useMainTheacher();
   const [selected, setSelected] = useState(0);
+  const { user } = useMemberInfo();
 
   const navigate = useNavigate();
 
@@ -59,8 +53,7 @@ const MainPage = () => {
             />
           </>
         )}
-        <NotLoginComponent />
-        {/* TODO: 로그인 구현되면 수정 <LoginComponent user={user} /> */}
+        {user ? <LoginComponent user={user} /> : <NotLoginComponent />}
       </div>
 
       <div css={plusBoxCSS}>
