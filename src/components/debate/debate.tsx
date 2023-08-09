@@ -10,7 +10,7 @@ import VoteItemList from "./vote/VoteItemList";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 interface DebateProps {
-  debate : Debate;
+  debate: Debate;
   onClick: (id: number) => void;
   index: number;
 }
@@ -20,30 +20,34 @@ const DebateComponent = ({ debate, onClick, index }: DebateProps) => {
   return (
     <div css={debateBoxCSS}>
       <div css={buttonBoxCSS}>
-        {index%6===0 &&<Button onClick={() => navigate("/debate/create")}>글 쓰기</Button>}
+        {index % 6 === 0 && (
+          <Button onClick={() => navigate("/debate/create")}>글 쓰기</Button>
+        )}
       </div>
       <div css={leftCSS}>
         <div css={dateTop}>
-            <div css={profileBoxCSS}>
+          <div css={profileBoxCSS}>
             <Profile
               image={debate.memberSimpleInfo.profileImgUrl}
               name={debate.memberSimpleInfo.nickName}
               mbti={debate.memberSimpleInfo.mbti}
               badge={debate.memberSimpleInfo.badge}
             />
-        </div>
-        <div css={marginRightCSS}>{debate.createdAt}</div>
-      </div>
-      <div  onClick={() => onClick(debate.id)}>
-      <div css={titleCSS}>{debate.title}</div>
-      <div css={contentCSS}>{debate.content}</div>
-      </div>
-      <VoteItemList options={debate.options} debateId ={debate.id}/>
-          
-          <div css={detailCSS}>
-            <RedButton count = {`${debate.participantCount}명이 참여중`}></RedButton>
-            <div css={{cursor: "pointer"}}>댓글 {debate.commentCount}</div>
           </div>
+          <div css={marginRightCSS}>{debate.createdAt}</div>
+        </div>
+        <div onClick={() => onClick(debate.id)}>
+          <div css={titleCSS}>{debate.title}</div>
+          <div css={contentCSS}>{debate.content}</div>
+        </div>
+        <VoteItemList options={debate.options} debateId={debate.id} />
+
+        <div css={detailCSS}>
+          <RedButton
+            count={`${debate.participantCount}명이 참여중`}
+          ></RedButton>
+          <div css={{ cursor: "pointer" }}>댓글 {debate.commentCount}</div>
+        </div>
       </div>
       <div css={bottomLineCSS}>&nbsp;</div>
     </div>
@@ -71,14 +75,24 @@ const bottomLineCSS = css`
 const leftCSS = css`
   display: flex;
   flex-direction: column;
+<<<<<<< HEAD
+  flex-grow: 1;
+=======
   flex-grow: 1; 
+>>>>>>> a26b40dc81d50aca2999cdd802c4f3e7c4b8c32f
   padding-top: 1.4rem;
 `;
 
 const dateTop = css`
+<<<<<<< HEAD
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+=======
     display: flex;
     justify-content: space-between;
     align-items: center;
+>>>>>>> a26b40dc81d50aca2999cdd802c4f3e7c4b8c32f
 `;
 
 const titleCSS = css`
