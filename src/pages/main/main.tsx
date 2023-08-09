@@ -16,6 +16,8 @@ import Container from "../../components/container/Container";
 import { useState } from "react";
 import { useMainMatching } from "../../hooks/main/useMainMatching";
 import { useMainTheacher } from "../../hooks/main/useMainTeacher";
+import { HotDebate } from "../../interfaces/debate";
+import HotDebateComponent from "../../components/main/HotDebate";
 
 const user = {
   id: 1,
@@ -81,9 +83,15 @@ const MainPage = () => {
           더보기
         </div>
       </div>
+      <div css={hotBoardBoxCSS}>
+        {Array.isArray(hotDebates) &&
+          hotDebates.map((hotDebate: HotDebate) => (
+            <HotDebateComponent hotDebate={hotDebate} key={hotDebate.id} />
+          ))}
+      </div>
       <hr css={hrCSS} />
 
-      <Container style={{ padding: "0" }}>
+      <Container addCSS={containerCSS}>
         <div css={bottomTitleBoxCSS}>
           <div
             css={bottomTitleCSS}
@@ -107,6 +115,10 @@ const MainPage = () => {
 };
 
 export default MainPage;
+
+const containerCSS = css`
+  padding: 0rem;
+`;
 
 const headerCSS = css`
   width: calc(100% + 30rem);

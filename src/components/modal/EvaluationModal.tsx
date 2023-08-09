@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
@@ -10,7 +10,7 @@ import Badge from "../badge/Badge";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onClick: (result: string) => void;
+  onClick: () => void;
   profileData: ChattingHistory | null;
 }
 
@@ -30,11 +30,11 @@ interface ModalProps {
 // ];
 
 const options = [
-  { id: "LIKE", value: "좋아요" },
-  { id: "USEFUL", value: "유익해요" },
-  { id: "FUN", value: "재밌어요" },
-  { id: "SINCERE", value: "성의있어요" },
-  { id: "HOT", value: "화끈해요" },
+  { id: "option1", label: "좋아요", value: "option1_value" },
+  { id: "option2", label: "유익해요", value: "option2_value" },
+  { id: "option3", label: "재밌어요", value: "option3_value" },
+  { id: "option4", label: "성의있어요", value: "option4_value" },
+  { id: "option5", label: "화끈해요", value: "option5_value" },
 ];
 
 const EvaluationModal: React.FC<ModalProps> = ({
@@ -44,69 +44,51 @@ const EvaluationModal: React.FC<ModalProps> = ({
   profileData,
 }) => {
   const [selectedOption, setSelectedOption] = useState<string>("");
-
   if (!isOpen) return null;
   const handleOptionClick = (optionValue: string) => {
     setSelectedOption(optionValue);
   };
-  const handleSubmit = () => {
-    const option = options.find((option) => option.value === selectedOption);
-
-    if (option) {
-      onClick(option.id);
-      onClose();
-    }
-  };
-
   return (
     <div css={modalBackground} onClick={onClose}>
       <div css={modalMain} onClick={(e) => e.stopPropagation()}>
         <div css={modalHeader}>
           <div css={modaltext}>M쌤이 도움이 되셨나요?</div>
         </div>
-        {/* <div css={optionBoxCSS}>
-        </div> */}
         <div css={contentBackBoxCSS}>
           <div css={[boXTopCSS, boXCSS]}>
             <div>
-              <img css={profileImgCSS} src={profileData?.profile} />
+              <img
+                css={profileImgCSS}
+                src={profileData?.profile}
+                alt={profileData?.profile}
+              />
               <div css={profileDetailCSS}>{profileData?.name}</div>
               <div css={[profileDetailCSS, marginLeftCSS]}>
                 <Badge mbti={profileData?.mbti || ""} color={"#F8CAFF"} />
                 <Badge mbti={profileData?.badge || ""} color={"#5BE1A9"} />
               </div>
             </div>
-          </div>
-          <div css={[boXBottomCSS, boXCSS]}>
-            <div>어울리는 키워드를 골라주세요. (0~5개)</div>
-            <div css={buttonBoxCSS}>
-              {options.map((option) => (
-                <div
-                  css={marginLeftCSS}
-                  key={option.id}
-                  onClick={() => handleOptionClick(option.value)}
-                >
-                  <button
-                    css={[
-                      buttonCSS,
-                      selectedOption === option.value && selectedButtonCSS,
-                    ]}
-                    className={`optionItem ${
-                      selectedOption === option.value ? "selected" : ""
-                    }`}
-                  >
-                    {option.id}
-                  </button>
+            <div css={[boXBottomCSS,boXCSS]}>
+                <div>어울리는 키워드를 골라주세요. (0~5개)</div>
+                <div css={buttonBoxCSS}>
+                {options.map((option) => (
+            <div 
+                css={marginLeftCSS}
+                key={option.id} 
+                onClick={() => handleOptionClick(option.value)}>
+              <button 
+              css={buttonCSS}
+              className={`optionItem ${selectedOption === option.value ? 'selected' : ''}`}
+              >{option.label}</button>
+            </div>
+          ))}
                 </div>
               ))}
             </div>
           </div>
         </div>
         <div css={bottombuttonBoxCSS}>
-          <Button
-            onClick={handleSubmit}
-            style={{ marginRight: "0.5rem", background: COLOR.MAIN2 }}
-          >
+          <Button onClick={onClose} addCSS={submitButtonCSS}>
             제출하기
           </Button>
         </div>
@@ -204,7 +186,6 @@ const boXBottomCSS = css`
   padding-top: 0.8rem;
 `;
 
-//-------------------------------------------
 const profileImgCSS = css`
   width: 10rem;
   height: 10rem;
@@ -234,13 +215,15 @@ const buttonCSS = css`
 
   padding: 0.5rem 1rem;
   border-radius: 2rem;
-  &:selected {
-    background-color: ${COLOR.MAIN4};
-  }
 `;
 
 const bottombuttonBoxCSS = css`
   display: flex;
   justify-content: flex-end;
   padding: 0 1rem 0.8rem 0;
+`;
+
+const submitButtonCSS = css`
+  margin-right: 0.5rem;
+  background: ${COLOR.MAIN};
 `;

@@ -1,11 +1,18 @@
+import { User } from "./user";
+
 export interface Comment {
-  id: number;
-  name: string;
-  profile: string;
-  badge: string;
-  mbti: string;
+  commentId: number;
+  likeCount: number;
+  parentId: number;
+  createdAt: string;
+  isLiked: boolean;
+  isAllowed: boolean;
+  memberSimpleInfo: User;
   content: string;
-  date: string;
-  like: number;
-  isBest: boolean;
+}
+
+export interface CommentList {
+  page: number;
+  totalSize: number;
+  result: Comment[];
 }

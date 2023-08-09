@@ -66,14 +66,7 @@ const CurrentChatting: React.FC<Profile> = ({ profile }) => {
         <div css={titleCSS}>{matching.title}</div>
       </div>
       <div css={rightCSS}>
-        <Button
-          onClick={handleEvaluation}
-          style={{
-            backgroundColor: isSubmitted ? COLOR.WHITE : COLOR.MAIN2,
-            color: isSubmitted ? COLOR.GRAY2 : COLOR.WHITE,
-          }}
-          // disabled={isSubmitted}
-        >
+        <Button onClick={handleEvaluation} addCSS={buttonCSS}>
           해결완료
         </Button>
       </div>
@@ -81,13 +74,18 @@ const CurrentChatting: React.FC<Profile> = ({ profile }) => {
         <EvaluationModal
           isOpen={isEvaluationModalOpen}
           onClose={handleCloseModal}
-          onClick={handleSubmit}
+          onClick={() => {}}
           profileData={profile}
         />
       )}
     </div>
   );
 };
+
+const buttonCSS = css`
+  background: ${COLOR.WHITE};
+  color: ${COLOR.GRAY2};
+`;
 
 const MatchingBoxCSS = css`
   display: flex;

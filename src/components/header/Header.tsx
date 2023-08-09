@@ -29,12 +29,7 @@ const Header = () => {
       <div css={headerTopCSS}>
         <LogoIcon onClick={() => navigate("/")} />
         {LoginOpen && (
-          <Button
-            onClick={handleLoginClick}
-            style={{
-              fontSize: FONT.SIZE.HEADLINE,
-            }}
-          >
+          <Button onClick={handleLoginClick} addCSS={buttonCSS}>
             로그인하고 이용하기
           </Button>
         )}
@@ -197,4 +192,8 @@ const right = css`
   li {
     margin-left: 1.7rem;
   }
+`;
+
+const buttonCSS = css`
+  font-size: ${FONT.SIZE.HEADLINE};
 `;

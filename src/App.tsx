@@ -19,6 +19,7 @@ import UpdateMatchingPage from "./pages/matching/update";
 
 import DebatePage from "./pages/debate/debate";
 import PostListDebatePage from "./pages/debate/postlist";
+import DetailDebatePage from "./pages/debate/detail";
 import UpdateDebatePage from "./pages/debate/update";
 import CreateDebatePage from "./pages/debate/create";
 
@@ -36,6 +37,7 @@ import HotDebatePage from "./pages/main/hotDebate";
 import Callback from "./components/auth/Callback";
 
 import MyPage from "./pages/mypage/mypage";
+import MyPageUpdate from "./pages/mypage/update";
 import DetailMatchingPage from "./pages/matching/detail";
 import PrivacyPolicy from "./components/auth/PrivacyPolicy";
 import CommunityPolicy from "./components/auth/CommunityPolicy";
@@ -59,6 +61,7 @@ function App() {
             <Route path="/signin" element={<SigninPage />} />
             <Route path="/signin/user" element={<UserInfo />} />
             <Route path="/mypage" element={<MyPage />} />
+            <Route path="/mypage/update" element={<MyPageUpdate />} />
             <Route path="/search" element={<SearchBar />} />
             <Route path="/policy/privacy" element={<PrivacyPolicy />} />
             <Route path="/policy/community" element={<CommunityPolicy />} />
@@ -74,13 +77,14 @@ function App() {
               <Route path="matching" element={<MatchingPage />} />
               <Route path=":id" element={<DetailMatchingPage />} />
               <Route path="create" element={<CreateMatchingPage />} />
-              <Route path="update" element={<UpdateMatchingPage />} />
+              <Route path=":id/update" element={<UpdateMatchingPage />} />
             </Route>
 
             <Route path="/debate" element={<DebatePage />}>
               <Route path="postlist" element={<PostListDebatePage />} />
+              <Route path=":id" element={<DetailDebatePage />} />
               <Route path="create" element={<CreateDebatePage />} />
-              <Route path="update" element={<UpdateDebatePage />} />
+              <Route path=":id/update" element={<UpdateDebatePage />} />
             </Route>
 
             <Route path="/mbtitype" element={<MbtiTypePage />} />

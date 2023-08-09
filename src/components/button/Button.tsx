@@ -1,19 +1,15 @@
 /** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
-import { useState } from "react";
+import { SerializedStyles, css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 
-type ButtonProps = {
+interface ButtonProps {
   children?: React.ReactNode;
-  style?: React.CSSProperties;
   onClick?: () => void;
-  type?: string;
-  disabled?: boolean;
-};
+  addCSS?: SerializedStyles;
+}
 
-const Button = ({ children, style, onClick, disabled }: ButtonProps) => {
-  const [status, setStatus] = useState(false);
+const Button = ({ children, onClick, addCSS }: ButtonProps) => {
   const buttonCSS = css`
     display: flex;
     justify-content: center;
@@ -36,12 +32,7 @@ const Button = ({ children, style, onClick, disabled }: ButtonProps) => {
     }
   };
   return (
-    <button
-      css={buttonCSS}
-      onClick={handleClick}
-      style={style}
-      disabled={status}
-    >
+    <button css={[buttonCSS, addCSS]} onClick={onClick}>
       {children}
     </button>
   );

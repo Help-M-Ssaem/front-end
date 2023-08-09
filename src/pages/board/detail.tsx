@@ -5,58 +5,35 @@ import Container from "../../components/container/Container";
 import COLOR from "../../styles/color";
 import { css } from "@emotion/react";
 import FONT from "../../styles/font";
-import Input from "../../components/input/Input";
 import Profile from "../../components/profile/Profile";
-import CommentComponent from "../../components/comment/Comment";
+import CommentComponent from "../../components/board/comment/Comment";
 import { LikeClickedIcon, LikeIcon } from "../../assets/ButtonIcons";
 import { useDeleteBoard } from "../../hooks/board/useDeleteBoard";
 import { useBoardDetail } from "../../hooks/board/useBoardDetail";
 import { useParams } from "react-router-dom";
 import { useBoardLike } from "../../hooks/board/useBoardLike";
-
-// TODO: 댓글 API 연동
-const commentList = [
-  {
-    id: 1,
-    profile: "https://i.ibb.co/DgVwMvJ/2023-07-03-132904.png",
-    name: "김유리",
-    mbti: "ENFP",
-    badge: "ENFJ",
-    content: "저도 이런 취미 생겼으면 좋겠어요!",
-    date: "2021.09.01",
-    like: 3,
-    isBest: true,
-  },
-  {
-    id: 2,
-    profile: "https://i.ibb.co/DgVwMvJ/2023-07-03-132904.png",
-    name: "박지운",
-    mbti: "ENFP",
-    badge: "ENFJ",
-    content: "저도 이런 취미 생겼으면 좋겠어요!",
-    date: "2021.09.01",
-    like: 4,
-    isBest: false,
-  },
-  {
-    id: 3,
-    profile: "https://i.ibb.co/DgVwMvJ/2023-07-03-132904.png",
-    name: "송민혁",
-    mbti: "ENFP",
-    badge: "ENFJ",
-    content: "저도 이런 취미 생겼으면 좋겠어요!",
-    date: "2021.09.01",
-    like: 5,
-    isBest: false,
-  },
-];
+import { useBoardComment } from "../../hooks/board/comment/useBoardComment";
+import { useBoardBestComment } from "../../hooks/board/comment/useBoardBestComment";
+import { useState } from "react";
+import { useBoardCommentCreate } from "../../hooks/board/comment/useBoardCommentCreate";
+import CommentCreate from "../../components/board/comment/CommentCreate";
 
 const DetailBoardPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { board } = useBoardDetail(parseInt(id!!));
-  const deleteMutation = useDeleteBoard(parseInt(id!!));
-  const likeMutation = useBoardLike(parseInt(id!!));
+  const boardId = Number(id);
+  const { board } = useBoardDetail(boardId);
+  // TODO: 페이지네이션 구현되면 page, size 수정
+  const { comments } = useBoardComment(boardId, 0, 10);
+  const { bestComments } = useBoardBestComment(boardId);
+  const [content, setContent] = useState("");
+
+  const [replyContent, setReplyContent] = useState("");
+  const [replyCommentId, setReplyCommentId] = useState(0);
+  const [replyCommentOpen, setReplyCommentOpen] = useState(false);
+
+  const deleteMutation = useDeleteBoard(boardId);
+  const likeMutation = useBoardLike(boardId);
 
   const handleBoardDelete = () => {
     deleteMutation.mutate();
@@ -65,28 +42,52 @@ const DetailBoardPage = () => {
   const handleLikeClick = () => {
     likeMutation.mutate();
   };
-  // TODO: 댓글 등록 API 연동
-  const handleCommentSubmit = () => {
-    alert("댓글이 등록되었습니다.");
+
+  const formData = new FormData();
+  formData.append(
+    "postBoardCommentReq",
+    new Blob([JSON.stringify(content)], { type: "application/json" }),
+  );
+
+  const replyFormData = new FormData();
+  replyFormData.append(
+    "postBoardCommentReq",
+    new Blob([JSON.stringify(replyContent)], { type: "application/json" }),
+  );
+
+  const createMutation = useBoardCommentCreate(boardId, formData);
+  const createReplyMutation = useBoardCommentCreate(boardId, replyFormData);
+
+  const handleCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    createMutation.mutate();
+    setContent("");
+  };
+  const handleReplyCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    createReplyMutation.mutate();
+    setReplyContent("");
+    setReplyCommentOpen(false);
+  };
+
+  const handleCommentClick = (commentId: number) => {
+    setReplyCommentOpen(!replyCommentOpen);
+    setReplyCommentId(commentId);
   };
 
   return (
-    <Container
-      style={{
-        marginTop: "1rem",
-      }}
-    >
+    <Container addCSS={containerCSS}>
       {board && (
         <>
           <div css={buttonBoxCSS}>
-            {/* TODO: 본인 게시글에만 수정, 삭제 버튼 */}
-            <Button
-              onClick={() => navigate("update")}
-              style={{ marginRight: "0.5rem", background: COLOR.MAIN }}
-            >
-              수정
-            </Button>
-            <Button onClick={handleBoardDelete}>삭제</Button>
+            {board.isAllowed && (
+              <>
+                <Button onClick={() => navigate("update")} addCSS={buttonCSS}>
+                  수정
+                </Button>
+                <Button onClick={handleBoardDelete}>삭제</Button>
+              </>
+            )}
           </div>
           <div css={detailCSS}>
             <div css={detailHeaderCSS}>
@@ -113,23 +114,57 @@ const DetailBoardPage = () => {
             </div>
 
             <div css={commentTextCSS}>
-              전체 댓글 {commentList ? commentList.length : 0}개
+              전체 댓글 {comments ? comments.result.length : 0}개
             </div>
           </div>
           <div>
-            {commentList &&
-              commentList.map((comment) => (
-                <CommentComponent comment={comment} />
+            {/* TODO: 서버에게 isBest 추가 요청*/}
+            {bestComments &&
+              bestComments.map((comment) => (
+                <div key={comment.commentId}>
+                  <CommentComponent
+                    comment={comment}
+                    best={true}
+                    onClick={() => handleCommentClick(comment.commentId)}
+                  />
+                  {replyCommentOpen && replyCommentId === comment.commentId && (
+                    <CommentCreate
+                      onSubmit={handleReplyCommentSubmit}
+                      content={replyContent}
+                      setContent={setReplyContent}
+                      addCSS={replyComment}
+                      reply={true}
+                    />
+                  )}
+                </div>
+              ))}
+            {comments &&
+              comments.result.map((comment) => (
+                <div key={comment.commentId}>
+                  <CommentComponent
+                    comment={comment}
+                    onClick={() => handleCommentClick(comment.commentId)}
+                    reply={comment.commentId === comment.parentId}
+                  />
+                  {replyCommentOpen && replyCommentId === comment.commentId && (
+                    <CommentCreate
+                      onSubmit={handleReplyCommentSubmit}
+                      content={replyContent}
+                      setContent={setReplyContent}
+                      addCSS={replyComment}
+                      reply={true}
+                    />
+                  )}
+                </div>
               ))}
           </div>
           <div css={commentTextCSS}>댓글 쓰기</div>
           <hr css={hrCSS} />
-          <form css={submitButtonBoxCSS} onSubmit={handleCommentSubmit}>
-            <Input onSubmit={handleCommentSubmit} />
-            <Button style={{ marginLeft: "0.5rem", width: "5rem" }}>
-              등록
-            </Button>
-          </form>
+          <CommentCreate
+            onSubmit={handleCommentSubmit}
+            content={content}
+            setContent={setContent}
+          />
         </>
       )}
     </Container>
@@ -137,6 +172,10 @@ const DetailBoardPage = () => {
 };
 
 export default DetailBoardPage;
+
+const containerCSS = css`
+  margin-top: 1rem;
+`;
 
 const detailCSS = css`
   padding: 1.2rem 0;
@@ -189,14 +228,15 @@ const hrCSS = css`
   margin: 1rem 0;
 `;
 
-const submitButtonBoxCSS = css`
-  display: flex;
-`;
-
 const buttonBoxCSS = css`
   display: flex;
   justify-content: flex-end;
   margin-bottom: 1rem;
+`;
+
+const buttonCSS = css`
+  margin-right: 0.5rem;
+  background: ${COLOR.MAIN};
 `;
 
 const likeButtonBoxCSS = css`
@@ -204,4 +244,8 @@ const likeButtonBoxCSS = css`
   justify-content: center;
   align-items: center;
   margin: 2rem 0;
+`;
+
+const replyComment = css`
+  margin-top: 1rem;
 `;
