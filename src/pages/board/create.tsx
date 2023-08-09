@@ -11,6 +11,8 @@ import { useNavigate } from "react-router";
 import { ArrowIcon } from "../../assets/CommonIcons";
 import { useCreateBoard } from "../../hooks/board/useCreateBoard";
 import { mssaemAxios as axios } from "../../apis/axios";
+import { useRecoilState } from "recoil";
+import { mbtiState } from "../../states/board";
 
 const categoryList = [
   "ISTJ",
@@ -35,7 +37,7 @@ const CreateBoardPage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   // TODO: mbti는 로그인한 유저의 mbti로 설정
-  const [category, setCategory] = useState("ISFJ");
+  const [category, setCategory] = useRecoilState(mbtiState);
   const [image, setImage] = useState<string[]>([]);
   const [openCategory, setOpenCategory] = useState(false);
   const navigate = useNavigate();

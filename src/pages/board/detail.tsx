@@ -14,12 +14,13 @@ import { useParams } from "react-router-dom";
 import { useBoardLike } from "../../hooks/board/useBoardLike";
 import { useBoardComment } from "../../hooks/board/comment/useBoardComment";
 import { useBoardBestComment } from "../../hooks/board/comment/useBoardBestComment";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useBoardCommentCreate } from "../../hooks/board/comment/useBoardCommentCreate";
 import CommentCreate from "../../components/board/comment/CommentCreate";
 import { useBoardList } from "../../hooks/board/useBoardList";
 import BoardComponent from "../../components/board/Board";
 import ListPagination from "../../components/Pagination/ListPagination";
+import Text from "../../components/text/Text";
 
 const DetailBoardPage = () => {
   const navigate = useNavigate();
@@ -95,13 +96,14 @@ const DetailBoardPage = () => {
         {board && (
           <>
             <div css={buttonBoxCSS}>
+              <Text>{board.boardMbti} 게시판</Text>
               {board.isAllowed && (
-                <>
+                <div css={buttonsCSS}>
                   <Button onClick={() => navigate("update")} addCSS={buttonCSS}>
                     수정
                   </Button>
                   <Button onClick={handleBoardDelete}>삭제</Button>
-                </>
+                </div>
               )}
             </div>
             <div css={detailCSS}>
@@ -192,14 +194,16 @@ const DetailBoardPage = () => {
               onClick={() => navigate(`/board/${board.id}`)}
             />
           ))}
-        <ListPagination
-          limit={limit}
-          page={page}
-          setPage={setPage}
-          blockNum={blockNum}
-          setBlockNum={setBlockNum}
-          totalPage={totalPage}
-        />
+        {boardList && boardList.totalSize > 1 && (
+          <ListPagination
+            limit={limit}
+            page={page}
+            setPage={setPage}
+            blockNum={blockNum}
+            setBlockNum={setBlockNum}
+            totalPage={totalPage}
+          />
+        )}
       </Container>
     </>
   );
@@ -264,8 +268,13 @@ const hrCSS = css`
 
 const buttonBoxCSS = css`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-bottom: 1rem;
+  align-items: center;
+`;
+
+const buttonsCSS = css`
+  display: flex;
 `;
 
 const buttonCSS = css`

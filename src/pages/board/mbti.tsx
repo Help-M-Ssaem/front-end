@@ -83,9 +83,9 @@ const MbtiBoardPage = () => {
         </div>
       </div>
 
-      <Text>{mbtiSelected} 게시판</Text>
-      <Container key={containerKey}>
+      <Container key={containerKey} addCSS={containerCSS}>
         <div css={buttonBoxCSS}>
+          <Text>{mbtiSelected} 게시판</Text>
           <Button onClick={() => navigate("/board/create")}>글 쓰기</Button>
         </div>
         {boardList &&
@@ -111,6 +111,10 @@ const MbtiBoardPage = () => {
 };
 
 export default MbtiBoardPage;
+
+const containerCSS = css`
+  margin-top: 1rem;
+`;
 
 const headerCSS = css`
   width: calc(100% + 30rem);
@@ -159,6 +163,7 @@ const mbtiCSS = css`
 
 const buttonBoxCSS = css`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-bottom: 1rem;
+  align-items: center;
 `;

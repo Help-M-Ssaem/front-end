@@ -15,5 +15,4 @@ export default Text;
 const textCSS = css`
   font-size: ${FONT.SIZE.TITLE3};
   font-weight: ${FONT.WEIGHT.BOLD};
-  margin: 1rem 0;
 `;
