@@ -23,7 +23,7 @@ const DetailBoardPage = () => {
   const { id } = useParams();
   const boardId = Number(id);
   const { board } = useBoardDetail(boardId);
-  // TODO: 페이지네이션 구현되면 page, size 수정
+  // TODO: 더보기 구현되면 page, size 수정
   const { comments } = useBoardComment(boardId, 0, 10);
   const { bestComments } = useBoardBestComment(boardId);
   const [content, setContent] = useState("");
@@ -56,7 +56,11 @@ const DetailBoardPage = () => {
   );
 
   const createMutation = useBoardCommentCreate(boardId, formData);
-  const createReplyMutation = useBoardCommentCreate(boardId, replyFormData);
+  const createReplyMutation = useBoardCommentCreate(
+    boardId,
+    replyFormData,
+    replyCommentId,
+  );
 
   const handleCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -119,7 +123,7 @@ const DetailBoardPage = () => {
           </div>
           <div>
             {/* TODO: 서버에게 isBest 추가 요청*/}
-            {bestComments &&
+            {/* {bestComments &&
               bestComments.map((comment) => (
                 <div key={comment.commentId}>
                   <CommentComponent
@@ -137,15 +141,30 @@ const DetailBoardPage = () => {
                     />
                   )}
                 </div>
-              ))}
+              ))} */}
             {comments &&
               comments.result.map((comment) => (
                 <div key={comment.commentId}>
-                  <CommentComponent
-                    comment={comment}
-                    onClick={() => handleCommentClick(comment.commentId)}
-                    reply={comment.commentId === comment.parentId}
-                  />
+                  {comment.parentId === 0 && (
+                    <>
+                      <CommentComponent
+                        comment={comment}
+                        onClick={() => handleCommentClick(comment.commentId)}
+                      />
+                      {comments.result.map(
+                        (replyComment) =>
+                          replyComment.parentId === comment.commentId && (
+                            <CommentComponent
+                              comment={replyComment}
+                              onClick={() =>
+                                handleCommentClick(replyComment.parentId)
+                              }
+                              reply={true}
+                            />
+                          ),
+                      )}
+                    </>
+                  )}
                   {replyCommentOpen && replyCommentId === comment.commentId && (
                     <CommentCreate
                       onSubmit={handleReplyCommentSubmit}
