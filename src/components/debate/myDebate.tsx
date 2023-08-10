@@ -4,30 +4,17 @@ import { Debate } from "../../interfaces/debate";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import Profile from "../profile/Profile";
-import Button from "../button/Button";
 import RedButton from "../button/plusbutton/RedButton";
 import VoteItemList from "./vote/VoteItemList";
-import { useNavigate } from "react-router";
-import Text from "../text/Text";
+
 interface DebateProps {
   debate: Debate;
   onClick: (id: number) => void;
-  mode: string;
-  index: number;
 }
 
-const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
-  const navigate = useNavigate();
+const MyDebateComponent = ({ debate, onClick }: DebateProps) => {
   return (
     <div css={debateBoxCSS}>
-      <div css={buttonBoxCSS}>
-        {index % 6 === 0 && (
-          <>
-          {mode === "discusstion" ? <Text>MBTI 과몰입 토론</Text> : <Text>HOT 토론글</Text>}
-          <Button onClick={() => navigate("/debate/create")}>글 쓰기</Button>
-          </>
-        )}
-      </div>
       <div css={leftCSS}>
         <div css={dateTop}>
           <div css={profileBoxCSS}>
@@ -56,27 +43,14 @@ const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
           <div>댓글 {debate.commentCount}</div>
         </div>
       </div>
-      <div css={bottomLineCSS}>&nbsp;</div>
     </div>
   );
 };
 const debateBoxCSS = css`
-  padding: 1.5rem;
-  margin: 0 0 4rem 0;
+  margin: 0 0 2rem 0;
   background: ${COLOR.MAIN3};
-  border-radius: 1.4rem;
   position: relative;
-`;
-
-const bottomLineCSS = css`
-  content: "";
-  display: block;
-  position: absolute;
-  bottom: -1.5rem;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: ${COLOR.GRAY4};
+  border-top: 1px solid ${COLOR.MAIN};
 `;
 
 const leftCSS = css`
@@ -137,8 +111,6 @@ const buttonBoxCSS = css`
   justify-content: space-between;
   margin-bottom: 1rem;
   align-items: center;
-  border-bottom: 1px solid ${COLOR.MAIN};
-  padding-bottom: 1.4rem;
 `;
 
 const onclickCSS = css`
@@ -147,4 +119,4 @@ cursor: pointer;
 
 //=---------------------------------------------
 
-export default DebateComponent;
+export default MyDebateComponent;
