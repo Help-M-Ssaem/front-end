@@ -77,7 +77,7 @@ const CreateMatchingPage = () => {
   const uploadImage = async (blob: Blob) => {
     const formData = new FormData();
     formData.append("image", blob);
-    const imgUrl = await axios.post("/member/worry-board/files", formData, {
+    const imgUrl = await axios.post("/member/worry-boards/files", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
