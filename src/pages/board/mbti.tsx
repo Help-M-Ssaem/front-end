@@ -13,7 +13,6 @@ import { useEffect, useState } from "react";
 import Text from "../../components/text/Text";
 import ListPagination from "../../components/Pagination/ListPagination";
 import SelectBox from "../../components/Pagination/SelectBox";
-import { useBoardList } from "../../hooks/board/useBoardList";
 import { BoardList } from "../../interfaces/board";
 import { mssaemAxios as axios } from "../../apis/axios";
 
@@ -42,23 +41,27 @@ const MbtiBoardPage = () => {
   const [boardList, setBoardList] = useState<BoardList>();
 
   const limit = 10;
-  const { boardListAll } = useBoardList(1, limit);
-  const totalPage = boardListAll ? boardListAll.totalSize : 1;
-
+  const totalPage = boardList ? boardList.totalSize : 1;
   const [page, setPage] = useState(1);
   const [blockNum, setBlockNum] = useState(0);
 
+  const [containerKey, setContainerKey] = useState(0);
+
+  useEffect(() => {
+    setContainerKey((prevKey) => prevKey + 1);
+  }, [mbtiSelected]);
+
   useEffect(() => {
     if (mbtiSelected === "전체") {
-      axios.get(`/boards?page=${page}&size=${limit}`).then((res) => {
+      axios.get(`/boards?page=${page - 1}&size=${limit}`).then((res) => {
         setBoardList(res.data);
       });
     } else {
       axios
-        .get(`/boards/mbti?mbti=${mbtiSelected}&page=${page}&size=${limit}`)
+        .get(`/boards/mbti?mbti=${mbtiSelected}&page=${page - 1}&size=${limit}`)
         .then((res) => setBoardList(res.data));
     }
-  }, [mbtiSelected, page, limit]);
+  }, [mbtiSelected, page]);
 
   return (
     <>
@@ -70,7 +73,7 @@ const MbtiBoardPage = () => {
             onClick={() => setMbtiSelected("전체")}
             className={mbtiSelected === "전체" ? "active" : ""}
           >
-            전체 ({boardListAll && `${boardListAll.result.length}`})
+            전체
           </div>
           <div css={mbtiCSS}>
             {mbtiList.map((mbti) => (
@@ -80,9 +83,9 @@ const MbtiBoardPage = () => {
         </div>
       </div>
 
-      <Text>{mbtiSelected} 게시판</Text>
-      <Container>
+      <Container key={containerKey} addCSS={containerCSS}>
         <div css={buttonBoxCSS}>
+          <Text>{mbtiSelected} 게시판</Text>
           <Button onClick={() => navigate("/board/create")}>글 쓰기</Button>
         </div>
         {boardList &&
@@ -108,6 +111,10 @@ const MbtiBoardPage = () => {
 };
 
 export default MbtiBoardPage;
+
+const containerCSS = css`
+  margin-top: 1rem;
+`;
 
 const headerCSS = css`
   width: calc(100% + 30rem);
@@ -156,8 +163,7 @@ const mbtiCSS = css`
 
 const buttonBoxCSS = css`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-bottom: 1rem;
+  align-items: center;
 `;
-
-const selectCSS = css``;

@@ -59,8 +59,8 @@ const leftCSS = css`
 const rightCSS = css``;
 
 const thumbnailCSS = css`
-  width: 5rem;
-  height: 5rem;
+  width: 7rem;
+  height: 7rem;
 `;
 
 const titleCSS = css`

@@ -11,6 +11,7 @@ export interface Matching {
 }
 
 export interface MainMatching {
+  id: number;
   title: string;
   content: string;
   memberMbti: string;
