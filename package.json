@@ -34,6 +34,7 @@
     "recoil": "^0.7.7",
     "recoil-persist": "^5.1.0",
     "remark-gfm": "^3.0.1",
+    "sockjs-client": "^1.6.1",
     "stompjs": "^2.3.3",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
