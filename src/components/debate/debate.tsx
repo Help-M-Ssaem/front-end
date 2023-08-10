@@ -8,19 +8,24 @@ import Button from "../button/Button";
 import RedButton from "../button/plusbutton/RedButton";
 import VoteItemList from "./vote/VoteItemList";
 import { useNavigate } from "react-router";
+import Text from "../text/Text";
 interface DebateProps {
   debate: Debate;
   onClick: (id: number) => void;
+  mode: string;
   index: number;
 }
 
-const DebateComponent = ({ debate, onClick, index }: DebateProps) => {
+const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
   const navigate = useNavigate();
   return (
     <div css={debateBoxCSS}>
       <div css={buttonBoxCSS}>
         {index % 6 === 0 && (
+          <>
+          {mode === "discusstion" ? <Text>MBTI 과몰입 토론</Text> : <Text>HOT 토론글</Text>}
           <Button onClick={() => navigate("/debate/create")}>글 쓰기</Button>
+          </>
         )}
       </div>
       <div css={leftCSS}>
@@ -126,7 +131,9 @@ const detailCSS = css`
 
 const buttonBoxCSS = css`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  align-items: center;
   border-bottom: 1px solid ${COLOR.MAIN};
   padding-bottom: 1.4rem;
 `;
