@@ -13,6 +13,7 @@ import { useCreateBoard } from "../../hooks/board/useCreateBoard";
 import { mssaemAxios as axios } from "../../apis/axios";
 import { useRecoilState } from "recoil";
 import { mbtiState } from "../../states/board";
+import useMemberInfo from "../../hooks/user/useMemberInfo";
 
 const categoryList = [
   "ISTJ",
@@ -34,10 +35,15 @@ const categoryList = [
 ];
 
 const CreateBoardPage = () => {
+  const { user } = useMemberInfo();
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  // TODO: mbti는 로그인한 유저의 mbti로 설정
   const [category, setCategory] = useRecoilState(mbtiState);
+  if (category === "전체") {
+    setCategory(user!!.mbti);
+  }
+
   const [image, setImage] = useState<string[]>([]);
   const [openCategory, setOpenCategory] = useState(false);
   const navigate = useNavigate();
