@@ -22,7 +22,6 @@ import useMemberInfo from "../../hooks/user/useMemberInfo";
 import { MainMatching, MainTeacher } from "../../interfaces/matching";
 import HotWorryComponent from "../../components/main/HotWorry";
 import Mssaem from "../../components/matching/Mssaem";
-import MyDebateComponent from "../../components/debate/myDebate";
 
 const MainPage = () => {
   const { hotThree } = useHotThree();
