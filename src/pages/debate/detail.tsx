@@ -62,7 +62,7 @@ const DetailDebatePage = () => {
           <div css={buttonBoxCSS}>
             {/* TODO: 본인 게시글에만 수정, 삭제 버튼 */}
             <Button
-              onClick={() => navigate("/debate/update")}
+              onClick={() => navigate(`/debate/${id}/update`)}
               addCSS={updateButtonCSS}
             >
               수정

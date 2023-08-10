@@ -40,7 +40,10 @@ const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
           </div>
           <div css={marginRightCSS}>{debate.createdAt}</div>
         </div>
-        <div onClick={() => onClick(debate.id)}>
+        <div 
+          onClick={() => onClick(debate.id)}
+          css={onclickCSS}
+          >
           <div css={titleCSS}>{debate.title}</div>
           <div css={contentCSS}>{debate.content}</div>
         </div>
@@ -136,6 +139,10 @@ const buttonBoxCSS = css`
   align-items: center;
   border-bottom: 1px solid ${COLOR.MAIN};
   padding-bottom: 1.4rem;
+`;
+
+const onclickCSS = css`
+cursor: pointer;
 `;
 
 //=---------------------------------------------
