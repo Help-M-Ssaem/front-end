@@ -32,6 +32,7 @@ export interface EvaluationProps {
 }
 
 export interface ChatRoom {
+  roomId: number;
   chatRoomTitle: string;
   state: boolean;
   lastMessage: string;

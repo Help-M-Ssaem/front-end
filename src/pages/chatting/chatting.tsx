@@ -74,6 +74,10 @@ const ChattingPage = () => {
     setMessage((prevMessage) => [...prevMessage, message.body]);
   };
 
+  const handleItemClick = (roomId: number) => {
+    setActiveRoomId(roomId);
+  };
+
   return (
     <div css={editorContainerCSS}>
       <Container addCSS={containerCSS}>
@@ -108,28 +112,17 @@ const ChattingPage = () => {
               <ul>
                 {chatRooms.map((chatRoom) => {
                   return (
-                    <li onClick={() => {}} key={activeRoomId}>
+                    <li
+                      onClick={() => handleItemClick(chatRoom.roomId)}
+                      key={chatRoom.roomId}
+                      css={[activeRoomId === chatRoom.roomId && activeStyle]}
+                    >
                       <ChattingComponent chatRoom={chatRoom} />
                     </li>
                   );
                 })}
               </ul>
             )}
-            {/* {chattinglist1.length !== 0 && (
-              <ul>
-                {chattinglist1.map((chattinghistory) => (
-                  <li
-                    key={chattinghistory.roomId}
-                    onClick={() => handleItemClick(chattinghistory.roomId)}
-                    css={[
-                      activeRoomId === chattinghistory.roomId && activeStyle,
-                    ]}
-                  >
-                    <ChattingComponent Chattinghistory={chattinghistory} />
-                  </li>
-                ))}
-              </ul>
-            )} */}
           </div>
           <div css={chattingRightCSS}>
             {!chatRooms ? (
