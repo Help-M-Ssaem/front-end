@@ -48,7 +48,7 @@ const DetailMatchingPage = () => {
     <Container addCSS={containerCSS}>
       <div css={buttonBoxCSS}>
         <Button
-          onClick={() => navigate(`/match/update`)}
+          onClick={() => navigate(`/match/${id}/update`)}
           addCSS={updateButtonCSS}
         >
           수정
