@@ -47,7 +47,7 @@ const MatchingBoxCSS = css`
   justify-content: space-between;
   align-items: center;
   padding: 1.2rem 0;
-  border-top: 1px solid ${COLOR.MAIN};
+  border-bottom: 1px solid ${COLOR.MAIN};
   cursor: pointer;
 `;
 

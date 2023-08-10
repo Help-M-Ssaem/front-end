@@ -20,14 +20,14 @@ const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
   const navigate = useNavigate();
   return (
     <div css={debateBoxCSS}>
-      <div css={buttonBoxCSS}>
+      
         {index % 6 === 0 && (
-          <>
+          <div css={buttonBoxCSS}>
           {mode === "discusstion" ? <Text>MBTI 과몰입 토론</Text> : <Text>HOT 토론글</Text>}
           <Button onClick={() => navigate("/debate/create")}>글 쓰기</Button>
-          </>
+          </div>
         )}
-      </div>
+      
       <div css={leftCSS}>
         <div css={dateTop}>
           <div css={profileBoxCSS}>
@@ -61,7 +61,7 @@ const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
   );
 };
 const debateBoxCSS = css`
-  padding: 1.5rem;
+  padding: 0 1.5rem 1.5rem 1.5rem;
   margin: 0 0 4rem 0;
   background: ${COLOR.MAIN3};
   border-radius: 1.4rem;
@@ -135,8 +135,8 @@ const detailCSS = css`
 const buttonBoxCSS = css`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 1rem;
   align-items: center;
+  padding-top:1.5rem;
   border-bottom: 1px solid ${COLOR.MAIN};
   padding-bottom: 1.4rem;
 `;
