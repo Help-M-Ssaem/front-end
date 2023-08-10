@@ -16,7 +16,6 @@ import { useWorrySolveListMember } from "../../hooks/worry/useWorrySolveListMemb
 import MatchingComponent from "../../components/matching/Matching";
 import useMemberInfo from "../../hooks/user/useMemberInfo";
 import ListPagination from "../../components/Pagination/ListPagination";
-import { useDebateList } from "../../hooks/debate/useDebateList";
 import { useDebateListMember } from "../../hooks/debate/useDebateListMember";
 import MyDebateComponent from "../../components/debate/myDebate";
 
