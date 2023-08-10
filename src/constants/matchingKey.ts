@@ -9,4 +9,6 @@ export const mainTeacherKeys = {
 export const worryKeys = {
   all: ["worry-board"] as const,
   detail: (id: number) => [...worryKeys.all, id] as const,
+  post:["worry-board/post"] as const,
+  solved:["worry-board/solved"] as const,
 };

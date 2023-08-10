@@ -16,6 +16,9 @@ import { useWorrySolveListMember } from "../../hooks/worry/useWorrySolveListMemb
 import MatchingComponent from "../../components/matching/Matching";
 import useMemberInfo from "../../hooks/user/useMemberInfo";
 import ListPagination from "../../components/Pagination/ListPagination";
+import { useDebateList } from "../../hooks/debate/useDebateList";
+import { useDebateListMember } from "../../hooks/debate/useDebateListMember";
+import MyDebateComponent from "../../components/debate/myDebate";
 
 const menuTabBar = [
   { type: 1, title: "내가 쓴 게시글" },
@@ -40,6 +43,7 @@ const MyPage = () => {
   const worryPostTotalPage = boardList ? boardList.totalSize : 1;
   const { worrySolveList } = useWorrySolveListMember(userId, page - 1, limit);
   const worrySolveTotalPage = boardList ? boardList.totalSize : 1;
+  const { debateList } = useDebateListMember(userId, page - 1, limit);
 
   const handleSettingClick = () => {
     navigate("/mypage/update");
@@ -147,42 +151,44 @@ const MyPage = () => {
               onClick={() => navigate(`/board/${board.id}`)}
             />
           ))}
-        <ListPagination
+        {/* <ListPagination
           limit={limit}
           page={page}
           setPage={setPage}
           blockNum={blockNum}
           setBlockNum={setBlockNum}
           totalPage={boardTotalPage}
-        />
+        /> */}
 
-        {/* {menuSelected === 2 &&
-          myPostArray2?.map((board) => (
-            <BoardComponent board={board} onClick={() => {}} key={board.id} />
-          ))} */}
+        {menuSelected === 2 &&
+          debateList &&
+          debateList.result.map((debateList) => (
+            <MyDebateComponent
+              debate={debateList} 
+              onClick={() => navigate(`/debate/${debateList.id}`)}
+              key={debateList.id} />
+          ))}
         {menuSelected === 3 &&
           worryPostList &&
           worryPostList.result.map((worryPost) => (
             <MatchingComponent
               matching={worryPost}
               solve={"waiting"}
-              onClick={() => navigate(`/worry-board/${worryPost.id}`)}
+              onClick={() => navigate(`/match/${worryPost.id}`)}
               key={worryPost.id}
             />
           ))}
-        {/* {menuSelected === 4 &&
-          myPostArray4?.map((board) => (
-            <BoardComponent board={board} onClick={() => {}} key={board.id} />
-          ))} */}
-        {menuSelected === 5 &&
+        {menuSelected === 4 &&
           worrySolveList &&
           worrySolveList.result.map((worrySolve) => (
+            <>{console.log(worrySolve.title)}
             <MatchingComponent
               matching={worrySolve}
               solve={"solved"}
-              onClick={() => navigate(`/worry-board/${worrySolve.id}`)}
+              onClick={() => navigate(`/match/${worrySolve.id}`)}
               key={worrySolve.id}
             />
+            </>
           ))}
       </Container>
     </div>
