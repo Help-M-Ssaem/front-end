@@ -1,3 +1,5 @@
+import { User } from "./user";
+
 export interface ChattingHistory {
   //sender
   name: string;
@@ -30,4 +32,12 @@ export interface ChattingProps {
 export interface EvaluationProps {
   worryBoardId: number;
   evaluations: string[];
+}
+
+export interface ChatRoom {
+  chatRoomTitle: string;
+  state: boolean;
+  lastMessage: string;
+  lastSendAt: string;
+  memberSimpleInfo: User;
 }
