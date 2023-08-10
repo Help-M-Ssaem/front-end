@@ -3,7 +3,6 @@ import { mssaemAxios as axios } from "../../apis/axios";
 import { worryKeys } from "../../constants/matchingKey";
 
 async function createBoard(board: FormData): Promise<void> {
-  console.log(board);
   await axios.post(`/member/worry-board`, board, {
     headers: {
       "Content-Type": "multipart/form-data",

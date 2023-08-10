@@ -2,7 +2,7 @@
 import { css } from "@emotion/react";
 
 const UpdateDebatePage = () => {
-  return(<></>);
+  return <></>;
 };
 
-export default UpdateDebatePage
+export default UpdateDebatePage;

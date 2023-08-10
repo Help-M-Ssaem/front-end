@@ -100,10 +100,10 @@ const WraperCSS = css`
   justify-content: center;
 `;
 const buttonCSS = css`
-  padding: 0 3rem;
+  margin: 0 3rem;
   color: ${COLOR.GRAY2};
   background-color: transparent;
-  border: none;
+  border: 0.1rem solid transparent;
   cursor: pointer;
   font-size: ${FONT.SIZE.TITLE3};
 `;
@@ -112,30 +112,33 @@ const pageBtnWrapperCSS = css`
   display: flex;
   align-items: center;
   justify-content: center;
-  // width: 15rem;
   hegiht: 2rem;
+  justify-content: space-between;
 `;
 const pageBtnCSS = css`
-  border: none;
+  border: 0.1rem solid transparent;
   color: ${COLOR.GRAY2};
   font-size: ${FONT.SIZE.TITLE3};
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 1rem;
+  padding: 0 0.3rem;
+  width: 2rem;
+  height: 2rem;
+  justify-content: center;
 
   &[aria-current] {
     cursor: pointer;
-    opacity: 1;
     color: black;
     border: 0.1rem solid ${COLOR.MAIN2};
     background-color: ${COLOR.MAIN4};
     border-radius: 0.3rem;
-    box-sizing: border-box;
-    width: 2rem;
-    height: 2rem;
-    align-items: center;
-    margin: 0 0.5rem;
-    justify-content: center;
+  }
+
+  :hover {
+    cursor: pointer;
+    color: black;
+    background-color: ${COLOR.MAIN4};
+    border-radius: 0.3rem;
+    transition: opacity 0.3s, transform 0.3s;
   }
 `;

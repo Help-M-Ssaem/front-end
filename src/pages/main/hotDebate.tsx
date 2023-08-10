@@ -1,16 +1,19 @@
-import Container from "../../components/container/Container";
+/** @jsxImportSource @emotion/react */
 import Text from "../../components/text/Text";
-import { useHotDebateMore } from "../../hooks/main/useHotDebateMore";
+import PageDebate from "../../components/debate/pageMapingDebate/PageDebate";
+import { css } from "@emotion/react";
 
 const HotDebatePage = () => {
-  const { hotDebateMore } = useHotDebateMore(1, 6);
-
   return (
     <>
-      <Text>HOT 게시글</Text>
-      <Container></Container>
+      <Text addCSS={textCSS}>HOT 토론글</Text>
+      <PageDebate pathMov={"hotDiscusstion"} />
     </>
   );
 };
+
+const textCSS = css`
+  margin: 1rem 0;
+`;
 
 export default HotDebatePage;

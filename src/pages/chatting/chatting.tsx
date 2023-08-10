@@ -24,6 +24,7 @@ const chattinglist1 = [
     badge: "마스터",
     latestMessage: "카페에서 남자친구랑 싸웠어요..저도아이유최고얌",
     createdAt: "3분전",
+    resolved: false,
     text: [
       { userId: "user1", message: "안녕하세요!", createdAt: "3분전" },
       {
@@ -41,6 +42,7 @@ const chattinglist1 = [
     badge: "마스터",
     latestMessage: "네, 정말 좋은 날씨입니다!",
     createdAt: "5분전",
+    resolved: false,
     text: [
       { userId: "user1", message: "안녕하세요!", createdAt: "5분전" },
       {

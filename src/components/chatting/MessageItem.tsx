@@ -18,30 +18,18 @@ const MessageItem: React.FC<MessageItemProps> = ({
   return (
     <div>
       {isCurrentUser ? (
-         <div css={sendCSS}>
-              <img
-                 src={profile}
-                 alt="Profile"
-                 css={proflieimgCSS}
-               />
-               <div css={otherUserMessageCSS}>
-               {message}
-               </div>
-               <div css={timeCSS}>
-                 {createdAt}
-           </div>
-             </div>
-           ) : (
-             <div css={chatboxCSS}>
-               <div css={timeCSS}>
-                 {createdAt}
-               </div>
-               <div css={currentUserMessageCSS}>
-                 {message}
-               </div>
-           </div>
-           )}
-           </div>
+        <div css={sendCSS}>
+          <img src={profile} alt="Profile" css={proflieimgCSS} />
+          <div css={otherUserMessageCSS}>{message}</div>
+          <div css={timeCSS}>{createdAt}</div>
+        </div>
+      ) : (
+        <div css={chatboxCSS}>
+          <div css={timeCSS}>{createdAt}</div>
+          <div css={currentUserMessageCSS}>{message}</div>
+        </div>
+      )}
+    </div>
   );
 };
 
@@ -81,7 +69,7 @@ const otherUserMessageCSS = css`
   margin: 0.25rem 0.25rem 0.625rem 0.25rem;
 `;
 
-const proflieimgCSS= css`
+const proflieimgCSS = css`
   width: 3.2rem;
   height: 3.2rem;
   border-radius: 50%;
@@ -94,5 +82,5 @@ const timeCSS = css`
   color: ${COLOR.GRAY3};
   display: flex;
   align-items: flex-end;
-  padding-bottom:0.5rem;
+  padding-bottom: 0.5rem;
 `;

@@ -5,31 +5,24 @@ import FONT from "../../styles/font";
 import Mssaem from "../../components/matching/Mssaem";
 import WorryList from "../../components/matching/mapingMatching/WorryList";
 import { useMainTheacher } from "../../hooks/main/useMainTeacher";
-        
+
 const MatchingPage = () => {
   const { mainTeacher } = useMainTheacher();
+
   return (
     <>
       <div css={headerCSS}>
         <div css={mbtiTitleCSS}>인기 M쌤</div>
         <div css={mssaemListCSS}>
-          {/* M쌤 리스트 나오면 연동 */}
           {mainTeacher &&
             mainTeacher.map((mssaem) => (
               <Mssaem mssaem={mssaem} key={mssaem.id} />
             ))}
         </div>
       </div>
-      <WorryList
-        pathMove={"waiting"}
-        SaW={"M쌤 매칭을 기다리는 고민"}
-        />
+      <WorryList pathMove={"waiting"} SaW={"M쌤 매칭을 기다리는 고민"} />
 
-      <WorryList
-        pathMove={"solved"}
-        SaW={"해결 완료된 고민"}
-      />
-      
+      <WorryList pathMove={"solved"} SaW={"해결 완료된 고민"} />
     </>
   );
 };

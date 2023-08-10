@@ -3,7 +3,7 @@ import { mssaemAxios as axios } from "../../apis/axios";
 import { debateKeys } from "../../constants/debateKey";
 
 async function createDebate(debate: FormData): Promise<void> {
-  await axios.post(`/member/debate`, debate, {
+  await axios.post(`/member/discussion`, debate, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

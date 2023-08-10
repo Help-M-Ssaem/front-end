@@ -1,154 +1,52 @@
 /** @jsxImportSource @emotion/react */
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import BoardComponent from "../../components/board/Board";
 import ActivityList from "../../components/mypage/MyPage";
+import { useGetProfile } from "../../hooks/user/useProfile";
+import { SettingIcon } from "../../assets/CommonIcons";
+import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
 import { useBoardListMember } from "../../hooks/board/useBoardListMember";
-import { useNavigate } from "react-router";
 import { useWorryPostListMember } from "../../hooks/worry/useWorryPostListMember";
 import { useWorrySolveListMember } from "../../hooks/worry/useWorrySolveListMember";
 import MatchingComponent from "../../components/matching/Matching";
-
-const badge1Array = [
-  { title: "EsFP", type: 1 },
-  { title: "엠비티어른", type: 2 },
-];
-
-const collectedBadgeArray = [
-  { title: "엠비티어른", type: 2 },
-  { title: "MBTMI", type: 3 },
-  { title: "엠비티아노사우르스", type: 4 },
-];
+import useMemberInfo from "../../hooks/user/useMemberInfo";
+import ListPagination from "../../components/Pagination/ListPagination";
 
 const menuTabBar = [
   { type: 1, title: "내가 쓴 게시글" },
   { type: 2, title: "내가 쓴 토론글" },
   { type: 3, title: "내가 쓴 고민글" },
-  { type: 4, title: "내가 쓴 댓글" },
-  { type: 5, title: "내가 해결한 고민" },
+  { type: 4, title: "내가 해결한 고민" },
 ];
-//토론
-const myPostArray2 = [
-  {
-    id: 1,
-    name: "유저2",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "여기다간 토론글 해야지",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 2,
-    name: "유저2",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "여기다간 토론글 해야지",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 3,
-    name: "유저2",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "여기다간 토론글 해야지",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 4,
-    name: "유저2",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "여기다간 토론글 해야지",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-];
-//댓글
-const myPostArray4 = [
-  {
-    id: 1,
-    name: "유저4",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "이거시 내 댓글이지 암",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 2,
-    name: "유저4",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "이거시 내 댓글이지 암",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 3,
-    name: "유저4",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "이거시 내 댓글이지 암",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 4,
-    name: "유저4",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "이거시 내 댓글이지 암",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-];
-
 
 const MyPage = () => {
   const navigate = useNavigate();
-  const {boardList} = useBoardListMember(1, 0,6);
-  const { worryPostList } = useWorryPostListMember(1, 0, 6);
-  const { worrySolveList } = useWorrySolveListMember(1, 0, 2);
+  const { user } = useMemberInfo();
+  const userId = user!!.id;
+  const { profileData } = useGetProfile(userId);
+
+  const limit = 6;
+  const [page, setPage] = useState(1);
+  const [blockNum, setBlockNum] = useState(0);
+
+  const { boardList } = useBoardListMember(userId, page - 1, limit);
+  const boardTotalPage = boardList ? boardList.totalSize : 1;
+  const { worryPostList } = useWorryPostListMember(userId, page - 1, limit);
+  const worryPostTotalPage = boardList ? boardList.totalSize : 1;
+  const { worrySolveList } = useWorrySolveListMember(userId, page - 1, limit);
+  const worrySolveTotalPage = boardList ? boardList.totalSize : 1;
+
+  const handleSettingClick = () => {
+    navigate("/mypage/update");
+  };
+
   const [menuSelected, setMenuSelected] = useState(1);
+
   const clickMenu = (type: number) => {
     setMenuSelected(type);
   };
@@ -166,55 +64,63 @@ const MyPage = () => {
         return badgeCSS1;
     }
   };
+
   return (
     <div>
       <div css={mainTitleCSS}>프로필</div>
       <div css={boxContainerCSS}>
         {/* box1 */}
         <div css={box1CSS}>
-          <p css={subTitleCSS}>한줄소개</p>
-          <p css={oneLineIntroductionCSS}>진짜 어른이 되고 싶은 어른이에요</p>
           <div css={profileContainerCSS}>
             <div css={profileImageContainerCSS}>
               <img
                 style={{
-                  objectFit: "cover",
+                  objectFit: "contain",
                 }}
-                src={`${process.env.PUBLIC_URL}/logo192.png`}
+                src={profileData?.teacherInfo?.profileImgUrl}
                 alt="프로필"
               />
             </div>
-            <p css={profilenameCSS}>먀먀 님</p>
+            <p css={profilenameCSS}>
+              {profileData?.teacherInfo?.nickName} 님
+              <button
+                onClick={handleSettingClick}
+                css={settingIconContainerCSS}
+              >
+                <SettingIcon />
+              </button>
+            </p>
 
             <div css={bedgeContainer}>
-              {badge1Array?.map((value, idx) => {
-                return (
-                  <p key={idx} css={selectBadge(value)}>
-                    {value.title}
-                  </p>
-                );
-              })}
+              <p css={selectBadge(1)}>{profileData?.teacherInfo?.mbti}</p>
+              <p css={selectBadge(1)}>{profileData?.teacherInfo?.badge}</p>
             </div>
+            <p css={subTitleCSS}>한줄소개</p>
+            <p css={oneLineIntroductionCSS}>
+              {profileData?.teacherInfo?.introduction}
+            </p>
           </div>
         </div>
         {/* box2 */}
         <div css={box2CSS}>
           <p css={subTitleCSS}>수집한 칭호</p>
           <div css={collectedTitleContainer}>
-            {collectedBadgeArray?.map((value, idx) => {
-              return (
-                <p key={idx} css={selectBadge(value)}>
-                  {value.title}
-                </p>
-              );
-            })}
+            {profileData?.badgeInfos?.map(
+              (value: { id: number; name: string }, idx: number) => {
+                return (
+                  <p key={idx} css={selectBadge(value?.id)}>
+                    {value.name}
+                  </p>
+                );
+              },
+            )}
           </div>
         </div>
         {/* box3 */}
-        <ActivityList></ActivityList>
+        <ActivityList profileData={profileData}></ActivityList>
       </div>
-     <Container>
-      
+
+      <Container>
         <div css={menuButtonContainer}>
           {menuTabBar?.map((value, idx) => {
             return (
@@ -233,12 +139,23 @@ const MyPage = () => {
         </div>
 
         {menuSelected === 1 &&
-          boardList &&boardList.result.map((board) => (
+          boardList &&
+          boardList.result.map((board) => (
             <BoardComponent
-            board={board}
-            key={board.id}
-            onClick={() => navigate(`/board/${board.id}`)} />
+              board={board}
+              key={board.id}
+              onClick={() => navigate(`/board/${board.id}`)}
+            />
           ))}
+        <ListPagination
+          limit={limit}
+          page={page}
+          setPage={setPage}
+          blockNum={blockNum}
+          setBlockNum={setBlockNum}
+          totalPage={boardTotalPage}
+        />
+
         {/* {menuSelected === 2 &&
           myPostArray2?.map((board) => (
             <BoardComponent board={board} onClick={() => {}} key={board.id} />
@@ -251,7 +168,7 @@ const MyPage = () => {
               solve={"waiting"}
               onClick={() => navigate(`/worry-board/${worryPost.id}`)}
               key={worryPost.id}
-              />
+            />
           ))}
         {/* {menuSelected === 4 &&
           myPostArray4?.map((board) => (
@@ -265,9 +182,8 @@ const MyPage = () => {
               solve={"solved"}
               onClick={() => navigate(`/worry-board/${worrySolve.id}`)}
               key={worrySolve.id}
-              />
+            />
           ))}
-      
       </Container>
     </div>
   );
@@ -287,40 +203,34 @@ const mainTitleCSS = css`
 const boxContainerCSS = css`
   display: flex;
   margin: 1.5rem 0 3rem;
+  max-width: 80rem;
+  min-width: 65.625rem;
 `;
 
 const box1CSS = css`
   display: flex;
   flex-direction: column;
   background-color: ${COLOR.MAIN3};
-  min-width: 278px;
-  max-width: 278px;
-  height: 433px;
-  border-radius: 30px;
-  margin-right: 46px;
-  padding: 40px 34px;
+  min-width: 15.625rem;
+  /* max-width: 250px; */
+  flex: 1;
+  height: 27.0625rem;
+  border-radius: 1.875rem;
+  margin-right: 2.875rem;
+  padding: 2.5rem 2.125rem;
 `;
 
 const box2CSS = css`
   display: flex;
   flex-direction: column;
   background-color: ${COLOR.MAIN3};
-  min-width: 278px;
-  max-width: 278px;
-  height: 433px;
-  border-radius: 30px;
-  margin-right: 46px;
-  padding: 40px 50px;
-`;
-const box3CSS = css`
-  display: flex;
-  flex-direction: column;
-  background-color: ${COLOR.MAIN3};
-  min-width: 532px;
-  height: 433px;
-  border-radius: 30px;
-  margin-right: 46px;
-  padding: 39px 93px 39px 67px;
+  min-width: 15.625rem;
+  /* max-width: 250px; */
+  flex: 1;
+  height: 27.0625rem;
+  border-radius: 1.875rem;
+  margin-right: 2.875rem;
+  padding: 2.5rem 3.125rem;
 `;
 
 const subTitleCSS = css`
@@ -333,93 +243,93 @@ const oneLineIntroductionCSS = css`
   font-size: ${FONT.SIZE.TITLE3};
   font-weight: ${FONT.WEIGHT.REGULAR};
   color: ${COLOR.GRAY1};
-  margin-top: 10px;
+  margin-top: 0.5rem;
 `;
 
 const profileContainerCSS = css`
-  margin: 15px 0 40px;
+  margin: 0.625rem 0 2.5rem;
   display: flex;
   flex-direction: column;
 `;
 
 const profileImageContainerCSS = css`
-  width: 194px;
-  height: 194px;
+  width: 12.125rem;
+  height: 12.125rem;
   overflow: hidden;
-  border-radius: 100px;
-  background-color: black;
+  border-radius: 6.25rem;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const profilenameCSS = css`
-  font-size: 28px;
-  margin: 15px 0 10px;
+  font-size: 1.75rem;
+  margin: 0.9375rem 0 0.625rem;
   font-weight: ${FONT.WEIGHT.BOLD};
   color: ${COLOR.MAINDARK};
   text-align: center;
 `;
 
+const settingIconContainerCSS = css`
+  margin-left: 0.625rem;
+`;
+
 const bedgeContainer = css`
   display: flex;
-  margin: 0 auto;
-  column-gap: 10px;
+  margin: 0 auto 1.25rem;
+  column-gap: 0.625rem;
 `;
 
 const collectedTitleContainer = css`
-  margin: 10px 0 10px;
+  margin: 0.625rem 0 0.625rem;
   display: flex;
   flex-wrap: wrap;
-  column-gap: 10px;
-  row-gap: 10px;
+  column-gap: 0.625rem;
+  row-gap: 0.625rem;
 `;
 
 const badgeCSS1 = css`
-  height: 23px;
-  border-radius: 20px;
-  padding: 3px 10px;
+  height: 1.4375rem;
+  border-radius: 1.25rem;
+  padding: 0.1875rem 0.625rem;
   background-color: #f8caff;
   color: white;
   width: fit-content;
 `;
 
 const badgeCSS2 = css`
-  height: 23px;
-  border-radius: 20px;
-  padding: 3px 10px;
+  height: 1.4375rem;
+  border-radius: 1.25rem;
+  padding: 0.1975rem 0.625rem;
   background-color: #5be1a9;
   color: white;
   width: fit-content;
 `;
+
 const badgeCSS3 = css`
-  height: 23px;
-  border-radius: 20px;
-  padding: 3px 10px;
+  height: 1.4375rem;
+  border-radius: 1.25rem;
+  padding: 0.1975rem 0.625rem;
   background-color: #ad71ea;
   color: white;
   width: fit-content;
 `;
+
 const badgeCSS4 = css`
-  height: 23px;
-  border-radius: 20px;
-  padding: 3px 10px;
+  height: 1.4375rem;
+  border-radius: 1.25rem;
+  padding: 0.1975rem 0.625rem;
   background-color: #9ecbff;
   color: white;
   width: fit-content;
 `;
 
-const myContentContainer = css`
-  // margin-top: 66px;
-  // width: 1180px;
-  // min-height: 500px;
-  // background: ${COLOR.MAIN3};
-  // border-radius: 1.2rem;
-  // /* padding: 1.5rem; */
-`;
-
 const menuButtonContainer = css`
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid ${COLOR.MAIN1};
-  height: 82px;
+  border-bottom: 0.0625rem solid ${COLOR.MAIN1};
+  height: 5.125rem;
   li {
     cursor: pointer;
     position: relative;
@@ -427,18 +337,17 @@ const menuButtonContainer = css`
   }
   li:hover {
     color: ${COLOR.MAIN1};
-    border-bottom: 4px solid ${COLOR.MAIN1};
+    border-bottom: 0.25rem solid ${COLOR.MAIN1};
   }
 
   li.active {
     color: ${COLOR.MAIN1};
-    border-bottom: 4px solid ${COLOR.MAIN1};
+    border-bottom: 0.25rem solid ${COLOR.MAIN1};
   }
   list-style-type: none;
 `;
 const menuBox = css`
   text-align: center;
   flex: 1;
-  padding: 30px 41px;
+  padding: 1.875rem 2.5625rem;
 `;
-
