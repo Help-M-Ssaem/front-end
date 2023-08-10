@@ -11,17 +11,16 @@ import Input from "../../components/input/Input";
 import { useDeleteBoard } from "../../hooks/worry/useDeleteWorry";
 import { useWorryBoard } from "../../hooks/worry/useDetailPost";
 import { useParams } from "react-router-dom";
+import SockJS from "sockjs-client";
+import { Stomp } from "@stomp/stompjs";
 
 const DetailMatchingPage = () => {
   const { id } = useParams<{ id: string }>();
   const { worryBoard } = useWorryBoard(Number(id));
-
   const navigate = useNavigate();
+
   const handleStartChatting = () => {
-    if (!worryBoard) {
-      return;
-    }
-    navigate(`/chatting/${worryBoard.worryBoardId}`);
+    navigate(`/chatting/${worryBoard!!.worryBoardId}`);
   };
   const deleteMutation = useDeleteBoard(Number(id));
   const handleMatchingDelete = () => {

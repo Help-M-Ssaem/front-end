@@ -8,7 +8,6 @@ import { ChattingHistory } from "../../interfaces/chatting";
 import Profile from "../../components/profile/Profile";
 import Hamburger from "../../components/hamburger/Hamburger";
 import CurrentChatting from "../../components/chatting/CurrentChatting";
-import CurrentChattingForm from "../../components/chatting/CurrentChattingForm";
 import MessageItem from "../../components/chatting/MessageItem";
 import Button from "../../components/button/Button";
 import { useNavigate } from "react-router-dom";

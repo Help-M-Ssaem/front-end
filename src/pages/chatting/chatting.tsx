@@ -7,129 +7,44 @@ import ChattingComponent from "../../components/chatting/ChattingComponent";
 import Profile from "../../components/profile/Profile";
 import Hamburger from "../../components/hamburger/Hamburger";
 import CurrentChatting from "../../components/chatting/CurrentChatting";
-import CurrentChattingForm from "../../components/chatting/CurrentChattingForm";
 import MessageItem from "../../components/chatting/MessageItem";
 import Button from "../../components/button/Button";
 import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
 import * as Stomp from "stompjs";
 import { useChatRooms } from "../../hooks/chatting/useChatRooms";
-import SockJS from "sockjs-client";
-
-const chattinglist1 = [
-  {
-    roomId: 0,
-    name: "신강희",
-    profile: "https://i.ibb.co/jJt16M0/image.png",
-    mbti: "Infj",
-    badge: "마스터",
-    latestMessage: "카페에서 남자친구랑 싸웠어요..저도아이유최고얌",
-    createdAt: "3분전",
-    resolved: false,
-    text: [
-      { userId: "user1", message: "안녕하세요!", createdAt: "3분전" },
-      {
-        userId: "user2",
-        message: "카페에서 남자친구랑 싸웠어요..저도아이유최고얌",
-        createdAt: "4분전",
-      },
-    ],
-  },
-  {
-    roomId: 1,
-    name: "신강희",
-    profile: "https://i.ibb.co/jJt16M0/image.png",
-    mbti: "Infj",
-    badge: "마스터",
-    latestMessage: "네, 정말 좋은 날씨입니다!",
-    createdAt: "5분전",
-    resolved: false,
-    text: [
-      { userId: "user1", message: "안녕하세요!", createdAt: "5분전" },
-      {
-        userId: "user2",
-        message: "안녕하세요! 반갑습니다!",
-        createdAt: "6분전",
-      },
-      {
-        userId: "user1",
-        message: "오늘 날씨가 참 좋네요!",
-        createdAt: "7분전",
-      },
-      {
-        userId: "user2",
-        message: "네, 정말 좋은 날씨입니다!",
-        createdAt: "8분전",
-      },
-    ],
-  },
-  {
-    roomId: 2,
-    name: "배고파",
-    profile: "https://i.ibb.co/jJt16M0/image.png",
-    mbti: "Infj",
-    badge: "엽떡마스터",
-    latestMessage: "",
-    createdAt: "5분전",
-    text: [],
-  },
-];
-
-interface Message {
-  userId: string;
-  message: string;
-  createdAt: string;
-}
+import Input from "../../components/input/Input";
+import { PhotoIcon } from "../../assets/ChattingIcons";
 
 const ChattingPage = () => {
-  const [selectedChattingData, setSelectedChattingData] = useState<any>(null);
-  const [messageData, setMessageData] = useState<Message[] | null>(null);
-
   // 채팅서버연결
-  const [activeRoomId, setActiveRoomId] = useState<number>(-1); // 현재 선택된 채팅방의 아이디를 저장하는 상태 변수
-  const [message, setMessage] = useState<string[]>([]); // 받은 채팅 메세지를 저장하는 상태 변수
+  const [activeRoomId, setActiveRoomId] = useState(1); // 현재 선택된 채팅방의 아이디를 저장하는 상태 변수
+  const [message, setMessage] = useState<string[]>([]); // 이때까지 받은 채팅 메세지를 저장하는 상태 변수
   const [inputMessage, setInputMessage] = useState(""); // 사용자가 입력한 메세지를 저장하는 상태 변수
-  const [stompClient, setstompClient] = useState<Stomp.Client | null>(null); // stomp 클라이언트를 저장하는 상태 변수
+  const [stompClient, setStompClient] = useState<Stomp.Client | null>(null); // stomp 클라이언트를 저장하는 상태 변수
   const { chatRooms } = useChatRooms();
   console.log(chatRooms); // 자신이 참여한 채팅방 조회
   const navigate = useNavigate();
 
-  const token = `eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MSwiaWF0IjoxNjg5MzU2NTQwLCJleHAiOjE2OTQ1NDA1NDB9.nvOIStUQzS_-C2mLMX9tuNSUWqVYbPNa9p_5HlMyoDI`;
-  const connectAndSendMessages = () => {
-    // 웹 소켓을 생성하고, stomp 클라이언트를 생성하여 서버와 연결
-    const socket = new SockJS("wss://m-ssaem.com:8080/stomp/chat");
+  const token = localStorage.getItem("accessToken");
+  const connect = () => {
+    const socket = new WebSocket("wss://m-ssaem.com:8080/stomp/chat");
     const client = Stomp.over(socket);
-
-    // 서버와 연결이 성공하면 stomp 클라이언트를 저장하고, 채팅 메세지 구독
     client.connect(
       {
-        Authorization: token,
+        token: token,
       },
       () => {
-        setstompClient(client);
+        setStompClient(client); // 연결된 클라이언트를 상태 변수에 저장
         client.subscribe(`/sub/chat/room/${activeRoomId}`, onMessageReceived);
-        // 메세지를 보내는 함수
-        const sendMessage = () => {
-          if (inputMessage.trim() !== "") {
-            client.send("", {}, inputMessage);
-            setInputMessage("");
-          }
-        };
-        sendMessage();
       },
     );
-    // 컴포넌트가 언마운트될 때 연결을 종료
-    return () => {
-      client.disconnect(() => {
-        console.log("Disconnected");
-      }, []);
-    };
+    return client; // 연결된 클라이언트를 반환
   };
+  useEffect(() => {
+    connect();
+  }, [activeRoomId, token]);
 
-  // 채팅 메세지를 받았을 때 호출되는 콜백 함수
-  const onMessageReceived = (message: Stomp.Message) => {
-    setMessage((prevMessage) => [...prevMessage, message.body]);
-  };
   // 메세지를 보내는 함수
   const sendMessage = () => {
     // stomp 클라이언트가 있고, 입력한 메세지가 비어있지 않을 경우에만 메세지 전송
@@ -137,7 +52,7 @@ const ChattingPage = () => {
       stompClient.send(
         `/pub/chat/message/${activeRoomId}`,
         {
-          Authorization: token,
+          token: token,
         },
         JSON.stringify({
           roomId: activeRoomId,
@@ -148,26 +63,15 @@ const ChattingPage = () => {
       setInputMessage("");
     }
   };
+  // 메세지 전송
+  const handleChattingSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    sendMessage();
+  };
 
-  const handleItemClick = (roomId: number) => {
-    setActiveRoomId((prevId) => (prevId === roomId ? -1 : roomId));
-
-    const selectedChattingHistory =
-      chattinglist1.length > 0
-        ? chattinglist1.find(
-            (chattinghistory) => chattinghistory.roomId === roomId,
-          )
-        : null;
-
-    setSelectedChattingData(selectedChattingHistory);
-
-    if (selectedChattingHistory) {
-      if (selectedChattingHistory.text.length > 0) {
-        setMessageData(selectedChattingHistory.text);
-      } else setMessageData(null);
-    } else {
-      setMessageData(null);
-    }
+  // 채팅 메세지를 받았을 때 호출되는 콜백 함수
+  const onMessageReceived = (message: Stomp.Message) => {
+    setMessage((prevMessage) => [...prevMessage, message.body]);
   };
 
   return (
@@ -204,11 +108,7 @@ const ChattingPage = () => {
               <ul>
                 {chatRooms.map((chatRoom) => {
                   return (
-                    <li
-                      onClick={() =>
-                        handleItemClick(chatRoom.memberSimpleInfo.id)
-                      }
-                    >
+                    <li onClick={() => {}} key={activeRoomId}>
                       <ChattingComponent chatRoom={chatRoom} />
                     </li>
                   );
@@ -232,7 +132,7 @@ const ChattingPage = () => {
             )} */}
           </div>
           <div css={chattingRightCSS}>
-            {chattinglist1.length === 0 ? (
+            {!chatRooms ? (
               <div css={noChatCSS}>
                 <img
                   css={smallImgCSS}
@@ -247,7 +147,7 @@ const ChattingPage = () => {
               </div>
             ) : (
               <>
-                {/* 서버 연결하시면 이것도 바꿔야해여.. 고민글이랑 프로필 받아오는 부분 */}
+                {/* 고민글이랑 프로필 받아오는 부분 */}
                 {/* <div css={dateTop}>
                   <CurrentChatting profile={selectedChattingData} />
                 </div> */}
@@ -279,9 +179,30 @@ const ChattingPage = () => {
                     )} */}
                   </div>
                 </div>
-                {/* 보내는 거 */}
+                {/* 채팅 입력폼 */}
                 <div css={dateBottom}>
-                  <CurrentChattingForm setInputMessage={setInputMessage} />
+                  <form
+                    css={submitButtonBoxCSS}
+                    onSubmit={handleChattingSubmit}
+                  >
+                    <div css={inlineInputCSS}>
+                      <Input
+                        value={inputMessage}
+                        onChange={(e) => setInputMessage(e.target.value)}
+                      />
+                      <label css={labelContainerCSS}>
+                        <PhotoIcon />
+                        <input
+                          type="file"
+                          name="photo"
+                          id="photo"
+                          accept="image/*"
+                          css={fileInputCSS}
+                        />
+                      </label>
+                    </div>
+                    <Button addCSS={buttonCSS}>등록</Button>
+                  </form>
                 </div>
               </>
             )}
@@ -419,4 +340,37 @@ const bottomFontSIZE = css`
 const noMassageCSS = css`
   display: flex;
   padding-top: 7rem;
+`;
+
+// 채팅 입력창
+const buttonCSS = css`
+  margin-left: 0.5rem;
+  width: 5rem;
+`;
+
+const submitButtonBoxCSS = css`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const inlineInputCSS = css`
+  display: flex;
+  width: 100%;
+  position: relative;
+`;
+
+const labelContainerCSS = css`
+  display: flex;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 1rem;
+  align-items: center;
+`;
+
+const fileInputCSS = css`
+  display: none;
 `;
