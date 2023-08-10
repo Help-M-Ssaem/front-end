@@ -19,7 +19,10 @@ interface DebateProps {
 const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
   const navigate = useNavigate();
   return (
-    <div css={debateBoxCSS}>
+    <div 
+      css={[debateBoxCSS,onclickCSS]} 
+      onClick={() => onClick(debate.id)}
+      >
       
         {index % 6 === 0 && (
           <div css={buttonBoxCSS}>
@@ -40,10 +43,6 @@ const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
           </div>
           <div css={marginRightCSS}>{debate.createdAt}</div>
         </div>
-        <div 
-          onClick={() => onClick(debate.id)}
-          css={onclickCSS}
-          >
           <div css={titleCSS}>{debate.title}</div>
           <div css={contentCSS}>{debate.content}</div>
         </div>
@@ -55,7 +54,7 @@ const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
           ></RedButton>
           <div>댓글 {debate.commentCount}</div>
         </div>
-      </div>
+
       <div css={bottomLineCSS}>&nbsp;</div>
     </div>
   );
