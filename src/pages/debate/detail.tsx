@@ -18,6 +18,8 @@ import { useDebateBestComment } from "../../hooks/debate/comment/useDebateBestCo
 import { useDebateCommentCreate } from "../../hooks/debate/comment/useDebateCommentCreate";
 import RedButton from "../../components/button/plusbutton/RedButton";
 import DeleteModal from "../../components/modal/DeletModal";
+import PageDebate from "../../components/debate/pageMapingDebate/PageDebate";
+
 
 const DetailDebatePage = () => {
   const navigate = useNavigate();
@@ -56,11 +58,13 @@ const DetailDebatePage = () => {
     setContent("");
   };
   return (
+    <>
     <Container css={ContainerCSS}>
       {debate && (
         <>
           <div css={buttonBoxCSS}>
-            {/* TODO: 본인 게시글에만 수정, 삭제 버튼 */}
+            {debate.isEditAllowed &&
+            <>
             <Button
               onClick={() => navigate(`/debate/${id}/update`)}
               addCSS={updateButtonCSS}
@@ -68,6 +72,8 @@ const DetailDebatePage = () => {
               수정
             </Button>
             <Button onClick={handleDeleteOpen}>삭제</Button>
+            </>
+            }
           </div>
           <div css={detailCSS}>
             <div css={detailHeaderCSS}>
@@ -123,6 +129,10 @@ const DetailDebatePage = () => {
       }
     </Container>
 
+    <PageDebate
+      pathMov = {"discusstion"}
+      />
+    </>
   );
 };
 

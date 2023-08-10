@@ -12,6 +12,7 @@ import { useDeleteBoard } from "../../hooks/worry/useDeleteWorry";
 import { useWorryBoard } from "../../hooks/worry/useDetailPost";
 import { useParams } from "react-router-dom";
 import DeleteModal from "../../components/modal/DeletModal";
+import WorryList from "../../components/matching/mapingMatching/WorryList";
 
 const DetailMatchingPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -45,8 +46,11 @@ const DetailMatchingPage = () => {
   }
 
   return (
+    <>
     <Container addCSS={containerCSS}>
       <div css={buttonBoxCSS}>
+        {worryBoard.isEditAllowed &&
+        <>
         <Button
           onClick={() => navigate(`/match/${id}/update`)}
           addCSS={updateButtonCSS}
@@ -54,6 +58,7 @@ const DetailMatchingPage = () => {
           수정
         </Button>
         <Button onClick={handleDeleteOpen}>삭제</Button>
+        </>}
       </div>
       <div css={detailCSS}>
         <div css={detailHeaderCSS}>
@@ -70,10 +75,12 @@ const DetailMatchingPage = () => {
           css={contentCSS}
           dangerouslySetInnerHTML={{ __html: worryBoard.content }}
         />
-        {/* 이미지 찍는걸 어케하지 */}
+        {/* 고민글 생성 후, 내글/ 해결된 글 제외 시에 해결 있는지 확인 */}
+        {worryBoard.isChatAllowed &&
         <div css={startButtonBoxCSS} onClick={handleStartChatting}>
           <Button>채팅 시작</Button>
         </div>
+        }
       </div>
       <div css={commentTextCSS}>댓글 쓰기</div>
       <hr css={hrCSS} />
@@ -88,6 +95,10 @@ const DetailMatchingPage = () => {
         onClick={handleMatchingDelete}/>
       }
     </Container>
+
+    <WorryList pathMove={"waiting"} SaW={"M쌤 매칭을 기다리는 고민"} />
+    <WorryList pathMove={"solved"} SaW={"해결 완료된 고민"} />
+    </>
   );
 };
 
