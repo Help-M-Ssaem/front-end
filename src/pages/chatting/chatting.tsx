@@ -13,7 +13,7 @@ import MessageItem from "../../components/chatting/MessageItem";
 import Button from "../../components/button/Button";
 import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
-import Stomp from "stompjs";
+import * as stomp from "stompjs";
 
 const chattinglist1 = [
   {
@@ -90,15 +90,15 @@ const ChattingPage = () => {
   const [activeRoomId, setActiveRoomId] = useState<number>(-1); // 현재 선택된 채팅방의 아이디를 저장하는 상태 변수
   const [message, setMessage] = useState<string[]>([]); // 채팅 메세지를 저장하는 상태 변수
   const [inputMessage, setInputMessage] = useState(""); // 사용자가 입력한 메세지를 저장하는 상태 변수
-  const [stompClient, setStompClient] = useState<Stomp.Client | null>(null); // STOMP 클라이언트를 저장하는 상태 변수
+  const [stompClient, setstompClient] = useState<stomp.Client | null>(null); // stomp 클라이언트를 저장하는 상태 변수
 
   const connectAndSendMessages = (roomId: number, inputMessage: string) => {
-    // 웹 소켓을 생성하고, STOMP 클라이언트를 생성하여 서버와 연결
+    // 웹 소켓을 생성하고, stomp 클라이언트를 생성하여 서버와 연결
     const socket = new WebSocket("wss://m-ssaem.com:8080/stomp/chat");
-    const client = Stomp.over(socket);
-    // 서버와 연결이 성공하면 STOMP 클라이언트를 저장하고, 채팅 메세지 구독
+    const client = stomp.over(socket);
+    // 서버와 연결이 성공하면 stomp 클라이언트를 저장하고, 채팅 메세지 구독
     client.connect({}, () => {
-      setStompClient(client);
+      setstompClient(client);
       client.subscribe(`/sub/chat/room/${activeRoomId}`, onMessageReceived);
 
       // 메세지를 보내는 함수
@@ -125,7 +125,7 @@ const ChattingPage = () => {
   }, [activeRoomId]);
 
   // 채팅 메세지를 받았을 때 호출되는 콜백 함수
-  const onMessageReceived = (message: Stomp.Message) => {
+  const onMessageReceived = (message: stomp.Message) => {
     setMessage((prevMessage) => [...prevMessage, message.body]);
   };
   // 입력 필드에 변화가 있을 때 호출되는 함수
@@ -134,7 +134,7 @@ const ChattingPage = () => {
   };
   // 메세지를 보내는 함수
   const sendMessage = () => {
-    // STOMP 클라이언트가 있고, 입력한 메세지가 비어있지 않을 경우에만 메세지 전송
+    // stomp 클라이언트가 있고, 입력한 메세지가 비어있지 않을 경우에만 메세지 전송
     if (stompClient && inputMessage.trim() !== "") {
       stompClient.send("", {}, inputMessage);
       setInputMessage("");
