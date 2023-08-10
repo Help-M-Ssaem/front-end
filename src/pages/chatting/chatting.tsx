@@ -2,9 +2,8 @@
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ChattingComponent from "../../components/chatting/ChattingComponent";
-import { ChattingHistory } from "../../interfaces/chatting";
 import Profile from "../../components/profile/Profile";
 import Hamburger from "../../components/hamburger/Hamburger";
 import CurrentChatting from "../../components/chatting/CurrentChatting";
@@ -13,7 +12,9 @@ import MessageItem from "../../components/chatting/MessageItem";
 import Button from "../../components/button/Button";
 import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
-import * as stomp from "stompjs";
+import * as Stomp from "stompjs";
+import { useChatRooms } from "../../hooks/chatting/useChatRooms";
+import SockJS from "sockjs-client";
 
 const chattinglist1 = [
   {
@@ -81,35 +82,42 @@ interface Message {
 }
 
 const ChattingPage = () => {
-  const [selectedChattingData, setSelectedChattingData] =
-    useState<ChattingHistory | null>(null);
+  const [selectedChattingData, setSelectedChattingData] = useState<any>(null);
   const [messageData, setMessageData] = useState<Message[] | null>(null);
-  const navigate = useNavigate();
 
   // 채팅서버연결
   const [activeRoomId, setActiveRoomId] = useState<number>(-1); // 현재 선택된 채팅방의 아이디를 저장하는 상태 변수
-  const [message, setMessage] = useState<string[]>([]); // 채팅 메세지를 저장하는 상태 변수
+  const [message, setMessage] = useState<string[]>([]); // 받은 채팅 메세지를 저장하는 상태 변수
   const [inputMessage, setInputMessage] = useState(""); // 사용자가 입력한 메세지를 저장하는 상태 변수
-  const [stompClient, setstompClient] = useState<stomp.Client | null>(null); // stomp 클라이언트를 저장하는 상태 변수
+  const [stompClient, setstompClient] = useState<Stomp.Client | null>(null); // stomp 클라이언트를 저장하는 상태 변수
+  const { chatRooms } = useChatRooms();
+  console.log(chatRooms); // 자신이 참여한 채팅방 조회
+  const navigate = useNavigate();
 
-  const connectAndSendMessages = (roomId: number, inputMessage: string) => {
+  const token = `eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MSwiaWF0IjoxNjg5MzU2NTQwLCJleHAiOjE2OTQ1NDA1NDB9.nvOIStUQzS_-C2mLMX9tuNSUWqVYbPNa9p_5HlMyoDI`;
+  const connectAndSendMessages = () => {
     // 웹 소켓을 생성하고, stomp 클라이언트를 생성하여 서버와 연결
-    const socket = new WebSocket("wss://m-ssaem.com:8080/stomp/chat");
-    const client = stomp.over(socket);
-    // 서버와 연결이 성공하면 stomp 클라이언트를 저장하고, 채팅 메세지 구독
-    client.connect({}, () => {
-      setstompClient(client);
-      client.subscribe(`/sub/chat/room/${activeRoomId}`, onMessageReceived);
+    const socket = new SockJS("wss://m-ssaem.com:8080/stomp/chat");
+    const client = Stomp.over(socket);
 
-      // 메세지를 보내는 함수
-      const sendMessage = () => {
-        if (inputMessage.trim() !== "") {
-          client.send("", {}, inputMessage);
-          setInputMessage("");
-        }
-      };
-      sendMessage();
-    });
+    // 서버와 연결이 성공하면 stomp 클라이언트를 저장하고, 채팅 메세지 구독
+    client.connect(
+      {
+        Authorization: token,
+      },
+      () => {
+        setstompClient(client);
+        client.subscribe(`/sub/chat/room/${activeRoomId}`, onMessageReceived);
+        // 메세지를 보내는 함수
+        const sendMessage = () => {
+          if (inputMessage.trim() !== "") {
+            client.send("", {}, inputMessage);
+            setInputMessage("");
+          }
+        };
+        sendMessage();
+      },
+    );
     // 컴포넌트가 언마운트될 때 연결을 종료
     return () => {
       client.disconnect(() => {
@@ -118,40 +126,37 @@ const ChattingPage = () => {
     };
   };
 
-  useEffect(() => {
-    if (activeRoomId !== -1) {
-      connectAndSendMessages(activeRoomId, inputMessage);
-    }
-  }, [activeRoomId]);
-
   // 채팅 메세지를 받았을 때 호출되는 콜백 함수
-  const onMessageReceived = (message: stomp.Message) => {
+  const onMessageReceived = (message: Stomp.Message) => {
     setMessage((prevMessage) => [...prevMessage, message.body]);
-  };
-  // 입력 필드에 변화가 있을 때 호출되는 함수
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputMessage(e.target.value);
   };
   // 메세지를 보내는 함수
   const sendMessage = () => {
     // stomp 클라이언트가 있고, 입력한 메세지가 비어있지 않을 경우에만 메세지 전송
     if (stompClient && inputMessage.trim() !== "") {
-      stompClient.send("", {}, inputMessage);
+      stompClient.send(
+        `/pub/chat/message/${activeRoomId}`,
+        {
+          Authorization: token,
+        },
+        JSON.stringify({
+          roomId: activeRoomId,
+          message: inputMessage,
+          type: "TALK",
+        }),
+      );
       setInputMessage("");
     }
   };
 
-  const handleButtonClick = () => {
-    navigate("/match/maching");
-  };
   const handleItemClick = (roomId: number) => {
     setActiveRoomId((prevId) => (prevId === roomId ? -1 : roomId));
 
     const selectedChattingHistory =
       chattinglist1.length > 0
-        ? (chattinglist1.find(
+        ? chattinglist1.find(
             (chattinghistory) => chattinghistory.roomId === roomId,
-          ) as ChattingHistory)
+          )
         : null;
 
     setSelectedChattingData(selectedChattingHistory);
@@ -173,7 +178,7 @@ const ChattingPage = () => {
             <div css={titleCSS}>채팅목록</div>
           </div>
           <div css={ChatProfileCSS}>
-            {chattinglist1.length !== 0 && (
+            {/* {chatRooms && chatRooms.length !== 0 && (
               <>
                 <div>
                   {selectedChattingData && (
@@ -189,13 +194,28 @@ const ChattingPage = () => {
                   <Hamburger />
                 </div>
               </>
-            )}
+            )} */}
           </div>
         </div>
 
         <div css={chattingInnerCSS}>
           <div css={chattingLeftCSS}>
-            {chattinglist1.length !== 0 && (
+            {chatRooms && (
+              <ul>
+                {chatRooms.map((chatRoom) => {
+                  return (
+                    <li
+                      onClick={() =>
+                        handleItemClick(chatRoom.memberSimpleInfo.id)
+                      }
+                    >
+                      <ChattingComponent chatRoom={chatRoom} />
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+            {/* {chattinglist1.length !== 0 && (
               <ul>
                 {chattinglist1.map((chattinghistory) => (
                   <li
@@ -209,7 +229,7 @@ const ChattingPage = () => {
                   </li>
                 ))}
               </ul>
-            )}
+            )} */}
           </div>
           <div css={chattingRightCSS}>
             {chattinglist1.length === 0 ? (
@@ -221,18 +241,20 @@ const ChattingPage = () => {
                 />
                 <div css={topFontSIZE}>나의 채팅</div>
                 <div css={bottomFontSIZE}>M쌤이 되어 고민을 해결해보세요</div>
-                <Button onClick={handleButtonClick}>고민 보러가기</Button>
+                <Button onClick={() => navigate("/match/maching")}>
+                  고민 보러가기
+                </Button>
               </div>
             ) : (
               <>
                 {/* 서버 연결하시면 이것도 바꿔야해여.. 고민글이랑 프로필 받아오는 부분 */}
-                <div css={dateTop}>
+                {/* <div css={dateTop}>
                   <CurrentChatting profile={selectedChattingData} />
-                </div>
+                </div> */}
                 {/* 채팅창 */}
                 <div css={dateMiddle}>
                   <div css={{ padding: "0.8rem" }}>
-                    {messageData !== null ? (
+                    {/* {messageData !== null ? (
                       messageData &&
                       messageData.map((message, index) => (
                         <MessageItem
@@ -254,12 +276,12 @@ const ChattingPage = () => {
                           계정이 해지될 수 있습니다.
                         </div>
                       </div>
-                    )}
+                    )} */}
                   </div>
                 </div>
                 {/* 보내는 거 */}
                 <div css={dateBottom}>
-                  <CurrentChattingForm />
+                  <CurrentChattingForm setInputMessage={setInputMessage} />
                 </div>
               </>
             )}

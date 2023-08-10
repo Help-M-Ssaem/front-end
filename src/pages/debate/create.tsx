@@ -111,7 +111,7 @@ const ChattingPage: React.FC = () => {
 
   return (
     <div css={editorContainerCSS}>
-      <Container addCSS={containerCSS}>
+      {/* <Container addCSS={containerCSS}>
         <div css={alignmentCSS}>
           <div css={boderRightCSS}>
             <div css={titleCSS}>채팅목록</div>
@@ -174,11 +174,9 @@ const ChattingPage: React.FC = () => {
               </div>
             ) : (
               <>
-                {/* 서버 연결하시면 이것도 바꿔야해여.. 고민글이랑 프로필 받아오는 부분 */}
                 <div css={dateTop}>
                   <CurrentChatting profile={selectedChattingData} />
                 </div>
-                {/* 채팅창 */}
                 <div css={dateMiddle}>
                   <div css={{ padding: "0.8rem" }}>
                     {messageData !== null ? (
@@ -206,7 +204,6 @@ const ChattingPage: React.FC = () => {
                     )}
                   </div>
                 </div>
-                {/* 보내는 거 */}
                 <div css={dateBottom}>
                   <CurrentChattingForm />
                 </div>
@@ -214,7 +211,7 @@ const ChattingPage: React.FC = () => {
             )}
           </div>
         </div>
-      </Container>
+      </Container> */}
     </div>
   );
 };

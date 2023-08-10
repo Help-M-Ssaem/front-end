@@ -4,14 +4,18 @@ import Input from "../input/Input";
 import Button from "../button/Button";
 import { PhotoIcon } from "../../assets/ChattingIcons";
 
-const CurrentChattingForm = () => {
+interface CurrentChattingFormProps {
+  setInputMessage: (value: string) => void;
+}
+
+const CurrentChattingForm = ({ setInputMessage }: CurrentChattingFormProps) => {
   const handleChattingSubmit = () => {
     alert("전송");
   };
   return (
     <form css={submitButtonBoxCSS} onSubmit={handleChattingSubmit}>
       <div css={inlineInputCSS}>
-        <Input />
+        <Input onChange={(e) => setInputMessage(e.target.value)} />
         <label css={labelContainerCSS}>
           <PhotoIcon />
           <input

@@ -1,7 +1,6 @@
 import { User } from "./user";
 
 export interface ChattingHistory {
-  //sender
   name: string;
   profile: string;
   mbti: string;
@@ -13,6 +12,7 @@ export interface ChattingHistory {
 
   text: text[];
 }
+
 export interface text {
   userId: string;
   message: string;
@@ -26,9 +26,6 @@ export interface ChattingTitle {
   progress: string;
 }
 
-export interface ChattingProps {
-  Chattinghistory: ChattingHistory;
-}
 export interface EvaluationProps {
   worryBoardId: number;
   evaluations: string[];

@@ -3,26 +3,32 @@ import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import Badge from "../badge/Badge";
-import { ChattingProps } from "../../interfaces/chatting";
+import { ChatRoom } from "../../interfaces/chatting";
 
-const ChattingComponent = ({ Chattinghistory }: ChattingProps) => {
+interface ChattingComponentProps {
+  chatRoom: ChatRoom;
+}
+
+const ChattingComponent = ({ chatRoom }: ChattingComponentProps) => {
   return (
     <div css={chattingItemCSS}>
       <img
         css={[profileImgCSS, leftCSS]}
-        src={Chattinghistory.profile}
+        src={chatRoom.memberSimpleInfo.profileImgUrl}
         alt="profile"
       />
       <div css={[profileCSS]}>
         <div css={rightCSS}>
-          <div css={nameCSS}>{Chattinghistory.name} 님</div>
+          <div css={nameCSS}>{chatRoom.memberSimpleInfo.nickName} 님</div>
           <div css={profileDetailCSS}>
-            <Badge mbti={Chattinghistory.mbti} color={"#F8CAFF"} />
-            <Badge mbti={Chattinghistory.badge} color={"#5BE1A9"} />
+            <Badge mbti={chatRoom.memberSimpleInfo.mbti} color={"#F8CAFF"} />
+            {chatRoom.memberSimpleInfo.badge && (
+              <Badge mbti={chatRoom.memberSimpleInfo.badge} color={"#5BE1A9"} />
+            )}
           </div>
-          <div css={marginRightCSS}>{Chattinghistory.createdAt}</div>
+          <div css={marginRightCSS}>{chatRoom.lastSendAt}</div>
         </div>
-        <div css={latestMessageCSS}>{Chattinghistory.latestMessage}</div>
+        <div css={latestMessageCSS}>{chatRoom.lastMessage}</div>
       </div>
     </div>
   );
