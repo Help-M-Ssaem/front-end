@@ -50,4 +50,5 @@ export default PageDebate;
 
 const containerCSS = css`
   background: ${COLOR.WHITE};
+  padding: 0rem;
 `;
