@@ -22,6 +22,7 @@ import useMemberInfo from "../../hooks/user/useMemberInfo";
 import { MainMatching, MainTeacher } from "../../interfaces/matching";
 import HotWorryComponent from "../../components/main/HotWorry";
 import Mssaem from "../../components/matching/Mssaem";
+import MyDebateComponent from "../../components/debate/myDebate";
 
 const MainPage = () => {
   const { hotThree } = useHotThree();
@@ -100,7 +101,7 @@ const MainPage = () => {
           더보기
         </div>
       </div>
-      <div css={hotBoardBoxCSS}>
+      <div css={hotDebateBoxCSS}>
         {Array.isArray(hotDebates) &&
           hotDebates.map((hotDebate: HotDebate) => (
             <HotDebateComponent hotDebate={hotDebate} key={hotDebate.id} />
@@ -174,6 +175,12 @@ const hotBoardBoxCSS = css`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+`;
+
+const hotDebateBoxCSS = css `
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+column-gap: 2rem;
 `;
 
 const plusBoxCSS = css`
