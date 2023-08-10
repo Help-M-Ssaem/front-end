@@ -18,7 +18,7 @@ const Profile = ({ image, name, mbti, badge }: profileProps) => {
         <div css={nameCSS}>{name} 님</div>
         <div css={profileDetailCSS}>
           <Badge mbti={mbti} color={"#F8CAFF"} />
-          <Badge mbti={badge} color={"#5BE1A9"} />
+          {badge && <Badge mbti={badge} color={"#5BE1A9"} />}
         </div>
       </div>
     </div>
