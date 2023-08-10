@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
 import Button from "../../components/button/Button";
 import Profile from "../../components/profile/Profile";
-import CommentComponent from "../../components/board/comment/Comment";
 import Input from "../../components/input/Input";
 import { useDeleteBoard } from "../../hooks/worry/useDeleteWorry";
 import { useWorryBoard } from "../../hooks/worry/useDetailPost";
@@ -48,10 +47,8 @@ const DetailMatchingPage = () => {
   return (
     <Container addCSS={containerCSS}>
       <div css={buttonBoxCSS}>
-        {/* TODO: 본인 게시글에만 수정, 삭제 버튼 */}
         <Button
-          onClick={() => navigate(`/match/${id}/update`)}
-          //  navigate("/match/update")}
+          onClick={() => navigate(`/match/update`)}
           addCSS={updateButtonCSS}
         >
           수정

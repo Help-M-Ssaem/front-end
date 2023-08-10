@@ -39,7 +39,7 @@ const UpdateMatchingPage = () => {
   const [content, setContent] = useState(worryBoard!!.content);
   // TODO: mbti는 로그인한 유저의 mbti로 설정
   const [category, setCategory] = useState(worryBoard!!.targetMbti);
-  const [image, setImage] = useState<string[]>(worryBoard!!.imgList);
+  const [image, setImage] = useState<string[]>([]);
   const [openCategory, setOpenCategory] = useState(false);
   const navigate = useNavigate();
 
