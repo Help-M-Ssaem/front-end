@@ -5,12 +5,15 @@ import COLOR from "../../styles/color";
 import Container from "../container/Container";
 import Profile from "../profile/Profile";
 import { User } from "../../interfaces/user";
+import { useNavigate } from "react-router-dom";
 
 interface userProps {
   user: User;
 }
 
 const LoginComponent = ({ user }: userProps) => {
+  const navigate = useNavigate();
+
   return (
     <Container addCSS={containerCSS}>
       <div css={textCSS}>로그아웃</div>
@@ -23,13 +26,21 @@ const LoginComponent = ({ user }: userProps) => {
         />
       </div>
       <div css={detailBoxCSS}>
-        <div css={detailCSS}>M쌤 채팅</div>
+        <div css={detailCSS} onClick={() => navigate("/chatting")}>
+          M쌤 채팅
+        </div>
         <span css={verticalBarCSS}>|</span>
-        <div css={detailCSS}>알림</div>
+        <div css={detailCSS} onClick={() => navigate("/alarm")}>
+          알림
+        </div>
         <span css={verticalBarCSS}>|</span>
-        <div css={detailCSS}>활동</div>
+        <div css={detailCSS} onClick={() => navigate("/mypage")}>
+          활동
+        </div>
         <span css={verticalBarCSS}>|</span>
-        <div css={detailCSS}>프로필 설정</div>
+        <div css={detailCSS} onClick={() => navigate("/mypage/update")}>
+          프로필 설정
+        </div>
       </div>
     </Container>
   );
