@@ -309,8 +309,7 @@ const myPostArray5 = [
 
 const MyPageUpdate = () => {
   const navigate = useNavigate();
-  const { getProfileData } = useGetProfile(1);
-  console.log("getProfileData", getProfileData);
+  const { profileData } = useGetProfile(1);
 
   const handleSettingClick = () => {
     navigate("/mypage/update");
@@ -347,12 +346,12 @@ const MyPageUpdate = () => {
                 style={{
                   objectFit: "contain",
                 }}
-                src={getProfileData?.teacherInfo?.profileImgUrl}
+                src={profileData?.teacherInfo?.profileImgUrl}
                 alt="프로필"
               />
             </div>
             <p css={profilenameCSS}>
-              {getProfileData?.teacherInfo?.nickName} 님
+              {profileData?.teacherInfo?.nickName} 님
               <button
                 onClick={handleSettingClick}
                 css={settingIconContainerCSS}
@@ -362,12 +361,12 @@ const MyPageUpdate = () => {
             </p>
 
             <div css={bedgeContainer}>
-              <p css={selectBadge(1)}>{getProfileData?.teacherInfo?.mbti}</p>
-              <p css={selectBadge(1)}>{getProfileData?.teacherInfo?.badge}</p>
+              <p css={selectBadge(1)}>{profileData?.teacherInfo?.mbti}</p>
+              <p css={selectBadge(1)}>{profileData?.teacherInfo?.badge}</p>
             </div>
             <p css={subTitleCSS}>한줄소개</p>
             <p css={oneLineIntroductionCSS}>
-              {getProfileData?.teacherInfo?.introduction}
+              {profileData?.teacherInfo?.introduction}
             </p>
           </div>
         </div>
@@ -375,7 +374,7 @@ const MyPageUpdate = () => {
         <div css={box2CSS}>
           <p css={subTitleCSS}>수집한 칭호</p>
           <div css={collectedTitleContainer}>
-            {getProfileData?.badgeInfos?.map(
+            {profileData?.badgeInfos?.map(
               (value: { id: number; name: string }, idx: number) => {
                 return (
                   <p key={idx} css={selectBadge(value?.id)}>
@@ -387,7 +386,7 @@ const MyPageUpdate = () => {
           </div>
         </div>
         {/* box3 */}
-        <ActivityList getProfileData={getProfileData}></ActivityList>
+        <ActivityList profileData={profileData}></ActivityList>
       </div>
     </div>
   );

@@ -18,14 +18,7 @@ import { useMainMatching } from "../../hooks/main/useMainMatching";
 import { useMainTheacher } from "../../hooks/main/useMainTeacher";
 import { HotDebate } from "../../interfaces/debate";
 import HotDebateComponent from "../../components/main/HotDebate";
-
-const user = {
-  id: 1,
-  name: "김보라",
-  image: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-  mbti: "EsFP",
-  badge: "엠비티어론",
-};
+import useMemberInfo from "../../hooks/user/useMemberInfo";
 
 const MainPage = () => {
   const { hotThree } = useHotThree();
@@ -34,6 +27,7 @@ const MainPage = () => {
   const { mainMatching } = useMainMatching();
   const { mainTeacher } = useMainTheacher();
   const [selected, setSelected] = useState(0);
+  const { user } = useMemberInfo();
 
   const navigate = useNavigate();
 
@@ -59,12 +53,11 @@ const MainPage = () => {
             />
           </>
         )}
-        <NotLoginComponent />
-        {/* TODO: 로그인 구현되면 수정 <LoginComponent user={user} /> */}
+        {user ? <LoginComponent user={user} /> : <NotLoginComponent />}
       </div>
 
       <div css={plusBoxCSS}>
-        <Text>HOT 게시글</Text>
+        <Text addCSS={textCSS}>HOT 게시글</Text>
         <div css={plusCSS} onClick={() => navigate("hotBoard")}>
           더보기
         </div>
@@ -78,7 +71,7 @@ const MainPage = () => {
       <hr css={hrCSS} />
 
       <div css={plusBoxCSS}>
-        <Text>HOT 토론</Text>
+        <Text addCSS={textCSS}>HOT 토론</Text>
         <div css={plusCSS} onClick={() => navigate("hotDebate")}>
           더보기
         </div>
@@ -118,6 +111,10 @@ export default MainPage;
 
 const containerCSS = css`
   padding: 0rem;
+`;
+
+const textCSS = css`
+  margin: 1rem 0;
 `;
 
 const headerCSS = css`
