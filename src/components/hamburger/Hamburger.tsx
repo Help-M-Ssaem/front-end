@@ -5,11 +5,29 @@ import COLOR from "../../styles/color";
 import ExitModal from "../modal/ExitModal";
 import ReportModal from "../modal/ReportModal";
 import { HamburgerIcon } from "../../assets/ChattingIcons";
+import { useRecoilState } from "recoil";
+import { stompClientState } from "../../states/chatting";
 
 const Hamburger = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isExitModalOpen, setIsExitModalOpen] = useState(false);
+
+  const [stompClient, setStompClient] = useRecoilState(stompClientState);
+
+  // 채팅 나가기
+  const disconnectHandler = () => {
+    if (stompClient) {
+      stompClient.disconnect(() => {
+        setStompClient(null);
+        window.location.reload(); // 새로고침
+      });
+    }
+  };
+  const handleChattingExit = () => {
+    disconnectHandler();
+    setIsOpen(false);
+  };
 
   const handleMenuToggle = () => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
@@ -42,18 +60,18 @@ const Hamburger = () => {
           </div>
         </div>
       )}
-      {isReportModalOpen && (
-        <ReportModal
-          isOpen={isReportModalOpen}
-          onClose={handleCloseModal}
-          onClick={() => {}}
-        />
-      )}
-
       {/* 채팅 나가기 모달 */}
       {isExitModalOpen && (
         <ExitModal
           isOpen={isExitModalOpen}
+          onClose={handleCloseModal}
+          onClick={handleChattingExit}
+        />
+      )}
+      {/* 신고하기 모달 */}
+      {isReportModalOpen && (
+        <ReportModal
+          isOpen={isReportModalOpen}
           onClose={handleCloseModal}
           onClick={() => {}}
         />

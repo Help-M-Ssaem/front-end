@@ -21,10 +21,11 @@ import {
   messageState,
   stompClientState,
 } from "../../states/chatting";
+import { useQueryClient } from "react-query";
+import { chattingKeys } from "../../constants/chattingKey";
 
 const ChattingPage = () => {
-  // 채팅서버연결
-  const [inputMessage, setInputMessage] = useState(""); // 사용자가 입력한 메세지를 저장하는 상태 변수
+  const [inputMessage, setInputMessage] = useState("");
   const [activeRoomId, setActiveRoomId] = useRecoilState(activeRoomIdState);
   const [stompClient, setStompClient] = useRecoilState(stompClientState);
   const [message, setMessage] = useRecoilState(messageState);
@@ -32,14 +33,6 @@ const ChattingPage = () => {
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
 
-  // 채팅 연결 해제
-  const disconnectHandler = () => {
-    if (stompClient) {
-      stompClient.disconnect(() => {
-        setStompClient(null);
-      });
-    }
-  };
   // 채팅 보내기
   const sendHandler = () => {
     if (stompClient && inputMessage.trim() !== "") {
@@ -69,7 +62,6 @@ const ChattingPage = () => {
 
   return (
     <div css={editorContainerCSS}>
-      <div onClick={disconnectHandler}>채팅 나가기 테스트</div>
       <Container addCSS={containerCSS}>
         <div css={alignmentCSS}>
           <div css={boderRightCSS}>
