@@ -39,7 +39,7 @@ const ChattingPage = () => {
           token: token,
         },
         JSON.stringify({
-          roomId: activeRoomId,
+          roomId: 1,
           message: inputMessage,
           type: "TALK",
         }),
@@ -125,9 +125,9 @@ const ChattingPage = () => {
             ) : (
               <>
                 {/* 고민글이랑 프로필 받아오는 부분 */}
-                {/* <div css={dateTop}>
-                  <CurrentChatting profile={selectedChattingData} />
-                </div> */}
+                <div css={dateTop}>
+                  {/* <CurrentChatting profile={selectedChattingData} /> */}
+                </div>
                 {/* 채팅창 */}
                 <div css={dateMiddle}>
                   <div css={{ padding: "0.8rem" }}>
@@ -263,7 +263,7 @@ const dateTop = css`
   align-items: center;
   padding: 0.8rem 2rem 0.8rem 2rem;
   background-color: ${COLOR.MAIN4};
-  height: 4.95rem;
+  height: 5rem;
   width: 100%;
 `;
 

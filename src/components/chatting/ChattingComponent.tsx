@@ -9,7 +9,14 @@ interface ChattingComponentProps {
   chatRoom: ChatRoom;
 }
 
+const MAX_CONTENT_LENGTH = 15;
+
 const ChattingComponent = ({ chatRoom }: ChattingComponentProps) => {
+  const truncatedMessage =
+    chatRoom.lastMessage.length > MAX_CONTENT_LENGTH
+      ? chatRoom.lastMessage.substring(0, MAX_CONTENT_LENGTH) + "..."
+      : chatRoom.lastMessage;
+
   return (
     <div css={chattingItemCSS}>
       <img
@@ -17,18 +24,18 @@ const ChattingComponent = ({ chatRoom }: ChattingComponentProps) => {
         src={chatRoom.memberSimpleInfo.profileImgUrl}
         alt="profile"
       />
-      <div css={[profileCSS]}>
+      <div css={profileCSS}>
         <div css={rightCSS}>
           <div css={nameCSS}>{chatRoom.memberSimpleInfo.nickName} 님</div>
-          <div css={profileDetailCSS}>
+          {/* <div css={profileDetailCSS}>
             <Badge mbti={chatRoom.memberSimpleInfo.mbti} color={"#F8CAFF"} />
             {chatRoom.memberSimpleInfo.badge && (
               <Badge mbti={chatRoom.memberSimpleInfo.badge} color={"#5BE1A9"} />
             )}
-          </div>
+          </div> */}
           <div css={marginRightCSS}>{chatRoom.lastSendAt}</div>
         </div>
-        <div css={latestMessageCSS}>{chatRoom.lastMessage}</div>
+        <div css={latestMessageCSS}>{truncatedMessage}</div>
       </div>
     </div>
   );
@@ -40,7 +47,8 @@ const chattingItemCSS = css`
   display: flex;
   align-items: center;
   border-bottom: 1px solid ${COLOR.GRAY4};
-  padding: 0.8rem;
+  width: 100%;
+  height: 5rem;
   cursor: pointer;
   &:hover {
     background-color: ${COLOR.MAIN4};
@@ -53,16 +61,19 @@ const leftCSS = css`
 `;
 
 const rightCSS = css`
+  width: 100%;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   flex-direction: row;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.3rem;
 `;
 
 const profileImgCSS = css`
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
-  margin-right: 0.8rem;
+  margin: 0 0.5rem 0 1rem;
 `;
 
 const profileCSS = css`
@@ -86,7 +97,7 @@ const marginRightCSS = css`
   margin-left: auto;
   font-size: 0.9rem;
   color: ${COLOR.GRAY2};
-  font-size: ${FONT.SIZE.FOOTNOTE};
+  font-size: ${FONT.SIZE.BODY};
   font-weight: ${FONT.WEIGHT.REGULAR};
   white-space: nowrap;
 `;
