@@ -15,38 +15,24 @@ import * as Stomp from "stompjs";
 import { useChatRooms } from "../../hooks/chatting/useChatRooms";
 import Input from "../../components/input/Input";
 import { PhotoIcon } from "../../assets/ChattingIcons";
+import { useRecoilState } from "recoil";
+import {
+  activeRoomIdState,
+  messageState,
+  stompClientState,
+} from "../../states/chatting";
 
 const ChattingPage = () => {
   // 채팅서버연결
-  const [activeRoomId, setActiveRoomId] = useState(1); // 현재 선택된 채팅방의 아이디를 저장하는 상태 변수
-  const [message, setMessage] = useState<string[]>([]); // 이때까지 받은 채팅 메세지를 저장하는 상태 변수
   const [inputMessage, setInputMessage] = useState(""); // 사용자가 입력한 메세지를 저장하는 상태 변수
-  const [stompClient, setStompClient] = useState<Stomp.Client | null>(null); // stomp 클라이언트를 저장하는 상태 변수
+  const [activeRoomId, setActiveRoomId] = useRecoilState(activeRoomIdState);
+  const [stompClient, setStompClient] = useRecoilState(stompClientState);
+  const [message, setMessage] = useRecoilState(messageState);
   const { chatRooms } = useChatRooms();
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
 
-  // 채팅 연결 구독
-  const connectHandler = () => {
-    const socket = new WebSocket("wss://m-ssaem.com:8080/stomp/chat");
-    const client = Stomp.over(socket);
-    client.connect(
-      {
-        token: token,
-      },
-      () => {
-        setStompClient(client);
-        client.subscribe(`/sub/chat/room/${activeRoomId}`, onMessageReceived, {
-          token: token,
-        });
-      },
-    );
-    return client;
-  };
-  // 채팅 메세지를 받았을 때 호출되는 콜백 함수
-  const onMessageReceived = (message: Stomp.Message) => {
-    setMessage((prevMessage) => [...prevMessage, message.body]);
-  };
+  // 채팅 연결 해제
   const disconnectHandler = () => {
     if (stompClient) {
       stompClient.disconnect(() => {
@@ -54,7 +40,6 @@ const ChattingPage = () => {
       });
     }
   };
-
   // 채팅 보내기
   const sendHandler = () => {
     if (stompClient && inputMessage.trim() !== "") {
@@ -84,7 +69,6 @@ const ChattingPage = () => {
 
   return (
     <div css={editorContainerCSS}>
-      <div onClick={connectHandler}>채팅 연결 구독 테스트</div>
       <div onClick={disconnectHandler}>채팅 나가기 테스트</div>
       <Container addCSS={containerCSS}>
         <div css={alignmentCSS}>

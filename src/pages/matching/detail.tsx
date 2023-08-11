@@ -11,20 +11,21 @@ import Input from "../../components/input/Input";
 import { useDeleteBoard } from "../../hooks/worry/useDeleteWorry";
 import { useWorryBoard } from "../../hooks/worry/useDetailPost";
 import { useParams } from "react-router-dom";
-import SockJS from "sockjs-client";
-import { Stomp } from "@stomp/stompjs";
+import * as Stomp from "stompjs";
+import { useRecoilState } from "recoil";
+import {
+  activeRoomIdState,
+  messageState,
+  stompClientState,
+} from "../../states/chatting";
 
 const DetailMatchingPage = () => {
   const { id } = useParams<{ id: string }>();
   const { worryBoard } = useWorryBoard(Number(id));
   const navigate = useNavigate();
 
-  const handleStartChatting = () => {
-    navigate(`/chatting/${worryBoard!!.worryBoardId}`);
-  };
   const deleteMutation = useDeleteBoard(Number(id));
   const handleMatchingDelete = () => {
-    // TODO: 게시글 삭제 API 연동
     deleteMutation.mutate();
     navigate(-1);
   };
@@ -33,9 +34,38 @@ const DetailMatchingPage = () => {
     e.preventDefault();
   };
 
-  if (!worryBoard) {
-    return <div>없따</div>;
-  }
+  // 채팅 연결 구독
+  const token = localStorage.getItem("accessToken");
+  const [stompClient, setStompClient] = useRecoilState(stompClientState);
+  const [message, setMessage] = useRecoilState(messageState);
+  const [activeRoomId, setActiveRoomId] = useRecoilState(activeRoomIdState);
+
+  const connectHandler = () => {
+    const socket = new WebSocket("wss://m-ssaem.com:8080/stomp/chat");
+    const client = Stomp.over(socket);
+    client.connect(
+      {
+        token: token,
+      },
+      () => {
+        setStompClient(client);
+        client.subscribe(`/sub/chat/room/${activeRoomId}`, onMessageReceived, {
+          token: token,
+        });
+      },
+    );
+    return client;
+  };
+  // 채팅 메세지를 받았을 때 호출되는 콜백 함수
+  const onMessageReceived = (message: Stomp.Message) => {
+    setMessage((prevMessage) => [...prevMessage, message.body]);
+  };
+  // 채팅 시작 버튼
+  const handleStartChatting = () => {
+    connectHandler();
+    navigate(`/chatting`);
+    setActiveRoomId(1);
+  };
 
   return (
     <Container addCSS={containerCSS}>
@@ -51,20 +81,24 @@ const DetailMatchingPage = () => {
         <Button onClick={handleMatchingDelete}>삭제</Button>
       </div>
       <div css={detailCSS}>
-        <div css={detailHeaderCSS}>
-          <Profile
-            image={worryBoard.memberSimpleInfo.profileImgUrl}
-            name={worryBoard.memberSimpleInfo.nickName}
-            mbti={worryBoard.memberSimpleInfo.mbti}
-            badge={worryBoard.memberSimpleInfo.badge}
-          />
-          <div css={dateCSS}>{worryBoard.createdAt}</div>
-        </div>
-        <div css={titleCSS}>{worryBoard.title}</div>
-        <div
-          css={contentCSS}
-          dangerouslySetInnerHTML={{ __html: worryBoard.content }}
-        />
+        {worryBoard && (
+          <>
+            <div css={detailHeaderCSS}>
+              <Profile
+                image={worryBoard.memberSimpleInfo.profileImgUrl}
+                name={worryBoard.memberSimpleInfo.nickName}
+                mbti={worryBoard.memberSimpleInfo.mbti}
+                badge={worryBoard.memberSimpleInfo.badge}
+              />
+              <div css={dateCSS}>{worryBoard.createdAt}</div>
+            </div>
+            <div css={titleCSS}>{worryBoard.title}</div>
+            <div
+              css={contentCSS}
+              dangerouslySetInnerHTML={{ __html: worryBoard.content }}
+            />
+          </>
+        )}
         {/* 이미지 찍는걸 어케하지 */}
         <div css={startButtonBoxCSS} onClick={handleStartChatting}>
           <Button>채팅 시작</Button>
