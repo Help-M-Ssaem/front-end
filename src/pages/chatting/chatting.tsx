@@ -2,56 +2,23 @@
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
-import { useEffect, useRef, useState } from "react";
 import ChattingComponent from "../../components/chatting/ChattingComponent";
 import Profile from "../../components/profile/Profile";
 import Hamburger from "../../components/hamburger/Hamburger";
-import CurrentChatting from "../../components/chatting/CurrentChatting";
 import MessageItem from "../../components/chatting/MessageItem";
 import Button from "../../components/button/Button";
 import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
 import { useChatRooms } from "../../hooks/chatting/useChatRooms";
-import Input from "../../components/input/Input";
-import { PhotoIcon } from "../../assets/ChattingIcons";
-import { useRecoilState } from "recoil";
-import {
-  activeRoomIdState,
-  messageState,
-  stompClientState,
-} from "../../states/chatting";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { activeRoomIdState, messageState } from "../../states/chatting";
+import { ChattingForm } from "../../components/chatting/ChattingForm";
 
 const ChattingPage = () => {
-  const [inputMessage, setInputMessage] = useState("");
   const [activeRoomId, setActiveRoomId] = useRecoilState(activeRoomIdState);
-  const [stompClient, setStompClient] = useRecoilState(stompClientState);
-  const [message, setMessage] = useRecoilState(messageState);
+  const message = useRecoilValue(messageState);
   const { chatRooms, isLoading } = useChatRooms();
-  const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
-
-  // 채팅 보내기
-  const sendHandler = () => {
-    if (stompClient && inputMessage.trim() !== "") {
-      stompClient.send(
-        `/pub/chat/message`,
-        {
-          token: token,
-        },
-        JSON.stringify({
-          roomId: 1,
-          message: inputMessage,
-          type: "TALK",
-        }),
-      );
-      setInputMessage("");
-    }
-  };
-  // 채팅 보내기 함수 실행
-  const handleChattingSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    sendHandler();
-  };
 
   const handleItemClick = (roomId: number) => {
     setActiveRoomId(roomId);
@@ -150,30 +117,7 @@ const ChattingPage = () => {
                   </div>
                 </div>
                 {/* 채팅 입력폼 */}
-                <div css={dateBottom}>
-                  <form
-                    css={submitButtonBoxCSS}
-                    onSubmit={handleChattingSubmit}
-                  >
-                    <div css={inlineInputCSS}>
-                      <Input
-                        value={inputMessage}
-                        onChange={(e) => setInputMessage(e.target.value)}
-                      />
-                      <label css={labelContainerCSS}>
-                        <PhotoIcon />
-                        <input
-                          type="file"
-                          name="photo"
-                          id="photo"
-                          accept="image/*"
-                          css={fileInputCSS}
-                        />
-                      </label>
-                    </div>
-                    <Button addCSS={buttonCSS}>등록</Button>
-                  </form>
-                </div>
+                <ChattingForm />
               </>
             )}
           </div>
@@ -275,13 +219,6 @@ const dateMiddle = css`
   height: 21rem;
 `;
 
-const dateBottom = css`
-  display: flex;
-  width: 100%;
-  height: 4rem;
-  padding: 0.8rem 2rem 0.8rem 2rem;
-`;
-
 const noChatCSS = css`
   display: flex;
   width: 100%;
@@ -310,37 +247,4 @@ const bottomFontSIZE = css`
 const noMassageCSS = css`
   display: flex;
   padding-top: 7rem;
-`;
-
-// 채팅 입력창
-const buttonCSS = css`
-  margin-left: 0.5rem;
-  width: 5rem;
-`;
-
-const submitButtonBoxCSS = css`
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const inlineInputCSS = css`
-  display: flex;
-  width: 100%;
-  position: relative;
-`;
-
-const labelContainerCSS = css`
-  display: flex;
-  cursor: pointer;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 1rem;
-  align-items: center;
-`;
-
-const fileInputCSS = css`
-  display: none;
 `;
