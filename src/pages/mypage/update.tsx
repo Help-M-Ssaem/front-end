@@ -20,8 +20,7 @@ import Button from "../../components/button/Button";
 
 const MyPageUpdate = () => {
   const navigate = useNavigate();
-  const { getProfileData } = useGetProfile(1);
-  console.log("getProfileData", getProfileData);
+  const { profileData } = useGetProfile(1);
   const [selectedBadgeId, setSelectedBadgeId] = useState(null);
 
   const handleSettingClick = () => {
@@ -93,7 +92,7 @@ const MyPageUpdate = () => {
           </div>
         </div>
         {/* box3 */}
-        <ActivityList profileData={getProfileData}></ActivityList>
+        <ActivityList profileData={profileData}></ActivityList>
       </div>
       <div css={buttonCSS}>
         <Button addCSS={calcelCSS}>취소하기</Button>
