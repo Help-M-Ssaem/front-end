@@ -1,231 +1,213 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
-import FONT from "../../styles/font";
-import { useState } from "react";
-import ChattingComponent from "../../components/chatting/ChattingComponent";
-import { ChattingHistory } from "../../interfaces/chatting";
-import Profile from "../../components/profile/Profile";
-import Hamburger from "../../components/hamburger/Hamburger";
-import CurrentChatting from "../../components/chatting/CurrentChatting";
-import MessageItem from "../../components/chatting/MessageItem";
-import Button from "../../components/button/Button";
-import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
+import { useState } from "react";
+import FONT from "../../styles/font";
+import Button from "../../components/button/Button";
+import { useNavigate } from "react-router";
+import { CreateDebateOption } from "../../interfaces/debate";
+import PlusButton from "../../components/button/plusbutton/PlusButton";
+import { mssaemAxios as axios } from "../../apis/axios";
+import { useCreateDebate } from "../../hooks/debate/useCreateDebate";
 
-const chattinglist1 = [
-  {
-    roomId: 0,
-    name: "신강희",
-    profile: "https://i.ibb.co/jJt16M0/image.png",
-    mbti: "Infj",
-    badge: "마스터",
-    latestMessage: "카페에서 남자친구랑 싸웠어요..저도아이유최고얌",
-    createdAt: "3분전",
-    text: [
-      { userId: "user1", message: "안녕하세요!", createdAt: "3분전" },
-      {
-        userId: "user2",
-        message: "카페에서 남자친구랑 싸웠어요..저도아이유최고얌",
-        createdAt: "4분전",
-      },
-    ],
-  },
-  {
-    roomId: 1,
-    name: "신강희",
-    profile: "https://i.ibb.co/jJt16M0/image.png",
-    mbti: "Infj",
-    badge: "마스터",
-    latestMessage: "네, 정말 좋은 날씨입니다!",
-    createdAt: "5분전",
-    text: [
-      { userId: "user1", message: "안녕하세요!", createdAt: "5분전" },
-      {
-        userId: "user2",
-        message: "안녕하세요! 반갑습니다!",
-        createdAt: "6분전",
-      },
-      {
-        userId: "user1",
-        message: "오늘 날씨가 참 좋네요!",
-        createdAt: "7분전",
-      },
-      {
-        userId: "user2",
-        message: "네, 정말 좋은 날씨입니다!",
-        createdAt: "8분전",
-      },
-    ],
-  },
-  {
-    roomId: 2,
-    name: "배고파",
-    profile: "https://i.ibb.co/jJt16M0/image.png",
-    mbti: "Infj",
-    badge: "엽떡마스터",
-    latestMessage: "",
-    createdAt: "5분전",
-    text: [],
-  },
-];
-
-interface Message {
-  userId: string;
-  message: string;
-  createdAt: string;
-}
-
-const ChattingPage: React.FC = () => {
-  const [activeRoomId, setActiveRoomId] = useState<number>(-1);
-  const [selectedChattingData, setSelectedChattingData] =
-    useState<ChattingHistory | null>(null);
-  const [messageData, setMessageData] = useState<Message[] | null>(null);
+//서버연결 x
+const CreateDebatePage = () => {
   const navigate = useNavigate();
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [options, setOptions] = useState<CreateDebateOption[]>([
+    {
+      content: "",
+      hasImage: false,
+      image: null,
+    },
+    {
+      content: "",
+      hasImage: false,
+      image: null,
+    },
+  ]);
+  const [image, setImage] = useState<string[]>([]);
 
-  const handleButtonClick = () => {
-    navigate("/match/maching");
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  };
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value);
   };
 
-  const handleItemClick = (roomId: number) => {
-    setActiveRoomId((prevId) => (prevId === roomId ? -1 : roomId));
+  const handleOptionTextChange = (
+    index: number,
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const { value } = e.target;
+    const updatedOptions = options.map((option, i) =>
+      i === index ? { ...option, content: value } : option,
+    );
+    setOptions(updatedOptions);
+  };
+  const handleImageBlobHook = async (blob: Blob) => {
+    const imgUrl = await uploadImage(blob);
+    setImage([...image, imgUrl]);
+    return imgUrl;
+  };
+  const handleImageChange = async (
+    index: number,
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      try {
+        const imgUUrl = await handleImageBlobHook(file); // 기다려서 이미지 URL을 얻음
+        const updatedOptions = options.map((option, i) =>
+          i === index ? { ...option, image: imgUUrl, hasImage: true } : option,
+        );
+        setOptions(updatedOptions);
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
+    }
+  };
 
-    const selectedChattingHistory =
-      chattinglist1.length > 0
-        ? (chattinglist1.find(
-            (chattinghistory) => chattinghistory.roomId === roomId,
-          ) as ChattingHistory)
-        : null;
+  const formData = new FormData();
+  const data = {
+    title: title,
+    content: content,
+    getOptionReqs: options.map(({ image, ...rest }) => rest),
+  };
 
-    setSelectedChattingData(selectedChattingHistory);
+  formData.append(
+    "DiscussionReq",
+    new Blob([JSON.stringify(data)], { type: "application/json" }),
+  );
+  formData.append(
+    "image",
+    new Blob([JSON.stringify(image)], { type: "application/json" }),
+  );
 
-    if (selectedChattingHistory) {
-      if (selectedChattingHistory.text.length > 0) {
-        setMessageData(selectedChattingHistory.text);
-      } else setMessageData(null);
-    } else {
-      setMessageData(null);
+  const uploadImage = async (blob: Blob) => {
+    const formData = new FormData();
+    formData.append("image", blob);
+    const imgUrl = await axios.post(
+      "/member/discussion-options/files",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
+    return imgUrl.data;
+  };
+
+  const createMutation = useCreateDebate(formData);
+  const handleSubmit = () => {
+    createMutation.mutate();
+    navigate(-1);
+  };
+
+  const handleAddOption = () => {
+    if (options.length < 4) {
+      // 최대 4개까지 선택지를 추가할 수 있도록 제한
+      setOptions([
+        ...options,
+        {
+          content: "",
+          hasImage: false,
+          image: null,
+        },
+      ]);
+    }
+  };
+
+  // 선택지를 삭제하는 함수
+  const handleRemoveOption = (indexToRemove: number) => {
+    if (options.length > 2) {
+      image.splice(indexToRemove, 1);
+      const updatedOptions = options.map((option, index) =>
+        index === indexToRemove ? { ...option, hasImage: false } : option,
+      );
+      setOptions(updatedOptions);
+      setOptions(options.filter((option, index) => index !== indexToRemove));
     }
   };
 
   return (
     <div css={editorContainerCSS}>
-      {/* <Container addCSS={containerCSS}>
-        <div css={alignmentCSS}>
-          <div css={boderRightCSS}>
-            <div css={titleCSS}>채팅목록</div>
-          </div>
-          <div css={ChatProfileCSS}>
-            {chattinglist1.length === 0 ? (
-              <div></div>
-            ) : (
-              <>
-                <div>
-                  {selectedChattingData && (
-                    <Profile
-                      image={selectedChattingData.profile}
-                      name={selectedChattingData.name}
-                      mbti={selectedChattingData.mbti}
-                      badge={selectedChattingData.badge}
-                    />
-                  )}
-                </div>
-
-                <div css={ChatMenuCSS}>
-                  <Hamburger />
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-
-        <div css={chattingInnerCSS}>
-          <div css={chattingLeftCSS}>
-            {chattinglist1.length === 0 ? (
-              <div></div>
-            ) : (
-              <ul css={ChattingItem}>
-                {chattinglist1.map((chattinghistory) => (
-                  <li
-                    key={chattinghistory.roomId}
-                    onClick={() => handleItemClick(chattinghistory.roomId)}
-                    css={[
-                      activeRoomId === chattinghistory.roomId && activeStyle,
-                    ]}
-                  >
-                    <ChattingComponent Chattinghistory={chattinghistory} />
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-          <div css={chattingRightCSS}>
-            {chattinglist1.length === 0 ? (
-              <div css={noChatCSS}>
-                <img
-                  css={smallImgCSS}
-                  src="https://i.ibb.co/YRZSTTL/rhdiddl4.png"
-                  alt="rhdiddl4"
-                />
-                <div css={topFontSIZE}>나의 채팅</div>
-                <div css={bottomFontSIZE}>M쌤이 되어 고민을 해결해보세요</div>
-                <Button onClick={handleButtonClick}>고민 보러가기</Button>
-              </div>
-            ) : (
-              <>
-                <div css={dateTop}>
-                  <CurrentChatting profile={selectedChattingData} />
-                </div>
-                <div css={dateMiddle}>
-                  <div css={{ padding: "0.8rem" }}>
-                    {messageData !== null ? (
-                      messageData &&
-                      messageData.map((message, index) => (
-                        <MessageItem
-                          key={index}
-                          message={message.message}
-                          createdAt={message.createdAt}
-                          isCurrentUser={message.userId === "user1"}
-                          profile={selectedChattingData?.profile}
-                        />
-                      ))
-                    ) : (
-                      <div css={[noChatCSS, noMassageCSS]}>
-                        <div css={bottomFontSIZE}>
-                          익명성을 악욕한 욕설, 비방, 불건전한 정보 유통 등
-                          상대방을 불쾌하게 하는 행위를 저지를 시
-                        </div>
-                        <div css={bottomFontSIZE}>
-                          커뮤니티 가이드 라인에 따라 불이익을 받거나 심한경우
-                          계정이 해지될 수 있습니다.
-                        </div>
-                      </div>
+      <Container addCSS={containerCSS}>
+        <div css={titleCSS}>과몰입 토론</div>
+        <div css={contentCSS}>제목을 입력해주세요.</div>
+        <input
+          type="text"
+          value={title}
+          onChange={handleTitleChange}
+          css={inputCSS}
+        />
+        <div css={imagecontentCSS}>선택지를 선택해주세요. (2~4개)</div>
+        <div css={selectuplodGrid}>
+          {options.map((option, index) => (
+            <div css={selectuplodGridinContents} key={index}>
+              <div css={selectuplodGridinContentsBox}>
+                <div css={controlSize}>
+                  <div css={controlSizetop}>
+                    {options.length > 2 && (
+                      <Button onClick={() => handleRemoveOption(index)}>
+                        X
+                      </Button>
                     )}
                   </div>
+
+                  <label css={uploadLabelCSS}>
+                    {option.image !== null && (
+                      <img src={option.image} alt="Selected" css={imageCSS} />
+                    )}
+                    {option.image === null && <PlusButton>+</PlusButton>}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImageChange(index, e)}
+                      css={uploadInputCSS}
+                    />
+                  </label>
+                  <input
+                    type="text"
+                    value={option.content}
+                    onChange={(e) => handleOptionTextChange(index, e)}
+                    css={optionInputCSS}
+                  />
                 </div>
-                <div css={dateBottom}>
-                  <CurrentChattingForm />
-                </div>
-              </>
-            )}
-          </div>
+              </div>
+            </div>
+          ))}
+          {options.length < 4 && <Button onClick={handleAddOption}>+</Button>}
         </div>
-      </Container> */}
+
+        <div css={contentCSS}>내용을 입력해주세요. (선택)</div>
+        <textarea
+          value={content}
+          onChange={handleContentChange}
+          css={textareaCSS}
+        />
+
+        <div css={buttonBoxCSS}>
+          <Button addCSS={buttonCSS} onClick={() => navigate(-1)}>
+            취소하기
+          </Button>
+
+          <Button onClick={handleSubmit}>글 쓰기</Button>
+        </div>
+      </Container>
     </div>
   );
 };
 
-export default ChattingPage;
+export default CreateDebatePage;
 
 const containerCSS = css`
   background: ${COLOR.WHITE};
-  padding: 0;
+  padding: 2.5rem;
 `;
-
-// const containerCSS = css`
-//   background: ${COLOR.WHITE};
-//   padding: 2.5rem;
-// `;
 
 const editorContainerCSS = css`
   width: calc(100% + 30rem);
@@ -234,61 +216,31 @@ const editorContainerCSS = css`
   padding: 1.5rem 15rem;
 `;
 
-const boderRightCSS = css`
-  border-right: 1px solid ${COLOR.GRAY4};
-  height: 100%;
-  align-items: center;
-  display: flex;
-`;
-
 const titleCSS = css`
-  font-size: ${FONT.SIZE.TITLE3};
+  font-size: ${FONT.SIZE.TITLE1};
   font-weight: ${FONT.WEIGHT.BOLD};
   color: ${COLOR.MAINDARK};
-  padding-left: 3rem;
+  margin-bottom: 1rem;
 `;
 
-const ChatProfileCSS = css`
-  padding: 0 2rem 0 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+const imagecontentCSS = css`
+  font-size: ${FONT.SIZE.HEADLINE};
+  font-weight: ${FONT.WEIGHT.REGULAR};
+  color: ${COLOR.GRAY2};
+  margin-bottom: 0.5rem;
 `;
 
-const ChatMenuCSS = css`
-  display: flex;
-  justify-content: end;
-`;
-
-const alignmentCSS = css`
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid ${COLOR.GRAY4};
+const selectuplodGrid = css`
   display: grid;
-  grid-template-columns: 1.91fr 5fr; //스크롤바때문에 조금 다르게 나온다..
-  grid-template-rows: 1fr;
-  height: 5rem;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 1.5rem;
+  justify-content: center;
+  place-items: center;
 `;
 
-const chattingInnerCSS = css`
-  display: flex;
-  justify-content: start;
-  width: 100%;
-  height: 30rem;
-  display: grid;
-  grid-template-columns: 1.9fr 5fr;
-`;
-
-const chattingLeftCSS = css`
+const selectuplodGridinContents = css`
   background-color: ${COLOR.WHITE};
-  overflow: auto;
-  ::-webkit-scrollbar {
-    width: 0;
-  }
-`;
-
-const chattingRightCSS = css`
-  border-left: 1px solid ${COLOR.GRAY4};
   width: 100%;
   height: 100%;
   min-height: 18rem;
@@ -306,68 +258,18 @@ const selectuplodGridinContentsBox = css`
   justify-content: center;
   padding: 0.7rem;
 `;
-
-const ChattingItem = css`
-  li {
-    cursor: pointer;
-  }
-  li:hover {
-    background-color: ${COLOR.MAIN4};
-  }
-`;
-
-const activeStyle = css`
-  background-color: ${COLOR.MAIN4};
-`;
-
-const dateTop = css`
+const uploadLabelCSS = css`
   display: flex;
-  align-items: center;
-  padding: 0.8rem 2rem 0.8rem 2rem;
-  background-color: ${COLOR.MAIN4};
-  height: 4.95rem;
-  width: 100%;
-`;
-
-const dateMiddle = css`
-  overflow: auto;
-  ::-webkit-scrollbar {
-    width: 0;
-  }
-  height: 21rem;
-`;
-
-const dateBottom = css`
-  display: flex;
-  width: 100%;
-  height: 4rem;
-  padding: 0.8rem 2rem 0.8rem 2rem;
-`;
-
-const noChatCSS = css`
-  display: flex;
-  width: 100%;
-  height: 100%;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  // border: 1.5px solid ${COLOR.GRAY4};
+  border-radius: 0.5rem;
 `;
-
-const smallImgCSS = css`
-  width: 7rem;
-  height: 7rem;
+const uploadInputCSS = css`
+  display: none;
 `;
-
-const topFontSIZE = css`
-  padding-bottom: 0.5rem;
-  font-size: ${FONT.SIZE.TITLE2};
-  color: ${COLOR.GRAY2};
-`;
-const bottomFontSIZE = css`
-  padding-bottom: 0.5rem;
-  font-size: ${FONT.SIZE.HEADLINE};
-`;
-
 const imageCSS = css`
   width: 11rem;
   height: auto;
@@ -378,11 +280,40 @@ const contentCSS = css`
   font-size: ${FONT.SIZE.HEADLINE};
   font-weight: ${FONT.WEIGHT.REGULAR};
   color: ${COLOR.GRAY2};
+  margin: 1.5rem 0 0.5rem 0;
 `;
 
-const noMassageCSS = css`
+const inputCSS = css`
+  width: 100%;
+  height: 2.5rem;
+  border: 1.5px solid ${COLOR.GRAY4};
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+`;
+
+const optionInputCSS = css`
+  width: 100%;
+  height: 2.5rem;
+  border: 1.5px solid ${COLOR.GRAY4};
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+`;
+
+const textareaCSS = css`
+  width: 100%;
+  height: 10rem;
+  border: 1.5px solid ${COLOR.GRAY4};
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+`;
+
+const buttonBoxCSS = css`
   display: flex;
-  padding-top: 7rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
 `;
 
 const buttonCSS = css`

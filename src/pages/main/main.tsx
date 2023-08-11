@@ -19,6 +19,9 @@ import { useMainTheacher } from "../../hooks/main/useMainTeacher";
 import { HotDebate } from "../../interfaces/debate";
 import HotDebateComponent from "../../components/main/HotDebate";
 import useMemberInfo from "../../hooks/user/useMemberInfo";
+import { MainMatching, MainTeacher } from "../../interfaces/matching";
+import HotWorryComponent from "../../components/main/HotWorry";
+import Mssaem from "../../components/matching/Mssaem";
 
 const MainPage = () => {
   const { hotThree } = useHotThree();
@@ -30,7 +33,28 @@ const MainPage = () => {
   const { user } = useMemberInfo();
 
   const navigate = useNavigate();
+  const gridContainerCSS = css`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  > *:nth-child(2n + 1) {
+    border-right: 1px solid ${COLOR.MAIN};
+    padding-right: 1rem;
+  }
 
+  > *:nth-child(1),
+  > *:nth-child(2){
+    ${(Array.isArray(mainMatching) && (mainMatching.length > 2)) && `
+      border-bottom: 1px solid ${COLOR.MAIN};
+    `}
+  }
+
+  > *:nth-child(3),
+  > *:nth-child(4){
+    ${(Array.isArray(mainMatching) && (mainMatching.length > 4)) && `
+      border-bottom: 1px solid ${COLOR.MAIN};
+    `}
+  }
+  `;
   return (
     <>
       <div css={headerCSS}>
@@ -39,17 +63,17 @@ const MainPage = () => {
             <Hot
               title={hotThree.boardTitle}
               content={"지금의 게시글"}
-              key={hotThree.boardId}
+              key={`board_${hotThree.boardId}`}
             />
             <Hot
               title={hotThree.discussionTitle}
               content={"지금의 토론"}
-              key={hotThree.discussionId}
+              key={`discussion_${hotThree.discussionId}`}
             />
             <Hot
               title={hotThree.worryBoardTitle}
               content={"고민 그만! M쌤 매칭"}
-              key={hotThree.worryBoardId}
+              key={`worry_${hotThree.worryBoardId}`}
             />
           </>
         )}
@@ -101,7 +125,25 @@ const MainPage = () => {
             인기 M쌤
           </div>
         </div>
-        <div></div>
+        <div>
+  
+        {selected === 0 && Array.isArray(mainMatching) && (
+          <div css={gridContainerCSS}>
+            {mainMatching.map((hotWorry: MainMatching) => (
+              <HotWorryComponent hotWorry={hotWorry} key={hotWorry.id} />
+            ))}
+          </div>
+          )}
+
+          {selected === 1 &&
+            Array.isArray(mainTeacher) && (
+              <div css={MssaemCSS}>
+            {mainTeacher.map((hotboard: MainTeacher) => (
+              <Mssaem mssaem={hotboard} key={hotboard.id}  css={MssaemCSS}/>
+              ))}
+            </div>
+            )}
+        </div>
       </Container>
     </>
   );
@@ -112,7 +154,6 @@ export default MainPage;
 const containerCSS = css`
   padding: 0rem;
 `;
-
 const textCSS = css`
   margin: 1rem 0;
 `;
@@ -178,4 +219,9 @@ const bottomTitleCSS = css`
     color: ${COLOR.MAIN2};
     border-bottom: 4px solid ${COLOR.MAIN};
   }
+`;
+
+const MssaemCSS = css`
+  display: flex;
+  margin-bottom: 2rem;
 `;

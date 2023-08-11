@@ -26,6 +26,12 @@ const SelectBox = () => {
     setSearch(event.target.value);
   };
 
+  const handleOnKeyPress = (e: { key: string }) => {
+    if (e.key === "Enter") {
+      console.log("Enter");
+    }
+  };
+
   return (
     <div css={bottomCSS}>
       <div css={WraperCSS}>
@@ -54,6 +60,7 @@ const SelectBox = () => {
           value={search}
           onChange={handleInputChange}
           placeholder="검색어를 입력해주세요"
+          onKeyDown={handleOnKeyPress}
         />
         {search.length === 0 && <FaSearch css={searchIconCSS} />}
         {search.length > 0 && (

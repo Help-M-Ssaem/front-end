@@ -30,6 +30,7 @@ const PageDebate: React.FC<Props> = ({pathMov}) => {
               key={debate.id}
               onClick={() => navigate(`/debate/${debate.id}`)}
               index={index}
+              mode={pathMov}
             />
           ))}
       </div>
@@ -50,4 +51,5 @@ export default PageDebate;
 
 const containerCSS = css`
   background: ${COLOR.WHITE};
+  padding: 1.5rem 0 0 0;
 `;

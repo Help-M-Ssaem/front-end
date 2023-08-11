@@ -11,305 +11,17 @@ import ActivityList from "../../components/mypage/MyPage";
 import { useGetProfile } from "../../hooks/user/useProfile";
 import { SettingIcon } from "../../assets/CommonIcons";
 import { useNavigate } from "react-router-dom";
-
-const badge1Array = [
-  { title: "EsFP", type: 1 },
-  { title: "엠비티어른", type: 2 },
-];
-
-const collectedBadgeArray = [
-  { title: "엠비티어른", type: 2 },
-  { title: "MBTMI", type: 3 },
-  { title: "엠비티아노사우르스", type: 4 },
-];
-
-const menuTabBar = [
-  { type: 1, title: "내가 쓴 게시글" },
-  { type: 2, title: "내가 쓴 토론글" },
-  { type: 3, title: "내가 쓴 고민글" },
-  { type: 4, title: "내가 쓴 댓글" },
-  { type: 5, title: "내가 해결한 고민" },
-];
-
-// 가져올 컴포넌트들 임시로
-const myPostArray = [
-  {
-    id: 1,
-    name: "유보라",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "카페에서 남친이랑 싸웠어",
-    content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 2,
-    name: "유보라",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "카페에서 남친이랑 싸웠어",
-    content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 3,
-    name: "유보라",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "카페에서 남친이랑 싸웠어",
-    content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 4,
-    name: "유보라",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "카페에서 남친이랑 싸웠어",
-    content: "내가 말을 '만약에'라고 시작하면 너무 기빨린대",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-];
-// 가져올 컴포넌트들 임시로
-const myPostArray2 = [
-  {
-    id: 1,
-    name: "유저2",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "여기다간 토론글 해야지",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 2,
-    name: "유저2",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "여기다간 토론글 해야지",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 3,
-    name: "유저2",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "여기다간 토론글 해야지",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 4,
-    name: "유저2",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "여기다간 토론글 해야지",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-];
-// 가져올 컴포넌트들 임시로
-const myPostArray3 = [
-  {
-    id: 1,
-    name: "유저3",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "고민고민 할 예정",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 2,
-    name: "유저3",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "고민고민 할 예정",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 3,
-    name: "유저3",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "고민고민 할 예정",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 4,
-    name: "유저3",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "고민고민 할 예정",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-];
-// 가져올 컴포넌트들 임시로
-const myPostArray4 = [
-  {
-    id: 1,
-    name: "유저4",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "이거시 내 댓글이지 암",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 2,
-    name: "유저4",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "이거시 내 댓글이지 암",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 3,
-    name: "유저4",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "이거시 내 댓글이지 암",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 4,
-    name: "유저4",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "이거시 내 댓글이지 암",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-];
-// 가져올 컴포넌트들 임시로
-const myPostArray5 = [
-  {
-    id: 1,
-    name: "유저5",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "내가 고민 해결왕이다",
-    content: "예에",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 2,
-    name: "유저5",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "내가 고민 해결왕이다",
-    content: "예에",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 3,
-    name: "유저5",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "내가 고민 해결왕이다",
-    content: "예에",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 4,
-    name: "유저5",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "내가 고민 해결왕이다",
-    content: "예에",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-];
+import UserInfo from "../auth/UserInfo";
+import MbtiBox from "../../components/mypage/mbtiBox";
+import NameBox from "../../components/mypage/nameBox";
+import Input from "../../components/input/Input";
+import Input2 from "../../components/input/Input2";
+import Button from "../../components/button/Button";
 
 const MyPageUpdate = () => {
   const navigate = useNavigate();
   const { profileData } = useGetProfile(1);
+  const [selectedBadgeId, setSelectedBadgeId] = useState(null);
 
   const handleSettingClick = () => {
     navigate("/mypage/update");
@@ -320,6 +32,7 @@ const MyPageUpdate = () => {
     setMenuSelected(type);
   };
   const selectBadge = (value: any) => {
+    const isSelectedBadge = value.id === selectedBadgeId;
     switch (value.type) {
       case 1:
         return badgeCSS1;
@@ -350,34 +63,27 @@ const MyPageUpdate = () => {
                 alt="프로필"
               />
             </div>
-            <p css={profilenameCSS}>
-              {profileData?.teacherInfo?.nickName} 님
-              <button
-                onClick={handleSettingClick}
-                css={settingIconContainerCSS}
-              >
-                <SettingIcon />
-              </button>
-            </p>
-
-            <div css={bedgeContainer}>
-              <p css={selectBadge(1)}>{profileData?.teacherInfo?.mbti}</p>
-              <p css={selectBadge(1)}>{profileData?.teacherInfo?.badge}</p>
+            <span css={modifyCSS}>프로필 설정</span>
+            <div>
+              <p css={subTitleCSS}>닉네임</p>
+              <NameBox />
+              <p css={subTitleCSS}>MBTI</p>
+              <MbtiBox />
+              <p css={subTitleCSS}>한줄소개</p>
+              <Input2 placeholder="한줄 소개 들어가야함" />
             </div>
-            <p css={subTitleCSS}>한줄소개</p>
-            <p css={oneLineIntroductionCSS}>
-              {profileData?.teacherInfo?.introduction}
-            </p>
           </div>
         </div>
         {/* box2 */}
+
         <div css={box2CSS}>
           <p css={subTitleCSS}>수집한 칭호</p>
           <div css={collectedTitleContainer}>
             {profileData?.badgeInfos?.map(
               (value: { id: number; name: string }, idx: number) => {
+                const isSelected = value.id === selectedBadgeId;
                 return (
-                  <p key={idx} css={selectBadge(value?.id)}>
+                  <p key={idx} css={selectBadge(value)}>
                     {value.name}
                   </p>
                 );
@@ -387,6 +93,14 @@ const MyPageUpdate = () => {
         </div>
         {/* box3 */}
         <ActivityList profileData={profileData}></ActivityList>
+      </div>
+      <div css={buttonCSS}>
+        <Button addCSS={calcelCSS}>취소하기</Button>
+        <Button>수정하기</Button>
+      </div>
+      <div css={buttonCSS}>
+        <Button addCSS={calcelCSS}>취소하기</Button>
+        <Button>수정하기</Button>
       </div>
     </div>
   );
@@ -417,10 +131,10 @@ const box1CSS = css`
   min-width: 15.625rem;
   /* max-width: 250px; */
   flex: 1;
-  height: 27.0625rem;
+  // height: 27.0625rem;
   border-radius: 1.875rem;
   margin-right: 2.875rem;
-  padding: 2.5rem 2.125rem;
+  padding: 2.5rem 2.125rem 0 2.125rem;
 `;
 
 const box2CSS = css`
@@ -435,34 +149,23 @@ const box2CSS = css`
   margin-right: 2.875rem;
   padding: 2.5rem 3.125rem;
 `;
-const box3CSS = css`
-  display: flex;
-  flex-direction: column;
-  background-color: ${COLOR.MAIN3};
-  min-width: 33.25rem;
-  height: 27.0625rem;
-  border-radius: 1.875rem;
-  margin-right: 2.875rem;
-  padding: 2.4375rem 5.8125rem 2.4375rem 4.1875rem;
+
+const badgeCSS = css`
+  // border: 2px solid ${COLOR.WHITE};
 `;
 
 const subTitleCSS = css`
   font-size: ${FONT.SIZE.TITLE3};
   font-weight: ${FONT.WEIGHT.BOLD};
-  color: ${COLOR.GRAY1};
-`;
-
-const oneLineIntroductionCSS = css`
-  font-size: ${FONT.SIZE.TITLE3};
-  font-weight: ${FONT.WEIGHT.REGULAR};
-  color: ${COLOR.GRAY1};
-  margin-top: 0.5rem;
+  color: ${COLOR.GRAY2};
+  margin-top: 1.3rem;
 `;
 
 const profileContainerCSS = css`
   margin: 0.625rem 0 2.5rem;
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 const profileImageContainerCSS = css`
@@ -474,30 +177,6 @@ const profileImageContainerCSS = css`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-const profilenameCSS = css`
-  font-size: 1.75rem;
-  margin: 0.9375rem 0 0.625rem;
-  font-weight: ${FONT.WEIGHT.BOLD};
-  color: ${COLOR.MAINDARK};
-  text-align: center;
-`;
-
-const settingIconContainerCSS = css`
-  margin-left: 0.625rem;
-`;
-
-const mbtibedgeContainer = css`
-  display: inline-flex;
-  margin: 0 auto;
-  column-gap: 0.625rem;
-`;
-
-const bedgeContainer = css`
-  display: flex;
-  margin: 0 auto 1.25rem;
-  column-gap: 0.625rem;
 `;
 
 const collectedTitleContainer = css`
@@ -542,66 +221,18 @@ const badgeCSS4 = css`
   width: fit-content;
 `;
 
-const spaceBetween = css`
+const modifyCSS = css`
+  font-size: ${FONT.SIZE.BODY};
+  padding-top: 1rem;
+`;
+const calcelCSS = css`
+  opacity: 0.5;
+  margin-right: 1rem;
+`;
+
+const buttonCSS = css`
   display: flex;
-  justify-content: space-between;
-`;
-const spaceBetweenWithMargin = css`
-  display: flex;
-  justify-content: space-between;
-  margin-top: 2.8125rem;
-`;
-
-const contentContainer = css`
-  margin: 1.25rem 0;
-  display: flex;
-  flex-direction: column;
-  row-gap: 0.625rem;
-`;
-
-const contentBox = css`
-  display: flex;
-  justify-content: space-between;
-  width: 7.1875rem;
-`;
-
-const contentNumber = css`
-  font-weight: ${FONT.WEIGHT.SEMIBOLD};
-`;
-
-const myContentContainer = css`
-  margin-top: 4.125rem;
-  max-width: 80rem;
-  min-width: 65.625rem;
-  min-height: 31.25rem;
-  background: ${COLOR.MAIN3};
-  border-radius: 1.2rem;
-  /* padding: 1.5rem; */
-`;
-
-const menuButtonContainer = css`
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 0.0625rem solid ${COLOR.MAIN1};
-  height: 5.125rem;
-  li {
-    cursor: pointer;
-    position: relative;
-    color: ${COLOR.GRAY2};
-  }
-  li:hover {
-    color: ${COLOR.MAIN1};
-    border-bottom: 0.0625rem solid ${COLOR.MAIN1};
-  }
-
-  li.active {
-    color: ${COLOR.MAIN1};
-    border-bottom: 0.0625rem solid ${COLOR.MAIN1};
-  }
-  list-style-type: none;
-`;
-const menuBox = css`
-  text-align: center;
-  flex: 1;
-  padding: 1.875rem 2.5625rem;
+  justify-content: flex-end;
+  margin-right: 5rem;
+  margin-top: -5rem;
 `;

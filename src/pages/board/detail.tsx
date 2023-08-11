@@ -17,6 +17,7 @@ import { useBoardBestComment } from "../../hooks/board/comment/useBoardBestComme
 import { useState } from "react";
 import { useBoardCommentCreate } from "../../hooks/board/comment/useBoardCommentCreate";
 import CommentCreate from "../../components/board/comment/CommentCreate";
+import DeleteModal from "../../components/modal/DeletModal";
 import { useBoardList } from "../../hooks/board/useBoardList";
 import BoardComponent from "../../components/board/Board";
 import ListPagination from "../../components/Pagination/ListPagination";
@@ -28,6 +29,13 @@ const DetailBoardPage = () => {
   const boardId = Number(id);
   const { board } = useBoardDetail(boardId);
 
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const handleDeleteOpen = () => {
+    setIsDeleteModalOpen(true);
+  };
+  const handleDeleteClose = () => {
+    setIsDeleteModalOpen(false);
+  };
   const limit = 10;
   const [page, setPage] = useState(0);
   const [blockNum, setBlockNum] = useState(0);
@@ -50,6 +58,7 @@ const DetailBoardPage = () => {
     deleteMutation.mutate();
     navigate(-1);
   };
+
   const handleLikeClick = () => {
     likeMutation.mutate();
   };
@@ -102,7 +111,7 @@ const DetailBoardPage = () => {
                   <Button onClick={() => navigate("update")} addCSS={buttonCSS}>
                     수정
                   </Button>
-                  <Button onClick={handleBoardDelete}>삭제</Button>
+                  <Button onClick={handleDeleteOpen}>삭제</Button>
                 </div>
               )}
             </div>
@@ -207,7 +216,13 @@ const DetailBoardPage = () => {
             setBlockNum={setBlockNum}
             totalPage={totalPage}
           />
-        )}
+          )}
+          {isDeleteModalOpen && 
+            <DeleteModal
+              isOpen={isDeleteModalOpen}
+              onClose={handleDeleteClose}
+              onClick={handleBoardDelete}/>
+            }
       </Container>
     </>
   );
