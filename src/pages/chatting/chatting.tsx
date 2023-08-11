@@ -26,8 +26,6 @@ const ChattingPage = () => {
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
 
-  console.log(chatRooms); // 자신이 참여한 채팅방 조회
-
   // 채팅 연결 구독
   const connectHandler = () => {
     const socket = new WebSocket("wss://m-ssaem.com:8080/stomp/chat");
@@ -48,6 +46,13 @@ const ChattingPage = () => {
   // 채팅 메세지를 받았을 때 호출되는 콜백 함수
   const onMessageReceived = (message: Stomp.Message) => {
     setMessage((prevMessage) => [...prevMessage, message.body]);
+  };
+  const disconnectHandler = () => {
+    if (stompClient) {
+      stompClient.disconnect(() => {
+        console.log("disconnected");
+      });
+    }
   };
 
   // 채팅 보내기
@@ -80,6 +85,7 @@ const ChattingPage = () => {
   return (
     <div css={editorContainerCSS}>
       <div onClick={connectHandler}>채팅 연결 구독 테스트</div>
+      <div onClick={disconnectHandler}>채팅 나가기 테스트</div>
       <Container addCSS={containerCSS}>
         <div css={alignmentCSS}>
           <div css={boderRightCSS}>
