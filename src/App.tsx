@@ -58,8 +58,8 @@ function App() {
             <Route path="/kakao/login" element={<Callback />} />
             <Route path="/naver/login" element={<Callback />} />
             <Route path="/google/login" element={<Callback />} />
-            <Route path="/signin" element={<SigninPage />} />
-            <Route path="/signin/user" element={<UserInfo />} />
+            <Route path="/sign-up" element={<SigninPage />} />
+            <Route path="/sign-up/member" element={<UserInfo />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/mypage/update" element={<MyPageUpdate />} />
             <Route path="/search" element={<SearchBar />} />

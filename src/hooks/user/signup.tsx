@@ -9,7 +9,6 @@ function saveTokens(accessToken: string, refreshToken: string) {
 async function postUserInfo(
   data: userinfo,
 ): Promise<{ accessToken: string; refreshToken: string }> {
-  console.log(data);
   const response = await axios.post("/sign-up", data);
   saveTokens(response.data.accessToken, response.data.refreshToken);
   return response.data;

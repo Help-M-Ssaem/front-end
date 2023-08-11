@@ -74,8 +74,8 @@ const MbtiBoardPage = () => {
             전체 ({boardListAll && `${boardListAll.result.length}`})
           </div>
           <div css={mbtiCSS}>
-            {mbtiList.map((mbti) => (
-              <Mbti mbti={mbti} />
+            {mbtiList.map((mbti, index) => (
+              <Mbti key={index} mbti={mbti} />
             ))}
           </div>
         </div>
