@@ -2,12 +2,12 @@
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 
-type MessageItemProps = {
+interface MessageItemProps {
   message: string;
-  createdAt: string;
-  isCurrentUser: boolean;
+  createdAt?: string;
+  isCurrentUser?: boolean;
   profile?: string;
-};
+}
 
 const MessageItem: React.FC<MessageItemProps> = ({
   message,

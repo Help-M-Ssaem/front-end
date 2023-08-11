@@ -10,9 +10,12 @@ async function getChatRooms(): Promise<ChatRoom[]> {
 
 interface UseChatRooms {
   chatRooms?: ChatRoom[];
+  isLoading: boolean;
 }
 
 export function useChatRooms(): UseChatRooms {
-  const { data: chatRooms } = useQuery(chattingKeys.all, () => getChatRooms());
-  return { chatRooms };
+  const { data: chatRooms, isLoading } = useQuery(chattingKeys.all, () =>
+    getChatRooms(),
+  );
+  return { chatRooms, isLoading };
 }

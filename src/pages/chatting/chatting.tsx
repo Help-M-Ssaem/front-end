@@ -11,7 +11,6 @@ import MessageItem from "../../components/chatting/MessageItem";
 import Button from "../../components/button/Button";
 import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
-import * as Stomp from "stompjs";
 import { useChatRooms } from "../../hooks/chatting/useChatRooms";
 import Input from "../../components/input/Input";
 import { PhotoIcon } from "../../assets/ChattingIcons";
@@ -21,15 +20,13 @@ import {
   messageState,
   stompClientState,
 } from "../../states/chatting";
-import { useQueryClient } from "react-query";
-import { chattingKeys } from "../../constants/chattingKey";
 
 const ChattingPage = () => {
   const [inputMessage, setInputMessage] = useState("");
   const [activeRoomId, setActiveRoomId] = useRecoilState(activeRoomIdState);
   const [stompClient, setStompClient] = useRecoilState(stompClientState);
   const [message, setMessage] = useRecoilState(messageState);
-  const { chatRooms } = useChatRooms();
+  const { chatRooms, isLoading } = useChatRooms();
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
 
@@ -68,6 +65,7 @@ const ChattingPage = () => {
             <div css={titleCSS}>채팅목록</div>
           </div>
           <div css={ChatProfileCSS}>
+            {isLoading ? <div>채팅 내역을 가져오는 중 ..</div> : null}
             {chatRooms && (
               <>
                 <div>
@@ -120,7 +118,7 @@ const ChattingPage = () => {
                 />
                 <div css={topFontSIZE}>나의 채팅</div>
                 <div css={bottomFontSIZE}>M쌤이 되어 고민을 해결해보세요</div>
-                <Button onClick={() => navigate("/match/maching")}>
+                <Button onClick={() => navigate("/match/matching")}>
                   고민 보러가기
                 </Button>
               </div>
@@ -133,16 +131,9 @@ const ChattingPage = () => {
                 {/* 채팅창 */}
                 <div css={dateMiddle}>
                   <div css={{ padding: "0.8rem" }}>
-                    {/* {messageData !== null ? (
-                      messageData &&
-                      messageData.map((message, index) => (
-                        <MessageItem
-                          key={index}
-                          message={message.message}
-                          createdAt={message.createdAt}
-                          isCurrentUser={message.userId === "user1"}
-                          profile={selectedChattingData?.profile}
-                        />
+                    {message ? (
+                      message.map((message, index) => (
+                        <MessageItem key={index} message={message} />
                       ))
                     ) : (
                       <div css={[noChatCSS, noMassageCSS]}>
@@ -155,7 +146,7 @@ const ChattingPage = () => {
                           계정이 해지될 수 있습니다.
                         </div>
                       </div>
-                    )} */}
+                    )}
                   </div>
                 </div>
                 {/* 채팅 입력폼 */}
