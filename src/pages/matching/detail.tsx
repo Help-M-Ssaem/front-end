@@ -1,21 +1,29 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
+import { useState } from "react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
 import Button from "../../components/button/Button";
 import Profile from "../../components/profile/Profile";
-import CommentComponent from "../../components/board/comment/Comment";
 import Input from "../../components/input/Input";
 import { useDeleteBoard } from "../../hooks/worry/useDeleteWorry";
 import { useWorryBoard } from "../../hooks/worry/useDetailPost";
 import { useParams } from "react-router-dom";
+import DeleteModal from "../../components/modal/DeletModal";
+import WorryList from "../../components/matching/mapingMatching/WorryList";
 
 const DetailMatchingPage = () => {
   const { id } = useParams<{ id: string }>();
   const { worryBoard } = useWorryBoard(Number(id));
-
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const handleDeleteOpen = () => {
+    setIsDeleteModalOpen(true);
+  };
+  const handleDeleteClose = () => {
+    setIsDeleteModalOpen(false);
+  };
   const navigate = useNavigate();
   const handleStartChatting = () => {
     if (!worryBoard) {
@@ -25,7 +33,6 @@ const DetailMatchingPage = () => {
   };
   const deleteMutation = useDeleteBoard(Number(id));
   const handleMatchingDelete = () => {
-    // TODO: 게시글 삭제 API 연동
     deleteMutation.mutate();
     navigate(-1);
   };
@@ -39,17 +46,19 @@ const DetailMatchingPage = () => {
   }
 
   return (
+    <>
     <Container addCSS={containerCSS}>
       <div css={buttonBoxCSS}>
-        {/* TODO: 본인 게시글에만 수정, 삭제 버튼 */}
+        {worryBoard.isEditAllowed &&
+        <>
         <Button
           onClick={() => navigate(`/match/${id}/update`)}
-          //  navigate("/match/update")}
           addCSS={updateButtonCSS}
         >
           수정
         </Button>
-        <Button onClick={handleMatchingDelete}>삭제</Button>
+        <Button onClick={handleDeleteOpen}>삭제</Button>
+        </>}
       </div>
       <div css={detailCSS}>
         <div css={detailHeaderCSS}>
@@ -66,10 +75,12 @@ const DetailMatchingPage = () => {
           css={contentCSS}
           dangerouslySetInnerHTML={{ __html: worryBoard.content }}
         />
-        {/* 이미지 찍는걸 어케하지 */}
+        {/* 고민글 생성 후, 내글/ 해결된 글 제외 시에 해결 있는지 확인 */}
+        {worryBoard.isChatAllowed &&
         <div css={startButtonBoxCSS} onClick={handleStartChatting}>
           <Button>채팅 시작</Button>
         </div>
+        }
       </div>
       <div css={commentTextCSS}>댓글 쓰기</div>
       <hr css={hrCSS} />
@@ -77,7 +88,17 @@ const DetailMatchingPage = () => {
         <Input />
         <Button addCSS={submitButtonCSS}>등록</Button>
       </form>
+      {isDeleteModalOpen && 
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={handleDeleteClose}
+        onClick={handleMatchingDelete}/>
+      }
     </Container>
+
+    <WorryList pathMove={"waiting"} SaW={"M쌤 매칭을 기다리는 고민"} />
+    <WorryList pathMove={"solved"} SaW={"해결 완료된 고민"} />
+    </>
   );
 };
 

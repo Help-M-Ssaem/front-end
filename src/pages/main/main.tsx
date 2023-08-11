@@ -18,14 +18,10 @@ import { useMainMatching } from "../../hooks/main/useMainMatching";
 import { useMainTheacher } from "../../hooks/main/useMainTeacher";
 import { HotDebate } from "../../interfaces/debate";
 import HotDebateComponent from "../../components/main/HotDebate";
-
-const user = {
-  id: 1,
-  name: "김보라",
-  image: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-  mbti: "EsFP",
-  badge: "엠비티어론",
-};
+import useMemberInfo from "../../hooks/user/useMemberInfo";
+import { MainMatching, MainTeacher } from "../../interfaces/matching";
+import HotWorryComponent from "../../components/main/HotWorry";
+import Mssaem from "../../components/matching/Mssaem";
 
 const MainPage = () => {
   const { hotThree } = useHotThree();
@@ -34,9 +30,31 @@ const MainPage = () => {
   const { mainMatching } = useMainMatching();
   const { mainTeacher } = useMainTheacher();
   const [selected, setSelected] = useState(0);
+  const { user } = useMemberInfo();
 
   const navigate = useNavigate();
+  const gridContainerCSS = css`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  > *:nth-child(2n + 1) {
+    border-right: 1px solid ${COLOR.MAIN};
+    padding-right: 1rem;
+  }
 
+  > *:nth-child(1),
+  > *:nth-child(2){
+    ${(Array.isArray(mainMatching) && (mainMatching.length > 2)) && `
+      border-bottom: 1px solid ${COLOR.MAIN};
+    `}
+  }
+
+  > *:nth-child(3),
+  > *:nth-child(4){
+    ${(Array.isArray(mainMatching) && (mainMatching.length > 4)) && `
+      border-bottom: 1px solid ${COLOR.MAIN};
+    `}
+  }
+  `;
   return (
     <>
       <div css={headerCSS}>
@@ -59,12 +77,11 @@ const MainPage = () => {
             />
           </>
         )}
-        <NotLoginComponent />
-        {/* TODO: 로그인 구현되면 수정 <LoginComponent user={user} /> */}
+        {user ? <LoginComponent user={user} /> : <NotLoginComponent />}
       </div>
 
       <div css={plusBoxCSS}>
-        <Text>HOT 게시글</Text>
+        <Text addCSS={textCSS}>HOT 게시글</Text>
         <div css={plusCSS} onClick={() => navigate("hotBoard")}>
           더보기
         </div>
@@ -78,7 +95,7 @@ const MainPage = () => {
       <hr css={hrCSS} />
 
       <div css={plusBoxCSS}>
-        <Text>HOT 토론</Text>
+        <Text addCSS={textCSS}>HOT 토론</Text>
         <div css={plusCSS} onClick={() => navigate("hotDebate")}>
           더보기
         </div>
@@ -108,7 +125,25 @@ const MainPage = () => {
             인기 M쌤
           </div>
         </div>
-        <div></div>
+        <div>
+  
+        {selected === 0 && Array.isArray(mainMatching) && (
+          <div css={gridContainerCSS}>
+            {mainMatching.map((hotWorry: MainMatching) => (
+              <HotWorryComponent hotWorry={hotWorry} key={hotWorry.id} />
+            ))}
+          </div>
+          )}
+
+          {selected === 1 &&
+            Array.isArray(mainTeacher) && (
+              <div css={MssaemCSS}>
+            {mainTeacher.map((hotboard: MainTeacher) => (
+              <Mssaem mssaem={hotboard} key={hotboard.id}  css={MssaemCSS}/>
+              ))}
+            </div>
+            )}
+        </div>
       </Container>
     </>
   );
@@ -118,6 +153,9 @@ export default MainPage;
 
 const containerCSS = css`
   padding: 0rem;
+`;
+const textCSS = css`
+  margin: 1rem 0;
 `;
 
 const headerCSS = css`
@@ -181,4 +219,9 @@ const bottomTitleCSS = css`
     color: ${COLOR.MAIN2};
     border-bottom: 4px solid ${COLOR.MAIN};
   }
+`;
+
+const MssaemCSS = css`
+  display: flex;
+  margin-bottom: 2rem;
 `;

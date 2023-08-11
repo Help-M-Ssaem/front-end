@@ -7,7 +7,7 @@ import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import ListPagination from "../../components/Pagination/ListPagination";
 import SelectBox from "../../components/Pagination/SelectBox";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const HotBoardPage = () => {
   const limit = 6; //한 페이지에 보여주고자 하는 게시글 수
@@ -19,7 +19,7 @@ const HotBoardPage = () => {
 
   return (
     <>
-      <Text>HOT 게시글</Text>
+      <Text addCSS={textCSS}>HOT 게시글</Text>
       <Container>
         {hotBoardMore &&
           Array.isArray(hotBoardMore.result) &&
@@ -45,6 +45,10 @@ const HotBoardPage = () => {
 };
 
 export default HotBoardPage;
+
+const textCSS = css`
+  margin: 1rem 0;
+`;
 
 const hotBoardCSS = css`
   width: 100%;

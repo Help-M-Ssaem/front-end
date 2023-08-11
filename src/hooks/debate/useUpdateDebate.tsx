@@ -3,7 +3,7 @@ import { mssaemAxios as axios } from "../../apis/axios";
 import { debateKeys } from "../../constants/debateKey";
 
 async function updateDebate(debate: FormData, id: number): Promise<void> {
-  await axios.patch(`/member/debate/${id}`, debate, {
+  await axios.patch(`/member/discussion/${id}`, debate, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

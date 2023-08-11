@@ -3,32 +3,29 @@ import { css } from "@emotion/react";
 import { LogoIcon } from "../../assets/HeaderIcons";
 import { SearchIcon } from "../../assets/CommonIcons";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useState } from "react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import Button from "../button/Button";
+import useMemberInfo from "../../hooks/user/useMemberInfo";
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [LoginOpen, setLoginOpen] = useState(true);
+  const { user } = useMemberInfo();
 
   const handleLoginClick = () => {
     navigate("/login");
-    setLoginOpen(!LoginOpen);
   };
-
   const handleSearchClick = () => {
     navigate("/search");
   };
-
   const homeRouteList = ["/", "/hotBoard", "/hotDebate"];
 
   return (
     <header css={headerCSS}>
       <div css={headerTopCSS}>
         <LogoIcon onClick={() => navigate("/")} />
-        {LoginOpen && (
+        {!user && (
           <Button onClick={handleLoginClick} addCSS={buttonCSS}>
             로그인하고 이용하기
           </Button>
@@ -61,14 +58,6 @@ const Header = () => {
             className={location.pathname.startsWith("/debate") ? "active" : ""}
           >
             MBTI 과몰입 토론
-          </li>
-          <li
-            onClick={() => navigate("/mbtitype")}
-            className={
-              location.pathname.startsWith("/mbtitype") ? "active" : ""
-            }
-          >
-            MBTI 유형
           </li>
         </ul>
         <ul css={[listCSS, right]}>

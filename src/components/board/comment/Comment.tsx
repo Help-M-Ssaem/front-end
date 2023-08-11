@@ -54,7 +54,7 @@ const CommentComponent = ({ comment, onClick, best, reply }: CommentProps) => {
           </div>
         )}
       </div>
-      <div css={contentCSS} onClick={onClick}>
+      <div css={[contentCSS, reply && replyCSS]} onClick={onClick}>
         {comment.content}
       </div>
     </div>
@@ -86,6 +86,10 @@ const contentCSS = css`
   font-weight: ${FONT.WEIGHT.REGULAR};
   line-height: 1.4rem;
   cursor: pointer;
+`;
+
+const replyCSS = css`
+  margin-left: 1.8rem;
 `;
 
 const likeCountCSS = css`

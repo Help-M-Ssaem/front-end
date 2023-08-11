@@ -87,7 +87,6 @@ function App() {
               <Route path=":id/update" element={<UpdateDebatePage />} />
             </Route>
 
-            <Route path="/mbtitype" element={<MbtiTypePage />} />
             <Route path="/chatting" element={<ChattingPage />} />
             <Route path="/alarm" element={<AlarmPage />} />
             <Route path="/favorites" element={<FavoritesPage />} />

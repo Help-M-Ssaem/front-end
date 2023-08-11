@@ -60,7 +60,7 @@ const MyPageUpdate = () => {
                 style={{
                   objectFit: "contain",
                 }}
-                src={getProfileData?.teacherInfo?.profileImgUrl}
+                src={profileData?.teacherInfo?.profileImgUrl}
                 alt="프로필"
               />
             </div>
@@ -80,7 +80,7 @@ const MyPageUpdate = () => {
         <div css={box2CSS}>
           <p css={subTitleCSS}>수집한 칭호</p>
           <div css={collectedTitleContainer}>
-            {getProfileData?.badgeInfos?.map(
+            {profileData?.badgeInfos?.map(
               (value: { id: number; name: string }, idx: number) => {
                 const isSelected = value.id === selectedBadgeId;
                 return (
@@ -93,7 +93,11 @@ const MyPageUpdate = () => {
           </div>
         </div>
         {/* box3 */}
-        <ActivityList getProfileData={getProfileData}></ActivityList>
+        <ActivityList profileData={getProfileData}></ActivityList>
+      </div>
+      <div css={buttonCSS}>
+        <Button addCSS={calcelCSS}>취소하기</Button>
+        <Button>수정하기</Button>
       </div>
       <div css={buttonCSS}>
         <Button addCSS={calcelCSS}>취소하기</Button>
