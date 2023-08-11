@@ -23,11 +23,13 @@ const ChattingPage = () => {
   const [inputMessage, setInputMessage] = useState(""); // 사용자가 입력한 메세지를 저장하는 상태 변수
   const [stompClient, setStompClient] = useState<Stomp.Client | null>(null); // stomp 클라이언트를 저장하는 상태 변수
   const { chatRooms } = useChatRooms();
-  console.log(chatRooms); // 자신이 참여한 채팅방 조회
+  const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("accessToken");
-  const connect = () => {
+  console.log(chatRooms); // 자신이 참여한 채팅방 조회
+
+  // 채팅 연결 구독
+  const connectHandler = () => {
     const socket = new WebSocket("wss://m-ssaem.com:8080/stomp/chat");
     const client = Stomp.over(socket);
     client.connect(
@@ -35,19 +37,21 @@ const ChattingPage = () => {
         token: token,
       },
       () => {
-        setStompClient(client); // 연결된 클라이언트를 상태 변수에 저장
-        client.subscribe(`/sub/chat/room/${activeRoomId}`, onMessageReceived);
+        setStompClient(client);
+        client.subscribe(`/sub/chat/room/${activeRoomId}`, onMessageReceived, {
+          token: token,
+        });
       },
     );
-    return client; // 연결된 클라이언트를 반환
+    return client;
   };
-  useEffect(() => {
-    connect();
-  }, [activeRoomId, token]);
+  // 채팅 메세지를 받았을 때 호출되는 콜백 함수
+  const onMessageReceived = (message: Stomp.Message) => {
+    setMessage((prevMessage) => [...prevMessage, message.body]);
+  };
 
-  // 메세지를 보내는 함수
-  const sendMessage = () => {
-    // stomp 클라이언트가 있고, 입력한 메세지가 비어있지 않을 경우에만 메세지 전송
+  // 채팅 보내기
+  const sendHandler = () => {
     if (stompClient && inputMessage.trim() !== "") {
       stompClient.send(
         `/pub/chat/message/${activeRoomId}`,
@@ -63,15 +67,10 @@ const ChattingPage = () => {
       setInputMessage("");
     }
   };
-  // 메세지 전송
+  // 채팅 보내기 함수 실행
   const handleChattingSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    sendMessage();
-  };
-
-  // 채팅 메세지를 받았을 때 호출되는 콜백 함수
-  const onMessageReceived = (message: Stomp.Message) => {
-    setMessage((prevMessage) => [...prevMessage, message.body]);
+    sendHandler();
   };
 
   const handleItemClick = (roomId: number) => {
@@ -80,6 +79,7 @@ const ChattingPage = () => {
 
   return (
     <div css={editorContainerCSS}>
+      <div onClick={connectHandler}>채팅 연결 구독 테스트</div>
       <Container addCSS={containerCSS}>
         <div css={alignmentCSS}>
           <div css={boderRightCSS}>
