@@ -36,7 +36,7 @@ const ChattingPage = () => {
   const disconnectHandler = () => {
     if (stompClient) {
       stompClient.disconnect(() => {
-        console.log("disconnected");
+        setStompClient(null);
       });
     }
   };
@@ -44,7 +44,7 @@ const ChattingPage = () => {
   const sendHandler = () => {
     if (stompClient && inputMessage.trim() !== "") {
       stompClient.send(
-        `/pub/chat/message/${activeRoomId}`,
+        `/pub/chat/message`,
         {
           token: token,
         },
@@ -76,23 +76,27 @@ const ChattingPage = () => {
             <div css={titleCSS}>채팅목록</div>
           </div>
           <div css={ChatProfileCSS}>
-            {/* {chatRooms && chatRooms.length !== 0 && (
+            {chatRooms && (
               <>
                 <div>
-                  {selectedChattingData && (
-                    <Profile
-                      image={selectedChattingData.profile}
-                      name={selectedChattingData.name}
-                      mbti={selectedChattingData.mbti}
-                      badge={selectedChattingData.badge}
-                    />
-                  )}
+                  {chatRooms.map((chatRoom) => {
+                    if (chatRoom.roomId === activeRoomId) {
+                      return (
+                        <Profile
+                          image={chatRoom.memberSimpleInfo.profileImgUrl}
+                          name={chatRoom.memberSimpleInfo.nickName}
+                          mbti={chatRoom.memberSimpleInfo.mbti}
+                          badge={chatRoom.memberSimpleInfo.badge}
+                        />
+                      );
+                    }
+                  })}
                 </div>
                 <div css={ChatMenuCSS}>
                   <Hamburger />
                 </div>
               </>
-            )} */}
+            )}
           </div>
         </div>
 
