@@ -5,6 +5,10 @@ import MainPage from "./pages/main/main";
 import LoginPage from "./pages/auth/login";
 import SigninPage from "./pages/auth/signin";
 import Search from "./pages/search/search";
+import SearchResult from "./pages/search/result";
+import MoreBoardResult from "./pages/search/moreBoardResult";
+import MoreDebateResult from "./pages/search/moreDebateResult";
+import MoreMatchingResult from "./pages/search/moreMatchingResult";
 
 import BoardPage from "./pages/board/board";
 import MbtiBoardPage from "./pages/board/mbti";
@@ -61,6 +65,13 @@ function App() {
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/mypage/update" element={<MyPageUpdate />} />
             <Route path="/search" element={<Search />} />
+            <Route path="/search/result" element={<SearchResult />} />
+            <Route path="/search/moreBoard" element={<MoreBoardResult />} />
+            <Route path="/search/moreDebate" element={<MoreDebateResult />} />
+            <Route
+              path="/search/moreMatching"
+              element={<MoreMatchingResult />}
+            />
 
             <Route path="/board" element={<BoardPage />}>
               <Route path="mbti" element={<MbtiBoardPage />} />

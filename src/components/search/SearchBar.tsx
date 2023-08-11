@@ -2,19 +2,17 @@
 import React, { useState } from "react";
 import { css } from "@emotion/react";
 import { SearchIcon } from "../../assets/CommonIcons";
+import { useNavigate } from "react-router-dom";
 
 const SearchBar: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchHistory, setSearchHistory] = useState<string[]>([
-    "연애",
-    "썸",
-    "스트레스",
-    "친구",
-  ]);
+  const [searchHistory, setSearchHistory] = useState<string[]>([]);
+  const navigate = useNavigate();
 
   const handleSearch = () => {
     if (searchQuery) {
       setSearchHistory((prevHistory) => [searchQuery, ...prevHistory]);
+      navigate(`/search/result?query=${searchQuery}`);
     }
   };
 

@@ -8,7 +8,7 @@ const token =
 export const mssaemAxios = axios.create({
   baseURL: process.env.REACT_APP_MSSAEM_BASE_URL,
   headers: {
-    Authorization: token,
-    "Content-Type": "application/json",
+    //Authorization: token,
+    //"Content-Type": "application/json",
   },
 });

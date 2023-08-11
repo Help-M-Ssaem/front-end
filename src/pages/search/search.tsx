@@ -7,15 +7,12 @@ const Search: React.FC = () => {
   const trendingKeywords: string[] = [
     "ESFP",
     "INTP",
-    "ISFP",
-    "ISFP",
-    "ISFP",
-    "ISFP",
-    "ISFP",
-    "ISFP",
-    "ISFP",
-    "ISFP",
-    "ISFP",
+    "연애",
+    "썸",
+    "ISTJ",
+    "스트레스",
+    "친구",
+    "잉뿌삐",
   ];
 
   const currentDate = new Date();
