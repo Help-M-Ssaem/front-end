@@ -1,32 +1,26 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
+import { ChatMessage } from "../../interfaces/chatting";
 
 interface MessageItemProps {
-  message: string;
-  createdAt?: string;
-  isCurrentUser?: boolean;
-  profile?: string;
+  message: ChatMessage;
+  profile: string;
 }
 
-const MessageItem: React.FC<MessageItemProps> = ({
-  message,
-  createdAt,
-  isCurrentUser,
-  profile,
-}) => {
+const MessageItem: React.FC<MessageItemProps> = ({ message, profile }) => {
   return (
     <div>
-      {isCurrentUser ? (
-        <div css={sendCSS}>
-          <img src={profile} alt="Profile" css={proflieimgCSS} />
-          <div css={otherUserMessageCSS}>{message}</div>
-          <div css={timeCSS}>{createdAt}</div>
+      {message.sendWho === 1 ? (
+        <div css={chatboxCSS}>
+          <div css={timeCSS}>{message.createdAt}</div>
+          <div css={currentUserMessageCSS}>{message.message}</div>
         </div>
       ) : (
-        <div css={chatboxCSS}>
-          <div css={timeCSS}>{createdAt}</div>
-          <div css={currentUserMessageCSS}>{message}</div>
+        <div css={sendCSS}>
+          <img src={profile} alt="Profile" css={proflieimgCSS} />
+          <div css={otherUserMessageCSS}>{message.message}</div>
+          <div css={timeCSS}>{message.createdAt}</div>
         </div>
       )}
     </div>
@@ -59,7 +53,7 @@ const currentUserMessageCSS = css`
   justify-content: end;
   background-color: ${COLOR.WHITE};
   margin: 0.25rem 1.3rem 0.625rem 0.25rem;
-  border: 1px solid ${COLOR.GRAY4};
+  border: 1px solid ${COLOR.MAIN};
 `;
 
 const otherUserMessageCSS = css`

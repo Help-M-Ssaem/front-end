@@ -11,22 +11,26 @@ import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
 import { useChatRooms } from "../../hooks/chatting/useChatRooms";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { activeRoomIdState, messageState } from "../../states/chatting";
+import {
+  activeRoomIdState,
+  messageState,
+  stompClientState,
+} from "../../states/chatting";
 import { ChattingForm } from "../../components/chatting/ChattingForm";
 import { useChatMessages } from "../../hooks/chatting/useChatMessages";
 
 const ChattingPage = () => {
   const [activeRoomId, setActiveRoomId] = useRecoilState(activeRoomIdState);
-  const message = useRecoilValue(messageState);
   const { chatRooms } = useChatRooms();
   const { chatMessages } = useChatMessages();
+  let profileUrl = "";
   const navigate = useNavigate();
+
+  const [stompClient, setStompClient] = useRecoilState(stompClientState);
 
   const handleItemClick = (roomId: number) => {
     setActiveRoomId(roomId);
   };
-
-  console.log(chatMessages);
 
   return (
     <div css={editorContainerCSS}>
@@ -41,6 +45,7 @@ const ChattingPage = () => {
                 <div>
                   {chatRooms.map((chatRoom) => {
                     if (chatRoom.roomId === activeRoomId) {
+                      profileUrl = chatRoom.memberSimpleInfo.profileImgUrl;
                       return (
                         <Profile
                           image={chatRoom.memberSimpleInfo.profileImgUrl}
@@ -101,9 +106,13 @@ const ChattingPage = () => {
                 {/* 채팅창 */}
                 <div css={dateMiddle}>
                   <div css={{ padding: "0.8rem" }}>
-                    {message ? (
-                      message.map((message, index) => (
-                        <MessageItem key={index} message={message} />
+                    {chatMessages ? (
+                      chatMessages.map((message, index) => (
+                        <MessageItem
+                          key={index}
+                          message={message}
+                          profile={profileUrl}
+                        />
                       ))
                     ) : (
                       <div css={[noChatCSS, noMassageCSS]}>

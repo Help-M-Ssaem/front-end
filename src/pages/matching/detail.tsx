@@ -58,7 +58,7 @@ const DetailMatchingPage = () => {
       },
       () => {
         setStompClient(client);
-        client.subscribe(`/sub/chat/room/${activeRoomId}`, onMessageReceived, {
+        client.subscribe(`/sub/chat/room/1`, onMessageReceived, {
           token: token,
         });
       },
