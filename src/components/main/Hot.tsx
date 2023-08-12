@@ -4,13 +4,22 @@ import Container from "../container/Container";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import { HotIcon } from "../../assets/MainIcons";
+import { useNavigate } from "react-router-dom";
 
 interface hotProps {
+  id?: number;
   title?: string;
   content?: string;
+  category: string;
 }
 
-const Hot = ({ title, content }: hotProps) => {
+const Hot = ({ id, title, content, category }: hotProps) => {
+  const navigate = useNavigate();
+  const handleIdClick = () => {
+    if (!id) return;
+    navigate(`${category}/${id}`);
+  };
+
   return (
     <Container addCSS={containerCSS}>
       {content && (
@@ -22,7 +31,9 @@ const Hot = ({ title, content }: hotProps) => {
         <div css={categoryCSS}>{content}</div>
         <div css={titleCSS}>{title}</div>
       </div>
-      <div css={textCSS}>바로가기</div>
+      <div css={textCSS} onClick={handleIdClick}>
+        바로가기
+      </div>
     </Container>
   );
 };
