@@ -18,9 +18,11 @@ import {
 } from "../../states/chatting";
 import { ChattingForm } from "../../components/chatting/ChattingForm";
 import { useChatMessages } from "../../hooks/chatting/useChatMessages";
+import { useState } from "react";
 
 const ChattingPage = () => {
   const [activeRoomId, setActiveRoomId] = useRecoilState(activeRoomIdState);
+  const [active, setActive] = useState(false);
   const { chatRooms } = useChatRooms();
   const { chatMessages } = useChatMessages();
   let profileUrl = "";
@@ -28,8 +30,9 @@ const ChattingPage = () => {
 
   const [stompClient, setStompClient] = useRecoilState(stompClientState);
 
-  const handleItemClick = (roomId: number) => {
+  const handleChatRoomClick = (roomId: number) => {
     setActiveRoomId(roomId);
+    setActive(true);
   };
 
   return (
@@ -40,7 +43,7 @@ const ChattingPage = () => {
             <div css={titleCSS}>채팅목록</div>
           </div>
           <div css={ChatProfileCSS}>
-            {chatRooms && (
+            {chatRooms && active && (
               <>
                 <div>
                   {chatRooms.map((chatRoom) => {
@@ -72,9 +75,13 @@ const ChattingPage = () => {
                 {chatRooms.map((chatRoom) => {
                   return (
                     <li
-                      onClick={() => handleItemClick(chatRoom.roomId)}
+                      onClick={() => handleChatRoomClick(chatRoom.roomId)}
                       key={chatRoom.roomId}
-                      css={[activeRoomId === chatRoom.roomId && activeStyle]}
+                      css={[
+                        activeRoomId === chatRoom.roomId &&
+                          active &&
+                          activeStyle,
+                      ]}
                     >
                       <ChattingComponent chatRoom={chatRoom} />
                     </li>
@@ -84,20 +91,22 @@ const ChattingPage = () => {
             )}
           </div>
           <div css={chattingRightCSS}>
-            {!chatRooms ? (
-              <div css={noChatCSS}>
-                <img
-                  css={smallImgCSS}
-                  src="https://i.ibb.co/YRZSTTL/rhdiddl4.png"
-                  alt="rhdiddl4"
-                />
-                <div css={topFontSIZE}>나의 채팅</div>
-                <div css={bottomFontSIZE}>M쌤이 되어 고민을 해결해보세요</div>
-                <Button onClick={() => navigate("/match/matching")}>
-                  고민 보러가기
-                </Button>
-              </div>
-            ) : (
+            {!chatRooms ||
+              (chatRooms && !active && (
+                <div css={noChatCSS}>
+                  <img
+                    css={smallImgCSS}
+                    src="https://i.ibb.co/YRZSTTL/rhdiddl4.png"
+                    alt="rhdiddl4"
+                  />
+                  <div css={topFontSIZE}>나의 채팅</div>
+                  <div css={bottomFontSIZE}>M쌤이 되어 고민을 해결해보세요</div>
+                  <Button onClick={() => navigate("/match/matching")}>
+                    고민 보러가기
+                  </Button>
+                </div>
+              ))}
+            {chatRooms && active && (
               <>
                 {/* 고민글이랑 프로필 받아오는 부분 */}
                 <div css={dateTop}>
