@@ -22,6 +22,8 @@ import { useBoardList } from "../../hooks/board/useBoardList";
 import BoardComponent from "../../components/board/Board";
 import ListPagination from "../../components/Pagination/ListPagination";
 import Text from "../../components/text/Text";
+import ReportModal from "../../components/modal/ReportModal";
+import ShareModal from "../../components/modal/ShareModal";
 
 const DetailBoardPage = () => {
   const navigate = useNavigate();
@@ -51,6 +53,20 @@ const DetailBoardPage = () => {
   const [replyCommentId, setReplyCommentId] = useState(0);
   const [replyCommentOpen, setReplyCommentOpen] = useState(false);
 
+
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+
+  const handleReport = () => {
+    setIsReportModalOpen(true);
+  };
+  const handleShare = () => {
+    setIsShareModalOpen(true);
+  };
+  const handleCloseModal = () => {
+    setIsReportModalOpen(false);
+    setIsShareModalOpen(false);
+  };
   const deleteMutation = useDeleteBoard(boardId);
   const likeMutation = useBoardLike(boardId);
 
@@ -142,8 +158,14 @@ const DetailBoardPage = () => {
               <div css={commentBoxCSS}>
                 <div>전체 댓글 {comments ? comments.result.length : 0}개</div>
                 <div css={shareDeclarationCSS}>
-                  <div css={shareCSS}>공유</div>
-                  <div css={declarationCSS}>신고</div>
+                  <div 
+                    css={shareCSS}
+                    onClick={handleShare}
+                  >공유</div>
+                  <div 
+                    css={declarationCSS}
+                    onClick={handleReport}
+                  >신고</div>
                 </div>
               </div>
             </div>
@@ -194,7 +216,22 @@ const DetailBoardPage = () => {
           </>
         )}
       </Container>
+      {isReportModalOpen && (
+        <ReportModal
+          isOpen={isReportModalOpen}
+          onClose={handleCloseModal}
+          onClick={() => {}}
+        />
+      )}
 
+      {/* 채팅 나가기 모달 */}
+      {isShareModalOpen && (
+        <ShareModal
+          isOpen={isShareModalOpen}
+          onClose={handleCloseModal}
+          url={`/boards/${boardId}`}
+        />
+      )}
       <Container addCSS={containerCSS}>
         <div css={createButtonCSS}>
           <Button onClick={() => navigate("/board/create")}>글 쓰기</Button>
