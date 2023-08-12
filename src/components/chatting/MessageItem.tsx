@@ -14,20 +14,22 @@ const MessageItem: React.FC<MessageItemProps> = ({ message, profile }) => {
   const { user } = useMemberInfo();
 
   return (
-    <div>
-      {message.sender === `${user?.nickName}` ? (
+    <>
+      {message.type === "ENTER" && <div css={enterCSS}>{message.message}</div>}
+      {message.type === "TALK" && message.sender === `${user?.nickName}` && (
         <div css={chatboxCSS}>
           <div css={timeCSS}>{message.createdAt}</div>
           <div css={currentUserMessageCSS}>{message.message}</div>
         </div>
-      ) : (
+      )}
+      {message.type === "TALK" && message.sender !== `${user?.nickName}` && (
         <div css={sendCSS}>
           <img src={profile} alt="Profile" css={proflieimgCSS} />
           <div css={otherUserMessageCSS}>{message.message}</div>
           <div css={timeCSS}>{message.createdAt}</div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 
@@ -59,8 +61,8 @@ const currentUserMessageCSS = css`
   // align-self: flex-end;
   justify-content: end;
   background-color: ${COLOR.WHITE};
-  margin: 0.25rem 1.3rem 0.625rem 0.25rem;
   border: 1px solid ${COLOR.MAIN};
+  margin: 0.25rem 1.3rem 0.625rem 0.25rem;
 `;
 
 const otherUserMessageCSS = css`
@@ -84,4 +86,19 @@ const timeCSS = css`
   display: flex;
   align-items: flex-end;
   padding-bottom: 0.5rem;
+`;
+
+const enterCSS = css`
+  font-size: ${FONT.SIZE.HEADLINE};
+  font-weight: ${FONT.WEIGHT.REGULAR};
+
+  background: ${COLOR.GRAY5};
+  border-radius: 1rem;
+
+  color: ${COLOR.GRAY2};
+  display: flex;
+  justify-content: center;
+
+  padding: 0.3rem 0;
+  margin-bottom: 0.5rem;
 `;

@@ -33,7 +33,7 @@ const ChattingPage = () => {
   const navigate = useNavigate();
   let profileUrl = "";
 
-  console.log(messages.map((msg: any) => msg.message));
+  console.log(messages.map((msg: any) => msg));
 
   // 채팅 연결 구독
   const client = useRef<CompatClient>();
