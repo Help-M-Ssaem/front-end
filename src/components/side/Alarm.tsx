@@ -3,21 +3,17 @@ import { css } from "@emotion/react";
 import Container from "../../components/container/Container";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AlarmComponent from "../../components/alarm/Alarm";
 import { useReadALLAlarm } from "../../hooks/alarm/useReadALLAlarm";
 import { useDeleteAllAlarm } from "../../hooks/alarm/useDeletAllAlarm";
-import ListPagination from "../../components/Pagination/ListPagination";
-import useAlarmPaging from "../../hooks/alarm/usePageAlarm";
+import { useInfiniteAlarmList } from "../../hooks/alarm/useInfiniteAlarmList";
 
-const AlarmPage = () => {
+const AlarmMenu = () => {
+  const navigate = useNavigate();
   const allReadMutation = useReadALLAlarm();
   const allDeleteAlarmMutation = useDeleteAllAlarm();
-  const [page, setPage] = useState(1);
-  const alarmList = useAlarmPaging(page-1)
-  const limit = 10;
-  const totalPage = alarmList ? alarmList.totalSize : 1;
-  const [blockNum, setBlockNum] = useState(0);
+  const { data } = useInfiniteAlarmList();
 
   const handleAllReadPost = () => {
     allReadMutation.mutate();
@@ -40,28 +36,22 @@ const AlarmPage = () => {
       </div>
     </div>
     <div>
-      {alarmList &&
-        alarmList.result.map((alarm) => (
-          <AlarmComponent
-            alarm={alarm}
-          key={alarm.resourceId}
-          
-        />
+    <div css={scrollContainerCSS}>
+      {data &&
+        data.pages.map((page, pageIndex) => (
+          <div key={pageIndex}>
+            {page.result.map((alarm) => (
+            <AlarmComponent alarm={alarm} key={alarm.resourceId} />
+            ))}
+          </div>
         ))}
-        <ListPagination
-          limit={limit}
-          page={page}
-          setPage={setPage}
-          blockNum={blockNum}
-          setBlockNum={setBlockNum}
-          totalPage={totalPage}
-        />
+      </div>
     </div>
    </Container>
   );
 };
 
-export default AlarmPage;
+export default AlarmMenu;
 
 
 const AlarmHeaderBoxCSS = css`
@@ -86,6 +76,22 @@ const ReadCSS = css`
 const DeleteCSS = css`
   margin-left: 0.5rem;
   cursor: pointer;
+`;
+
+const scrollContainerCSS = css`
+  max-height: 25rem;
+  overflow-y: auto;
+  padding-right: 0.7rem;
+  padding-bottom: 1rem;
+
+  ::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: ${COLOR.GRAY3};
+    border-radius: 1.2rem;
+  }
 `;
 
 
