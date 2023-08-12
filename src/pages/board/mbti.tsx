@@ -43,7 +43,6 @@ const MbtiBoardPage = () => {
   const [boardList, setBoardList] = useState<BoardList>();
   const { categoryBookmark } = useCategoryBookmark();
   const { categoryCount } = useCategoryCount();
-  console.log(categoryCount);
 
   const limit = 10;
   const totalPage = boardList ? boardList.totalSize : 1;
