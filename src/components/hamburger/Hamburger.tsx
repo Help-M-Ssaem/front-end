@@ -18,7 +18,7 @@ const Hamburger = () => {
   // 채팅 나가기
   const disconnectHandler = () => {
     if (stompClient) {
-      stompClient.disconnect(() => {
+      stompClient.client.disconnect(() => {
         setStompClient(null);
         window.location.reload(); // 새로고침
       });

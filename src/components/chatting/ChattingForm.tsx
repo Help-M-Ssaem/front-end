@@ -5,16 +5,17 @@ import Button from "../button/Button";
 import Input from "../input/Input";
 import { useRecoilValue } from "recoil";
 import { stompClientState } from "../../states/chatting";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { CompatClient } from "@stomp/stompjs";
 
 export const ChattingForm = () => {
-  const stompClient = useRecoilValue(stompClientState);
   const [inputMessage, setInputMessage] = useState("");
   const token = localStorage.getItem("accessToken");
+  const stompClient = useRecoilValue(stompClientState);
 
   const sendHandler = () => {
-    if (stompClient && inputMessage.trim() !== "") {
-      stompClient.send(
+    if (stompClient.current && inputMessage.trim() !== "") {
+      stompClient.current.send(
         `/pub/chat/message`,
         {
           token: token,

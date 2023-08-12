@@ -1,7 +1,7 @@
 import { atom } from "recoil";
 import * as Stomp from "stompjs";
 
-export const stompClientState = atom<Stomp.Client | null>({
+export const stompClientState = atom<any>({
   key: "stompClientState",
   default: null,
 });

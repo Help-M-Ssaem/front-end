@@ -18,7 +18,8 @@ import {
 } from "../../states/chatting";
 import { ChattingForm } from "../../components/chatting/ChattingForm";
 import { useChatMessages } from "../../hooks/chatting/useChatMessages";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { CompatClient } from "@stomp/stompjs";
 
 const ChattingPage = () => {
   const [activeRoomId, setActiveRoomId] = useRecoilState(activeRoomIdState);
@@ -26,7 +27,19 @@ const ChattingPage = () => {
   const { chatRooms } = useChatRooms();
   const { chatMessages } = useChatMessages();
   const navigate = useNavigate();
+  const [message, setMessage] = useRecoilState(messageState);
+
+  const stompClient = useRecoilValue(stompClientState);
   let profileUrl = "";
+
+  // 채팅 나가기
+  const disconnectHandler = () => {
+    if (stompClient) {
+      stompClient.disconnect(() => {
+        window.location.reload(); // 새로고침
+      });
+    }
+  };
 
   const handleChatRoomClick = (roomId: number) => {
     setActiveRoomId(roomId);
@@ -35,6 +48,7 @@ const ChattingPage = () => {
 
   return (
     <div css={editorContainerCSS}>
+      <div onClick={disconnectHandler}>채팅 나가기</div>
       <Container addCSS={containerCSS}>
         <div css={alignmentCSS}>
           <div css={boderRightCSS}>
@@ -113,7 +127,7 @@ const ChattingPage = () => {
                 {/* 채팅창 */}
                 <div css={dateMiddle}>
                   <div css={{ padding: "0.8rem" }}>
-                    {chatMessages ? (
+                    {/* {chatMessages ? (
                       chatMessages.map((message, index) => (
                         <MessageItem
                           key={index}
@@ -132,7 +146,7 @@ const ChattingPage = () => {
                           계정이 해지될 수 있습니다.
                         </div>
                       </div>
-                    )}
+                    )} */}
                   </div>
                 </div>
                 {/* 채팅 입력폼 */}

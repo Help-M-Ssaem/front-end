@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +11,6 @@ import Input from "../../components/input/Input";
 import { useDeleteBoard } from "../../hooks/worry/useDeleteWorry";
 import { useWorryBoard } from "../../hooks/worry/useDetailPost";
 import { useParams } from "react-router-dom";
-import * as Stomp from "stompjs";
 import { useRecoilState } from "recoil";
 import {
   activeRoomIdState,
@@ -20,6 +19,7 @@ import {
 } from "../../states/chatting";
 import DeleteModal from "../../components/modal/DeletModal";
 import WorryList from "../../components/matching/mapingMatching/WorryList";
+import { CompatClient, Stomp } from "@stomp/stompjs";
 
 const DetailMatchingPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -49,31 +49,38 @@ const DetailMatchingPage = () => {
   const [message, setMessage] = useRecoilState(messageState);
   const [activeRoomId, setActiveRoomId] = useRecoilState(activeRoomIdState);
 
+  const client = useRef<CompatClient>();
+
   const connectHandler = () => {
-    const socket = new WebSocket("wss://m-ssaem.com:8080/stomp/chat");
-    const client = Stomp.over(socket);
-    client.connect(
+    client.current = Stomp.over(() => {
+      const sock = new WebSocket("wss://m-ssaem.com:8080/stomp/chat");
+      return sock;
+    });
+
+    client.current.connect(
       {
         token: token,
       },
       () => {
-        setStompClient(client);
-        client.subscribe(`/sub/chat/room/1`, onMessageReceived, {
-          token: token,
-        });
+        client.current &&
+          client.current.subscribe(`/sub/chat/room/1`, onMessageReceived, {
+            token: token!,
+          });
       },
     );
     return client;
   };
   // 채팅 메세지를 받았을 때 호출되는 콜백 함수
-  const onMessageReceived = (message: Stomp.Message) => {
+  const onMessageReceived = (message: any) => {
     setMessage((prevMessage) => [...prevMessage, message.body]);
+    console.log("콜백함수");
   };
   // 채팅 시작 버튼
   const handleStartChatting = () => {
     connectHandler();
     navigate(`/chatting`);
     setActiveRoomId(1);
+    // setStompClient(client.current);
   };
 
   return (
