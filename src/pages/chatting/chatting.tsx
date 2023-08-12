@@ -25,10 +25,8 @@ const ChattingPage = () => {
   const [active, setActive] = useState(false);
   const { chatRooms } = useChatRooms();
   const { chatMessages } = useChatMessages();
-  let profileUrl = "";
   const navigate = useNavigate();
-
-  const [stompClient, setStompClient] = useRecoilState(stompClientState);
+  let profileUrl = "";
 
   const handleChatRoomClick = (roomId: number) => {
     setActiveRoomId(roomId);

@@ -68,6 +68,7 @@ const dateBottom = css`
 const buttonCSS = css`
   margin-left: 0.5rem;
   width: 5rem;
+  height: 100%;
   white-space: nowrap;
 `;
 
@@ -81,6 +82,7 @@ const submitButtonBoxCSS = css`
 const inlineInputCSS = css`
   display: flex;
   width: 100%;
+  height: 100%;
   position: relative;
 `;
 

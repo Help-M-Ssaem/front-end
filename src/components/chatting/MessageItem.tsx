@@ -2,6 +2,7 @@
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import { ChatMessage } from "../../interfaces/chatting";
+import FONT from "../../styles/font";
 
 interface MessageItemProps {
   message: ChatMessage;
@@ -41,10 +42,13 @@ const sendCSS = css`
 const messageBoxCSS = css`
   max-width: 50%;
   flex-wrap: wrap;
-  padding: 0.625rem;
+  padding: 0.6rem 1rem;
   border-radius: 2rem;
   line-height: 1.5rem;
   color: ${COLOR.GRAY2};
+
+  font-size: ${FONT.SIZE.HEADLINE};
+  font-weight: ${FONT.WEIGHT.SEMIBOLD};
 `;
 
 const currentUserMessageCSS = css`

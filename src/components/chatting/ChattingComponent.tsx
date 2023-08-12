@@ -50,6 +50,7 @@ const chattingItemCSS = css`
   width: 100%;
   height: 5rem;
   cursor: pointer;
+  padding: 0 1rem;
   &:hover {
     background-color: ${COLOR.MAIN4};
     transition: 0.3s;
@@ -73,11 +74,12 @@ const profileImgCSS = css`
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
-  margin: 0 0.5rem 0 1rem;
+  margin-right: 0.5rem;
 `;
 
 const profileCSS = css`
   flex-direction: column;
+  width: 100%;
 `;
 
 const profileDetailCSS = css`
