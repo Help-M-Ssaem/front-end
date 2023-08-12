@@ -7,12 +7,21 @@ import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import Button from "../button/Button";
 import useMemberInfo from "../../hooks/user/useMemberInfo";
+import { useState } from "react";
+import AlarmMenu from "../side/Alarm";
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useMemberInfo();
 
+  const [alarmOpen, setAlarmOpen] = useState(false);
+  const handleAlarm = () => {
+    setAlarmOpen((prevIsOpen) => !prevIsOpen);
+  };
+  const handleCloseAll = () => {
+    alarmOpen && setAlarmOpen(false);
+  };
   const handleLoginClick = () => {
     navigate("/login");
   };
@@ -22,7 +31,7 @@ const Header = () => {
   const homeRouteList = ["/", "/hotBoard", "/hotDebate"];
 
   return (
-    <header css={headerCSS}>
+    <header css={headerCSS} onClick={handleCloseAll}>
       <div css={headerTopCSS}>
         <LogoIcon onClick={() => navigate("/")} />
         {!user && (
@@ -70,11 +79,14 @@ const Header = () => {
             채팅
           </li>
           <li
-            onClick={() => navigate("/alarm")}
-            className={location.pathname.startsWith("/alarm") ? "active" : ""}
+            onClick={handleAlarm}
+            className={alarmOpen ? "active" : ""}
+            css = {AlarmPotintCSS}
           >
             알람
           </li>
+          {alarmOpen && 
+            <div css={AlarmPageContainerCSS}><AlarmMenu/></div>}
           <li
             onClick={() => navigate("/favorites")}
             className={
@@ -185,4 +197,16 @@ const right = css`
 
 const buttonCSS = css`
   font-size: ${FONT.SIZE.HEADLINE};
+`;
+
+ const AlarmPotintCSS = css`
+  position: relative;
+ `;
+
+ const AlarmPageContainerCSS = css`
+  position: absolute;
+  top: 110%;
+  right: 20;
+  width: 20%;
+  z-index: 11;
 `;
