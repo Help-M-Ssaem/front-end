@@ -16,6 +16,7 @@ import SelectBox from "../../components/Pagination/SelectBox";
 import { BoardList } from "../../interfaces/board";
 import { mssaemAxios as axios } from "../../apis/axios";
 import { useCategoryBookmark } from "../../hooks/board/category/useCategoryBookmark";
+import { useCategoryCount } from "../../hooks/board/category/useCategoryCount";
 
 const mbtiList = [
   "ISTJ",
@@ -41,6 +42,8 @@ const MbtiBoardPage = () => {
   const [mbtiSelected, setMbtiSelected] = useRecoilState(mbtiState);
   const [boardList, setBoardList] = useState<BoardList>();
   const { categoryBookmark } = useCategoryBookmark();
+  const { categoryCount } = useCategoryCount();
+  console.log(categoryCount);
 
   const limit = 10;
   const totalPage = boardList ? boardList.totalSize : 1;
