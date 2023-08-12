@@ -45,5 +45,4 @@ export interface ChatMessage {
   message: string;
   createdAt: string;
   sender: string;
-  sendWho: number;
 }

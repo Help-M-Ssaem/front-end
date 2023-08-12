@@ -5,8 +5,7 @@ import Button from "../button/Button";
 import Input from "../input/Input";
 import { useRecoilValue } from "recoil";
 import { stompClientState } from "../../states/chatting";
-import { useRef, useState } from "react";
-import { CompatClient } from "@stomp/stompjs";
+import { useState } from "react";
 
 export const ChattingForm = () => {
   const [inputMessage, setInputMessage] = useState("");

@@ -19,26 +19,75 @@ import {
 import { ChattingForm } from "../../components/chatting/ChattingForm";
 import { useChatMessages } from "../../hooks/chatting/useChatMessages";
 import { useRef, useState } from "react";
-import { CompatClient } from "@stomp/stompjs";
+import { CompatClient, Stomp } from "@stomp/stompjs";
+import Input from "../../components/input/Input";
+import { PhotoIcon } from "../../assets/ChattingIcons";
 
 const ChattingPage = () => {
   const [activeRoomId, setActiveRoomId] = useRecoilState(activeRoomIdState);
   const [active, setActive] = useState(false);
+  const [inputMessage, setInputMessage] = useState("");
+  const [messages, setMessages] = useRecoilState(messageState);
+  const token = localStorage.getItem("accessToken");
   const { chatRooms } = useChatRooms();
-  const { chatMessages } = useChatMessages();
   const navigate = useNavigate();
-  const [message, setMessage] = useRecoilState(messageState);
-
-  const stompClient = useRecoilValue(stompClientState);
   let profileUrl = "";
 
+  console.log(messages.map((msg: any) => msg.message));
+
+  // 채팅 연결 구독
+  const client = useRef<CompatClient>();
+  const connectHandler = () => {
+    client.current = Stomp.over(() => {
+      const sock = new WebSocket("wss://m-ssaem.com:8080/stomp/chat");
+      return sock;
+    });
+    client.current.connect(
+      {
+        token: token,
+      },
+      () => {
+        client.current &&
+          client.current.subscribe(`/sub/chat/room/1`, onMessageReceived, {
+            token: token!,
+          });
+      },
+    );
+    return client;
+  };
+  // 채팅 메세지를 받았을 때 호출되는 콜백 함수
+  const onMessageReceived = (message: any) => {
+    setMessages((prevMessage) => [...prevMessage, JSON.parse(message.body)]);
+    console.log("콜백함수");
+  };
   // 채팅 나가기
   const disconnectHandler = () => {
-    if (stompClient) {
-      stompClient.disconnect(() => {
+    if (client.current) {
+      client.current.disconnect(() => {
         window.location.reload(); // 새로고침
       });
     }
+  };
+  // 채팅 보내기
+  const sendHandler = () => {
+    if (client.current && inputMessage.trim() !== "") {
+      client.current.send(
+        `/pub/chat/message`,
+        {
+          token: token,
+        },
+        JSON.stringify({
+          roomId: 1,
+          message: inputMessage,
+          type: "TALK",
+        }),
+      );
+      setInputMessage("");
+    }
+  };
+  const handleChattingSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    sendHandler();
   };
 
   const handleChatRoomClick = (roomId: number) => {
@@ -48,6 +97,7 @@ const ChattingPage = () => {
 
   return (
     <div css={editorContainerCSS}>
+      <div onClick={connectHandler}>채팅 시작</div>
       <div onClick={disconnectHandler}>채팅 나가기</div>
       <Container addCSS={containerCSS}>
         <div css={alignmentCSS}>
@@ -127,8 +177,8 @@ const ChattingPage = () => {
                 {/* 채팅창 */}
                 <div css={dateMiddle}>
                   <div css={{ padding: "0.8rem" }}>
-                    {/* {chatMessages ? (
-                      chatMessages.map((message, index) => (
+                    {messages ? (
+                      messages.map((message, index) => (
                         <MessageItem
                           key={index}
                           message={message}
@@ -146,11 +196,34 @@ const ChattingPage = () => {
                           계정이 해지될 수 있습니다.
                         </div>
                       </div>
-                    )} */}
+                    )}
                   </div>
                 </div>
                 {/* 채팅 입력폼 */}
-                <ChattingForm />
+                <div css={dateBottom}>
+                  <form
+                    css={submitButtonBoxCSS}
+                    onSubmit={handleChattingSubmit}
+                  >
+                    <div css={inlineInputCSS}>
+                      <Input
+                        value={inputMessage}
+                        onChange={(e) => setInputMessage(e.target.value)}
+                      />
+                      <label css={labelContainerCSS}>
+                        <PhotoIcon />
+                        <input
+                          type="file"
+                          name="photo"
+                          id="photo"
+                          accept="image/*"
+                          css={fileInputCSS}
+                        />
+                      </label>
+                    </div>
+                    <Button addCSS={buttonCSS}>등록</Button>
+                  </form>
+                </div>
               </>
             )}
           </div>
@@ -280,4 +353,47 @@ const bottomFontSIZE = css`
 const noMassageCSS = css`
   display: flex;
   padding-top: 7rem;
+`;
+
+// 채팅 입력 폼
+const dateBottom = css`
+  display: flex;
+  width: 100%;
+  height: 4rem;
+  padding: 0.8rem 2rem 0.8rem 2rem;
+`;
+
+const buttonCSS = css`
+  margin-left: 0.5rem;
+  width: 5rem;
+  height: 100%;
+  white-space: nowrap;
+`;
+
+const submitButtonBoxCSS = css`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const inlineInputCSS = css`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: relative;
+`;
+
+const labelContainerCSS = css`
+  display: flex;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 1rem;
+  align-items: center;
+`;
+
+const fileInputCSS = css`
+  display: none;
 `;

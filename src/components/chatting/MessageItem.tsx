@@ -3,16 +3,19 @@ import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import { ChatMessage } from "../../interfaces/chatting";
 import FONT from "../../styles/font";
+import useMemberInfo from "../../hooks/user/useMemberInfo";
 
 interface MessageItemProps {
-  message: ChatMessage;
+  message: any;
   profile: string;
 }
 
 const MessageItem: React.FC<MessageItemProps> = ({ message, profile }) => {
+  const { user } = useMemberInfo();
+
   return (
     <div>
-      {message.sendWho === 1 ? (
+      {message.sender === `${user?.nickName}` ? (
         <div css={chatboxCSS}>
           <div css={timeCSS}>{message.createdAt}</div>
           <div css={currentUserMessageCSS}>{message.message}</div>
