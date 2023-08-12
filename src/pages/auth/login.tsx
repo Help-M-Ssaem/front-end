@@ -50,11 +50,6 @@ const loginCss = css`
   align-items: center;
   padding-top: 2rem;
   max-width: 100rem;
-
-  // display: flex;
-  // flex-direction: column;
-  // align-items: center;
-  // padding-top: 3rem;
 `;
 
 const CatCss = css`
