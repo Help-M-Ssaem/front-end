@@ -28,7 +28,7 @@ const Mbti = ({ mbti, bookmark }: MbtiProps) => {
     setMbtiSelected(mbti);
   };
 
-  const count = categoryCount[mbti.toLowerCase()];
+  const count = categoryCount && categoryCount[mbti.toLowerCase()];
 
   return (
     <div css={mbtiBoxCSS}>

@@ -77,7 +77,7 @@ const MbtiBoardPage = () => {
             onClick={() => setMbtiSelected("전체")}
             className={mbtiSelected === "전체" ? "active" : ""}
           >
-            전체 ({categoryCount.boardCount})
+            전체 ({categoryCount.boardCount ? categoryCount.boardCount : 0})
           </div>
           <div css={mbtiCSS}>
             {mbtiList.map((mbti, index) => {
