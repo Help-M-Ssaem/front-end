@@ -13,16 +13,20 @@ import { useChatRooms } from "../../hooks/chatting/useChatRooms";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { activeRoomIdState, messageState } from "../../states/chatting";
 import { ChattingForm } from "../../components/chatting/ChattingForm";
+import { useChatMessages } from "../../hooks/chatting/useChatMessages";
 
 const ChattingPage = () => {
   const [activeRoomId, setActiveRoomId] = useRecoilState(activeRoomIdState);
   const message = useRecoilValue(messageState);
   const { chatRooms } = useChatRooms();
+  const { chatMessages } = useChatMessages();
   const navigate = useNavigate();
 
   const handleItemClick = (roomId: number) => {
     setActiveRoomId(roomId);
   };
+
+  console.log(chatMessages);
 
   return (
     <div css={editorContainerCSS}>

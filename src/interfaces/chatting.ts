@@ -39,3 +39,11 @@ export interface ChatRoom {
   lastSendAt: string;
   memberSimpleInfo: User;
 }
+
+export interface ChatMessage {
+  chatRoomId: number;
+  message: string;
+  createdAt: string;
+  sender: string;
+  sendWho: number;
+}
