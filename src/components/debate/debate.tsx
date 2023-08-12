@@ -19,15 +19,18 @@ interface DebateProps {
 const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
   const navigate = useNavigate();
   return (
-    <div css={debateBoxCSS}>
-      <div css={buttonBoxCSS}>
+    <div 
+      css={[debateBoxCSS,onclickCSS]} 
+      onClick={() => onClick(debate.id)}
+      >
+      
         {index % 6 === 0 && (
-          <>
+          <div css={buttonBoxCSS}>
           {mode === "discusstion" ? <Text>MBTI 과몰입 토론</Text> : <Text>HOT 토론글</Text>}
           <Button onClick={() => navigate("/debate/create")}>글 쓰기</Button>
-          </>
+          </div>
         )}
-      </div>
+      
       <div css={leftCSS}>
         <div css={dateTop}>
           <div css={profileBoxCSS}>
@@ -40,10 +43,6 @@ const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
           </div>
           <div css={marginRightCSS}>{debate.createdAt}</div>
         </div>
-        <div 
-          onClick={() => onClick(debate.id)}
-          css={onclickCSS}
-          >
           <div css={titleCSS}>{debate.title}</div>
           <div css={contentCSS}>{debate.content}</div>
         </div>
@@ -55,13 +54,13 @@ const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
           ></RedButton>
           <div>댓글 {debate.commentCount}</div>
         </div>
-      </div>
+
       <div css={bottomLineCSS}>&nbsp;</div>
     </div>
   );
 };
 const debateBoxCSS = css`
-  padding: 1.5rem;
+  padding: 0 1.5rem 1.5rem 1.5rem;
   margin: 0 0 4rem 0;
   background: ${COLOR.MAIN3};
   border-radius: 1.4rem;
@@ -135,8 +134,8 @@ const detailCSS = css`
 const buttonBoxCSS = css`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 1rem;
   align-items: center;
+  padding-top:1.5rem;
   border-bottom: 1px solid ${COLOR.MAIN};
   padding-bottom: 1.4rem;
 `;
