@@ -20,8 +20,7 @@ const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
   const navigate = useNavigate();
   return (
     <div 
-      css={[debateBoxCSS,onclickCSS]} 
-      onClick={() => onClick(debate.id)}
+      css={[debateBoxCSS]} 
       >
       
         {index % 6 === 0 && (
@@ -30,7 +29,7 @@ const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
           <Button onClick={() => navigate("/debate/create")}>글 쓰기</Button>
           </div>
         )}
-      
+      <div css= {onclickCSS} onClick={() => onClick(debate.id)}>
       <div css={leftCSS}>
         <div css={dateTop}>
           <div css={profileBoxCSS}>
@@ -54,7 +53,7 @@ const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
           ></RedButton>
           <div>댓글 {debate.commentCount}</div>
         </div>
-
+        </div>
       <div css={bottomLineCSS}>&nbsp;</div>
     </div>
   );
