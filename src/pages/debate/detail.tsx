@@ -58,13 +58,13 @@ const DetailDebatePage = () => {
     setContent("");
   };
   return (
-    <>
-    <Container css={ContainerCSS}>
+    <div  css={ContainerCSS}>
+    <Container>
       {debate && (
         <>
-          <div css={buttonBoxCSS}>
+          
             {debate.isEditAllowed &&
-            <>
+            <div css={buttonBoxCSS}>
             <Button
               onClick={() => navigate(`/debate/${id}/update`)}
               addCSS={updateButtonCSS}
@@ -72,9 +72,9 @@ const DetailDebatePage = () => {
               수정
             </Button>
             <Button onClick={handleDeleteOpen}>삭제</Button>
-            </>
+            </div>
             }
-          </div>
+          
           <div css={detailCSS}>
             <div css={detailHeaderCSS}>
               <Profile
@@ -132,7 +132,7 @@ const DetailDebatePage = () => {
     <PageDebate
       pathMov = {"discusstion"}
       />
-    </>
+    </div>
   );
 };
 
@@ -142,8 +142,8 @@ const ContainerCSS = css`
   margin-top: 1rem;
 `;
 const detailCSS = css`
-  padding: 1.2rem 0;
-  border-top: 1px solid ${COLOR.MAIN};
+  // padding: 1.2rem 0;
+  padding-bottom: 1.2rem;
   border-bottom: 1px solid ${COLOR.MAIN};
 `;
 
@@ -193,6 +193,8 @@ const buttonBoxCSS = css`
   display: flex;
   justify-content: flex-end;
   margin-bottom: 1rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid ${COLOR.MAIN};
 `;
 
 const buttonCSS = css`
