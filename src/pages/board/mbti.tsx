@@ -15,6 +15,7 @@ import ListPagination from "../../components/Pagination/ListPagination";
 import SelectBox from "../../components/Pagination/SelectBox";
 import { BoardList } from "../../interfaces/board";
 import { mssaemAxios as axios } from "../../apis/axios";
+import { useCategoryBookmark } from "../../hooks/board/category/useCategoryBookmark";
 
 const mbtiList = [
   "ISTJ",
@@ -39,6 +40,7 @@ const MbtiBoardPage = () => {
   const navigate = useNavigate();
   const [mbtiSelected, setMbtiSelected] = useRecoilState(mbtiState);
   const [boardList, setBoardList] = useState<BoardList>();
+  const { categoryBookmark } = useCategoryBookmark();
 
   const limit = 10;
   const totalPage = boardList ? boardList.totalSize : 1;
@@ -76,9 +78,18 @@ const MbtiBoardPage = () => {
             전체
           </div>
           <div css={mbtiCSS}>
-            {mbtiList.map((mbti, index) => (
-              <Mbti key={index} mbti={mbti} />
-            ))}
+            {mbtiList.map((mbti, index) => {
+              let isBookmarked = false;
+              if (categoryBookmark && Array.isArray(categoryBookmark)) {
+                for (const bookmark of categoryBookmark) {
+                  if (bookmark.mbti[0] === mbti) {
+                    isBookmarked = true;
+                    break;
+                  }
+                }
+              }
+              return <Mbti key={index} mbti={mbti} bookmark={isBookmarked} />;
+            })}
           </div>
         </div>
       </div>

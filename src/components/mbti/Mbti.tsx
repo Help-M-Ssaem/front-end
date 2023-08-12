@@ -10,9 +10,10 @@ import { useCategoryBookmarkUpdate } from "../../hooks/board/category/useCategor
 
 interface MbtiProps {
   mbti: string;
+  bookmark: boolean;
 }
 
-const Mbti = ({ mbti }: MbtiProps) => {
+const Mbti = ({ mbti, bookmark }: MbtiProps) => {
   const [filled, setFilled] = useState(false);
   const [mbtiSelected, setMbtiSelected] = useRecoilState(mbtiState);
   const categoryBookmarkMutation = useCategoryBookmarkUpdate(mbti);
@@ -35,7 +36,7 @@ const Mbti = ({ mbti }: MbtiProps) => {
         {mbti}
       </div>
       <div>
-        {filled ? (
+        {bookmark ? (
           <FilledStarIcon onClick={handleStarClick} />
         ) : (
           <EmptyStarIcon onClick={handleStarClick} />
