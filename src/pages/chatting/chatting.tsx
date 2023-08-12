@@ -17,7 +17,7 @@ import { ChattingForm } from "../../components/chatting/ChattingForm";
 const ChattingPage = () => {
   const [activeRoomId, setActiveRoomId] = useRecoilState(activeRoomIdState);
   const message = useRecoilValue(messageState);
-  const { chatRooms, isLoading } = useChatRooms();
+  const { chatRooms } = useChatRooms();
   const navigate = useNavigate();
 
   const handleItemClick = (roomId: number) => {
@@ -32,7 +32,6 @@ const ChattingPage = () => {
             <div css={titleCSS}>채팅목록</div>
           </div>
           <div css={ChatProfileCSS}>
-            {isLoading ? <div>채팅 내역을 가져오는 중 ..</div> : null}
             {chatRooms && (
               <>
                 <div>
