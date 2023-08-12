@@ -14,7 +14,7 @@ const AlarmMenu = () => {
   const navigate = useNavigate();
   const allReadMutation = useReadALLAlarm();
   const allDeleteAlarmMutation = useDeleteAllAlarm();
-  const { data, fetchNextPage } = useInfiniteAlarmList();
+  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteAlarmList();
 
   const handleAllReadPost = () => {
     allReadMutation.mutate();
@@ -25,10 +25,10 @@ const AlarmMenu = () => {
   const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement, UIEvent>) => {
     const target = e.currentTarget;
     const bottom = target.scrollHeight - target.scrollTop === target.clientHeight;
-    if (bottom && data?.pages) {
+    if (bottom && data?.pages && !isFetchingNextPage) {
       fetchNextPage();
     }
-  }, [fetchNextPage, data?.pages]);
+  }, [fetchNextPage, data?.pages, isFetchingNextPage]);
   
   return (
    <Container>
