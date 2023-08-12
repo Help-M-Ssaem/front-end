@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
+import React, { useCallback } from "react";
 import Container from "../../components/container/Container";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
@@ -13,7 +14,7 @@ const AlarmMenu = () => {
   const navigate = useNavigate();
   const allReadMutation = useReadALLAlarm();
   const allDeleteAlarmMutation = useDeleteAllAlarm();
-  const { data } = useInfiniteAlarmList();
+  const { data, fetchNextPage } = useInfiniteAlarmList();
 
   const handleAllReadPost = () => {
     allReadMutation.mutate();
@@ -21,6 +22,14 @@ const AlarmMenu = () => {
   const handleDelete = () => {
     allDeleteAlarmMutation.mutate();
   };
+  const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+    const target = e.currentTarget;
+    const bottom = target.scrollHeight - target.scrollTop === target.clientHeight;
+    if (bottom && data?.pages) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, data?.pages]);
+  
   return (
    <Container>
     <div css={AlarmHeaderBoxCSS}>
@@ -36,7 +45,7 @@ const AlarmMenu = () => {
       </div>
     </div>
     <div>
-    <div css={scrollContainerCSS}>
+    <div onScroll={handleScroll} css={scrollContainerCSS}>
       {data &&
         data.pages.map((page, pageIndex) => (
           <div key={pageIndex}>
