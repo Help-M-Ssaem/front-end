@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import { css } from "@emotion/react";
 import SearchBar from "../../components/search/SearchBar";
+import COLOR from "../../styles/color";
+import FONT from "../../styles/font";
 
 const Search: React.FC = () => {
   const trendingKeywords: string[] = [
@@ -50,26 +52,26 @@ const Search: React.FC = () => {
 };
 
 const searchContainer = css`
-  padding: 60px 170px 0 170px;
+  padding: 3.75rem 10.625rem 0 10.625rem;
   display: flex;
   flex-direction: column;
 `;
 
 const trendingKeywordWrapper = css`
-  padding-bottom: 20px;
+  padding-bottom: 1.25rem;
 `;
 
 const indexStyle = css`
-  font-size: 16px;
-  font-weight: 600;
-  color: #222;
-  margin-right: 20px;
+  font-size: ${FONT.SIZE.TITLE3};
+  font-weight: ${FONT.WEIGHT.SEMIBOLD};
+  color: ${COLOR.MAINDARK};
+  margin-right: 1.25rem;
 `;
 
 const trendingKeyword = css`
-  font-size: 16px;
-  font-weight: 400;
-  color: #222;
+  font-size: ${FONT.SIZE.TITLE3};
+  font-weight: ${FONT.WEIGHT.REGULAR};
+  color: ${COLOR.MAINDARK};
 `;
 
 const trendingTitleWrapper = css`
@@ -79,19 +81,19 @@ const trendingTitleWrapper = css`
 `;
 
 const trendingKeywordsContainer = css`
-  margin-top: 70px;
+  margin-top: 4.375rem;
   h2 {
-    color: #222;
-    font-size: 18px;
-    font-weight: 700;
-    margin-right: 7px;
+    color: ${COLOR.MAINDARK};
+    font-size: ${FONT.SIZE.TITLE3};
+    font-weight: ${FONT.WEIGHT.BOLD};
+    margin-right: 0.4375rem;
   }
 `;
 
 const timeNow = css`
-  color: #a7a7a7;
-  font-size: 12px;
-  font-weight: 400;
+  color: ${COLOR.GRAY3};
+  font-size: ${FONT.SIZE.FOOTNOTE};
+  font-weight: ${FONT.WEIGHT.REGULAR};
 `;
 
 export default Search;

@@ -13,6 +13,7 @@ import { useBoardListAll } from "../../hooks/board/useBoardList";
 import SelectBox from "../../components/Pagination/SelectBox";
 import { useLocation } from "react-router-dom";
 import { mssaemAxios as axios } from "../../apis/axios";
+import COLOR from "../../styles/color";
 
 function useQuery() {
   const { search } = useLocation();
@@ -108,6 +109,6 @@ const boardListWrapper = css`
   &:first-child {
     border-top: none;
   }
-  border-top: 1px solid red;
+  border-top: 0.625rem solid ${COLOR.ALARM};
 `;
 export default MoreBoardResult;

@@ -15,12 +15,10 @@ import { WorryBoard } from "../../interfaces/worry";
 import BoardComponent from "../../components/board/Board";
 import DebateComponent from "../../components/debate/debate";
 import { useBoardList, useBoardListAll } from "../../hooks/board/useBoardList";
-// 토론 컴포넌트 import
 import MatchingComponent from "../../components/matching/Matching";
-import { mssaemAxios as axios } from "../../apis/axios";
 import { useLocation } from "react-router-dom";
-
-import { getSearchResult } from "../../hooks/search/search";
+import { getSearchResult, useSearchResult } from "../../hooks/search/search";
+import COLOR from "../../styles/color";
 
 function useQuery() {
   const { search } = useLocation();
@@ -34,18 +32,7 @@ const SearchResult: React.FC = () => {
     useState<MultipleBoardList>();
 
   useEffect(() => {
-    async function fetchSearchResult() {
-      try {
-        const searchResult = await getSearchResult(query.get("query"));
-        setMultipleBoardList(searchResult);
-        console.log("FK", searchResult.discussionSimpleInfo.result);
-      } catch (error) {
-        // Handle error if necessary
-        console.error("Error fetching search result:", error);
-      }
-    }
-
-    fetchSearchResult();
+    useSearchResult(query);
   }, [query]);
 
   const limit = 5; //한 페이지당 아이템의 개수
@@ -170,12 +157,12 @@ const SearchResult: React.FC = () => {
 
 const boardHeader = css`
   display: flex;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #eee;
+  padding-bottom: 0.625rem;
+  border-bottom: 0.125rem solid ${COLOR.GRAY4};
 `;
 
 const searchContainer = css`
-  padding: 60px 170px 0 170px;
+  padding: 3.75rem 10.625rem 0 10.625rem;
   display: flex;
   flex-direction: column;
 `;
@@ -199,7 +186,7 @@ const moreButtonCSS = css`
 `;
 
 const moreButtonText = css`
-  font-weight: 600;
+  font-weight: ${FONT.WEIGHT.SEMIBOLD};
 `;
 
 const boardListWrapper = css`
@@ -207,10 +194,10 @@ const boardListWrapper = css`
   //   border-top: none!important;
   // }
 
-  // border-top: 1px solid red;
+  // border-top: 0.625rem solid ${COLOR.ALARM};
 `;
 
 const noResult = css`
-  margin-top: 5px;
+  margin-top: 0.3125rem;
 `;
 export default SearchResult;

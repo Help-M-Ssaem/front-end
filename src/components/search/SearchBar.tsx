@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { css } from "@emotion/react";
 import { SearchIcon } from "../../assets/CommonIcons";
 import { useNavigate } from "react-router-dom";
+import COLOR from "../../styles/color";
+import FONT from "../../styles/font";
 
 const SearchBar: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -57,42 +59,42 @@ const SearchBar: React.FC = () => {
 };
 
 const historyKeyword = css`
-  background-color: #f4efff;
-  padding: 10px;
-  color: #a7a7a7;
-  font-size: 16px;
-  font-weight: 600;
-  border-radius: 30px;
-  margin-right: 10px;
+  background-color: ${COLOR.MAIN4};
+  padding: 0.625rem;
+  color: ${COLOR.GRAY3};
+  font-size: ${FONT.SIZE.TITLE3};
+  font-weight: ${FONT.WEIGHT.SEMIBOLD};
+  border-radius: 1.875rem;
+  margin-right: 0.625rem;
 `;
 
 const searchHistoryKeyword = css`
   display: flex;
-  margin-top: 11px;
+  margin-top: 0.6875rem;
 `;
 const searchBarContainer = css`
   display: flex;
   align-items: center;
-  border-bottom: 1px solid black;
+  border-bottom: 0.0625rem solid ${COLOR.BLACK};
 `;
 
 const searchInput = css`
   border: none;
-  padding: 4px 12px 4px 0;
-  font-size: 18px;
+  padding: 0.25rem 0.75rem 0.25rem 0;
+  font-size: ${FONT.SIZE.TITLE2};
   width: 100%;
   &::placeholder {
-    color: #d4d3d3;
-    font-size: 18px;
-    font-weight: 700;
+    color: ${COLOR.GRAY4};
+    font-size: ${FONT.SIZE.TITLE2};
+    font-weight: ${FONT.WEIGHT.BOLD};
   }
 `;
 
 const searchHistoryContainer = css`
-  margin-top: 20px;
+  margin-top: 1.25rem;
   h2 {
-    font-weight: 700;
-    color: #222;
+    font-weight: ${FONT.WEIGHT.BOLD};
+    color: ${COLOR.MAINDARK};
   }
 `;
 
