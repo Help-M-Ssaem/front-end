@@ -31,3 +31,11 @@ export interface EvaluationProps {
   worryBoardId: number;
   evaluations: string[];
 }
+
+export interface MsseamProps {
+  id: number;
+  nickName?: string;
+  mbti?: string;
+  badge?: string;
+  profileImgUrl?: string;
+}

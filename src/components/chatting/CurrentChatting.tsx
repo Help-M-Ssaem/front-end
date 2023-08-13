@@ -5,10 +5,15 @@ import FONT from "../../styles/font";
 import Badge from "../badge/Badge";
 import { RightArrowIcon } from "../../assets/CommonIcons";
 import Button from "../button/Button";
-import { useState } from "react";
-import { ChattingHistory } from "../../interfaces/chatting";
+import { useEffect, useState } from "react";
+import { ChattingHistory, MsseamProps } from "../../interfaces/chatting";
 import EvaluationModal from "../modal/EvaluationModal";
 import { useCreateEvaluation } from "../../hooks/worry/useEvaluation";
+import { useSolveWorry } from "../../hooks/worry/useWorrySolved";
+
+import { mssaemAxios as axios } from "../../apis/axios";
+import { worryKeys } from "../../constants/matchingKey";
+
 //데이터 받아서 해야되는뎅...
 const matching = {
   id: 1,
@@ -20,6 +25,7 @@ const matching = {
   mbti2: "ISTJ",
   color1: "#94E3F8",
   color2: "#F8CAFF",
+  nickName: "희희",
 };
 type Profile = {
   profile: ChattingHistory | null;
@@ -29,26 +35,44 @@ const CurrentChatting: React.FC<Profile> = ({ profile }) => {
   const [isEvaluationModalOpen, setIsEvaluationModalOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const handleEvaluation = () => {
-    setIsEvaluationModalOpen(true);
-  };
-  const handleCloseModal = () => {
-    setIsEvaluationModalOpen(false);
-    setIsSubmitted(true);
+  const [profileData, setProfileData] = useState<MsseamProps | null>(null);
+  const worryBoardId = 24;
+
+  const handleOpenModalWithData = async () => {
+    try {
+      const res = await getSolved(worryBoardId);
+      console.log(res);
+      setProfileData(res);
+      setIsEvaluationModalOpen(true);
+    } catch (error) {
+      console.error("Error fetching solved data:", error);
+    }
   };
 
-  const formData = {
+  async function getSolved(id: number): Promise<MsseamProps> {
+    const { data } = await axios.patch(`/member/worry-board/${id}/solved`, {
+      worrySolverId: id,
+    });
+    return data;
+  }
+
+  const evaluationData = {
     worryBoardId: matching.id,
     evaluations: [selectedOption],
   };
+  const createEvaluation = useCreateEvaluation(evaluationData);
 
-  const createMutation = useCreateEvaluation(formData);
+  const handleCloseModal = () => {
+    setIsEvaluationModalOpen(false);
+  };
 
-  const handleSubmit = (selectedOption: string) => {
-    setSelectedOption(selectedOption);
-
-    if (selectedOption) {
-      createMutation.mutate();
+  const handleEvaluation = async (selectedOption: string) => {
+    if (selectedOption !== "") {
+      setIsSubmitted(true);
+      setSelectedOption(selectedOption);
+      evaluationData.evaluations[0] = selectedOption;
+      createEvaluation.mutate();
+      setIsEvaluationModalOpen(true);
     }
   };
 
@@ -66,16 +90,22 @@ const CurrentChatting: React.FC<Profile> = ({ profile }) => {
         <div css={titleCSS}>{matching.title}</div>
       </div>
       <div css={rightCSS}>
-        <Button onClick={handleEvaluation} addCSS={buttonCSS}>
+        <Button
+          onClick={handleOpenModalWithData}
+          addCSS={isSubmitted ? buttonCSS : buttonCSS2}
+          disabled={isSubmitted}
+        >
           해결완료
         </Button>
       </div>
-      {isEvaluationModalOpen && (
+      {!isSubmitted && isEvaluationModalOpen && profileData !== null && (
         <EvaluationModal
           isOpen={isEvaluationModalOpen}
           onClose={handleCloseModal}
-          onClick={() => {}}
-          profileData={profile}
+          onClick={(result) => {
+            handleEvaluation(result);
+          }}
+          profile={profileData}
         />
       )}
     </div>
@@ -83,9 +113,10 @@ const CurrentChatting: React.FC<Profile> = ({ profile }) => {
 };
 
 const buttonCSS = css`
-  background: ${COLOR.WHITE};
-  color: ${COLOR.GRAY2};
+  background: ${COLOR.GRAY3};
 `;
+
+const buttonCSS2 = css``;
 
 const MatchingBoxCSS = css`
   display: flex;

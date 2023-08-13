@@ -9,16 +9,19 @@ import { useNickName } from "../../hooks/user/userNickname";
 import { usePostUserInfo } from "../../hooks/user/signup";
 import { useNavigate } from "react-router-dom";
 
-const NameBox = () => {
+const NameBox = ({
+  name,
+  onChange,
+}: {
+  name: string | undefined;
+  onChange: (newNickName: string) => void;
+}) => {
   const [invalidInput, setInvalidInput] = useState<string | null>(null);
   const [nickName, setnickName] = useState("");
   const [result, setResult] = useState<boolean | null>(null);
-  const [mbti, setMbti] = useState<string>("");
-  const [mbtinum, setMbtinum] = useState<string>("");
-  const navigate = useNavigate();
+
   const inputRef = useRef<HTMLInputElement | null>(null);
   const checkNickNameMutation = useNickName();
-  const mutation = usePostUserInfo();
 
   const checkDuplicateNickName = async (nickName: string) => {
     try {
@@ -39,6 +42,7 @@ const NameBox = () => {
     } else {
       setnickName(inputValue);
       checkDuplicateNickName(inputValue);
+      onChange(inputValue);
     }
   };
 
@@ -46,7 +50,7 @@ const NameBox = () => {
     <div css={userinfoCSS}>
       <div css={nickNameCSS({ result })}>
         <input
-          placeholder="닉네임"
+          placeholder={name}
           ref={inputRef}
           onChange={handleNickNameChange}
         />

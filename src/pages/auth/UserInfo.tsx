@@ -8,8 +8,6 @@ import { PolygonIcon } from "../../assets/CommonIcons";
 import { useNickName } from "../../hooks/user/userNickname";
 import { usePostUserInfo } from "../../hooks/user/signup";
 import { useNavigate } from "react-router-dom";
-// import { userinfo } from "../../interfaces/signup";
-// import { InFoInputs } from "../../interfaces/userinfo";
 
 const UserInfo = () => {
   const [invalidInput, setInvalidInput] = useState<string | null>(null);
@@ -47,7 +45,6 @@ const UserInfo = () => {
       mbti_4: mbtiInputs[3].values[3],
     },
   });
-
   // TODO: userinfo 타입 오류 처리
   const userData: any = {
     email: localStorage.getItem("email"),
@@ -68,7 +65,7 @@ const UserInfo = () => {
 
     setMbti(mbtiUpperValue);
     setMbtinum(mbtiNum);
-  }, [mbti, mbtinum]);
+  }, [values]);
 
   const getMBTI = () => {
     const { mbtiInputs } = values;
