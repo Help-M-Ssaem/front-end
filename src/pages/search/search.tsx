@@ -1,43 +1,21 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState } from "react";
 import { css } from "@emotion/react";
-import { SearchIcon } from "../../assets/CommonIcons";
+import SearchBar from "../../components/search/SearchBar";
+import COLOR from "../../styles/color";
+import FONT from "../../styles/font";
 
-const SearchBar: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchHistory, setSearchHistory] = useState<string[]>([
-    "연애",
-    "썸",
-    "스트레스",
-    "친구",
-  ]);
+const Search: React.FC = () => {
   const trendingKeywords: string[] = [
     "ESFP",
     "INTP",
-    "ISFP",
-    "ISFP",
-    "ISFP",
-    "ISFP",
-    "ISFP",
-    "ISFP",
-    "ISFP",
-    "ISFP",
-    "ISFP",
+    "연애",
+    "썸",
+    "ISTJ",
+    "스트레스",
+    "친구",
+    "잉뿌삐",
   ];
-
-  const handleSearch = () => {
-    if (searchQuery) {
-      setSearchHistory((prevHistory) => [searchQuery, ...prevHistory]);
-    }
-  };
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-  };
-
-  const clearSearchHistory = () => {
-    setSearchHistory([]);
-  };
 
   const currentDate = new Date();
 
@@ -55,33 +33,7 @@ const SearchBar: React.FC = () => {
 
   return (
     <div css={searchContainer}>
-      <div css={searchBarContainer}>
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={handleInputChange}
-          placeholder="검색어를 입력하세요"
-          css={searchInput}
-        />
-        <button onClick={handleSearch} css={searchIconContainer}>
-          <SearchIcon />
-        </button>
-      </div>
-
-      <div css={searchHistoryContainer}>
-        <h2>이전 검색어</h2>
-        <div css={searchHistoryKeyword}>
-          {searchHistory.map((query, index) => (
-            <div css={historyKeyword} key={index}>
-              {query}
-            </div>
-          ))}
-          {/* {searchHistory.length > 0 && (
-          <button onClick={clearSearchHistory}>지우기</button>
-        )} */}
-        </div>
-      </div>
-
+      <SearchBar />
       <div css={trendingKeywordsContainer}>
         <div css={trendingTitleWrapper}>
           <h2>인기 검색어</h2>
@@ -99,21 +51,27 @@ const SearchBar: React.FC = () => {
   );
 };
 
+const searchContainer = css`
+  padding: 3.75rem 10.625rem 0 10.625rem;
+  display: flex;
+  flex-direction: column;
+`;
+
 const trendingKeywordWrapper = css`
-  padding-bottom: 20px;
+  padding-bottom: 1.25rem;
 `;
 
 const indexStyle = css`
-  font-size: 16px;
-  font-weight: 600;
-  color: #222;
-  margin-right: 20px;
+  font-size: ${FONT.SIZE.TITLE3};
+  font-weight: ${FONT.WEIGHT.SEMIBOLD};
+  color: ${COLOR.MAINDARK};
+  margin-right: 1.25rem;
 `;
 
 const trendingKeyword = css`
-  font-size: 16px;
-  font-weight: 400;
-  color: #222;
+  font-size: ${FONT.SIZE.TITLE3};
+  font-weight: ${FONT.WEIGHT.REGULAR};
+  color: ${COLOR.MAINDARK};
 `;
 
 const trendingTitleWrapper = css`
@@ -122,70 +80,20 @@ const trendingTitleWrapper = css`
   margin-bottom: 30px;
 `;
 
-const historyKeyword = css`
-  background-color: #f4efff;
-  padding: 10px;
-  color: #a7a7a7;
-  font-size: 16px;
-  font-weight: 600;
-  border-radius: 30px;
-  margin-right: 10px;
-`;
-
-const searchHistoryKeyword = css`
-  display: flex;
-  margin-top: 11px;
-`;
-const searchBarContainer = css`
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid black;
-`;
-
-const searchContainer = css`
-  padding: 60px 170px 0 170px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const searchInput = css`
-  border: none;
-  padding: 4px 12px 4px 0;
-  font-size: 18px;
-  width: 100%;
-  &::placeholder {
-    color: #d4d3d3;
-    font-size: 18px;
-    font-weight: 700;
-  }
-`;
-
-const searchHistoryContainer = css`
-  margin-top: 20px;
-  h2 {
-    font-weight: 700;
-    color: #222;
-  }
-`;
-
 const trendingKeywordsContainer = css`
-  margin-top: 70px;
+  margin-top: 4.375rem;
   h2 {
-    color: #222;
-    font-size: 18px;
-    font-weight: 700;
-    margin-right: 7px;
+    color: ${COLOR.MAINDARK};
+    font-size: ${FONT.SIZE.TITLE3};
+    font-weight: ${FONT.WEIGHT.BOLD};
+    margin-right: 0.4375rem;
   }
 `;
 
 const timeNow = css`
-  color: #a7a7a7;
-  font-size: 12px;
-  font-weight: 400;
+  color: ${COLOR.GRAY3};
+  font-size: ${FONT.SIZE.FOOTNOTE};
+  font-weight: ${FONT.WEIGHT.REGULAR};
 `;
 
-const searchIconContainer = css`
-  margin-left: auto;
-`;
-
-export default SearchBar;
+export default Search;
