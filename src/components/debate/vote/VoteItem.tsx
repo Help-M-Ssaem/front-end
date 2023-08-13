@@ -117,7 +117,7 @@ const imageCSS = css`
     width: auto; 
     height: auto; 
     max-height: 9rem; 
-    object-fit: contain; 
+    object-fit: cover; 
 `;
 
 const textCSS = ({ size, weight }: { size: string, weight: number }) => css`

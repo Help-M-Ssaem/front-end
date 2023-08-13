@@ -61,6 +61,7 @@ const rightCSS = css``;
 const thumbnailCSS = css`
   width: 7rem;
   height: 7rem;
+  object-fit: cover
 `;
 
 const titleCSS = css`
