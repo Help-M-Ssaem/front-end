@@ -4,14 +4,19 @@ import Badge from "../badge/Badge";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import { MainTeacher } from "../../interfaces/matching";
+import { useNavigate } from "react-router-dom";
 
 interface MssaemProps {
   mssaem: MainTeacher;
 }
 
 const Mssaem: React.FC<MssaemProps> = ({ mssaem }) => {
+  const navigate = useNavigate();
+  const handleMssaemClick = () => {
+    navigate(`/profile/user/${mssaem.id}`);
+  };
   return (
-    <div css={mssaemCSS}>
+    <div css={mssaemCSS} onClick={handleMssaemClick}>
       <img css={profileCSS} src={mssaem.profileImgUrl} alt={"profile"} />
       <div css={nameCSS}>{mssaem.nickName} 님</div>
       <div css={badgeBoxCSS}>
@@ -30,6 +35,7 @@ const mssaemCSS = css`
   flex-direction: column;
   align-items: center;
   width: 25%;
+  cursor: pointer;
 `;
 
 const profileCSS = css`

@@ -10,33 +10,17 @@ import Badge from "../badge/Badge";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onClick: () => void;
+  onClick: (result: string) => void;
   profileData: ChattingHistory | null;
 }
 
-// enum OptionValue {
-//   LIKE = "좋아요",
-//   USEFUL = "유익해요",
-//   FUN = "재밌어요",
-//   SINCERE = "성의있어요",
-//   HOT = "화끈해요",
-// }
-// const options = [
-//   { id: "option1", label: "좋아요", value: OptionValue.LIKE },
-//   { id: "option2", label: "유익해요", value: OptionValue.USEFUL },
-//   { id: "option3", label: "재밌어요", value: OptionValue.FUN },
-//   { id: "option4", label: "성의있어요", value: OptionValue.SINCERE },
-//   { id: "option5", label: "화끈해요", value: OptionValue.HOT },
-// ];
-
 const options = [
-  { id: "option1", label: "좋아요", value: "option1_value" },
-  { id: "option2", label: "유익해요", value: "option2_value" },
-  { id: "option3", label: "재밌어요", value: "option3_value" },
-  { id: "option4", label: "성의있어요", value: "option4_value" },
-  { id: "option5", label: "화끈해요", value: "option5_value" },
+  { id: "LIKE", value: "좋아요" },
+  { id: "USEFUL", value: "유익해요" },
+  { id: "FUN", value: "재밌어요" },
+  { id: "SINCERE", value: "성의있어요" },
+  { id: "HOT", value: "화끈해요" },
 ];
-
 const EvaluationModal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
@@ -44,10 +28,20 @@ const EvaluationModal: React.FC<ModalProps> = ({
   profileData,
 }) => {
   const [selectedOption, setSelectedOption] = useState<string>("");
+
   if (!isOpen) return null;
   const handleOptionClick = (optionValue: string) => {
     setSelectedOption(optionValue);
   };
+  const handleSubmit = () => {
+    const option = options.find((option) => option.value === selectedOption);
+
+    if (option) {
+      onClick(option.id);
+      onClose();
+    }
+  };
+
   return (
     <div css={modalBackground} onClick={onClose}>
       <div css={modalMain} onClick={(e) => e.stopPropagation()}>
@@ -57,11 +51,7 @@ const EvaluationModal: React.FC<ModalProps> = ({
         <div css={contentBackBoxCSS}>
           <div css={[boXTopCSS, boXCSS]}>
             <div>
-              <img
-                css={profileImgCSS}
-                src={profileData?.profile}
-                alt={profileData?.profile}
-              />
+              <img css={profileImgCSS} src={profileData?.profile} />
               <div css={profileDetailCSS}>{profileData?.name}</div>
               <div css={[profileDetailCSS, marginLeftCSS]}>
                 <Badge mbti={profileData?.mbti || ""} color={"#F8CAFF"} />
@@ -83,7 +73,7 @@ const EvaluationModal: React.FC<ModalProps> = ({
                         selectedOption === option.value ? "selected" : ""
                       }`}
                     >
-                      {option.label}
+                      {option.id}
                     </button>
                   </div>
                 ))}
@@ -92,7 +82,7 @@ const EvaluationModal: React.FC<ModalProps> = ({
           </div>
         </div>
         <div css={bottombuttonBoxCSS}>
-          <Button onClick={onClose} addCSS={submitButtonCSS}>
+          <Button onClick={handleSubmit} addCSS={submitButtonCSS}>
             제출하기
           </Button>
         </div>
@@ -135,12 +125,12 @@ const modalHeader = css`
   margin: 1rem;
 `;
 const modaltext = css`
-    display: flex;
-    flex-direction: column;
-    color: ${COLOR.BLACK};
-    padding-left: 2rem;
-    font-size: ${FONT.SIZE.TITLE1}
-    font-weight: ${FONT.WEIGHT.BOLD};
+  display: flex;
+  flex-direction: column;
+  color: ${COLOR.BLACK};
+  padding-left: 2rem;
+  font-size: ${FONT.SIZE.TITLE1}
+  font-weight: ${FONT.WEIGHT.BOLD};
 `;
 
 const buttonBoxCSS = css`
@@ -155,16 +145,13 @@ const buttonBoxCSS = css`
   }
 `;
 
-const selectedButtonCSS = css`
-  background-color: ${COLOR.MAIN4};
-`;
-
 const contentBackBoxCSS = css`
+  display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
+  background: red;
   min-height: 22rem;
-  display: flex;
   flex-direction: column;
 `;
 
@@ -219,6 +206,9 @@ const buttonCSS = css`
 
   padding: 0.5rem 1rem;
   border-radius: 2rem;
+  &:selected {
+    background-color: ${COLOR.MAIN4};
+  }
 `;
 
 const bottombuttonBoxCSS = css`

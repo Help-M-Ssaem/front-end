@@ -149,5 +149,6 @@ const mbtiCSS = css`
 const buttonBoxCSS = css`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  padding-bottom: 1.4rem;
+  border-bottom: 1px solid ${COLOR.MAIN};
 `;

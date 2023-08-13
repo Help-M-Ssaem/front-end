@@ -36,11 +36,13 @@ import HotBoardPage from "./pages/main/hotBoard";
 import HotDebatePage from "./pages/main/hotDebate";
 import Callback from "./components/auth/Callback";
 
-import MyPage from "./pages/mypage/mypage";
-import MyPageUpdate from "./pages/mypage/update";
+import MyPage from "./pages/usePage/mypage";
+import MyPageUpdate from "./pages/usePage/update";
 import DetailMatchingPage from "./pages/matching/detail";
 import PrivacyPolicy from "./components/auth/PrivacyPolicy";
 import CommunityPolicy from "./components/auth/CommunityPolicy";
+import UserPage from "./pages/usePage/UserPage";
+import ProfilePage from "./pages/usePage/ProfilePage";
 
 function App() {
   return (
@@ -58,9 +60,12 @@ function App() {
             <Route path="/kakao/login" element={<Callback />} />
             <Route path="/naver/login" element={<Callback />} />
             <Route path="/google/login" element={<Callback />} />
-            <Route path="/signin" element={<SigninPage />} />
-            <Route path="/signin/user" element={<UserInfo />} />
-            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/sign-up" element={<SigninPage />} />
+            <Route path="/sign-up/member" element={<UserInfo />} />
+            <Route path="/profile" element={<ProfilePage />} >
+              <Route path="myprofile" element={<MyPage />} />
+              <Route path="user/:id" element={<UserPage />} />
+            </Route>
             <Route path="/mypage/update" element={<MyPageUpdate />} />
             <Route path="/search" element={<SearchBar />} />
             <Route path="/policy/privacy" element={<PrivacyPolicy />} />
