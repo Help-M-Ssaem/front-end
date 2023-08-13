@@ -130,14 +130,16 @@ const DetailBoardPage = () => {
                 css={contentCSS}
                 dangerouslySetInnerHTML={{ __html: board.content }}
               />
-              <div css={likeButtonBoxCSS}>
-                <div css={likeCountCSS}>{board.likeCount}</div>
-                {board.isLiked ? (
-                  <LikeClickedIcon onClick={handleLikeClick} />
-                ) : (
-                  <LikeIcon onClick={handleLikeClick} />
-                )}
-              </div>
+              {!board.isAllowed && (
+                <div css={likeButtonBoxCSS}>
+                  <div css={likeCountCSS}>{board.likeCount}</div>
+                  {board.isLiked ? (
+                    <LikeClickedIcon onClick={handleLikeClick} />
+                  ) : (
+                    <LikeIcon onClick={handleLikeClick} />
+                  )}
+                </div>
+              )}
 
               <div css={commentBoxCSS}>
                 <div>전체 댓글 {comments ? comments.result.length : 0}개</div>
@@ -216,13 +218,14 @@ const DetailBoardPage = () => {
             setBlockNum={setBlockNum}
             totalPage={totalPage}
           />
-          )}
-          {isDeleteModalOpen && 
-            <DeleteModal
-              isOpen={isDeleteModalOpen}
-              onClose={handleDeleteClose}
-              onClick={handleBoardDelete}/>
-            }
+        )}
+        {isDeleteModalOpen && (
+          <DeleteModal
+            isOpen={isDeleteModalOpen}
+            onClose={handleDeleteClose}
+            onClick={handleBoardDelete}
+          />
+        )}
       </Container>
     </>
   );
