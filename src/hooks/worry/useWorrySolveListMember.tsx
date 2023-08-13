@@ -23,7 +23,7 @@ export function useWorrySolveListMember(
   page: number,
   size: number,
 ): UseWorrySolveListMember {
-  const { data:  worrySolveList } = useQuery(worryKeys.all, () =>
+  const { data:  worrySolveList } = useQuery(worryKeys.solved, () =>
     getWorrySolveListMember(id, page, size),
   );
   return { worrySolveList };

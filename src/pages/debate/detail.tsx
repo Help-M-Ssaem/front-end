@@ -17,6 +17,10 @@ import { useDebateComment } from "../../hooks/debate/comment/useDebateComment";
 import { useDebateBestComment } from "../../hooks/debate/comment/useDebateBestComment";
 import { useDebateCommentCreate } from "../../hooks/debate/comment/useDebateCommentCreate";
 import RedButton from "../../components/button/plusbutton/RedButton";
+import DeleteModal from "../../components/modal/DeletModal";
+import PageDebate from "../../components/debate/pageMapingDebate/PageDebate";
+
+
 const DetailDebatePage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -25,6 +29,14 @@ const DetailDebatePage = () => {
   const { comments } = useDebateComment(debateId, 0, 10);
   const { bestComments } = useDebateBestComment(debateId);
   const [content, setContent] = useState("");
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const handleDeleteOpen = () => {
+    setIsDeleteModalOpen(true);
+  };
+  const handleDeleteClose = () => {
+    setIsDeleteModalOpen(false);
+  };
 
   const deleteMutation = useDeleteDebate(debateId);
   const handleDebateDelete = () => {
@@ -46,19 +58,23 @@ const DetailDebatePage = () => {
     setContent("");
   };
   return (
-    <Container css={ContainerCSS}>
+    <div  css={ContainerCSS}>
+    <Container>
       {debate && (
         <>
-          <div css={buttonBoxCSS}>
-            {/* TODO: 본인 게시글에만 수정, 삭제 버튼 */}
+          
+            {debate.isEditAllowed &&
+            <div css={buttonBoxCSS}>
             <Button
-              onClick={() => navigate("/debate/update")}
+              onClick={() => navigate(`/debate/${id}/update`)}
               addCSS={updateButtonCSS}
             >
               수정
             </Button>
-            <Button onClick={handleDebateDelete}>삭제</Button>
-          </div>
+            <Button onClick={handleDeleteOpen}>삭제</Button>
+            </div>
+            }
+          
           <div css={detailCSS}>
             <div css={detailHeaderCSS}>
               <Profile
@@ -105,7 +121,18 @@ const DetailDebatePage = () => {
           </form>
         </>
       )}
+          {isDeleteModalOpen && 
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={handleDeleteClose}
+        onClick={handleDebateDelete}/>
+      }
     </Container>
+
+    <PageDebate
+      pathMov = {"discusstion"}
+      />
+    </div>
   );
 };
 
@@ -115,8 +142,8 @@ const ContainerCSS = css`
   margin-top: 1rem;
 `;
 const detailCSS = css`
-  padding: 1.2rem 0;
-  border-top: 1px solid ${COLOR.MAIN};
+  // padding: 1.2rem 0;
+  padding-bottom: 1.2rem;
   border-bottom: 1px solid ${COLOR.MAIN};
 `;
 
@@ -166,6 +193,8 @@ const buttonBoxCSS = css`
   display: flex;
   justify-content: flex-end;
   margin-bottom: 1rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid ${COLOR.MAIN};
 `;
 
 const buttonCSS = css`

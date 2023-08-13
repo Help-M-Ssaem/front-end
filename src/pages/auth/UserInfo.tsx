@@ -346,6 +346,10 @@ const mbtiContainerCSS = css`
   position: relative;
   align-items: center;
   text_align: center;
+
+  svg {
+    width: 10;
+  }
 `;
 
 const warningMessageCSS = css`

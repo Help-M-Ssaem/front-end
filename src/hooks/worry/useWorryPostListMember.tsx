@@ -23,7 +23,7 @@ export function useWorryPostListMember(
   page: number,
   size: number,
 ): UseWorryListMember {
-  const { data: worryPostList } = useQuery(worryKeys.all, () =>
+  const { data: worryPostList } = useQuery(worryKeys.post, () =>
     getWorryPostListMember(id, page, size),
   );
   return { worryPostList };

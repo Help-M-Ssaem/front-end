@@ -4,7 +4,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainPage from "./pages/main/main";
 import LoginPage from "./pages/auth/login";
 import SigninPage from "./pages/auth/signin";
-import SearchBar from "./pages/search/search";
+import Search from "./pages/search/search";
+import SearchResult from "./pages/search/result";
+import MoreBoardResult from "./pages/search/moreBoardResult";
+import MoreDebateResult from "./pages/search/moreDebateResult";
+import MoreMatchingResult from "./pages/search/moreMatchingResult";
 
 import BoardPage from "./pages/board/board";
 import MbtiBoardPage from "./pages/board/mbti";
@@ -36,9 +40,13 @@ import HotBoardPage from "./pages/main/hotBoard";
 import HotDebatePage from "./pages/main/hotDebate";
 import Callback from "./components/auth/Callback";
 
-import MyPage from "./pages/mypage/mypage";
-import MyPageUpdate from "./pages/mypage/update";
+import MyPage from "./pages/usePage/mypage";
+import MyPageUpdate from "./pages/usePage/update";
 import DetailMatchingPage from "./pages/matching/detail";
+import PrivacyPolicy from "./components/auth/PrivacyPolicy";
+import CommunityPolicy from "./components/auth/CommunityPolicy";
+import UserPage from "./pages/usePage/UserPage";
+import ProfilePage from "./pages/usePage/ProfilePage";
 
 function App() {
   return (
@@ -56,11 +64,23 @@ function App() {
             <Route path="/kakao/login" element={<Callback />} />
             <Route path="/naver/login" element={<Callback />} />
             <Route path="/google/login" element={<Callback />} />
-            <Route path="/signin" element={<SigninPage />} />
-            <Route path="/signin/user" element={<UserInfo />} />
-            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/sign-up" element={<SigninPage />} />
+            <Route path="/sign-up/member" element={<UserInfo />} />
+            <Route path="/profile" element={<ProfilePage />} >
+              <Route path="myprofile" element={<MyPage />} />
+              <Route path="user/:id" element={<UserPage />} />
+            </Route>
             <Route path="/mypage/update" element={<MyPageUpdate />} />
-            <Route path="/search" element={<SearchBar />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/search/result" element={<SearchResult />} />
+            <Route path="/search/moreBoard" element={<MoreBoardResult />} />
+            <Route path="/search/moreDebate" element={<MoreDebateResult />} />
+            <Route
+              path="/search/moreMatching"
+              element={<MoreMatchingResult />}
+            />
+            <Route path="/policy/privacy" element={<PrivacyPolicy />} />
+            <Route path="/policy/community" element={<CommunityPolicy />} />
 
             <Route path="/board" element={<BoardPage />}>
               <Route path="mbti" element={<MbtiBoardPage />} />
@@ -83,7 +103,6 @@ function App() {
               <Route path=":id/update" element={<UpdateDebatePage />} />
             </Route>
 
-            <Route path="/mbtitype" element={<MbtiTypePage />} />
             <Route path="/chatting" element={<ChattingPage />} />
             <Route path="/alarm" element={<AlarmPage />} />
             <Route path="/favorites" element={<FavoritesPage />} />
