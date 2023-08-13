@@ -223,6 +223,7 @@ const DetailBoardPage = () => {
           isOpen={isReportModalOpen}
           onClose={handleCloseModal}
           onClick={() => {}}
+          isType="BOARD"
         />
       )}
 

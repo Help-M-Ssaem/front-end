@@ -47,6 +47,7 @@ const Hamburger = () => {
           isOpen={isReportModalOpen}
           onClose={handleCloseModal}
           onClick={() => {}}
+          isType="MEMBER"
         />
       )}
 
