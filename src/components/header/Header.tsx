@@ -9,6 +9,7 @@ import Button from "../button/Button";
 import useMemberInfo from "../../hooks/user/useMemberInfo";
 import { useState } from "react";
 import AlarmMenu from "../side/Alarm";
+import FavoritesMenu from "../side/Favorites";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -16,11 +17,17 @@ const Header = () => {
   const { user } = useMemberInfo();
 
   const [alarmOpen, setAlarmOpen] = useState(false);
+  const [favoritesOpen, setFavoritesOpen] = useState(false);
+
   const handleAlarm = () => {
     setAlarmOpen((prevIsOpen) => !prevIsOpen);
   };
+  const handleFavoritesOpen = () => {
+    setFavoritesOpen((prevIsOpen) => !prevIsOpen);
+  };
   const handleCloseAll = () => {
     alarmOpen && setAlarmOpen(false);
+    favoritesOpen && setFavoritesOpen(false);
   };
   const handleLoginClick = () => {
     navigate("/login");
@@ -86,16 +93,17 @@ const Header = () => {
             알람
           </li>
           {alarmOpen && 
-            <div css={AlarmPageContainerCSS}><AlarmMenu/></div>}
+            <div css={AlarmContainerCSS}><AlarmMenu/></div>}
           <li
-            onClick={() => navigate("/favorites")}
-            className={
-              location.pathname.startsWith("/favorites") ? "active" : ""
-            }
+            onClick={handleFavoritesOpen}
+            className={favoritesOpen ? "active" : ""}
+            css = {AlarmPotintCSS}
           >
             즐겨찾기
           </li>
-          <li onClick={handleSearchClick}>
+          {favoritesOpen && 
+            <div css={FavoritesContainerCSS}><FavoritesMenu/></div>}
+          <li onClick={handleFavoritesOpen}>
             <SearchIcon />
           </li>
         </ul>
@@ -203,10 +211,18 @@ const buttonCSS = css`
   position: relative;
  `;
 
- const AlarmPageContainerCSS = css`
+ const AlarmContainerCSS = css`
   position: absolute;
   top: 110%;
   right: 20;
   width: 20%;
   z-index: 11;
+`;
+
+const FavoritesContainerCSS = css`
+position: absolute;
+top: 110%;
+right: 10;
+width: 20%;
+z-index: 11;
 `;
