@@ -5,43 +5,49 @@ import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import Button from "../button/Button";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { usePostReport } from "../../hooks/report/useReportPost";
+import { useNavigate } from "react-router";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   onClick: () => void;
+  isType: string;
 }
 
 const options = [
-  { id: "option1", label: "부적절한 홍보 채팅", value: "option1_value" },
+  { id: "option1", label: "부적절한 홍보 채팅", value: "PROMOTIONAL_POST" },
   {
-    id: "option2",
-    label: "음란성 또는 청소년에게 부적합한 내용",
-    value: "option2_value",
+    id: "option2", label: "음란성 또는 청소년에게 부적합한 내용", value: "LEWDNESS",
   },
-  { id: "option3", label: "증오 또는 악의적인 콘텐츠", value: "option3_value" },
-  { id: "option4", label: "괴롭힘 또는 폭력", value: "option4_value" },
-  { id: "option5", label: "권리 침해", value: "option5_value" },
+  { id: "option3", label: "증오 또는 악의적인 콘텐츠", value: "HATRED" },
+  { id: "option4", label: "괴롭힘 또는 폭력", value: "TORMENT" },
+  { id: "option5", label: "권리 침해", value: "INFRINGEMENT" },
   { id: "option6", label: "기타", value: "option6_value" },
 ];
-const ReportModal: React.FC<ModalProps> = ({ isOpen, onClose, onClick }) => {
+const ReportModal: React.FC<ModalProps> = ({ isOpen, onClose, onClick, isType }) => {
+  const { id } = useParams();
+  const reportID = parseInt(id!!);//게시글 id 따오기
+  const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState<string>("");
-  if (!isOpen) return null;
+
   const handleOptionClick = (optionValue: string) => {
     setSelectedOption(optionValue);
   };
-  const handleModalConfirm = (selectedOptionValue: string) => {
-    setSelectedOption(selectedOptionValue);
-    //저장한 옵션값 처리할 필요
+  const createMutation = usePostReport(reportID,isType,selectedOption);
+  const handleSubmit = () => {
+    createMutation.mutate();
+    navigate(-1);
   };
+
   return (
     <div css={modalBackground} onClick={onClose}>
       <div css={modalMain} onClick={(e) => e.stopPropagation()}>
         <div css={modalHeader}>
-          <div css={modaltext}>채팅 신고</div>
+          <div css={modaltext}>{isType === "MEMBER" && "채팅"}{isType !== "MEMBER" && "게시글"} 신고</div>
         </div>
         <div css={optionBoxCSS}>
-          {/* 여기에 옵션들을 출력합니다. */}
           {options.map((option) => (
             <div
               key={option.id}
@@ -67,7 +73,7 @@ const ReportModal: React.FC<ModalProps> = ({ isOpen, onClose, onClick }) => {
           <Button onClick={onClose} addCSS={buttonCSS}>
             취소하기
           </Button>
-          <Button onClick={onClick} addCSS={exitButtonCSS}>
+          <Button onClick={handleSubmit} addCSS={exitButtonCSS}>
             신고하기
           </Button>
         </div>
