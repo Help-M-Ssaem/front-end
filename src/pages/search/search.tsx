@@ -33,7 +33,7 @@ const Search: React.FC = () => {
 
   return (
     <div css={searchContainer}>
-      <SearchBar></SearchBar>
+      <SearchBar />
       <div css={trendingKeywordsContainer}>
         <div css={trendingTitleWrapper}>
           <h2>인기 검색어</h2>
