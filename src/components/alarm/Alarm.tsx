@@ -6,17 +6,41 @@ import { Alarm } from "../../interfaces/alarm";
 import { useReadPostAlarm } from "../../hooks/alarm/useReadAlarm";
 import { useDeleteAlarm } from "../../hooks/alarm/useDeletAlarm";
 import { RedButtonIcons, XButtonIcons } from "../../assets/side/RedButtonIcons";
+import { useNavigate } from "react-router-dom";
+
 interface AlarmProps {
   alarm: Alarm;
-  // onClick: (id: number) => void;
+}
+interface DesignationMappings {
+  BOARD: string;
+  DISCUSSION: string;
+  CHAT: string;
 }
 
 const AlarmComponent = ({ alarm }: AlarmProps) => {
+  const navigate = useNavigate();
   const markAsReadMutation = useReadPostAlarm(alarm.resourceId);
   const deleteAlarmMutation = useDeleteAlarm(alarm.resourceId);
+  const alarmValue = alarm.type;
+  const valueData = alarmValue.split('_');
+  const designation = valueData[0]
+  
+  const designationMappings: DesignationMappings = {
+    BOARD: "board",
+    DISCUSSION: "debate",
+    CHAT: "chatting",
+  };
+
+  const getUpdatedDesignation = (designation: keyof DesignationMappings): string => {
+    return designationMappings[designation] || designation;
+  };
+  
+  const updatedDesignation = getUpdatedDesignation(designation as keyof typeof designationMappings);
+
 
   const handleReadPost = () => {
     markAsReadMutation.mutate();
+    navigate(`/${updatedDesignation}/${alarm.resourceId}`);//api수정되면 경로 수정
   };
   const handleDelete = () => {
     deleteAlarmMutation.mutate();

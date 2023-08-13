@@ -3,6 +3,7 @@ export interface Alarm {
     content: string;
     createdAt: string;
     state: boolean
+    type: string;
 }
 
 export interface AlarmList {
