@@ -80,6 +80,7 @@ const inputCSS = css`
   color: ${COLOR.GRAY2};
   font-size: ${FONT.SIZE.TITLE3};
   font-weight: ${FONT.WEIGHT.REGULAR};
+  padding-left: 1rem;
   border-radius: 1.2rem;
   width: 30rem;
   height: 2.5rem;
