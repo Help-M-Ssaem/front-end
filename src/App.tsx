@@ -43,6 +43,8 @@ import Callback from "./components/auth/Callback";
 import MyPage from "./pages/mypage/mypage";
 import MyPageUpdate from "./pages/mypage/update";
 import DetailMatchingPage from "./pages/matching/detail";
+import PrivacyPolicy from "./components/auth/PrivacyPolicy";
+import CommunityPolicy from "./components/auth/CommunityPolicy";
 
 function App() {
   return (
@@ -72,6 +74,8 @@ function App() {
               path="/search/moreMatching"
               element={<MoreMatchingResult />}
             />
+            <Route path="/policy/privacy" element={<PrivacyPolicy />} />
+            <Route path="/policy/community" element={<CommunityPolicy />} />
 
             <Route path="/board" element={<BoardPage />}>
               <Route path="mbti" element={<MbtiBoardPage />} />
@@ -94,7 +98,6 @@ function App() {
               <Route path=":id/update" element={<UpdateDebatePage />} />
             </Route>
 
-            <Route path="/mbtitype" element={<MbtiTypePage />} />
             <Route path="/chatting" element={<ChattingPage />} />
             <Route path="/alarm" element={<AlarmPage />} />
             <Route path="/favorites" element={<FavoritesPage />} />

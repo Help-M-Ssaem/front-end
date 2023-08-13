@@ -4,6 +4,7 @@ import { HotBoard } from "../../interfaces/board";
 import { SerializedStyles, css } from "@emotion/react";
 import FONT from "../../styles/font";
 import COLOR from "../../styles/color";
+import { useNavigate } from "react-router-dom";
 
 interface HotBoardProps {
   hotBoard: HotBoard;
@@ -11,8 +12,14 @@ interface HotBoardProps {
 }
 
 const HotBoardComponent = ({ hotBoard, addCSS }: HotBoardProps) => {
+  const navigate = useNavigate();
+
   return (
-    <div css={[containerCSS, addCSS]} key={hotBoard.id}>
+    <div
+      css={[containerCSS, addCSS]}
+      key={hotBoard.id}
+      onClick={() => navigate(`/board/${hotBoard.id}`)}
+    >
       <div css={leftCSS}>
         <div css={profileCSS}>
           <Profile
@@ -23,16 +30,17 @@ const HotBoardComponent = ({ hotBoard, addCSS }: HotBoardProps) => {
           />
         </div>
         <div css={titleCSS}>{hotBoard.title}</div>
-        <div css={contentCSS}>
-          {hotBoard.content.length > 30
-            ? `${hotBoard.content.slice(0, 30)}...`
-            : hotBoard.content}
-        </div>
+        <div
+          css={contentCSS}
+          dangerouslySetInnerHTML={{ __html: hotBoard.content }}
+        />
         <div css={textCSS}>{hotBoard.boardMbti}</div>
       </div>
       <div css={rightCSS}>
         <div css={textCSS}>{hotBoard.createdAt}</div>
-        <img css={imgCSS} src={hotBoard.imgUrl} alt="thumbnail" />
+        {hotBoard.imgUrl && (
+          <img css={imgCSS} src={hotBoard.imgUrl} alt="thumbnail" />
+        )}
         <div css={detailCSS}>
           <div css={[textCSS, marginRightCSS]}>공감 {hotBoard.likeCount}</div>
           <div css={textCSS}>댓글 {hotBoard.commentCount}</div>
@@ -54,6 +62,8 @@ const containerCSS = css`
   margin-bottom: 1rem;
   border-radius: 1.2rem;
   padding: 1.5rem;
+
+  cursor: pointer;
 `;
 
 const leftCSS = css`
@@ -62,9 +72,11 @@ const leftCSS = css`
 `;
 
 const rightCSS = css`
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  justify-content: space-between;
 `;
 
 const profileCSS = css`

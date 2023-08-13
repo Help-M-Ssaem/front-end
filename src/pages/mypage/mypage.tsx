@@ -14,150 +14,42 @@ import { useBoardListMember } from "../../hooks/board/useBoardListMember";
 import { useWorryPostListMember } from "../../hooks/worry/useWorryPostListMember";
 import { useWorrySolveListMember } from "../../hooks/worry/useWorrySolveListMember";
 import MatchingComponent from "../../components/matching/Matching";
-
-const badge1Array = [
-  { title: "EsFP", type: 1 },
-  { title: "엠비티어른", type: 2 },
-];
-
-const collectedBadgeArray = [
-  { title: "엠비티어른", type: 2 },
-  { title: "MBTMI", type: 3 },
-  { title: "엠비티아노사우르스", type: 4 },
-];
+import useMemberInfo from "../../hooks/user/useMemberInfo";
+import ListPagination from "../../components/Pagination/ListPagination";
+import { useDebateListMember } from "../../hooks/debate/useDebateListMember";
+import MyDebateComponent from "../../components/debate/myDebate";
 
 const menuTabBar = [
   { type: 1, title: "내가 쓴 게시글" },
   { type: 2, title: "내가 쓴 토론글" },
   { type: 3, title: "내가 쓴 고민글" },
-  { type: 4, title: "내가 쓴 댓글" },
-  { type: 5, title: "내가 해결한 고민" },
-];
-
-//토론(완료)
-const myPostArray2 = [
-  {
-    id: 1,
-    name: "유저2",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "여기다간 토론글 해야지",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 2,
-    name: "유저2",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "여기다간 토론글 해야지",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 3,
-    name: "유저2",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "여기다간 토론글 해야지",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 4,
-    name: "유저2",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "여기다간 토론글 해야지",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-];
-//댓글
-const myPostArray4 = [
-  {
-    id: 1,
-    name: "유저4",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "이거시 내 댓글이지 암",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 2,
-    name: "유저4",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "이거시 내 댓글이지 암",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 3,
-    name: "유저4",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "이거시 내 댓글이지 암",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 4,
-    name: "유저4",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "이거시 내 댓글이지 암",
-    content: "ㅎㅎㅎ",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
+  { type: 4, title: "내가 해결한 고민" },
 ];
 
 const MyPage = () => {
   const navigate = useNavigate();
-  const { boardList } = useBoardListMember(1, 0, 6);
-  const { worryPostList } = useWorryPostListMember(1, 0, 6);
-  const { worrySolveList } = useWorrySolveListMember(1, 0, 2);
-  const { getProfileData } = useGetProfile(1);
-  console.log("getProfileData", getProfileData);
+  const { user } = useMemberInfo();
+  const userId = user!!.id;
+  const { profileData } = useGetProfile(userId);
+
+  const limit = 6;
+  const [page, setPage] = useState(1);
+  const [blockNum, setBlockNum] = useState(0);
+
+  const { boardList } = useBoardListMember(userId, page - 1, limit);
+  const boardTotalPage = boardList ? boardList.totalSize : 1;
+  const { worryPostList } = useWorryPostListMember(userId, page - 1, limit);
+  const worryPostTotalPage = boardList ? boardList.totalSize : 1;
+  const { worrySolveList } = useWorrySolveListMember(userId, page - 1, limit);
+  const worrySolveTotalPage = boardList ? boardList.totalSize : 1;
+  const { debateList } = useDebateListMember(userId, page - 1, limit);
 
   const handleSettingClick = () => {
     navigate("/mypage/update");
   };
 
   const [menuSelected, setMenuSelected] = useState(1);
+
   const clickMenu = (type: number) => {
     setMenuSelected(type);
   };
@@ -188,12 +80,12 @@ const MyPage = () => {
                 style={{
                   objectFit: "contain",
                 }}
-                src={getProfileData?.teacherInfo?.profileImgUrl}
+                src={profileData?.teacherInfo?.profileImgUrl}
                 alt="프로필"
               />
             </div>
             <p css={profilenameCSS}>
-              {getProfileData?.teacherInfo?.nickName} 님
+              {profileData?.teacherInfo?.nickName} 님
               <button
                 onClick={handleSettingClick}
                 css={settingIconContainerCSS}
@@ -203,12 +95,12 @@ const MyPage = () => {
             </p>
 
             <div css={bedgeContainer}>
-              <p css={selectBadge(1)}>{getProfileData?.teacherInfo?.mbti}</p>
-              <p css={selectBadge(1)}>{getProfileData?.teacherInfo?.badge}</p>
+              <p css={selectBadge(1)}>{profileData?.teacherInfo?.mbti}</p>
+              <p css={selectBadge(1)}>{profileData?.teacherInfo?.badge}</p>
             </div>
             <p css={subTitleCSS}>한줄소개</p>
             <p css={oneLineIntroductionCSS}>
-              {getProfileData?.teacherInfo?.introduction}
+              {profileData?.teacherInfo?.introduction}
             </p>
           </div>
         </div>
@@ -216,7 +108,7 @@ const MyPage = () => {
         <div css={box2CSS}>
           <p css={subTitleCSS}>수집한 칭호</p>
           <div css={collectedTitleContainer}>
-            {getProfileData?.badgeInfos?.map(
+            {profileData?.badgeInfos?.map(
               (value: { id: number; name: string }, idx: number) => {
                 return (
                   <p key={idx} css={selectBadge(value?.id)}>
@@ -228,7 +120,7 @@ const MyPage = () => {
           </div>
         </div>
         {/* box3 */}
-        <ActivityList getProfileData={getProfileData}></ActivityList>
+        <ActivityList profileData={profileData}></ActivityList>
       </div>
 
       <Container>
@@ -258,33 +150,44 @@ const MyPage = () => {
               onClick={() => navigate(`/board/${board.id}`)}
             />
           ))}
-        {/* {menuSelected === 2 &&
-          myPostArray2?.map((board) => (
-            <BoardComponent board={board} onClick={() => {}} key={board.id} />
-          ))} */}
+        {/* <ListPagination
+          limit={limit}
+          page={page}
+          setPage={setPage}
+          blockNum={blockNum}
+          setBlockNum={setBlockNum}
+          totalPage={boardTotalPage}
+        /> */}
+
+        {menuSelected === 2 &&
+          debateList &&
+          debateList.result.map((debateList) => (
+            <MyDebateComponent
+              debate={debateList} 
+              onClick={() => navigate(`/debate/${debateList.id}`)}
+              key={debateList.id} />
+          ))}
         {menuSelected === 3 &&
           worryPostList &&
           worryPostList.result.map((worryPost) => (
             <MatchingComponent
               matching={worryPost}
               solve={"waiting"}
-              onClick={() => navigate(`/worry-board/${worryPost.id}`)}
+              onClick={() => navigate(`/match/${worryPost.id}`)}
               key={worryPost.id}
             />
           ))}
-        {/* {menuSelected === 4 &&
-          myPostArray4?.map((board) => (
-            <BoardComponent board={board} onClick={() => {}} key={board.id} />
-          ))} */}
-        {menuSelected === 5 &&
+        {menuSelected === 4 &&
           worrySolveList &&
           worrySolveList.result.map((worrySolve) => (
+            <>{console.log(worrySolve.title)}
             <MatchingComponent
               matching={worrySolve}
               solve={"solved"}
-              onClick={() => navigate(`/worry-board/${worrySolve.id}`)}
+              onClick={() => navigate(`/match/${worrySolve.id}`)}
               key={worrySolve.id}
             />
+            </>
           ))}
       </Container>
     </div>
@@ -334,16 +237,6 @@ const box2CSS = css`
   margin-right: 2.875rem;
   padding: 2.5rem 3.125rem;
 `;
-const box3CSS = css`
-  display: flex;
-  flex-direction: column;
-  background-color: ${COLOR.MAIN3};
-  min-width: 33.25rem;
-  height: 27.0625rem;
-  border-radius: 1.875rem;
-  margin-right: 2.875rem;
-  padding: 2.4375rem 5.8125rem 2.4375rem 4.1875rem;
-`;
 
 const subTitleCSS = css`
   font-size: ${FONT.SIZE.TITLE3};
@@ -387,12 +280,6 @@ const settingIconContainerCSS = css`
   margin-left: 0.625rem;
 `;
 
-const mbtibedgeContainer = css`
-  display: inline-flex;
-  margin: 0 auto;
-  column-gap: 0.625rem;
-`;
-
 const bedgeContainer = css`
   display: flex;
   margin: 0 auto 1.25rem;
@@ -424,6 +311,7 @@ const badgeCSS2 = css`
   color: white;
   width: fit-content;
 `;
+
 const badgeCSS3 = css`
   height: 1.4375rem;
   border-radius: 1.25rem;
@@ -432,6 +320,7 @@ const badgeCSS3 = css`
   color: white;
   width: fit-content;
 `;
+
 const badgeCSS4 = css`
   height: 1.4375rem;
   border-radius: 1.25rem;
@@ -439,15 +328,6 @@ const badgeCSS4 = css`
   background-color: #9ecbff;
   color: white;
   width: fit-content;
-`;
-
-const myContentContainer = css`
-  // margin-top: 66px;
-  // width: 1180px;
-  // min-height: 500px;
-  // background: ${COLOR.MAIN3};
-  // border-radius: 1.2rem;
-  // /* padding: 1.5rem; */
 `;
 
 const menuButtonContainer = css`

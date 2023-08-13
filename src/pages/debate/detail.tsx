@@ -17,6 +17,10 @@ import { useDebateComment } from "../../hooks/debate/comment/useDebateComment";
 import { useDebateBestComment } from "../../hooks/debate/comment/useDebateBestComment";
 import { useDebateCommentCreate } from "../../hooks/debate/comment/useDebateCommentCreate";
 import RedButton from "../../components/button/plusbutton/RedButton";
+import DeleteModal from "../../components/modal/DeletModal";
+import PageDebate from "../../components/debate/pageMapingDebate/PageDebate";
+
+
 const DetailDebatePage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -25,6 +29,14 @@ const DetailDebatePage = () => {
   const { comments } = useDebateComment(debateId, 0, 10);
   const { bestComments } = useDebateBestComment(debateId);
   const [content, setContent] = useState("");
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const handleDeleteOpen = () => {
+    setIsDeleteModalOpen(true);
+  };
+  const handleDeleteClose = () => {
+    setIsDeleteModalOpen(false);
+  };
 
   const deleteMutation = useDeleteDebate(debateId);
   const handleDebateDelete = () => {
@@ -46,18 +58,22 @@ const DetailDebatePage = () => {
     setContent("");
   };
   return (
+    <>
     <Container css={ContainerCSS}>
       {debate && (
         <>
           <div css={buttonBoxCSS}>
-            {/* TODO: 본인 게시글에만 수정, 삭제 버튼 */}
+            {debate.isEditAllowed &&
+            <>
             <Button
-              onClick={() => navigate("/debate/update")}
+              onClick={() => navigate(`/debate/${id}/update`)}
               addCSS={updateButtonCSS}
             >
               수정
             </Button>
-            <Button onClick={handleDebateDelete}>삭제</Button>
+            <Button onClick={handleDeleteOpen}>삭제</Button>
+            </>
+            }
           </div>
           <div css={detailCSS}>
             <div css={detailHeaderCSS}>
@@ -105,7 +121,18 @@ const DetailDebatePage = () => {
           </form>
         </>
       )}
+          {isDeleteModalOpen && 
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={handleDeleteClose}
+        onClick={handleDebateDelete}/>
+      }
     </Container>
+
+    <PageDebate
+      pathMov = {"discusstion"}
+      />
+    </>
   );
 };
 

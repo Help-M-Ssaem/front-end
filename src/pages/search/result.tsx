@@ -14,7 +14,7 @@ import {
 import { WorryBoard } from "../../interfaces/worry";
 import BoardComponent from "../../components/board/Board";
 import DebateComponent from "../../components/debate/debate";
-import { useBoardList } from "../../hooks/board/useBoardList";
+import { useBoardList, useBoardListAll } from "../../hooks/board/useBoardList";
 // 토론 컴포넌트 import
 import MatchingComponent from "../../components/matching/Matching";
 import { mssaemAxios as axios } from "../../apis/axios";
@@ -49,7 +49,7 @@ const SearchResult: React.FC = () => {
   }, [query]);
 
   const limit = 5; //한 페이지당 아이템의 개수
-  const { boardListAll } = useBoardList(1, limit);
+  const { boardListAll } = useBoardListAll(1, limit);
 
   const totalPage = boardListAll ? boardListAll.totalSize : 1; //전체 페이지 수
   const pageNum = boardListAll ? boardListAll.page : 1;
@@ -120,6 +120,7 @@ const SearchResult: React.FC = () => {
                     debate={debate}
                     key={debate.id}
                     onClick={() => navigate(`/debate/${debate.id}`)}
+                    mode=""
                     index={index}
                   />
                 ),

@@ -26,6 +26,7 @@ export interface BoardDetail {
   commentCount: number;
   isAllowed: boolean;
   isLiked: boolean;
+  boardMbti: string;
 }
 
 export interface BoardList {

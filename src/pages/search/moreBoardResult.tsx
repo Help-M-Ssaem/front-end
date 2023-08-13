@@ -9,7 +9,7 @@ import SearchBar from "../../components/search/SearchBar";
 import Container from "../../components/container/Container";
 import { BoardList } from "../../interfaces/board";
 import BoardComponent from "../../components/board/Board";
-import { useBoardList } from "../../hooks/board/useBoardList";
+import { useBoardListAll } from "../../hooks/board/useBoardList";
 import SelectBox from "../../components/Pagination/SelectBox";
 import { useLocation } from "react-router-dom";
 import { mssaemAxios as axios } from "../../apis/axios";
@@ -24,20 +24,23 @@ const MoreBoardResult = () => {
   const [boardList, setBoardList] = useState<BoardList>();
 
   const limit = 10; //한 페이지당 아이템의 개수
-  const { boardListAll } = useBoardList(1, limit);
+  const { boardListAll } = useBoardListAll(1, limit);
 
   const totalPage = boardListAll ? boardListAll.totalSize : 1; //전체 페이지 수
   const pageNum = boardListAll ? boardListAll.page : 1;
   const [page, setPage] = useState(pageNum); // 현재 페이지 설정하는 함수
   const [blockNum, setBlockNum] = useState(0); //블록 설정하는 함수
-  
+
   let query = useQuery();
 
   async function changePage(page: number) {
-    let {data} = await axios.get(`/boards/search?page=${page}&size=${limit}`, {
-      // strMbti: 'ALL',
-    })
-    setBoardList(data)
+    let { data } = await axios.get(
+      `/boards/search?page=${page}&size=${limit}`,
+      {
+        // strMbti: 'ALL',
+      },
+    );
+    setBoardList(data);
   }
 
   return (
@@ -45,7 +48,7 @@ const MoreBoardResult = () => {
       <div css={pageInfoBoxCSS}>
         <Container>
           <div css={pageInfoBoxMsgCSS}>
-            '{query.get('query')}' 에 대한 일반 게시판 검색 결과입니다.
+            '{query.get("query")}' 에 대한 일반 게시판 검색 결과입니다.
           </div>
         </Container>
       </div>
@@ -101,11 +104,10 @@ const boardBoxCSS = css`
   margin-top: 2rem;
 `;
 
-
 const boardListWrapper = css`
   &:first-child {
     border-top: none;
   }
   border-top: 1px solid red;
-`
+`;
 export default MoreBoardResult;

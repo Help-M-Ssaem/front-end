@@ -16,8 +16,10 @@ const Footer = () => {
   return (
     <footer css={footerCSS}>
       <ul css={infoCSS}>
-        <li>이용약관</li>
-        <li>개인정보처리방침</li>
+        <li onClick={() => handleWindowClick("policy/community")}>이용약관</li>
+        <li onClick={() => handleWindowClick("/policy/privacy")}>
+          개인정보처리방침
+        </li>
         <li>문의 이메일</li>
       </ul>
       <hr css={lineCSS} />
