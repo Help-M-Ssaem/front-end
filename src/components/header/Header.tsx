@@ -109,7 +109,7 @@ const headerCSS = css`
   position: fixed;
   left: 0;
   right: 0;
-  z-index: 10;
+  z-index: 999;
 `;
 
 const headerTopCSS = css`

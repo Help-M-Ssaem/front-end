@@ -32,7 +32,7 @@ const LoginPage = () => {
       <img src={Catlogo} css={CatCss} />
       <h1 css={titleCSS}>로그인 / 회원가입 </h1>
 
-      <span css={descCSS}>소셜 로그인 및 이메일로 가입할 수 있습니다.</span>
+      <span css={descCSS}>소셜 로그인으로 가입할 수 있습니다.</span>
 
       <hr css={lineCSS} />
 
@@ -50,11 +50,6 @@ const loginCss = css`
   align-items: center;
   padding-top: 2rem;
   max-width: 100rem;
-
-  // display: flex;
-  // flex-direction: column;
-  // align-items: center;
-  // padding-top: 3rem;
 `;
 
 const CatCss = css`

@@ -34,49 +34,55 @@ const MainPage = () => {
 
   const navigate = useNavigate();
   const gridContainerCSS = css`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); 
-  > *:nth-child(2n + 1) {
-    border-right: 1px solid ${COLOR.MAIN};
-    padding-right: 1rem;
-  }
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    > *:nth-child(2n + 1) {
+      border-right: 1px solid ${COLOR.MAIN};
+      padding-right: 1rem;
+    }
 
-  > *:nth-child(1),
-  > *:nth-child(2){
-    ${(Array.isArray(mainMatching) && (mainMatching.length > 2)) && `
+    > *:nth-child(1),
+    > *:nth-child(2) {
+      ${Array.isArray(mainMatching) &&
+      mainMatching.length > 2 &&
+      `
       border-bottom: 1px solid ${COLOR.MAIN};
     `}
-  }
+    }
 
-  > *:nth-child(3),
-  > *:nth-child(4){
-    ${(Array.isArray(mainMatching) && (mainMatching.length > 4)) && `
+    > *:nth-child(3),
+    > *:nth-child(4) {
+      ${Array.isArray(mainMatching) &&
+      mainMatching.length > 4 &&
+      `
       border-bottom: 1px solid ${COLOR.MAIN};
     `}
-  }
+    }
   `;
   return (
     <>
       <div css={headerCSS}>
-        {hotThree && (
-          <>
-            <Hot
-              title={hotThree.boardTitle}
-              content={"지금의 게시글"}
-              key={hotThree.boardId}
-            />
-            <Hot
-              title={hotThree.discussionTitle}
-              content={"지금의 토론"}
-              key={hotThree.discussionId}
-            />
-            <Hot
-              title={hotThree.worryBoardTitle}
-              content={"고민 그만! M쌤 매칭"}
-              key={hotThree.worryBoardId}
-            />
-          </>
-        )}
+        <Hot
+          title={hotThree && hotThree.boardTitle}
+          content={"지금의 게시글"}
+          key={hotThree && `${hotThree.boardId}`}
+          id={hotThree && hotThree.boardId}
+          category="board"
+        />
+        <Hot
+          title={hotThree && hotThree.discussionTitle}
+          content={"지금의 토론"}
+          key={hotThree && `${hotThree.discussionId}`}
+          id={hotThree && hotThree.discussionId}
+          category="dabate"
+        />
+        <Hot
+          title={hotThree && hotThree.worryBoardTitle}
+          content={"고민 그만! M쌤 매칭"}
+          key={hotThree && `${hotThree.worryBoardId}`}
+          id={hotThree && hotThree.worryBoardId}
+          category="match"
+        />
         {user ? <LoginComponent user={user} /> : <NotLoginComponent />}
       </div>
 
@@ -100,7 +106,7 @@ const MainPage = () => {
           더보기
         </div>
       </div>
-      <div css={hotBoardBoxCSS}>
+      <div css={hotDebateBoxCSS}>
         {Array.isArray(hotDebates) &&
           hotDebates.map((hotDebate: HotDebate) => (
             <HotDebateComponent hotDebate={hotDebate} key={hotDebate.id} />
@@ -126,23 +132,21 @@ const MainPage = () => {
           </div>
         </div>
         <div>
-  
-        {selected === 0 && Array.isArray(mainMatching) && (
-          <div css={gridContainerCSS}>
-            {mainMatching.map((hotWorry: MainMatching) => (
-              <HotWorryComponent hotWorry={hotWorry} key={hotWorry.id} />
-            ))}
-          </div>
-          )}
-
-          {selected === 1 &&
-            Array.isArray(mainTeacher) && (
-              <div css={MssaemCSS}>
-            {mainTeacher.map((hotboard: MainTeacher) => (
-              <Mssaem mssaem={hotboard} key={hotboard.id}  css={MssaemCSS}/>
+          {selected === 0 && Array.isArray(mainMatching) && (
+            <div css={gridContainerCSS}>
+              {mainMatching.map((hotWorry: MainMatching) => (
+                <HotWorryComponent hotWorry={hotWorry} key={hotWorry.id} />
               ))}
             </div>
-            )}
+          )}
+
+          {selected === 1 && Array.isArray(mainTeacher) && (
+            <div css={MssaemCSS}>
+              {mainTeacher.map((hotboard: MainTeacher) => (
+                <Mssaem mssaem={hotboard} key={hotboard.id} css={MssaemCSS} />
+              ))}
+            </div>
+          )}
         </div>
       </Container>
     </>
@@ -174,6 +178,12 @@ const hotBoardBoxCSS = css`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+`;
+
+const hotDebateBoxCSS = css `
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+column-gap: 2rem;
 `;
 
 const plusBoxCSS = css`

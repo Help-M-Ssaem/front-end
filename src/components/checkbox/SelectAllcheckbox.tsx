@@ -58,10 +58,8 @@ const SelectAllCheckbox = ({
 
 const checkboxLabelStyles = css`
   align-items: center;
-
-  margin-left: 1.2rem;
+  margin-left: 1rem;
   margin-bottom: 1rem;
-
   font-size: 16px;
 `;
 export default SelectAllCheckbox;

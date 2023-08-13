@@ -39,8 +39,7 @@ const UpdateBoardPage = () => {
 
   const [title, setTitle] = useState(board!!.title);
   const [content, setContent] = useState(board!!.content);
-  // TODO: 게시판 mbti로 변경
-  const [category, setCategory] = useState("ISTJ");
+  const [category, setCategory] = useState(board!!.boardMbti);
   const [image, setImage] = useState<string[]>([]);
   const [openCategory, setOpenCategory] = useState(false);
   const navigate = useNavigate();
