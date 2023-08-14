@@ -6,13 +6,12 @@ import FONT from "../../styles/font";
 import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
 import Button from "../../components/button/Button";
-import Profile from "../../components/profile/Profile";
-import Input from "../../components/input/Input";
 import { useDeleteBoard } from "../../hooks/worry/useDeleteWorry";
 import { useWorryBoard } from "../../hooks/worry/useDetailPost";
 import { useParams } from "react-router-dom";
 import DeleteModal from "../../components/modal/DeletModal";
 import WorryList from "../../components/matching/mapingMatching/WorryList";
+import MatchingProfile from "../../components/profile/MatchingProfile";
 
 const DetailMatchingPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -32,72 +31,56 @@ const DetailMatchingPage = () => {
     navigate(-1);
   };
 
-  const handleCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-  };
-
-  // 채팅 시작 버튼
-  const handleStartChatting = () => {
-    navigate(`/chatting`);
-  };
+  if (!worryBoard) {
+    return <div>없따</div>;
+  }
 
   return (
     <>
-      <Container addCSS={containerCSS}>
-        {worryBoard && (
-          <>
-            <div css={buttonBoxCSS}>
-              {worryBoard.isEditAllowed && (
-                <>
-                  <Button
-                    onClick={() => navigate(`/match/${id}/update`)}
-                    addCSS={updateButtonCSS}
-                  >
-                    수정
-                  </Button>
-                  <Button onClick={handleDeleteOpen}>삭제</Button>
-                </>
-              )}
-            </div>
-            <div css={detailCSS}>
-              <div css={detailHeaderCSS}>
-                <Profile
-                  image={worryBoard.memberSimpleInfo.profileImgUrl}
-                  name={worryBoard.memberSimpleInfo.nickName}
-                  mbti={worryBoard.memberSimpleInfo.mbti}
-                  badge={worryBoard.memberSimpleInfo.badge}
-                />
-                <div css={dateCSS}>{worryBoard.createdAt}</div>
-              </div>
-              <div css={titleCSS}>{worryBoard.title}</div>
-              <div
-                css={contentCSS}
-                dangerouslySetInnerHTML={{ __html: worryBoard.content }}
-              />
-              {/* 이미지 찍는걸 어케하지 */}
-              <div css={startButtonBoxCSS} onClick={handleStartChatting}>
-                <Button>채팅 시작</Button>
-              </div>
-            </div>
-          </>
-        )}
-        <div css={commentTextCSS}>댓글 쓰기</div>
-        <hr css={hrCSS} />
-        <form css={submitButtonBoxCSS} onSubmit={handleCommentSubmit}>
-          <Input />
-          <Button addCSS={submitButtonCSS}>등록</Button>
-        </form>
-        {isDeleteModalOpen && (
-          <DeleteModal
-            isOpen={isDeleteModalOpen}
-            onClose={handleDeleteClose}
-            onClick={handleMatchingDelete}
+    <Container addCSS={containerCSS}>
+    {worryBoard.isEditAllowed &&
+      <div css={buttonBoxCSS}>
+        <Button
+          onClick={() => navigate(`/match/${id}/update`)}
+          addCSS={updateButtonCSS}
+        >
+          수정
+        </Button>
+        <Button onClick={handleDeleteOpen}>삭제</Button>
+      </div>
+    }
+      <div css={detailCSS}>
+        <div css={detailHeaderCSS}>
+          <MatchingProfile
+            image={worryBoard.memberSimpleInfo.profileImgUrl}
+            name={worryBoard.memberSimpleInfo.nickName}
+            memberMbti ={worryBoard.memberSimpleInfo.mbti}
+            targetMbti = {worryBoard.targetMbti}
           />
-        )}
-      </Container>
+          <div css={dateCSS}>{worryBoard.createdAt}</div>
+        </div>
+        <div css={titleCSS}>{worryBoard.title}</div>
+        <div
+          css={contentCSS}
+          dangerouslySetInnerHTML={{ __html: worryBoard.content }}
+        />
+        {/* 고민글 생성 후, 내글/ 해결된 글 제외 시에 해결 있는지 확인 -> 힝 안된다 */}
+        {/* {worryBoard.isChatAllowed && */}
+        <div css={startButtonBoxCSS} onClick={handleStartChatting}>
+          <Button>채팅 시작</Button>
+        </div>
+        
+      </div>
+      {isDeleteModalOpen && 
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={handleDeleteClose}
+        onClick={handleMatchingDelete}/>
+      }
+    </Container>
 
-      <WorryList pathMove={"waiting"} SaW={"M쌤 매칭을 기다리는 고민"} />
-      <WorryList pathMove={"solved"} SaW={"해결 완료된 고민"} />
+    <WorryList pathMove={"waiting"} SaW={"M쌤 매칭을 기다리는 고민"} />
+    <WorryList pathMove={"solved"} SaW={"해결 완료된 고민"} />
     </>
   );
 };
@@ -108,11 +91,7 @@ const containerCSS = css`
   margin-top: 1rem;
 `;
 
-const detailCSS = css`
-  padding: 1.2rem 0;
-  border-top: 1px solid ${COLOR.MAIN};
-  border-bottom: 1px solid ${COLOR.MAIN};
-`;
+const detailCSS = css``;
 
 const detailHeaderCSS = css`
   display: flex;
@@ -144,6 +123,8 @@ const buttonBoxCSS = css`
   display: flex;
   justify-content: flex-end;
   margin-bottom: 1rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid ${COLOR.MAIN};
 `;
 
 const startButtonBoxCSS = css`
@@ -155,28 +136,9 @@ const startButtonBoxCSS = css`
   padding-top: 2rem;
 `;
 
-const commentTextCSS = css`
-  font-size: ${FONT.SIZE.HEADLINE};
-  font-weight: ${FONT.WEIGHT.BOLD};
-  color: ${COLOR.MAINDARK};
-  margin-top: 3rem;
-`;
-
-const hrCSS = css`
-  border: 1px solid ${COLOR.MAIN};
-  margin: 1rem 0;
-`;
-
-const submitButtonBoxCSS = css`
-  display: flex;
-`;
-
 const updateButtonCSS = css`
   margin-right: 0.5rem;
   background: ${COLOR.MAIN};
 `;
 
-const submitButtonCSS = css`
-  margin-left: 0.5rem;
-  width: 5rem;
-`;
+

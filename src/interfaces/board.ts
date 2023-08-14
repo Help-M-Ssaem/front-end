@@ -1,4 +1,6 @@
 import { User } from "./user";
+import { WorryList } from "./worry";
+import { DebateList } from "./debate";
 
 export interface Board {
   id: number;
@@ -10,6 +12,7 @@ export interface Board {
   commentCount: number;
   createdAt: string;
   memberSimpleInfo: User;
+  createdDate: string;
 }
 
 export interface BoardDetail {
@@ -30,6 +33,12 @@ export interface BoardList {
   page: number;
   totalSize: number;
   result: Board[];
+}
+
+export interface MultipleBoardList {
+  boardSimpleInfos: BoardList;
+  getWorriesRes: WorryList;
+  discussionSimpleInfo: DebateList;
 }
 
 export interface CategoryBookmark {

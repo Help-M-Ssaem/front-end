@@ -65,17 +65,23 @@ const MainPage = () => {
         <Hot
           title={hotThree && hotThree.boardTitle}
           content={"지금의 게시글"}
-          key={`board_${hotThree && hotThree.boardId}`}
+          key={hotThree && `${hotThree.boardId}`}
+          id={hotThree && hotThree.boardId}
+          category="board"
         />
         <Hot
           title={hotThree && hotThree.discussionTitle}
           content={"지금의 토론"}
-          key={`discussion_${hotThree && hotThree.discussionId}`}
+          key={hotThree && `${hotThree.discussionId}`}
+          id={hotThree && hotThree.discussionId}
+          category="dabate"
         />
         <Hot
           title={hotThree && hotThree.worryBoardTitle}
           content={"고민 그만! M쌤 매칭"}
-          key={`worry_${hotThree && hotThree.worryBoardId}`}
+          key={hotThree && `${hotThree.worryBoardId}`}
+          id={hotThree && hotThree.worryBoardId}
+          category="match"
         />
         {user ? <LoginComponent user={user} /> : <NotLoginComponent />}
       </div>
@@ -100,7 +106,7 @@ const MainPage = () => {
           더보기
         </div>
       </div>
-      <div css={hotBoardBoxCSS}>
+      <div css={hotDebateBoxCSS}>
         {Array.isArray(hotDebates) &&
           hotDebates.map((hotDebate: HotDebate) => (
             <HotDebateComponent hotDebate={hotDebate} key={hotDebate.id} />
@@ -172,6 +178,12 @@ const hotBoardBoxCSS = css`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+`;
+
+const hotDebateBoxCSS = css `
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+column-gap: 2rem;
 `;
 
 const plusBoxCSS = css`

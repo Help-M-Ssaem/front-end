@@ -7,6 +7,7 @@ import COLOR from "../../styles/color";
 import VoteItemList from "../debate/vote/VoteItemList";
 import RedButton from "../button/plusbutton/RedButton";
 import { useNavigate } from "react-router";
+import Container from "../container/Container";
 interface HotDebateProps {
   hotDebate: HotDebate;
   addCSS?: SerializedStyles;
@@ -15,10 +16,10 @@ interface HotDebateProps {
 const HotDebateComponent = ({ hotDebate, addCSS }: HotDebateProps) => {
   const navigate = useNavigate();
   return (
-    <div css={[containerCSS, addCSS]} key={hotDebate.id}>
-      <div css={leftCSS} onClick={() => navigate(`/debate/${hotDebate.id}`)}>
+    <Container>
+      <div css={[leftCSS,onclickCSS]} onClick={() => navigate(`/debate/${hotDebate.id}`)}>
         <div css={dateTop}>
-          <div css={profileCSS}>
+          <div css={profileBoxCSS}>
             <Profile
               image={hotDebate.memberSimpleInfo.profileImgUrl}
               name={hotDebate.memberSimpleInfo.nickName}
@@ -26,99 +27,80 @@ const HotDebateComponent = ({ hotDebate, addCSS }: HotDebateProps) => {
               badge={hotDebate.memberSimpleInfo.badge}
             />
           </div>
-          <div css={[textCSS, marginRightCSS]}>{hotDebate.createdAt}</div>
+          <div css={marginRightCSS}>{hotDebate.createdAt}</div>
         </div>
-        <div css={titleCSS}>{hotDebate.title}</div>
-        <div css={contentCSS}>
+          <div css={titleCSS}>{hotDebate.title}</div>
+          <div css={contentCSS}>
           {hotDebate.content.length > 30
             ? `${hotDebate.content.slice(0, 30)}...`
             : hotDebate.content}
         </div>
+        </div>
         <VoteItemList options={hotDebate.options} debateId={hotDebate.id} />
+
         <div css={detailCSS}>
           <RedButton
             count={`${hotDebate.participantCount}명이 참여중`}
           ></RedButton>
-          <div css={[textCSS]}>댓글 {hotDebate.commentCount}</div>
+          <div>댓글 {hotDebate.commentCount}</div>
         </div>
-      </div>
-      <div css={bottomLineCSS}>&nbsp;</div>
-    </div>
+      </Container>
   );
 };
-
 export default HotDebateComponent;
-
-const containerCSS = css`
-  background: ${COLOR.MAIN3};
-  width: calc(50% - 0.5rem);
-  margin-bottom: 4rem;
-  border-radius: 1.2rem;
-  padding: 1.5rem;
-  position: relative;
-
-  cursor: pointer;
-`;
 
 const leftCSS = css`
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  padding-top: 1.4rem;
+  flex-grow: 1; 
 `;
 
-const profileCSS = css`
-  margin-bottom: 0.6rem;
+const dateTop = css`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 `;
 
 const titleCSS = css`
   font-size: ${FONT.SIZE.TITLE3};
   font-weight: ${FONT.WEIGHT.BOLD};
-  color: ${COLOR.MAINDARK};
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.4rem;
 `;
 
 const contentCSS = css`
+  margin-bottom: 1rem;
   font-size: ${FONT.SIZE.HEADLINE};
   font-weight: ${FONT.WEIGHT.REGULAR};
-  margin-bottom: 0.8rem;
-`;
-
-const detailCSS = css`
-  margin-top: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const textCSS = css`
-  font-size: ${FONT.SIZE.CAPTION};
-  font-weight: ${FONT.WEIGHT.REGULAR};
-  color: ${COLOR.GRAY2};
 `;
 
 const marginRightCSS = css`
-  margin-left: 0.7rem;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2.6rem;
+  margin-left: auto;
   font-size: 0.9rem;
   color: ${COLOR.GRAY2};
   font-size: ${FONT.SIZE.FOOTNOTE};
   font-weight: ${FONT.WEIGHT.REGULAR};
 `;
 
-const dateTop = css`
+const profileBoxCSS = css`
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+`;
+
+const detailCSS = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: 0.9rem;
+  color: ${COLOR.GRAY2};
+  font-size: ${FONT.SIZE.FOOTNOTE};
+  font-weight: ${FONT.WEIGHT.REGULAR};
+  margin-top: 2rem;
+  margin-right: 1rem;
+  margin-left: 1rem;
 `;
 
-const bottomLineCSS = css`
-  content: "";
-  display: block;
-  position: absolute;
-  bottom: -1.5rem;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: ${COLOR.GRAY4};
+const onclickCSS = css`
+cursor: pointer;
 `;

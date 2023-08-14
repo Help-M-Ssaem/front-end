@@ -34,7 +34,7 @@ const LoginComponent = ({ user }: userProps) => {
           알림
         </div>
         <span css={verticalBarCSS}>|</span>
-        <div css={detailCSS} onClick={() => navigate("/mypage")}>
+        <div css={detailCSS} onClick={() => navigate("/profile/myprofile")}>
           활동
         </div>
         <span css={verticalBarCSS}>|</span>
