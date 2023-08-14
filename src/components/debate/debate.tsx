@@ -9,6 +9,7 @@ import RedButton from "../button/plusbutton/RedButton";
 import VoteItemList from "./vote/VoteItemList";
 import { useNavigate } from "react-router";
 import Text from "../text/Text";
+import { useState } from "react";
 interface DebateProps {
   debate: Debate;
   onClick: (id: number) => void;
@@ -18,16 +19,30 @@ interface DebateProps {
 
 const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
   const navigate = useNavigate();
+  const isNotSearchResult = !window.location.href.includes("search");
+  const [isNotSearch, setIsNotSearch] = useState(isNotSearchResult);
+
+  const debateBoxCSS = css`
+    padding: ${isNotSearch && " 1.5rem"};
+    margin: ${isNotSearch && "0 0 4rem 0"};
+    background: ${COLOR.MAIN3};
+    border-radius: 1.4rem;
+    position: relative;
+  `;
+
   return (
-    <div css={debateBoxCSS}>
-      <div css={buttonBoxCSS}>
-        {index % 6 === 0 && (
-          <>
-          {mode === "discusstion" ? <Text>MBTI 과몰입 토론</Text> : <Text>HOT 토론글</Text>}
+    <div css={[debateBoxCSS, onclickCSS]} onClick={() => onClick(debate.id)}>
+      {index % 6 === 0 && isNotSearch && (
+        <div css={buttonBoxCSS}>
+          {mode === "discusstion" ? (
+            <Text>MBTI 과몰입 토론</Text>
+          ) : (
+            <Text>HOT 토론글</Text>
+          )}
           <Button onClick={() => navigate("/debate/create")}>글 쓰기</Button>
-          </>
-        )}
-      </div>
+        </div>
+      )}
+
       <div css={leftCSS}>
         <div css={dateTop}>
           <div css={profileBoxCSS}>
@@ -40,28 +55,22 @@ const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
           </div>
           <div css={marginRightCSS}>{debate.createdAt}</div>
         </div>
-        <div 
-          onClick={() => onClick(debate.id)}
-          css={onclickCSS}
-          >
-          <div css={titleCSS}>{debate.title}</div>
-          <div css={contentCSS}>{debate.content}</div>
-        </div>
-        <VoteItemList options={debate.options} debateId={debate.id} />
-
-        <div css={detailCSS}>
-          <RedButton
-            count={`${debate.participantCount}명이 참여중`}
-          ></RedButton>
-          <div>댓글 {debate.commentCount}</div>
-        </div>
+        <div css={titleCSS}>{debate.title}</div>
+        <div css={contentCSS}>{debate.content}</div>
       </div>
+      <VoteItemList options={debate.options} debateId={debate.id} />
+
+      <div css={detailCSS}>
+        <RedButton count={`${debate.participantCount}명이 참여중`}></RedButton>
+        <div>댓글 {debate.commentCount}</div>
+      </div>
+
       <div css={bottomLineCSS}>&nbsp;</div>
     </div>
   );
 };
 const debateBoxCSS = css`
-  padding: 1.5rem;
+  padding: 0 1.5rem 1.5rem 1.5rem;
   margin: 0 0 4rem 0;
   background: ${COLOR.MAIN3};
   border-radius: 1.4rem;
@@ -82,14 +91,14 @@ const bottomLineCSS = css`
 const leftCSS = css`
   display: flex;
   flex-direction: column;
-  flex-grow: 1; 
+  flex-grow: 1;
   padding-top: 1.4rem;
 `;
 
 const dateTop = css`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const titleCSS = css`
@@ -135,14 +144,14 @@ const detailCSS = css`
 const buttonBoxCSS = css`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 1rem;
   align-items: center;
+  padding-top: 1.5rem;
   border-bottom: 1px solid ${COLOR.MAIN};
   padding-bottom: 1.4rem;
 `;
 
 const onclickCSS = css`
-cursor: pointer;
+  cursor: pointer;
 `;
 
 //=---------------------------------------------

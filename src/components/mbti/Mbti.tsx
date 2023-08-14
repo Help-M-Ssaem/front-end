@@ -7,15 +7,18 @@ import COLOR from "../../styles/color";
 import { useRecoilState } from "recoil";
 import { mbtiState } from "../../states/board";
 import { useCategoryBookmarkUpdate } from "../../hooks/board/category/useCategoryBookmarkUpdate";
+import { useCategoryCount } from "../../hooks/board/category/useCategoryCount";
 
 interface MbtiProps {
   mbti: string;
+  bookmark: boolean;
 }
 
-const Mbti = ({ mbti }: MbtiProps) => {
+const Mbti = ({ mbti, bookmark }: MbtiProps) => {
   const [filled, setFilled] = useState(false);
   const [mbtiSelected, setMbtiSelected] = useRecoilState(mbtiState);
   const categoryBookmarkMutation = useCategoryBookmarkUpdate(mbti);
+  const { categoryCount } = useCategoryCount();
 
   const handleStarClick = () => {
     setFilled(!filled);
@@ -25,6 +28,8 @@ const Mbti = ({ mbti }: MbtiProps) => {
     setMbtiSelected(mbti);
   };
 
+  const count = categoryCount && categoryCount[mbti.toLowerCase()];
+
   return (
     <div css={mbtiBoxCSS}>
       <div
@@ -32,15 +37,14 @@ const Mbti = ({ mbti }: MbtiProps) => {
         onClick={() => handleMbtiClick(mbti)}
         className={mbtiSelected === mbti ? "active" : ""}
       >
-        {mbti}
+        <div css={mbtiTextCSS}>{mbti}</div>
+        <div>({count ? count : 0})</div>
       </div>
-      <div>
-        {filled ? (
-          <FilledStarIcon onClick={handleStarClick} />
-        ) : (
-          <EmptyStarIcon onClick={handleStarClick} />
-        )}
-      </div>
+      {bookmark ? (
+        <FilledStarIcon onClick={handleStarClick} />
+      ) : (
+        <EmptyStarIcon onClick={handleStarClick} />
+      )}
     </div>
   );
 };
@@ -59,9 +63,12 @@ const mbtiBoxCSS = css`
   width: 24%;
   cursor: pointer;
   padding: 0.5rem 3rem;
+  white-space: nowrap;
 `;
 
 const mbtiCSS = css`
+  display: flex;
+  align-items: center;
   width: 100%;
   &:hover,
   &.active {
@@ -70,4 +77,8 @@ const mbtiCSS = css`
     text-decoration: underline;
     transition: 0.3s;
   }
+`;
+
+const mbtiTextCSS = css`
+  width: 2.4rem;
 `;
