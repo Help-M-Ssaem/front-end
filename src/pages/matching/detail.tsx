@@ -31,57 +31,55 @@ const DetailMatchingPage = () => {
     navigate(-1);
   };
 
-  if (!worryBoard) {
-    return <div>없따</div>;
-  }
-
   const handleStartChatting = () => {
     navigate(`/chatting`);
   };
 
   return (
     <>
-      <Container addCSS={containerCSS}>
-        {worryBoard.isEditAllowed && (
-          <div css={buttonBoxCSS}>
-            <Button
-              onClick={() => navigate(`/match/${id}/update`)}
-              addCSS={updateButtonCSS}
-            >
-              수정
-            </Button>
-            <Button onClick={handleDeleteOpen}>삭제</Button>
-          </div>
-        )}
-        <div css={detailCSS}>
-          <div css={detailHeaderCSS}>
-            <MatchingProfile
-              image={worryBoard.memberSimpleInfo.profileImgUrl}
-              name={worryBoard.memberSimpleInfo.nickName}
-              memberMbti={worryBoard.memberSimpleInfo.mbti}
-              targetMbti={worryBoard.targetMbti}
+      {worryBoard && (
+        <Container addCSS={containerCSS}>
+          {worryBoard.isEditAllowed && (
+            <div css={buttonBoxCSS}>
+              <Button
+                onClick={() => navigate(`/match/${id}/update`)}
+                addCSS={updateButtonCSS}
+              >
+                수정
+              </Button>
+              <Button onClick={handleDeleteOpen}>삭제</Button>
+            </div>
+          )}
+          <div css={detailCSS}>
+            <div css={detailHeaderCSS}>
+              <MatchingProfile
+                image={worryBoard.memberSimpleInfo.profileImgUrl}
+                name={worryBoard.memberSimpleInfo.nickName}
+                memberMbti={worryBoard.memberSimpleInfo.mbti}
+                targetMbti={worryBoard.targetMbti}
+              />
+              <div css={dateCSS}>{worryBoard.createdAt}</div>
+            </div>
+            <div css={titleCSS}>{worryBoard.title}</div>
+            <div
+              css={contentCSS}
+              dangerouslySetInnerHTML={{ __html: worryBoard.content }}
             />
-            <div css={dateCSS}>{worryBoard.createdAt}</div>
+            {/* 고민글 생성 후, 내글/ 해결된 글 제외 시에 해결 있는지 확인 -> 힝 안된다 */}
+            {/* {worryBoard.isChatAllowed && */}
+            <div css={startButtonBoxCSS} onClick={handleStartChatting}>
+              <Button>채팅 시작</Button>
+            </div>
           </div>
-          <div css={titleCSS}>{worryBoard.title}</div>
-          <div
-            css={contentCSS}
-            dangerouslySetInnerHTML={{ __html: worryBoard.content }}
-          />
-          {/* 고민글 생성 후, 내글/ 해결된 글 제외 시에 해결 있는지 확인 -> 힝 안된다 */}
-          {/* {worryBoard.isChatAllowed && */}
-          <div css={startButtonBoxCSS} onClick={handleStartChatting}>
-            <Button>채팅 시작</Button>
-          </div>
-        </div>
-        {isDeleteModalOpen && (
-          <DeleteModal
-            isOpen={isDeleteModalOpen}
-            onClose={handleDeleteClose}
-            onClick={handleMatchingDelete}
-          />
-        )}
-      </Container>
+          {isDeleteModalOpen && (
+            <DeleteModal
+              isOpen={isDeleteModalOpen}
+              onClose={handleDeleteClose}
+              onClick={handleMatchingDelete}
+            />
+          )}
+        </Container>
+      )}
 
       <WorryList pathMove={"waiting"} SaW={"M쌤 매칭을 기다리는 고민"} />
       <WorryList pathMove={"solved"} SaW={"해결 완료된 고민"} />
