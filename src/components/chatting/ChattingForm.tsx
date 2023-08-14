@@ -10,10 +10,11 @@ import { useChatContext } from "../../hooks/chatting/ChatProvider";
 export const ChattingForm = () => {
   const [inputMessage, setInputMessage] = useRecoilState(inputMessageState);
   const { sendHandler } = useChatContext();
+  const roomId = 1;
 
   const handleChattingSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    sendHandler();
+    sendHandler(roomId);
   };
 
   return (

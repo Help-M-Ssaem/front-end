@@ -9,6 +9,8 @@ import FONT from "../../styles/font";
 import { Editor } from "@toast-ui/react-editor";
 import { useCreateBoard } from "../../hooks/worry/useCreateWorry";
 import { mssaemAxios as axios } from "../../apis/axios";
+import { useChatContext } from "../../hooks/chatting/ChatProvider";
+
 const categoryList = [
   "ISTJ",
   "ISFJ",
@@ -70,9 +72,14 @@ const CreateMatchingPage = () => {
     setContent(editorRef.current.getInstance().getHTML());
   };
   const createMutation = useCreateBoard(formData);
+  const { connectHandler } = useChatContext();
+
+  const roomId = 1;
+
   const handleSubmit = () => {
     createMutation.mutate();
     navigate(-1);
+    connectHandler(roomId);
   };
   const uploadImage = async (blob: Blob) => {
     const formData = new FormData();

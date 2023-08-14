@@ -33,10 +33,11 @@ const DetailMatchingPage = () => {
   };
 
   const { connectHandler } = useChatContext();
+  const roomId = 1;
 
   const handleStartChatting = () => {
     navigate(`/chatting`);
-    connectHandler();
+    connectHandler(roomId);
   };
 
   return (

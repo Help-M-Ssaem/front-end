@@ -4,9 +4,9 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { inputMessageState, messageState } from "../../states/chatting";
 
 const ChatContext = createContext({
-  connectHandler: () => {},
+  connectHandler: (roomId: number) => {},
   disconnectHandler: () => {},
-  sendHandler: () => {},
+  sendHandler: (roomId: number) => {},
 });
 
 export const useChatContext = () => useContext(ChatContext);
@@ -18,7 +18,7 @@ export function ChatProvider({ children }: any) {
 
   // 채팅 연결 구독
   const client = useRef<CompatClient>();
-  const connectHandler = () => {
+  const connectHandler = (roomId: number) => {
     client.current = Stomp.over(() => {
       const sock = new WebSocket("wss://m-ssaem.com:8080/stomp/chat");
       return sock;
@@ -29,9 +29,13 @@ export function ChatProvider({ children }: any) {
       },
       () => {
         client.current &&
-          client.current.subscribe(`/sub/chat/room/1`, onMessageReceived, {
-            token: token!,
-          });
+          client.current.subscribe(
+            `/sub/chat/room/${roomId}`,
+            onMessageReceived,
+            {
+              token: token!,
+            },
+          );
       },
     );
     return client;
@@ -49,7 +53,7 @@ export function ChatProvider({ children }: any) {
     }
   };
   // 채팅 보내기
-  const sendHandler = () => {
+  const sendHandler = (roomId: number) => {
     if (client.current && inputMessage.trim() !== "") {
       client.current.send(
         `/pub/chat/message`,
@@ -57,7 +61,7 @@ export function ChatProvider({ children }: any) {
           token: token,
         },
         JSON.stringify({
-          roomId: 1,
+          roomId: roomId,
           message: inputMessage,
           type: "TALK",
         }),
