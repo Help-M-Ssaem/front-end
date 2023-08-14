@@ -7,17 +7,13 @@ import ListPagination from "../../components/Pagination/ListPagination";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "../../components/search/SearchBar";
 import Container from "../../components/container/Container";
-import {
-  BoardList as SharedBoard,
-  MultipleBoardList,
-} from "../../interfaces/board";
 import { WorryBoard } from "../../interfaces/worry";
 import BoardComponent from "../../components/board/Board";
 import DebateComponent from "../../components/debate/debate";
-import { useBoardList, useBoardListAll } from "../../hooks/board/useBoardList";
+import { useBoardListAll } from "../../hooks/board/useBoardList";
 import MatchingComponent from "../../components/matching/Matching";
 import { useLocation } from "react-router-dom";
-import { getSearchResult, useSearchResult } from "../../hooks/search/search";
+import { useSearchResult } from "../../hooks/search/search";
 import COLOR from "../../styles/color";
 
 function useQuery() {
@@ -28,12 +24,8 @@ function useQuery() {
 const SearchResult: React.FC = () => {
   let query = useQuery();
   const navigate = useNavigate();
-  const [multipleBoardList, setMultipleBoardList] =
-    useState<MultipleBoardList>();
 
-  useEffect(() => {
-    useSearchResult(query);
-  }, [query]);
+  const multipleBoardList = useSearchResult(query.get("query"));
 
   const limit = 5; //한 페이지당 아이템의 개수
   const { boardListAll } = useBoardListAll(1, limit);
