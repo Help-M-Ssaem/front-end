@@ -33,12 +33,12 @@ const DetailMatchingPage = () => {
     navigate(-1);
   };
 
-  const { connectHandler } = useChatContext();
+  const { connect } = useChatContext();
   const roomId = 22; // TODO: worryBoard roomId 바꾸기
 
   const handleStartChatting = () => {
     navigate(`/chatting`);
-    connectHandler(roomId);
+    connect(roomId);
   };
 
   const { chatExist } = useChatExist(Number(id));

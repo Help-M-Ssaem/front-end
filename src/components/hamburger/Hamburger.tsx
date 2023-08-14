@@ -12,10 +12,10 @@ const Hamburger = () => {
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isExitModalOpen, setIsExitModalOpen] = useState(false);
 
-  const {disconnectHandler} = useChatContext();
+  const { disconnect } = useChatContext();
 
   const handleChattingExit = () => {
-    disconnectHandler();
+    disconnect();
     setIsOpen(false);
   };
 

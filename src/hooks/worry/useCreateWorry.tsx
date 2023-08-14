@@ -19,13 +19,13 @@ interface UseCreateBoard {
 
 export function useCreateBoard(board: FormData): UseCreateBoard {
   const queryClient = useQueryClient();
-  const { connectHandler } = useChatContext();
+  const { connect } = useChatContext();
 
   const { mutate } = useMutation(async () => {
     queryClient.invalidateQueries(worryKeys.all);
     const res = await createBoard(board);
     const roomId = await createChatRoom(res.worryBoardId);
-    connectHandler(roomId);
+    connect(roomId);
   });
 
   return { mutate };
