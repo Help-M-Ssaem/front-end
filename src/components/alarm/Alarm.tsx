@@ -51,7 +51,7 @@ const AlarmComponent = ({ alarm }: AlarmProps) => {
   const title = splittedData[0];
   const content = splittedData[1];
   return (
-    <div css={boardBoxCSS}>
+    <div css={boardBoxCSS} onClick={handleReadPost}>
       <div css ={haderCSS}>
         <div css={titleCSS}>{title}</div>
         <div css={readDetailCSS}>
@@ -59,7 +59,7 @@ const AlarmComponent = ({ alarm }: AlarmProps) => {
           {alarm.state && <div css={marginRightTopCSS}><XButtonIcons onClick={handleDelete}/></div>}
         </div>
       </div>
-      <div onClick={handleReadPost}>
+      <div>
       <div css={leftCSS}>
         <div css={contentCSS}>{content}</div>
       </div>

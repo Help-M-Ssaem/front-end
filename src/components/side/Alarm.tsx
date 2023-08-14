@@ -4,14 +4,12 @@ import React, { useCallback } from "react";
 import Container from "../../components/container/Container";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
-import { useNavigate } from "react-router-dom";
 import AlarmComponent from "../../components/alarm/Alarm";
 import { useReadALLAlarm } from "../../hooks/alarm/useReadALLAlarm";
 import { useDeleteAllAlarm } from "../../hooks/alarm/useDeletAllAlarm";
 import { useInfiniteAlarmList } from "../../hooks/alarm/useInfiniteAlarmList";
 
 const AlarmMenu = () => {
-  const navigate = useNavigate();
   const allReadMutation = useReadALLAlarm();
   const allDeleteAlarmMutation = useDeleteAllAlarm();
   const { data, fetchNextPage, isFetchingNextPage } = useInfiniteAlarmList();
@@ -44,7 +42,7 @@ const AlarmMenu = () => {
         >전체 삭제</div>
       </div>
     </div>
-    <div>
+
     <div onScroll={handleScroll} css={scrollContainerCSS}>
       {data &&
         data.pages.map((page, pageIndex) => (
@@ -54,7 +52,7 @@ const AlarmMenu = () => {
             ))}
           </div>
         ))}
-      </div>
+
     </div>
    </Container>
   );
