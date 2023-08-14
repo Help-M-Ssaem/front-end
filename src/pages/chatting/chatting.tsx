@@ -16,7 +16,6 @@ import { useEffect, useRef, useState } from "react";
 import { CompatClient, Stomp } from "@stomp/stompjs";
 import Input from "../../components/input/Input";
 import { PhotoIcon } from "../../assets/ChattingIcons";
-import { ChatMessage } from "../../interfaces/chatting";
 
 const ChattingPage = () => {
   const [activeRoomId, setActiveRoomId] = useRecoilState(activeRoomIdState);
@@ -56,7 +55,7 @@ const ChattingPage = () => {
   const disconnectHandler = () => {
     if (client.current) {
       client.current.disconnect(() => {
-        window.location.reload(); // 새로고침
+        window.location.reload();
       });
     }
   };
