@@ -1,6 +1,6 @@
 import { CompatClient, Stomp } from "@stomp/stompjs";
 import { createContext, useContext, useRef } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { inputMessageState, messageState } from "../../states/chatting";
 
 const ChatContext = createContext({
@@ -12,7 +12,7 @@ const ChatContext = createContext({
 export const useChatContext = () => useContext(ChatContext);
 
 export function ChatProvider({ children }: any) {
-  const [messages, setMessages] = useRecoilState(messageState);
+  const setMessages = useSetRecoilState(messageState);
   const [inputMessage, setInputMessage] = useRecoilState(inputMessageState);
   const token = localStorage.getItem("accessToken");
 
