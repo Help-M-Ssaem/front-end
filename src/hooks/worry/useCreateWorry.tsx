@@ -21,12 +21,11 @@ export function useCreateBoard(board: FormData): UseCreateBoard {
   const queryClient = useQueryClient();
   const { connectHandler } = useChatContext();
 
-  const { mutate } = useMutation(() => createBoard(board), {
-    onSuccess: (res) => {
-      queryClient.invalidateQueries(worryKeys.all);
-      createChatRoom(res.worryBoardId);
-      connectHandler(res.worryBoardId);
-    },
+  const { mutate } = useMutation(async () => {
+    queryClient.invalidateQueries(worryKeys.all);
+    const res = await createBoard(board);
+    const roomId = await createChatRoom(res.worryBoardId);
+    connectHandler(roomId);
   });
 
   return { mutate };

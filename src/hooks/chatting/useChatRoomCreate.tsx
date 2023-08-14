@@ -2,8 +2,9 @@ import { useMutation, useQueryClient } from "react-query";
 import { mssaemAxios as axios } from "../../apis/axios";
 import { chattingKeys } from "../../constants/chattingKey";
 
-export async function createChatRoom(worryBoardId: number): Promise<void> {
-  await axios.post(`/member/chat/rooms/${worryBoardId}`);
+export async function createChatRoom(worryBoardId: number) {
+  const res = await axios.post(`/member/chat/rooms/${worryBoardId}`);
+  return res.data.chatRoomId;
 }
 
 interface UseChatRoomCreate {
