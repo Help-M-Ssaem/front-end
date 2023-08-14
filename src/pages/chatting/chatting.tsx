@@ -25,7 +25,7 @@ const ChattingPage = () => {
 
   const handleChatRoomClick = (roomId: number) => {
     setActiveRoomId(roomId);
-    setActive(true);
+    setActive(!active);
   };
 
   const selectedChattingData = chatRooms?.find(
@@ -97,28 +97,25 @@ const ChattingPage = () => {
             )}
           </div>
           <div css={chattingRightCSS}>
-            {!chatRooms ||
-              (chatRooms && !active && (
-                <div css={noChatCSS}>
-                  <img
-                    css={smallImgCSS}
-                    src="https://i.ibb.co/YRZSTTL/rhdiddl4.png"
-                    alt="rhdiddl4"
-                  />
-                  <div css={topFontSIZE}>나의 채팅</div>
-                  <div css={bottomFontSIZE}>M쌤이 되어 고민을 해결해보세요</div>
-                  <Button onClick={() => navigate("/match/matching")}>
-                    고민 보러가기
-                  </Button>
-                </div>
-              ))}
-            {chatRooms && active && (
+            {!chatRooms && (
+              <div css={noChatCSS}>
+                <img
+                  css={smallImgCSS}
+                  src="https://i.ibb.co/YRZSTTL/rhdiddl4.png"
+                  alt="rhdiddl4"
+                />
+                <div css={topFontSIZE}>나의 채팅</div>
+                <div css={bottomFontSIZE}>M쌤이 되어 고민을 해결해보세요</div>
+                <Button onClick={() => navigate("/match/matching")}>
+                  고민 보러가기
+                </Button>
+              </div>
+            )}
+            {chatRooms && active ? (
               <>
-                {/* 고민글이랑 프로필 받아오는 부분 */}
                 <div css={dateTop}>
                   {/* <CurrentChatting profile={selectedChattingData} /> */}
                 </div>
-                {/* 채팅창 */}
                 <div css={dateMiddle} ref={scrollRef}>
                   <div css={chattingBox}>
                     {messages ? (
@@ -130,21 +127,23 @@ const ChattingPage = () => {
                         />
                       ))
                     ) : (
-                      <div css={[noChatCSS, noMassageCSS]}>
-                        <div css={bottomFontSIZE}>
-                          익명성을 악욕한 욕설, 비방, 불건전한 정보 유통 등
-                          상대방을 불쾌하게 하는 행위를 저지를 시
-                        </div>
-                        <div css={bottomFontSIZE}>
-                          커뮤니티 가이드 라인에 따라 불이익을 받거나 심한경우
-                          계정이 해지될 수 있습니다.
-                        </div>
-                      </div>
+                      <></>
                     )}
                   </div>
                 </div>
                 <ChattingForm />
               </>
+            ) : (
+              <div css={[noChatCSS, noMassageCSS]}>
+                <div css={bottomFontSIZE}>
+                  익명성을 악욕한 욕설, 비방, 불건전한 정보 유통 등 상대방을
+                  불쾌하게 하는 행위를 저지를 경우
+                </div>
+                <div css={bottomFontSIZE}>
+                  커뮤니티 가이드 라인에 따라 불이익을 받거나 심한 경우 계정이
+                  해지될 수 있습니다.
+                </div>
+              </div>
             )}
           </div>
         </div>
@@ -272,7 +271,6 @@ const bottomFontSIZE = css`
 
 const noMassageCSS = css`
   display: flex;
-  padding-top: 7rem;
 `;
 
 // 채팅 박스
