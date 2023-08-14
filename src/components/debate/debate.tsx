@@ -9,6 +9,8 @@ import RedButton from "../button/plusbutton/RedButton";
 import VoteItemList from "./vote/VoteItemList";
 import { useNavigate } from "react-router";
 import Text from "../text/Text";
+import { useSelectedItem } from "../../hooks/debate/useVoteItem";
+
 interface DebateProps {
   debate: Debate;
   onClick: (id: number) => void;
@@ -18,6 +20,11 @@ interface DebateProps {
 
 const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
   const navigate = useNavigate();
+  const optionSelected = debate.options.some((option) => option.selected === true);
+  // const selectedMutation = useSelectedItem(debate.id, id);
+  // const handleClick = () => {
+  //     selectedMutation.mutate();
+  // }
   return (
     <div 
       css={[debateBoxCSS]} 
@@ -29,8 +36,8 @@ const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
           <Button onClick={() => navigate("/debate/create")}>글 쓰기</Button>
           </div>
         )}
-      <div css= {onclickCSS} onClick={() => onClick(debate.id)}>
-      <div css={leftCSS}>
+      <div>
+      <div css={[leftCSS, onclickCSS]} onClick={() => onClick(debate.id)}>
         <div css={dateTop}>
           <div css={profileBoxCSS}>
             <Profile
@@ -47,7 +54,7 @@ const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
         </div>
         <VoteItemList options={debate.options} debateId={debate.id} />
 
-        <div css={detailCSS}>
+        <div css={[detailCSS, onclickCSS]} onClick={() => onClick(debate.id)}>
           <RedButton
             count={`${debate.participantCount}명이 참여중`}
           ></RedButton>

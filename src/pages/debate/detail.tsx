@@ -282,7 +282,7 @@ const hrCSS = css`
 
 const buttonBoxCSS = css`
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
   margin-bottom: 1rem;
   align-items: center;
 `;

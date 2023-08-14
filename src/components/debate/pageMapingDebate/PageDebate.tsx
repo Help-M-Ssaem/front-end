@@ -24,7 +24,7 @@ const PageDebate: React.FC<Props> = ({pathMov}) => {
     <Container addCSS={containerCSS}>
       <div>
         {debateLists &&
-          debateLists.result.map((debate: Debate, index) => (
+          debateLists.result.map((debate: Debate, index: number) => (
             <DebateComponent
               debate={debate}
               key={debate.id}
