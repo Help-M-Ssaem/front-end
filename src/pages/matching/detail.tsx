@@ -13,6 +13,7 @@ import DeleteModal from "../../components/modal/DeletModal";
 import WorryList from "../../components/matching/mapingMatching/WorryList";
 import MatchingProfile from "../../components/profile/MatchingProfile";
 import { useChatContext } from "../../hooks/chatting/ChatProvider";
+import { useChatExist } from "../../hooks/worry/chatting/useChatExist";
 
 const DetailMatchingPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -33,12 +34,15 @@ const DetailMatchingPage = () => {
   };
 
   const { connectHandler } = useChatContext();
-  const roomId = 1;
+  const roomId = 22; // TODO: worryBoard roomId 바꾸기
 
   const handleStartChatting = () => {
     navigate(`/chatting`);
     connectHandler(roomId);
   };
+
+  const { chatExist } = useChatExist(Number(id));
+  console.log(chatExist);
 
   return (
     <>
@@ -70,7 +74,7 @@ const DetailMatchingPage = () => {
               css={contentCSS}
               dangerouslySetInnerHTML={{ __html: worryBoard.content }}
             />
-            {worryBoard.isChatAllowed && (
+            {worryBoard.isChatAllowed && chatExist && (
               <div css={startButtonBoxCSS} onClick={handleStartChatting}>
                 <Button>채팅 시작</Button>
               </div>
