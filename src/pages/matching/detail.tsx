@@ -70,11 +70,11 @@ const DetailMatchingPage = () => {
               css={contentCSS}
               dangerouslySetInnerHTML={{ __html: worryBoard.content }}
             />
-            {/* 고민글 생성 후, 내글/ 해결된 글 제외 시에 해결 있는지 확인 -> 힝 안된다 */}
-            {/* {worryBoard.isChatAllowed && */}
-            <div css={startButtonBoxCSS} onClick={handleStartChatting}>
-              <Button>채팅 시작</Button>
-            </div>
+            {worryBoard.isChatAllowed && (
+              <div css={startButtonBoxCSS} onClick={handleStartChatting}>
+                <Button>채팅 시작</Button>
+              </div>
+            )}
           </div>
           {isDeleteModalOpen && (
             <DeleteModal
