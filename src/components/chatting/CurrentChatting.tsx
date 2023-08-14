@@ -6,7 +6,6 @@ import Badge from "../badge/Badge";
 import { RightArrowIcon } from "../../assets/CommonIcons";
 import Button from "../button/Button";
 import { useState } from "react";
-import { ChattingHistory } from "../../interfaces/chatting";
 import EvaluationModal from "../modal/EvaluationModal";
 import { useCreateEvaluation } from "../../hooks/worry/useEvaluation";
 //데이터 받아서 해야되는뎅...
@@ -21,9 +20,10 @@ const matching = {
   color1: "#94E3F8",
   color2: "#F8CAFF",
 };
-type Profile = {
-  profile: ChattingHistory | null;
-};
+
+interface Profile {
+  profile: any;
+}
 
 const CurrentChatting: React.FC<Profile> = ({ profile }) => {
   const [isEvaluationModalOpen, setIsEvaluationModalOpen] = useState(false);

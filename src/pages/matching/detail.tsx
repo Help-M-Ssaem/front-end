@@ -24,12 +24,7 @@ const DetailMatchingPage = () => {
     setIsDeleteModalOpen(false);
   };
   const navigate = useNavigate();
-  const handleStartChatting = () => {
-    if (!worryBoard) {
-      return;
-    }
-    navigate(`/chatting/${worryBoard.worryBoardId}`);
-  };
+
   const deleteMutation = useDeleteBoard(Number(id));
   const handleMatchingDelete = () => {
     deleteMutation.mutate();
