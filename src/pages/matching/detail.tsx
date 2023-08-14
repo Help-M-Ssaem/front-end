@@ -12,6 +12,7 @@ import { useParams } from "react-router-dom";
 import DeleteModal from "../../components/modal/DeletModal";
 import WorryList from "../../components/matching/mapingMatching/WorryList";
 import MatchingProfile from "../../components/profile/MatchingProfile";
+import { useChatContext } from "../../hooks/chatting/ChatProvider";
 
 const DetailMatchingPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -31,8 +32,11 @@ const DetailMatchingPage = () => {
     navigate(-1);
   };
 
+  const { connectHandler } = useChatContext();
+
   const handleStartChatting = () => {
     navigate(`/chatting`);
+    connectHandler();
   };
 
   return (

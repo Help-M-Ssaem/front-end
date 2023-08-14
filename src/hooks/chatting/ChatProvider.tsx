@@ -1,9 +1,17 @@
 import { CompatClient, Stomp } from "@stomp/stompjs";
-import { useRef } from "react";
+import { createContext, useContext, useRef } from "react";
 import { useRecoilState } from "recoil";
 import { inputMessageState, messageState } from "../../states/chatting";
 
-export function useChat() {
+const ChatContext = createContext({
+  connectHandler: () => {},
+  disconnectHandler: () => {},
+  sendHandler: () => {},
+});
+
+export const useChatContext = () => useContext(ChatContext);
+
+export function ChatProvider({ children }: any) {
   const [messages, setMessages] = useRecoilState(messageState);
   const [inputMessage, setInputMessage] = useRecoilState(inputMessageState);
   const token = localStorage.getItem("accessToken");
@@ -58,9 +66,13 @@ export function useChat() {
     }
   };
 
-  return {
+  const contextValue = {
     connectHandler,
     disconnectHandler,
     sendHandler,
   };
+
+  return (
+    <ChatContext.Provider value={contextValue}>{children}</ChatContext.Provider>
+  );
 }

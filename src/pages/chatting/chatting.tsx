@@ -19,7 +19,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import Input from "../../components/input/Input";
 import { PhotoIcon } from "../../assets/ChattingIcons";
-import { useChat } from "../../hooks/chatting/useChat";
+import { useChatContext } from "../../hooks/chatting/ChatProvider";
 
 const ChattingPage = () => {
   const [activeRoomId, setActiveRoomId] = useRecoilState(activeRoomIdState);
@@ -30,7 +30,7 @@ const ChattingPage = () => {
   const navigate = useNavigate();
   let profileUrl = "";
 
-  const { connectHandler, disconnectHandler, sendHandler } = useChat();
+  const { connectHandler, disconnectHandler, sendHandler } = useChatContext();
 
   const handleChatRoomClick = (roomId: number) => {
     setActiveRoomId(roomId);

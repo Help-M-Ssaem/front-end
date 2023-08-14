@@ -5,15 +5,12 @@ import Button from "../button/Button";
 import Input from "../input/Input";
 import { useRecoilState } from "recoil";
 import { inputMessageState } from "../../states/chatting";
-import { useChat } from "../../hooks/chatting/useChat";
 
 export const ChattingForm = () => {
   const [inputMessage, setInputMessage] = useRecoilState(inputMessageState);
-  const { sendHandler } = useChat();
 
   const handleChattingSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    sendHandler();
   };
 
   return (
