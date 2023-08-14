@@ -82,6 +82,7 @@ const detailCSS = css`
   color: ${COLOR.GRAY2};
   margin-top: 0.7rem;
   cursor: pointer;
+  white-space: nowrap;
 `;
 
 const profileCSS = css`
@@ -93,4 +94,5 @@ const verticalBarCSS = css`
   font-size: ${FONT.SIZE.FOOTNOTE};
   margin-top: 0.7rem;
   cursor: default;
+  padding: 0 0.2rem;
 `;

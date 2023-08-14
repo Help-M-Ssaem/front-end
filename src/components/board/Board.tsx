@@ -92,6 +92,7 @@ const marginRightCSS = css`
 const thumbnailCSS = css`
   width: 9rem;
   height: 9rem;
+  object-fit: cover;
 `;
 
 const detailCSS = css`

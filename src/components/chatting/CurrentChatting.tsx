@@ -27,9 +27,10 @@ const matching = {
   color2: "#F8CAFF",
   nickName: "희희",
 };
-type Profile = {
+
+interface Profile {
   profile: ChattingHistory | null;
-};
+}
 
 const CurrentChatting: React.FC<Profile> = ({ profile }) => {
   const [isEvaluationModalOpen, setIsEvaluationModalOpen] = useState(false);
