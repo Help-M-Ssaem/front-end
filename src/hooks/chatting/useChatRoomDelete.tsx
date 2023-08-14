@@ -3,7 +3,7 @@ import { mssaemAxios as axios } from "../../apis/axios";
 import { chattingKeys } from "../../constants/chattingKey";
 
 async function deleteChatRoom(roomId: number): Promise<void> {
-  await axios.delete(`member/chat/rooms/${roomId}`);
+  await axios.delete(`/member/chat/rooms/${roomId}`);
 }
 
 interface UseChatRoomDelete {
