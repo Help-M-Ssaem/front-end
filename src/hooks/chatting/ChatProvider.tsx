@@ -1,13 +1,13 @@
 import { CompatClient, Stomp } from "@stomp/stompjs";
 import { createContext, useContext, useMemo, useRef } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { inputMessageState, messageState } from "../../states/chatting";
+import { useSetRecoilState } from "recoil";
+import { messageState } from "../../states/chatting";
 
 const ChatContext = createContext(
   {} as {
     connect: (roomId: number) => void;
     disconnect: () => void;
-    send: (roomId: number) => void;
+    send: (roomId: number, message: string) => void;
   },
 );
 
@@ -15,7 +15,6 @@ export const useChatContext = () => useContext(ChatContext);
 
 export function ChatProvider({ children }: any) {
   const setMessages = useSetRecoilState(messageState);
-  const [inputMessage, setInputMessage] = useRecoilState(inputMessageState);
   const token = localStorage.getItem("accessToken");
 
   // 채팅 연결 구독
@@ -55,8 +54,8 @@ export function ChatProvider({ children }: any) {
     }
   };
   // 채팅 보내기
-  const send = (roomId: number) => {
-    if (client.current && inputMessage.trim() !== "") {
+  const send = (roomId: number, message: string) => {
+    if (client.current) {
       client.current.send(
         `/pub/chat/message`,
         {
@@ -64,11 +63,10 @@ export function ChatProvider({ children }: any) {
         },
         JSON.stringify({
           roomId: roomId,
-          message: inputMessage,
+          message: message,
           type: "TALK",
         }),
       );
-      setInputMessage("");
     }
   };
 

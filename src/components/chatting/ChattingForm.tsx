@@ -3,28 +3,25 @@ import { css } from "@emotion/react";
 import { PhotoIcon } from "../../assets/ChattingIcons";
 import Button from "../button/Button";
 import Input from "../input/Input";
-import { useRecoilState } from "recoil";
-import { inputMessageState } from "../../states/chatting";
 import { useChatContext } from "../../hooks/chatting/ChatProvider";
+import { useState } from "react";
 
 export const ChattingForm = () => {
-  const [inputMessage, setInputMessage] = useRecoilState(inputMessageState);
+  const [message, setMessage] = useState("");
   const { send } = useChatContext();
-  const roomId = 1;
+  const roomId = 59; // TODO: roomId 받아오기
 
   const handleChattingSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    send(roomId);
+    send(roomId, message);
+    setMessage("");
   };
 
   return (
     <div css={dateBottom}>
       <form css={submitButtonBoxCSS} onSubmit={handleChattingSubmit}>
         <div css={inlineInputCSS}>
-          <Input
-            value={inputMessage}
-            onChange={(e) => setInputMessage(e.target.value)}
-          />
+          <Input value={message} onChange={(e) => setMessage(e.target.value)} />
           <label css={labelContainerCSS}>
             <PhotoIcon />
             <input
