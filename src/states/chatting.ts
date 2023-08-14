@@ -1,12 +1,12 @@
 import { atom } from "recoil";
-import * as Stomp from "stompjs";
+import { ChatMessage } from "../interfaces/chatting";
 
 export const stompClientState = atom<any>({
   key: "stompClientState",
   default: null,
 });
 
-export const messageState = atom<string[]>({
+export const messageState = atom<ChatMessage[]>({
   key: "messageState",
   default: [],
 });

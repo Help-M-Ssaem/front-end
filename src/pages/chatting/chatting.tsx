@@ -10,18 +10,13 @@ import Button from "../../components/button/Button";
 import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
 import { useChatRooms } from "../../hooks/chatting/useChatRooms";
-import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  activeRoomIdState,
-  messageState,
-  stompClientState,
-} from "../../states/chatting";
-import { ChattingForm } from "../../components/chatting/ChattingForm";
-import { useChatMessages } from "../../hooks/chatting/useChatMessages";
-import { useRef, useState } from "react";
+import { useRecoilState } from "recoil";
+import { activeRoomIdState, messageState } from "../../states/chatting";
+import { useEffect, useRef, useState } from "react";
 import { CompatClient, Stomp } from "@stomp/stompjs";
 import Input from "../../components/input/Input";
 import { PhotoIcon } from "../../assets/ChattingIcons";
+import { ChatMessage } from "../../interfaces/chatting";
 
 const ChattingPage = () => {
   const [activeRoomId, setActiveRoomId] = useRecoilState(activeRoomIdState);
@@ -32,8 +27,6 @@ const ChattingPage = () => {
   const { chatRooms } = useChatRooms();
   const navigate = useNavigate();
   let profileUrl = "";
-
-  console.log(messages.map((msg: any) => msg));
 
   // 채팅 연결 구독
   const client = useRef<CompatClient>();
@@ -55,11 +48,10 @@ const ChattingPage = () => {
     );
     return client;
   };
-  // 채팅 메세지를 받았을 때 호출되는 콜백 함수
   const onMessageReceived = (message: any) => {
     setMessages((prevMessage) => [...prevMessage, JSON.parse(message.body)]);
-    console.log("콜백함수");
   };
+
   // 채팅 나가기
   const disconnectHandler = () => {
     if (client.current) {
@@ -95,6 +87,20 @@ const ChattingPage = () => {
     setActive(true);
   };
 
+  const selectedChattingData = chatRooms?.find(
+    (chatRoom) => chatRoom.chatRoomId === activeRoomId,
+  );
+
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const scrollToBottom = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  };
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   return (
     <div css={editorContainerCSS}>
       <div onClick={connectHandler}>채팅 시작</div>
@@ -109,7 +115,7 @@ const ChattingPage = () => {
               <>
                 <div>
                   {chatRooms.map((chatRoom) => {
-                    if (chatRoom.roomId === activeRoomId) {
+                    if (chatRoom.chatRoomId === activeRoomId) {
                       profileUrl = chatRoom.memberSimpleInfo.profileImgUrl;
                       return (
                         <Profile
@@ -137,10 +143,10 @@ const ChattingPage = () => {
                 {chatRooms.map((chatRoom) => {
                   return (
                     <li
-                      onClick={() => handleChatRoomClick(chatRoom.roomId)}
-                      key={chatRoom.roomId}
+                      onClick={() => handleChatRoomClick(chatRoom.chatRoomId)}
+                      key={chatRoom.chatRoomId}
                       css={[
-                        activeRoomId === chatRoom.roomId &&
+                        activeRoomId === chatRoom.chatRoomId &&
                           active &&
                           activeStyle,
                       ]}
@@ -175,8 +181,8 @@ const ChattingPage = () => {
                   {/* <CurrentChatting profile={selectedChattingData} /> */}
                 </div>
                 {/* 채팅창 */}
-                <div css={dateMiddle}>
-                  <div css={{ padding: "0.8rem" }}>
+                <div css={dateMiddle} ref={scrollRef}>
+                  <div css={chattingBox}>
                     {messages ? (
                       messages.map((message, index) => (
                         <MessageItem
@@ -353,6 +359,11 @@ const bottomFontSIZE = css`
 const noMassageCSS = css`
   display: flex;
   padding-top: 7rem;
+`;
+
+// 채팅 박스
+const chattingBox = css`
+  padding: 0.8rem;
 `;
 
 // 채팅 입력 폼
