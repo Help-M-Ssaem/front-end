@@ -4,9 +4,10 @@ import COLOR from "../../styles/color";
 import { ChatMessage } from "../../interfaces/chatting";
 import FONT from "../../styles/font";
 import useMemberInfo from "../../hooks/user/useMemberInfo";
+import Time from "../../utils/Time";
 
 interface MessageItemProps {
-  message: any;
+  message: ChatMessage;
   profile: string;
 }
 
@@ -18,7 +19,9 @@ const MessageItem: React.FC<MessageItemProps> = ({ message, profile }) => {
       {message.type === "ENTER" && <div css={enterCSS}>{message.message}</div>}
       {message.type === "TALK" && message.sender === `${user?.nickName}` && (
         <div css={chatboxCSS}>
-          <div css={timeCSS}>{message.createdAt}</div>
+          <div css={timeCSS}>
+            <Time createdAt={message.createdAt} />
+          </div>
           <div css={currentUserMessageCSS}>{message.message}</div>
         </div>
       )}
