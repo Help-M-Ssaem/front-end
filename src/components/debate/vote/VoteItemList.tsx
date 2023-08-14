@@ -2,16 +2,17 @@
 import { css } from "@emotion/react";
 import VoteItem from "./VoteItem";
 import { Option } from "../../../interfaces/debate";
-
 interface VoteItemListProps {
     options : Option[];
     debateId: number;
 }
 
 const VoteItemList = ({ options, debateId }: VoteItemListProps) => {
+    const optionSelected = options.some((option) => option.selected === true);
+
     return(
         <div css={imageContentCSS}>
-            {options.map((data: Option, index:number) => {
+            {options.map((data: Option) => {
             return(
                 <VoteItem
                     key={data.id}
@@ -21,6 +22,7 @@ const VoteItemList = ({ options, debateId }: VoteItemListProps) => {
                     selectedPercent={data.selectedPercent}
                     selected={data.selected}
                     PostId={debateId}
+                    optionSelected = {optionSelected}
                 />
             )
             })}
