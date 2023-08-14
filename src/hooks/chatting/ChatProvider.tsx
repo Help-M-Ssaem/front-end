@@ -4,9 +4,9 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { inputMessageState, messageState } from "../../states/chatting";
 
 const ChatContext = createContext({
-  connectHandler: (roomId: number) => {},
+  connectHandler: (roomId: any) => {},
   disconnectHandler: () => {},
-  sendHandler: (roomId: number) => {},
+  sendHandler: (roomId: any) => {},
 });
 
 export const useChatContext = () => useContext(ChatContext);
@@ -15,6 +15,8 @@ export function ChatProvider({ children }: any) {
   const setMessages = useSetRecoilState(messageState);
   const [inputMessage, setInputMessage] = useRecoilState(inputMessageState);
   const token = localStorage.getItem("accessToken");
+  // const token =
+  //   "eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MSwiaWF0IjoxNjg5MzU2NTQwLCJleHAiOjE2OTQ1NDA1NDB9.nvOIStUQzS_-C2mLMX9tuNSUWqVYbPNa9p_5HlMyoDI";
 
   // 채팅 연결 구독
   const client = useRef<CompatClient>();

@@ -20,6 +20,7 @@ const ChattingPage = () => {
   const [active, setActive] = useState(false);
   const messages = useRecoilValue(messageState);
   const { chatRooms } = useChatRooms();
+
   const navigate = useNavigate();
   let profileUrl = "";
 
@@ -27,10 +28,6 @@ const ChattingPage = () => {
     setActiveRoomId(roomId);
     setActive(!active);
   };
-
-  const selectedChattingData = chatRooms?.find(
-    (chatRoom) => chatRoom.chatRoomId === activeRoomId,
-  );
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const scrollToBottom = () => {
     if (scrollRef.current) {
