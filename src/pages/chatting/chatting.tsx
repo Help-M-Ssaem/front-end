@@ -11,75 +11,26 @@ import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
 import { useChatRooms } from "../../hooks/chatting/useChatRooms";
 import { useRecoilState } from "recoil";
-import { activeRoomIdState, messageState } from "../../states/chatting";
+import {
+  activeRoomIdState,
+  inputMessageState,
+  messageState,
+} from "../../states/chatting";
 import { useEffect, useRef, useState } from "react";
-import { CompatClient, Stomp } from "@stomp/stompjs";
 import Input from "../../components/input/Input";
 import { PhotoIcon } from "../../assets/ChattingIcons";
+import { useChat } from "../../hooks/chatting/useChat";
 
 const ChattingPage = () => {
   const [activeRoomId, setActiveRoomId] = useRecoilState(activeRoomIdState);
   const [active, setActive] = useState(false);
-  const [inputMessage, setInputMessage] = useState("");
   const [messages, setMessages] = useRecoilState(messageState);
-  const token = localStorage.getItem("accessToken");
+  const [inputMessage, setInputMessage] = useRecoilState(inputMessageState);
   const { chatRooms } = useChatRooms();
   const navigate = useNavigate();
   let profileUrl = "";
 
-  // 채팅 연결 구독
-  const client = useRef<CompatClient>();
-  const connectHandler = () => {
-    client.current = Stomp.over(() => {
-      const sock = new WebSocket("wss://m-ssaem.com:8080/stomp/chat");
-      return sock;
-    });
-    client.current.connect(
-      {
-        token: token,
-      },
-      () => {
-        client.current &&
-          client.current.subscribe(`/sub/chat/room/1`, onMessageReceived, {
-            token: token!,
-          });
-      },
-    );
-    return client;
-  };
-  const onMessageReceived = (message: any) => {
-    setMessages((prevMessage) => [...prevMessage, JSON.parse(message.body)]);
-  };
-
-  // 채팅 나가기
-  const disconnectHandler = () => {
-    if (client.current) {
-      client.current.disconnect(() => {
-        window.location.reload();
-      });
-    }
-  };
-  // 채팅 보내기
-  const sendHandler = () => {
-    if (client.current && inputMessage.trim() !== "") {
-      client.current.send(
-        `/pub/chat/message`,
-        {
-          token: token,
-        },
-        JSON.stringify({
-          roomId: 1,
-          message: inputMessage,
-          type: "TALK",
-        }),
-      );
-      setInputMessage("");
-    }
-  };
-  const handleChattingSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    sendHandler();
-  };
+  const { connectHandler, disconnectHandler, sendHandler } = useChat();
 
   const handleChatRoomClick = (roomId: number) => {
     setActiveRoomId(roomId);
@@ -99,6 +50,11 @@ const ChattingPage = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  const handleChattingSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    sendHandler();
+  };
 
   return (
     <div css={editorContainerCSS}>

@@ -11,6 +11,11 @@ export const messageState = atom<ChatMessage[]>({
   default: [],
 });
 
+export const inputMessageState = atom<string>({
+  key: "inputMessageState",
+  default: "",
+});
+
 export const activeRoomIdState = atom<number>({
   key: "activeRoomIdState",
   default: 1,

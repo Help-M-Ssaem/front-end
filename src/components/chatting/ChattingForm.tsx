@@ -3,31 +3,14 @@ import { css } from "@emotion/react";
 import { PhotoIcon } from "../../assets/ChattingIcons";
 import Button from "../button/Button";
 import Input from "../input/Input";
-import { useRecoilValue } from "recoil";
-import { stompClientState } from "../../states/chatting";
-import { useState } from "react";
+import { useRecoilState } from "recoil";
+import { inputMessageState } from "../../states/chatting";
+import { useChat } from "../../hooks/chatting/useChat";
 
 export const ChattingForm = () => {
-  const [inputMessage, setInputMessage] = useState("");
-  const token = localStorage.getItem("accessToken");
-  const stompClient = useRecoilValue(stompClientState);
+  const [inputMessage, setInputMessage] = useRecoilState(inputMessageState);
+  const { sendHandler } = useChat();
 
-  const sendHandler = () => {
-    if (stompClient.current && inputMessage.trim() !== "") {
-      stompClient.current.send(
-        `/pub/chat/message`,
-        {
-          token: token,
-        },
-        JSON.stringify({
-          roomId: 1,
-          message: inputMessage,
-          type: "TALK",
-        }),
-      );
-      setInputMessage("");
-    }
-  };
   const handleChattingSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     sendHandler();
