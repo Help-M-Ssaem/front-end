@@ -8,27 +8,17 @@ import Button from "../button/Button";
 import { useState } from "react";
 import EvaluationModal from "../modal/EvaluationModal";
 import { useCreateEvaluation } from "../../hooks/worry/useEvaluation";
-//데이터 받아서 해야되는뎅...
-const matching = {
-  id: 1,
-  thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-  title: "학생회장 선배 도와주세요ㅠㅠ",
-  content: "마음이 있는 것 같나요?",
-  createdAt: "2분전",
-  mbti1: "EsFP",
-  mbti2: "ISTJ",
-  color1: "#94E3F8",
-  color2: "#F8CAFF",
-};
+import { ChatRoom } from "../../interfaces/chatting";
 
-interface Profile {
-  profile: any;
+interface CurrentChattingProps {
+  chatRoom: ChatRoom;
 }
 
-const CurrentChatting: React.FC<Profile> = ({ profile }) => {
+const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
   const [isEvaluationModalOpen, setIsEvaluationModalOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+
   const handleEvaluation = () => {
     setIsEvaluationModalOpen(true);
   };
@@ -38,19 +28,18 @@ const CurrentChatting: React.FC<Profile> = ({ profile }) => {
   };
 
   const formData = {
-    worryBoardId: matching.id,
+    worryBoardId: chatRoom.chatRoomId,
     evaluations: [selectedOption],
   };
-
   const createMutation = useCreateEvaluation(formData);
-
   const handleSubmit = (selectedOption: string) => {
     setSelectedOption(selectedOption);
-
     if (selectedOption) {
       createMutation.mutate();
     }
   };
+
+  console.log(chatRoom);
 
   return (
     <div css={MatchingBoxCSS}>
@@ -58,29 +47,31 @@ const CurrentChatting: React.FC<Profile> = ({ profile }) => {
         <div css={solveCSS}>
           {isSubmitted && <Badge mbti="해결 완료" color={COLOR.MAIN1} />}
           <div css={mbtiBoxCSS}>
-            <Badge mbti={matching.mbti1} color={matching.color1} />
+            <Badge mbti={chatRoom.memberMbti} color={"#F8CAFF"} />
             <RightArrowIcon />
-            <Badge mbti={matching.mbti2} color={matching.color2} />
+            <Badge mbti={chatRoom.targetMbti} color={"#5BE1A9"} />
           </div>
         </div>
-        <div css={titleCSS}>{matching.title}</div>
+        <div css={titleCSS}>{chatRoom.chatRoomTitle}</div>
       </div>
       <div css={rightCSS}>
         <Button onClick={handleEvaluation} addCSS={buttonCSS}>
           해결완료
         </Button>
       </div>
-      {isEvaluationModalOpen && (
+      {/* {isEvaluationModalOpen && (
         <EvaluationModal
           isOpen={isEvaluationModalOpen}
           onClose={handleCloseModal}
           onClick={() => {}}
-          profileData={profile}
+          // profileData={profile}
         />
-      )}
+      )} */}
     </div>
   );
 };
+
+export default CurrentChatting;
 
 const buttonCSS = css`
   background: ${COLOR.WHITE};
@@ -121,5 +112,3 @@ const solveCSS = css`
   margin: 0.3rem 0 0.8rem 0;
   align-items: center;
 `;
-
-export default CurrentChatting;

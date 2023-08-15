@@ -29,7 +29,9 @@ const MessageItem: React.FC<MessageItemProps> = ({ message, profile }) => {
         <div css={sendCSS}>
           <img src={profile} alt="Profile" css={proflieimgCSS} />
           <div css={otherUserMessageCSS}>{message.message}</div>
-          <div css={timeCSS}>{message.createdAt}</div>
+          <div css={timeCSS}>
+            <Time createdAt={message.createdAt} />
+          </div>
         </div>
       )}
     </>
