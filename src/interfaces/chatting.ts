@@ -37,6 +37,8 @@ export interface ChatRoom {
   state: boolean;
   lastMessage: string;
   lastSendAt: string;
+  memberMbti: string;
+  targetMbti: string;
   memberSimpleInfo: User;
 }
 

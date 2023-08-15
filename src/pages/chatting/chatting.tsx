@@ -14,6 +14,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { activeRoomIdState, messageState } from "../../states/chatting";
 import { useEffect, useRef, useState } from "react";
 import { ChattingForm } from "../../components/chatting/ChattingForm";
+import CurrentChatting from "../../components/chatting/CurrentChatting";
 
 const ChattingPage = () => {
   const [activeRoomId, setActiveRoomId] = useRecoilState(activeRoomIdState);
@@ -111,7 +112,11 @@ const ChattingPage = () => {
             {chatRooms && active ? (
               <>
                 <div css={dateTop}>
-                  {/* <CurrentChatting profile={selectedChattingData} /> */}
+                  {chatRooms.map((chatRoom) => {
+                    if (chatRoom.chatRoomId === activeRoomId) {
+                      return <CurrentChatting chatRoom={chatRoom} />;
+                    }
+                  })}
                 </div>
                 <div css={dateMiddle} ref={scrollRef}>
                   <div css={chattingBox}>

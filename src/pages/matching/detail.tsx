@@ -74,7 +74,8 @@ const DetailMatchingPage = () => {
               css={contentCSS}
               dangerouslySetInnerHTML={{ __html: worryBoard.content }}
             />
-            {worryBoard.isChatAllowed && chatExist && (
+            {/* TODO: chatExist 조건 추가 */}
+            {worryBoard.isChatAllowed && (
               <div css={startButtonBoxCSS} onClick={handleStartChatting}>
                 <Button>채팅 시작</Button>
               </div>
