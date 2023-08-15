@@ -21,6 +21,7 @@ const ChattingPage = () => {
   const [active, setActive] = useState(false);
   const messages = useRecoilValue(messageState);
   const { chatRooms } = useChatRooms();
+  const activeRoomMessages = messages[activeRoomId] || [];
 
   const navigate = useNavigate();
   let profileUrl = "";
@@ -120,17 +121,14 @@ const ChattingPage = () => {
                 </div>
                 <div css={dateMiddle} ref={scrollRef}>
                   <div css={chattingBox}>
-                    {messages ? (
-                      messages.map((message, index) => (
+                    {activeRoomMessages &&
+                      activeRoomMessages.map((message: any, index: number) => (
                         <MessageItem
                           key={index}
                           message={message}
                           profile={profileUrl}
                         />
-                      ))
-                    ) : (
-                      <></>
-                    )}
+                      ))}
                   </div>
                 </div>
                 <ChattingForm chatRoomId={activeRoomId} />

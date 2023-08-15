@@ -6,9 +6,11 @@ export const stompClientState = atom<any>({
   default: null,
 });
 
-export const messageState = atom<ChatMessage[]>({
+export const messageState = atom<{
+  [roomId: number]: ChatMessage[];
+}>({
   key: "messageState",
-  default: [],
+  default: {},
 });
 
 export const inputMessageState = atom<string>({

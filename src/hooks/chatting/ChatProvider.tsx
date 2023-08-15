@@ -34,7 +34,7 @@ export function ChatProvider({ children }: any) {
         client.current &&
           client.current.subscribe(
             `/sub/chat/room/${roomId}`,
-            onMessageReceived,
+            (message) => onMessageReceived(message, roomId),
             {
               token: token!,
             },
@@ -43,8 +43,14 @@ export function ChatProvider({ children }: any) {
     );
     return client;
   };
-  const onMessageReceived = (message: any) => {
-    setMessages((prevMessage) => [...prevMessage, JSON.parse(message.body)]);
+  const onMessageReceived = (message: any, roomId: number) => {
+    setMessages((prevMessages) => {
+      const updatedMessages = {
+        ...prevMessages,
+        [roomId]: [...(prevMessages[roomId] || []), JSON.parse(message.body)],
+      };
+      return updatedMessages;
+    });
   };
 
   // 채팅 나가기
