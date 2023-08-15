@@ -28,7 +28,7 @@ const ChattingPage = () => {
 
   const handleChatRoomClick = (roomId: number) => {
     setActiveRoomId(roomId);
-    setActive(!active);
+    setActive(true);
   };
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const scrollToBottom = () => {
