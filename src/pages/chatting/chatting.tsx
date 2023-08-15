@@ -128,7 +128,7 @@ const ChattingPage = () => {
                     )}
                   </div>
                 </div>
-                <ChattingForm />
+                <ChattingForm chatRoomId={activeRoomId} />
               </>
             ) : (
               <div css={[noChatCSS, noMassageCSS]}>

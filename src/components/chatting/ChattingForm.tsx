@@ -6,14 +6,17 @@ import Input from "../input/Input";
 import { useChatContext } from "../../hooks/chatting/ChatProvider";
 import { useState } from "react";
 
-export const ChattingForm = () => {
+interface ChattingFormProps {
+  chatRoomId: number;
+}
+
+export const ChattingForm = ({ chatRoomId }: ChattingFormProps) => {
   const [message, setMessage] = useState("");
   const { send } = useChatContext();
-  const roomId = 59; // TODO: roomId 받아오기
 
   const handleChattingSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    send(roomId, message);
+    send(chatRoomId, message);
     setMessage("");
   };
 
