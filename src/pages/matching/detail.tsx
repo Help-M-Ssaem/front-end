@@ -34,11 +34,11 @@ const DetailMatchingPage = () => {
   };
 
   const { connect } = useChatContext();
-  const roomId = 22; // TODO: worryBoard roomId 바꾸기
+  const chatRoomId = worryBoard && worryBoard.chatRoomId;
 
   const handleStartChatting = () => {
     navigate(`/chatting`);
-    connect(roomId);
+    connect(chatRoomId!!);
   };
 
   const { chatExist } = useChatExist(Number(id));
