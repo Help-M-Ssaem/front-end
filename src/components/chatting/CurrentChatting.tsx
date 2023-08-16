@@ -6,11 +6,7 @@ import Badge from "../badge/Badge";
 import { RightArrowIcon } from "../../assets/CommonIcons";
 import Button from "../button/Button";
 import { useEffect, useState } from "react";
-import {
-  ChatRoom,
-  ChattingHistory,
-  MsseamProps,
-} from "../../interfaces/chatting";
+import { ChattingHistory, MsseamProps } from "../../interfaces/chatting";
 import EvaluationModal from "../modal/EvaluationModal";
 import { useCreateEvaluation } from "../../hooks/worry/useEvaluation";
 import { ChatRoom } from "../../interfaces/chatting";
@@ -61,7 +57,7 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
       </div>
       <div css={rightCSS}>
         <Button
-          onClick={handleOpenModalWithData}
+          onClick={handleEvaluation}
           addCSS={isSubmitted ? buttonCSS : buttonCSS2}
           disabled={isSubmitted}
         >
