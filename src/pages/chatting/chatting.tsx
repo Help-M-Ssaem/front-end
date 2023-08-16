@@ -23,6 +23,8 @@ const ChattingPage = () => {
   const { chatRooms } = useChatRooms();
   const activeRoomMessages = messages[activeRoomId] || [];
 
+  console.log(chatRooms);
+
   const navigate = useNavigate();
   let profileUrl = "";
 
@@ -51,19 +53,20 @@ const ChattingPage = () => {
             {chatRooms && active && (
               <>
                 <div>
-                  {chatRooms.map((chatRoom) => {
-                    if (chatRoom.chatRoomId === activeRoomId) {
-                      profileUrl = chatRoom.memberSimpleInfo.profileImgUrl;
-                      return (
-                        <Profile
-                          image={chatRoom.memberSimpleInfo.profileImgUrl}
-                          name={chatRoom.memberSimpleInfo.nickName}
-                          mbti={chatRoom.memberSimpleInfo.mbti}
-                          badge={chatRoom.memberSimpleInfo.badge}
-                        />
-                      );
-                    }
-                  })}
+                  {Array.isArray(chatRooms) &&
+                    chatRooms.map((chatRoom) => {
+                      if (chatRoom.chatRoomId === activeRoomId) {
+                        profileUrl = chatRoom.memberSimpleInfo.profileImgUrl;
+                        return (
+                          <Profile
+                            image={chatRoom.memberSimpleInfo.profileImgUrl}
+                            name={chatRoom.memberSimpleInfo.nickName}
+                            mbti={chatRoom.memberSimpleInfo.mbti}
+                            badge={chatRoom.memberSimpleInfo.badge}
+                          />
+                        );
+                      }
+                    })}
                 </div>
                 <div css={ChatMenuCSS}>
                   <Hamburger />
@@ -77,21 +80,22 @@ const ChattingPage = () => {
           <div css={chattingLeftCSS}>
             {chatRooms && (
               <ul>
-                {chatRooms.map((chatRoom) => {
-                  return (
-                    <li
-                      onClick={() => handleChatRoomClick(chatRoom.chatRoomId)}
-                      key={chatRoom.chatRoomId}
-                      css={[
-                        activeRoomId === chatRoom.chatRoomId &&
-                          active &&
-                          activeStyle,
-                      ]}
-                    >
-                      <ChattingComponent chatRoom={chatRoom} />
-                    </li>
-                  );
-                })}
+                {Array.isArray(chatRooms) &&
+                  chatRooms.map((chatRoom) => {
+                    return (
+                      <li
+                        onClick={() => handleChatRoomClick(chatRoom.chatRoomId)}
+                        key={chatRoom.chatRoomId}
+                        css={[
+                          activeRoomId === chatRoom.chatRoomId &&
+                            active &&
+                            activeStyle,
+                        ]}
+                      >
+                        <ChattingComponent chatRoom={chatRoom} />
+                      </li>
+                    );
+                  })}
               </ul>
             )}
           </div>
@@ -113,11 +117,12 @@ const ChattingPage = () => {
             {chatRooms && active ? (
               <>
                 <div css={dateTop}>
-                  {chatRooms.map((chatRoom) => {
-                    if (chatRoom.chatRoomId === activeRoomId) {
-                      return <CurrentChatting chatRoom={chatRoom} />;
-                    }
-                  })}
+                  {Array.isArray(chatRooms) &&
+                    chatRooms.map((chatRoom) => {
+                      if (chatRoom.chatRoomId === activeRoomId) {
+                        return <CurrentChatting chatRoom={chatRoom} />;
+                      }
+                    })}
                 </div>
                 <div css={dateMiddle} ref={scrollRef}>
                   <div css={chattingBox}>
