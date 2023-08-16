@@ -49,13 +49,21 @@ const CommentComponent = ({ comment, onClick, best, reply }: CommentProps) => {
             <div css={deleteCSS} onClick={handleCommentDeleteClick}>
               삭제
             </div>
-            <HeartIcon />
-            <div>{comment.likeCount}</div>
+            {comment.content !== "삭제된 댓글입니다." && (
+              <>
+                <HeartIcon />
+                <div>{comment.likeCount}</div>
+              </>
+            )}
           </div>
         ) : (
           <div css={likeCountCSS} onClick={handleLikeClick}>
-            <HeartIcon />
-            <div>{comment.likeCount}</div>
+            {comment.content !== "삭제된 댓글입니다." && (
+              <>
+                <HeartIcon />
+                <div>{comment.likeCount}</div>
+              </>
+            )}
           </div>
         )}
       </div>
