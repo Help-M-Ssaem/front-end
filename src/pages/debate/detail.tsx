@@ -22,7 +22,6 @@ import CommentCreate from "../../components/board/comment/CommentCreate";
 import ReportModal from "../../components/modal/ReportModal";
 import ShareModal from "../../components/modal/ShareModal";
 
-
 const DetailDebatePage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -103,43 +102,49 @@ const DetailDebatePage = () => {
 
 
   return (
-    <div  css={ContainerCSS}>
-    <Container>
-      {debate && (
-        <>
-          
-            {debate.isEditAllowed &&
-            <div css={buttonBoxCSS}>
-            <Button
-              onClick={() => navigate(`/debate/${id}/update`)}
-              addCSS={updateButtonCSS}
-            >
-              수정
-            </Button>
-            <Button onClick={handleDeleteOpen}>삭제</Button>
-            </div>
-            }
-          
-          <div css={detailCSS}>
-            <div css={detailHeaderCSS}>
-              <Profile
-                image={
-                  debate.discussionSimpleInfo.memberSimpleInfo.profileImgUrl
-                }
-                name={debate.discussionSimpleInfo.memberSimpleInfo.nickName}
-                mbti={debate.discussionSimpleInfo.memberSimpleInfo.mbti}
-                badge={debate.discussionSimpleInfo.memberSimpleInfo.badge}
+    <div css={ContainerCSS}>
+      <Container>
+        {debate && (
+          <>
+            {debate.isEditAllowed && (
+              <div css={buttonBoxCSS}>
+                <Button
+                  onClick={() => navigate(`/debate/${id}/update`)}
+                  addCSS={updateButtonCSS}
+                >
+                  수정
+                </Button>
+                <Button onClick={handleDeleteOpen}>삭제</Button>
+              </div>
+            )}
+
+            <div css={detailCSS}>
+              <div css={detailHeaderCSS}>
+                <Profile
+                  id={debate.discussionSimpleInfo.memberSimpleInfo.id}
+                  image={
+                    debate.discussionSimpleInfo.memberSimpleInfo.profileImgUrl
+                  }
+                  name={debate.discussionSimpleInfo.memberSimpleInfo.nickName}
+                  mbti={debate.discussionSimpleInfo.memberSimpleInfo.mbti}
+                  badge={debate.discussionSimpleInfo.memberSimpleInfo.badge}
+                />
+                <div css={dateCSS}>{debate.discussionSimpleInfo.createdAt}</div>
+              </div>
+              <div css={titleCSS}>{debate.discussionSimpleInfo.title}</div>
+              <div css={contentCSS}>{debate.discussionSimpleInfo.content}</div>
+              <VoteItemList
+                options={debate.discussionSimpleInfo.options}
+                debateId={debate.discussionSimpleInfo.id}
               />
-              <div css={dateCSS}>{debate.discussionSimpleInfo.createdAt}</div>
-            </div>
-            <div css={titleCSS}>{debate.discussionSimpleInfo.title}</div>
-            <div css={contentCSS}>{debate.discussionSimpleInfo.content}</div>
-            <VoteItemList
-              options={debate.discussionSimpleInfo.options}
-              debateId={debate.discussionSimpleInfo.id}
-            />
-            <div css={BottomdetailCSS}>
-            <RedButton count = {`${debate.discussionSimpleInfo.participantCount}명이 참여중`}></RedButton>
+              <div css={BottomdetailCSS}>
+                <RedButton
+                  count={`${debate.discussionSimpleInfo.participantCount}명이 참여중`}
+                ></RedButton>
+              </div>
+              <div css={commentTextCSS}>
+                전체 댓글 {comments ? comments.result.length : 0}개
+              </div>
             </div>
             <div css={commentBoxCSS}>
             <div>전체 댓글 {comments ? comments.result.length : 0}개</div>
@@ -293,14 +298,13 @@ const updateButtonCSS = css`
 `;
 
 const BottomdetailCSS = css`
-margin: 1rem 0 1.2rem 0;
-display: flex;
-align-items: center;
-font-size: ${FONT.SIZE.HEADLINE};
-font-weight: ${FONT.WEIGHT.BOLD};
-color: ${COLOR.GRAY2};
+  margin: 1rem 0 1.2rem 0;
+  display: flex;
+  align-items: center;
+  font-size: ${FONT.SIZE.HEADLINE};
+  font-weight: ${FONT.WEIGHT.BOLD};
+  color: ${COLOR.GRAY2};
 `;
-
 
 const commentBoxCSS = css`
   display: flex;
@@ -325,4 +329,7 @@ const declarationCSS = css`
 
 const replyComment = css`
   margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;

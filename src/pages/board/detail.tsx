@@ -25,9 +25,12 @@ import Text from "../../components/text/Text";
 import ReportModal from "../../components/modal/ReportModal";
 import ShareModal from "../../components/modal/ShareModal";
 import { useRecoilState } from "recoil";
-import { replyCommentIdState, replyCommentOpenState } from "../../states/board";
+import {
+  mbtiState,
+  replyCommentIdState,
+  replyCommentOpenState,
+} from "../../states/board";
 import { useEffect } from "react";
-import { set } from "date-fns";
 
 const DetailBoardPage = () => {
   const navigate = useNavigate();
@@ -60,6 +63,9 @@ const DetailBoardPage = () => {
     setIsReportModalOpen(false);
     setIsShareModalOpen(false);
   };
+
+  const [mbtiSelected, setMbtiSelected] = useRecoilState(mbtiState);
+
   const deleteMutation = useDeleteBoard(boardId);
   const likeMutation = useBoardLike(boardId);
 
@@ -85,13 +91,20 @@ const DetailBoardPage = () => {
     setReplyCommentOpen(false);
   }, []);
 
+  const handleCategoryClick = () => {
+    navigate("/board/mbti");
+    setMbtiSelected((board && board.boardMbti) as string);
+  };
+
   return (
     <>
       <Container addCSS={containerCSS}>
         {board && (
           <>
             <div css={buttonBoxCSS}>
-              <Text>{board.boardMbti} 게시판</Text>
+              <Text onClick={handleCategoryClick} addCSS={categoryCSS}>
+                {board.boardMbti} 게시판
+              </Text>
               {board.isAllowed && (
                 <div css={buttonsCSS}>
                   <Button onClick={() => navigate("update")} addCSS={buttonCSS}>
@@ -104,28 +117,31 @@ const DetailBoardPage = () => {
             <div css={detailCSS}>
               <div css={detailHeaderCSS}>
                 <Profile
+                  id={board.memberSimpleInfo.id}
                   image={board.memberSimpleInfo.profileImgUrl}
                   name={board.memberSimpleInfo.nickName}
                   mbti={board.memberSimpleInfo.mbti}
                   badge={board.memberSimpleInfo.badge}
                 />
-                <div css={dateCSS}>{board.createdAt}</div>
+                <div css={dateBoxCSS}>
+                  <div css={dateCSS}>조회수 {board.hits}회</div>
+                  <div css={dateCSS}>|</div>
+                  <div css={dateCSS}>{board.createdAt}</div>
+                </div>
               </div>
               <div css={titleCSS}>{board.title}</div>
               <div
                 css={contentCSS}
                 dangerouslySetInnerHTML={{ __html: board.content }}
               />
-              {!board.isAllowed && (
-                <div css={likeButtonBoxCSS}>
-                  <div css={likeCountCSS}>{board.likeCount}</div>
-                  {board.isLiked ? (
-                    <LikeClickedIcon onClick={handleLikeClick} />
-                  ) : (
-                    <LikeIcon onClick={handleLikeClick} />
-                  )}
-                </div>
-              )}
+              <div css={likeButtonBoxCSS}>
+                <div css={likeCountCSS}>{board.likeCount}</div>
+                {board.isLiked ? (
+                  <LikeClickedIcon onClick={handleLikeClick} />
+                ) : (
+                  <LikeIcon onClick={handleLikeClick} />
+                )}
+              </div>
 
               <div css={commentBoxCSS}>
                 <div>전체 댓글 {comments ? comments.result.length : 0}개</div>
@@ -242,10 +258,15 @@ const detailHeaderCSS = css`
   margin-bottom: 1rem;
 `;
 
+const dateBoxCSS = css`
+  display: flex;
+`;
+
 const dateCSS = css`
   font-size: ${FONT.SIZE.BODY};
   font-weight: ${FONT.WEIGHT.REGULAR};
   color: ${COLOR.GRAY2};
+  margin-left: 0.5rem;
 `;
 
 const titleCSS = css`
@@ -332,4 +353,8 @@ const likeButtonBoxCSS = css`
 
 const replyComment = css`
   margin-top: 1rem;
+`;
+
+const categoryCSS = css`
+  cursor: pointer;
 `;

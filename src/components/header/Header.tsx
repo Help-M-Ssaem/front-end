@@ -10,6 +10,7 @@ import useMemberInfo from "../../hooks/user/useMemberInfo";
 import { useState } from "react";
 import AlarmMenu from "../side/Alarm";
 import FavoritesMenu from "../side/Favorites";
+import Profile from "../profile/Profile";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -41,10 +42,18 @@ const Header = () => {
     <header css={headerCSS} onClick={handleCloseAll}>
       <div css={headerTopCSS}>
         <LogoIcon onClick={() => navigate("/")} />
-        {!user && (
+        {!user ? (
           <Button onClick={handleLoginClick} addCSS={buttonCSS}>
             로그인하고 이용하기
           </Button>
+        ) : (
+          <Profile
+            id={user.id}
+            image={user.profileImgUrl}
+            name={user.nickName}
+            mbti={user.mbti}
+            badge={user.badge}
+          />
         )}
       </div>
       <div css={headerBottomCSS}>
