@@ -44,6 +44,26 @@ const UpdateBoardPage = () => {
   const [openCategory, setOpenCategory] = useState(false);
   const navigate = useNavigate();
 
+  const [currentImageUrls, setCurrentImageUrls] = useState<any>(image);
+
+  // 현재 글에 있는 이미지 url 추출
+  const extractImageUrls = (content: string) => {
+    const imgTagRegex = /<img[^>]*src="([^"]+)"[^>]*>/g;
+    const matches = content.match(imgTagRegex);
+
+    if (!matches) {
+      return [];
+    }
+
+    const imageUrls = matches.map((match) => {
+      const srcMatch = match.match(/src="([^"]+)"/);
+      return srcMatch ? srcMatch[1] : null;
+    });
+
+    return imageUrls.filter((url) => url !== null);
+  };
+  // console.log(extractImageUrls(content));
+
   const handleCategoryButtonClick = () => {
     setOpenCategory(!openCategory);
   };
