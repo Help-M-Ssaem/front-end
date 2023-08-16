@@ -11,7 +11,7 @@ import { useBoardCommentDelete } from "../../../hooks/board/comment/useBoardComm
 import { ReplyIcon } from "../../../assets/CommentIcons";
 
 interface CommentProps {
-  comment: any;
+  comment: Comment;
   onClick?: () => void;
   best?: boolean;
   reply?: boolean;
