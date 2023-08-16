@@ -22,6 +22,10 @@ import { useBoardList } from "../../hooks/board/useBoardList";
 import BoardComponent from "../../components/board/Board";
 import ListPagination from "../../components/Pagination/ListPagination";
 import Text from "../../components/text/Text";
+import { useRecoilState } from "recoil";
+import { replyCommentIdState, replyCommentOpenState } from "../../states/board";
+import { useEffect } from "react";
+import { set } from "date-fns";
 
 const DetailBoardPage = () => {
   const navigate = useNavigate();
@@ -42,15 +46,6 @@ const DetailBoardPage = () => {
   const { boardList } = useBoardList(page, limit, boardId);
   const totalPage = boardList ? boardList.totalSize - 1 : 1;
 
-  // TODO: 더보기 구현되면 page, size 수정
-  const { comments } = useBoardComment(boardId, 0, 10);
-  const { bestComments } = useBoardBestComment(boardId);
-  const [content, setContent] = useState("");
-
-  const [replyContent, setReplyContent] = useState("");
-  const [replyCommentId, setReplyCommentId] = useState(0);
-  const [replyCommentOpen, setReplyCommentOpen] = useState(false);
-
   const deleteMutation = useDeleteBoard(boardId);
   const likeMutation = useBoardLike(boardId);
 
@@ -58,46 +53,23 @@ const DetailBoardPage = () => {
     deleteMutation.mutate();
     navigate(-1);
   };
-
   const handleLikeClick = () => {
     likeMutation.mutate();
   };
 
-  const formData = new FormData();
-  formData.append(
-    "postBoardCommentReq",
-    new Blob([JSON.stringify(content)], { type: "application/json" }),
+  // TODO: 더보기 구현되면 page, size 수정
+  const { comments } = useBoardComment(boardId, 0, 10);
+  const { bestComments } = useBoardBestComment(boardId);
+
+  const [replyCommentId, setReplyCommentId] =
+    useRecoilState(replyCommentIdState);
+  const [replyCommentOpen, setReplyCommentOpen] = useRecoilState(
+    replyCommentOpenState,
   );
 
-  const replyFormData = new FormData();
-  replyFormData.append(
-    "postBoardCommentReq",
-    new Blob([JSON.stringify(replyContent)], { type: "application/json" }),
-  );
-
-  const createMutation = useBoardCommentCreate(boardId, formData);
-  const createReplyMutation = useBoardCommentCreate(
-    boardId,
-    replyFormData,
-    replyCommentId,
-  );
-
-  const handleCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    createMutation.mutate();
-    setContent("");
-  };
-  const handleReplyCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    createReplyMutation.mutate();
-    setReplyContent("");
+  useEffect(() => {
     setReplyCommentOpen(false);
-  };
-
-  const handleCommentClick = (commentId: number) => {
-    setReplyCommentOpen(!replyCommentOpen);
-    setReplyCommentId(commentId);
-  };
+  }, []);
 
   return (
     <>
@@ -155,18 +127,12 @@ const DetailBoardPage = () => {
                   <div key={comment.commentId}>
                     {comment.parentId === 0 && (
                       <>
-                        <CommentComponent
-                          comment={comment}
-                          onClick={() => handleCommentClick(comment.commentId)}
-                        />
+                        <CommentComponent comment={comment} />
                         {comments.result.map(
                           (replyComment) =>
                             replyComment.parentId === comment.commentId && (
                               <CommentComponent
                                 comment={replyComment}
-                                onClick={() =>
-                                  handleCommentClick(replyComment.parentId)
-                                }
                                 reply={true}
                               />
                             ),
@@ -175,24 +141,14 @@ const DetailBoardPage = () => {
                     )}
                     {replyCommentOpen &&
                       replyCommentId === comment.commentId && (
-                        <CommentCreate
-                          onSubmit={handleReplyCommentSubmit}
-                          content={replyContent}
-                          setContent={setReplyContent}
-                          addCSS={replyComment}
-                          reply={true}
-                        />
+                        <CommentCreate addCSS={replyComment} reply={true} />
                       )}
                   </div>
                 ))}
             </div>
             <div css={commentTextCSS}>댓글 쓰기</div>
             <hr css={hrCSS} />
-            <CommentCreate
-              onSubmit={handleCommentSubmit}
-              content={content}
-              setContent={setContent}
-            />
+            <CommentCreate />
           </>
         )}
       </Container>
