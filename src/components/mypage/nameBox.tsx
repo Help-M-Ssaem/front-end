@@ -49,11 +49,7 @@ const NameBox = ({
   return (
     <div css={userinfoCSS}>
       <div css={nickNameCSS({ result })}>
-        <input
-          placeholder={name}
-          ref={inputRef}
-          onChange={handleNickNameChange}
-        />
+        <input value={name} ref={inputRef} onChange={handleNickNameChange} />
 
         <div css={NickNameContainer}>
           {result !== null && (
