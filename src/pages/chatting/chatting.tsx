@@ -23,8 +23,6 @@ const ChattingPage = () => {
   const { chatRooms } = useChatRooms();
   const activeRoomMessages = messages[activeRoomId] || [];
 
-  console.log(chatRooms);
-
   const navigate = useNavigate();
   let profileUrl = "";
 

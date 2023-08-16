@@ -12,7 +12,7 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   onClick: (result: string) => void;
-  profile: MsseamProps | undefined;
+  profile: MsseamProps | null;
 }
 
 const options = [
@@ -29,9 +29,7 @@ const EvaluationModal: React.FC<ModalProps> = ({
   profile,
 }) => {
   const [selectedOption, setSelectedOption] = useState<string>("");
-  const [profileData, setProfileData] = useState<MsseamProps | undefined>(
-    profile,
-  );
+  const [profileData, setProfileData] = useState<MsseamProps | null>(profile);
 
   useEffect(() => {
     if (profile !== undefined) {
@@ -42,7 +40,6 @@ const EvaluationModal: React.FC<ModalProps> = ({
 
   if (!isOpen || profileData === null) return null; // 모달 열리기 전에 데이터가 없으면 null 반환
 
-  console.log(profile);
   const handleOptionClick = (optionValue: string) => {
     setSelectedOption(optionValue);
   };
@@ -67,11 +64,11 @@ const EvaluationModal: React.FC<ModalProps> = ({
           <div css={[boXTopCSS, boXCSS]}>
             {profile !== undefined ? (
               <div>
-                <img css={profileImgCSS} src={profile.profileImgUrl} />
-                <div css={profileDetailCSS}>{profile.nickName}</div>
+                <img css={profileImgCSS} src={profile?.profileImgUrl} />
+                <div css={profileDetailCSS}>{profile?.nickName}</div>
                 <div css={[profileDetailCSS, marginLeftCSS]}>
-                  <Badge mbti={profile.mbti || ""} color={"#F8CAFF"} />
-                  <Badge mbti={profile.badge || ""} color={"#5BE1A9"} />
+                  <Badge mbti={profile?.mbti || ""} color={"#F8CAFF"} />
+                  <Badge mbti={profile?.badge || ""} color={"#5BE1A9"} />
                 </div>
               </div>
             ) : (

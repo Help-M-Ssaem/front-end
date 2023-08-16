@@ -10,7 +10,8 @@ import { ChattingHistory, MsseamProps } from "../../interfaces/chatting";
 import EvaluationModal from "../modal/EvaluationModal";
 import { useCreateEvaluation } from "../../hooks/worry/useEvaluation";
 import { ChatRoom } from "../../interfaces/chatting";
-
+import { useSolveWorry } from "../../hooks/worry/useWorrySolved";
+import { mssaemAxios as axios } from "../../apis/axios";
 interface CurrentChattingProps {
   chatRoom: ChatRoom;
 }
@@ -19,28 +20,52 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
   const [isEvaluationModalOpen, setIsEvaluationModalOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [profileData, setProfileData] = useState<MsseamProps | null>(null);
 
-  const handleEvaluation = () => {
-    setIsEvaluationModalOpen(true);
+  const worryBoardId = chatRoom.worryBoardId;
+
+  const handleEvaluation = async () => {
+    console.log(worryBoardId);
+    try {
+      const res = await getSolved(worryBoardId);
+      console.log(res);
+      setProfileData(res);
+      setIsEvaluationModalOpen(true);
+    } catch (error) {
+      console.error("Error fetching solved data:", error);
+    }
   };
+
+  // const handleEvaluation = () => {
+  //   const profile = getSolved(chatRoom.worryBoardId);
+  //   setIsEvaluationModalOpen(true);
+  // };
+
   const handleCloseModal = () => {
     setIsEvaluationModalOpen(false);
     setIsSubmitted(true);
   };
 
   const formData = {
-    worryBoardId: chatRoom.chatRoomId,
+    worryBoardId: worryBoardId,
     evaluations: [selectedOption],
   };
+
+  async function getSolved(id: number): Promise<MsseamProps> {
+    const { data } = await axios.patch(`/member/worry-board/${id}/solved`, {
+      worrySolverId: id,
+    });
+    return data;
+  }
   const createMutation = useCreateEvaluation(formData);
+
   const handleSubmit = (selectedOption: string) => {
+    console.log(formData);
     setSelectedOption(selectedOption);
     if (selectedOption) {
       createMutation.mutate();
     }
   };
-
-  console.log(chatRoom);
 
   return (
     <div css={MatchingBoxCSS}>
@@ -64,14 +89,17 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
           해결완료
         </Button>
       </div>
-      {/* {isEvaluationModalOpen && (
+      {isEvaluationModalOpen && profileData !== null && (
         <EvaluationModal
           isOpen={isEvaluationModalOpen}
           onClose={handleCloseModal}
-          onClick={() => {}}
-          profile={profile}
+          onClick={(option) => {
+            handleSubmit(option);
+          }}
+          // profile={chatRoom.memberSimpleInfo}
+          profile={profileData}
         />
-      )} */}
+      )}
     </div>
   );
 };
