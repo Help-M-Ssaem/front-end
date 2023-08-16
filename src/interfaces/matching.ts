@@ -25,6 +25,6 @@ export interface MainTeacher {
   nickName: string;
   mbti: string;
   badge: string;
-  profileImgUrl:string;
-  introduction:string;
+  profileImgUrl: string;
+  introduction: string;
 }

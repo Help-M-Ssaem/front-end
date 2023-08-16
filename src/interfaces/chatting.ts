@@ -50,3 +50,11 @@ export interface ChatMessage {
   type: string;
   worryBoardId: number;
 }
+
+export interface MsseamProps {
+  id: number;
+  nickName?: string;
+  mbti?: string;
+  badge?: string;
+  profileImgUrl?: string;
+}

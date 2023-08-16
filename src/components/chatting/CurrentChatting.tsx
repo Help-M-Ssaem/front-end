@@ -5,7 +5,8 @@ import FONT from "../../styles/font";
 import Badge from "../badge/Badge";
 import { RightArrowIcon } from "../../assets/CommonIcons";
 import Button from "../button/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { ChattingHistory, MsseamProps } from "../../interfaces/chatting";
 import EvaluationModal from "../modal/EvaluationModal";
 import { useCreateEvaluation } from "../../hooks/worry/useEvaluation";
 import { ChatRoom } from "../../interfaces/chatting";
@@ -55,7 +56,11 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
         <div css={titleCSS}>{chatRoom.chatRoomTitle}</div>
       </div>
       <div css={rightCSS}>
-        <Button onClick={handleEvaluation} addCSS={buttonCSS}>
+        <Button
+          onClick={handleEvaluation}
+          addCSS={isSubmitted ? buttonCSS : buttonCSS2}
+          disabled={isSubmitted}
+        >
           해결완료
         </Button>
       </div>
@@ -74,9 +79,10 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
 export default CurrentChatting;
 
 const buttonCSS = css`
-  background: ${COLOR.WHITE};
-  color: ${COLOR.GRAY2};
+  background: ${COLOR.GRAY3};
 `;
+
+const buttonCSS2 = css``;
 
 const MatchingBoxCSS = css`
   display: flex;

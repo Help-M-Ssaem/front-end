@@ -7,9 +7,19 @@ interface ButtonProps {
   children?: React.ReactNode;
   onClick?: () => void;
   addCSS?: SerializedStyles;
+  type?: string;
+  disabled?: boolean;
+  className?: string;
 }
 
-const Button = ({ children, onClick, addCSS }: ButtonProps) => {
+const Button = ({
+  children,
+  onClick,
+  addCSS,
+  type,
+  disabled,
+  className,
+}: ButtonProps) => {
   const buttonCSS = css`
     display: flex;
     justify-content: center;
@@ -22,10 +32,18 @@ const Button = ({ children, onClick, addCSS }: ButtonProps) => {
 
     padding: 0.5rem 1.7rem;
     border-radius: 2rem;
+
+    cursor: ${disabled ? "default" : "pointer"};
   `;
 
   return (
-    <button css={[buttonCSS, addCSS]} onClick={onClick}>
+    <button
+      css={[buttonCSS, addCSS]}
+      type="button"
+      onClick={onClick}
+      disabled={false}
+      className=""
+    >
       {children}
     </button>
   );

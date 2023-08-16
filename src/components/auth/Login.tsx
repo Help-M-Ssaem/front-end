@@ -14,9 +14,16 @@ interface userProps {
 const LoginComponent = ({ user }: userProps) => {
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    window.location.reload();
+  };
+
   return (
     <Container addCSS={containerCSS}>
-      <div css={textCSS}>로그아웃</div>
+      <div css={textCSS} onClick={handleLogout}>
+        로그아웃
+      </div>
       <div css={profileCSS}>
         <Profile
           image={user.profileImgUrl}

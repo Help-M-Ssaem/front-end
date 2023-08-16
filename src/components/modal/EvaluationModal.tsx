@@ -1,17 +1,18 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import Button from "../button/Button";
-import { ChattingHistory } from "../../interfaces/chatting";
+import { ChattingHistory, MsseamProps } from "../../interfaces/chatting";
 import Badge from "../badge/Badge";
+import { CancelIcon } from "../../assets/CommonIcons";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   onClick: (result: string) => void;
-  profileData: ChattingHistory | null;
+  profile: MsseamProps | undefined;
 }
 
 const options = [
@@ -25,64 +26,87 @@ const EvaluationModal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
   onClick,
-  profileData,
+  profile,
 }) => {
   const [selectedOption, setSelectedOption] = useState<string>("");
+  const [profileData, setProfileData] = useState<MsseamProps | undefined>(
+    profile,
+  );
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    if (profile !== undefined) {
+      setProfileData(profile);
+      console.log(profile);
+    }
+  }, [profile, profileData]);
+
+  if (!isOpen || profileData === null) return null; // 모달 열리기 전에 데이터가 없으면 null 반환
+
+  console.log(profile);
   const handleOptionClick = (optionValue: string) => {
     setSelectedOption(optionValue);
   };
+
   const handleSubmit = () => {
     const option = options.find((option) => option.value === selectedOption);
-
     if (option) {
       onClick(option.id);
       onClose();
     }
   };
-
   return (
     <div css={modalBackground} onClick={onClose}>
       <div css={modalMain} onClick={(e) => e.stopPropagation()}>
         <div css={modalHeader}>
           <div css={modaltext}>M쌤이 도움이 되셨나요?</div>
+          <div css={calcelCSS}>
+            <CancelIcon onClick={onClose} />
+          </div>
         </div>
         <div css={contentBackBoxCSS}>
           <div css={[boXTopCSS, boXCSS]}>
-            <div>
-              <img css={profileImgCSS} src={profileData?.profile} />
-              <div css={profileDetailCSS}>{profileData?.name}</div>
-              <div css={[profileDetailCSS, marginLeftCSS]}>
-                <Badge mbti={profileData?.mbti || ""} color={"#F8CAFF"} />
-                <Badge mbti={profileData?.badge || ""} color={"#5BE1A9"} />
+            {profile !== undefined ? (
+              <div>
+                <img css={profileImgCSS} src={profile.profileImgUrl} />
+                <div css={profileDetailCSS}>{profile.nickName}</div>
+                <div css={[profileDetailCSS, marginLeftCSS]}>
+                  <Badge mbti={profile.mbti || ""} color={"#F8CAFF"} />
+                  <Badge mbti={profile.badge || ""} color={"#5BE1A9"} />
+                </div>
               </div>
-            </div>
-            <div css={[boXBottomCSS, boXCSS]}>
-              <div>어울리는 키워드를 골라주세요. (0~5개)</div>
-              <div css={buttonBoxCSS}>
-                {options.map((option) => (
-                  <div
-                    css={marginLeftCSS}
-                    key={option.id}
-                    onClick={() => handleOptionClick(option.value)}
+            ) : (
+              <div>Loading profile...</div>
+            )}
+          </div>
+          <div css={[boXBottomCSS, boXCSS]}>
+            <div>어울리는 키워드를 골라주세요. (0~5개)</div>
+
+            <div css={buttonBoxCSS}>
+              {options.map((option) => (
+                <div
+                  css={marginLeftCSS}
+                  key={option.id}
+                  onClick={() => handleOptionClick(option.value)}
+                >
+                  <button
+                    css={buttonCSS}
+                    className={`optionItem ${
+                      selectedOption === option.value ? "selected" : ""
+                    }`}
                   >
-                    <button
-                      css={buttonCSS}
-                      className={`optionItem ${
-                        selectedOption === option.value ? "selected" : ""
-                      }`}
-                    >
-                      {option.id}
-                    </button>
-                  </div>
-                ))}
-              </div>
+                    {option.id}
+                  </button>
+                </div>
+              ))}
             </div>
           </div>
         </div>
         <div css={bottombuttonBoxCSS}>
-          <Button onClick={handleSubmit} addCSS={submitButtonCSS}>
+          <Button
+            onClick={handleSubmit}
+            addCSS={selectedOption ? submitButtonCSS : submitButtonCSS2}
+            disabled={!selectedOption}
+          >
             제출하기
           </Button>
         </div>
@@ -135,8 +159,8 @@ const modaltext = css`
 
 const buttonBoxCSS = css`
   display: flex;
+  justify-content: center;
   padding: 0.9rem;
-
   .optionItem {
     cursor: pointer;
     &:hover {
@@ -146,12 +170,11 @@ const buttonBoxCSS = css`
 `;
 
 const contentBackBoxCSS = css`
-  display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  background: red;
   min-height: 22rem;
+  display: flex;
   flex-direction: column;
 `;
 
@@ -172,12 +195,15 @@ const boXTopCSS = css`
 const boXBottomCSS = css`
   width: 100%;
   min-height: 7rem;
+  display: flex;
   justify-content: center;
   flex-direction: column;
   padding-top: 0.8rem;
 `;
 
 const profileImgCSS = css`
+  // width: 100%;
+  // height: 100%;
   width: 10rem;
   height: 10rem;
   border-radius: 50%;
@@ -206,7 +232,8 @@ const buttonCSS = css`
 
   padding: 0.5rem 1rem;
   border-radius: 2rem;
-  &:selected {
+
+  &.selected {
     background-color: ${COLOR.MAIN4};
   }
 `;
@@ -218,6 +245,16 @@ const bottombuttonBoxCSS = css`
 `;
 
 const submitButtonCSS = css`
-  margin-right: 0.5rem;
   background: ${COLOR.MAIN};
+  color: ${COLOR.WHITE};
+`;
+
+const submitButtonCSS2 = css`
+  background: ${COLOR.GRAY4};
+  color: ${COLOR.BLACK};
+`;
+
+const calcelCSS = css`
+  display: flex;
+  margin-left: auto;
 `;
