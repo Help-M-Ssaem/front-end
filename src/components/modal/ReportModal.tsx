@@ -24,21 +24,30 @@ const options = [
   { id: "option3", label: "증오 또는 악의적인 콘텐츠", value: "HATRED" },
   { id: "option4", label: "괴롭힘 또는 폭력", value: "TORMENT" },
   { id: "option5", label: "권리 침해", value: "INFRINGEMENT" },
-  { id: "option6", label: "기타", value: "option6_value" },
+  { id: "option6", label: "기타", value: "ETC" },
 ];
 const ReportModal: React.FC<ModalProps> = ({ isOpen, onClose, onClick, isType }) => {
   const { id } = useParams();
   const reportID = parseInt(id!!);//게시글 id 따오기
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState<string>("");
-
+  const [content, setContent] = useState<string|undefined>();
+  const [sendContent, setSendContent] = useState<string|null>(null);
   const handleOptionClick = (optionValue: string) => {
     setSelectedOption(optionValue);
   };
-  const createMutation = usePostReport(reportID,isType,selectedOption);
+  const createMutation = usePostReport(reportID,isType,selectedOption, sendContent);
   const handleSubmit = () => {
     createMutation.mutate();
     navigate(-1);
+  };
+  const handleEctChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value);
+    if(content === undefined){
+      setSendContent(null);
+    } else {
+      setSendContent(content);
+    }
   };
 
   return (
@@ -59,6 +68,17 @@ const ReportModal: React.FC<ModalProps> = ({ isOpen, onClose, onClick, isType })
               {option.label}
             </div>
           ))}
+          {selectedOption === "ETC" && 
+          <div css = {textDiv}>
+           <textarea
+              value={content}
+              onChange={handleEctChange}
+              css={inputCSS}
+              maxLength={60}
+            />
+            <div css={characterCount}>{content ? `${content.length}/45` : ''}</div>
+            </div>
+          }
         </div>
         <div css={textBoxCSS}>
           <div css={textCSS}>
@@ -101,7 +121,7 @@ const modalMain = css`
   position: absolute;
   display: flex;
   width: 35rem;
-  height: 27rem;
+  height: auto;
   background-color: ${COLOR.WHITE};
   border-radius: 1rem;
   flex-direction: column;
@@ -192,4 +212,26 @@ const buttonCSS = css`
 
 const exitButtonCSS = css`
   margin-right: 0.5rem;
+`;
+const textDiv = css`
+font-weight: ${FONT.WEIGHT.REGULAR};
+color: ${COLOR.GRAY2};
+position: relative;
+margin-bottom: 1rem;
+`;
+const inputCSS = css`
+  width: 90%;
+  height: auto;
+  min-heght: 2rem;
+  border: 1.5px solid ${COLOR.MAIN4};
+  border-radius: 1.2rem;
+  padding: 1.7rem;
+  font-size: ${FONT.SIZE.BODY};
+`;
+
+const characterCount = css`
+  bottom: 10%;
+  right: 13%;
+  position: absolute;
+  font-size: ${FONT.SIZE.CAPTION};
 `;
