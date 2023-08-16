@@ -72,7 +72,6 @@ const MyPageUpdate = () => {
         badgeId: badgeId,
       }));
       setMbti(profileData.teacherInfo.mbti);
-
       setMbtiValue(
         mbtiInputs.map((mbti) => ({
           ...mbti,
@@ -104,6 +103,8 @@ const MyPageUpdate = () => {
     }));
   };
 
+  //  --------- Submit --------------
+
   const data = {
     nickName: values.nickName,
     introduction: values.introduction,
@@ -111,7 +112,6 @@ const MyPageUpdate = () => {
     caseSensitivity: mbtiNum,
     badgeId: badgeId,
   };
-  //  --------- Submit --------------
   // 취소하기
   const handleCancel = () => {
     navigate("/");
@@ -276,7 +276,6 @@ const MyPageUpdate = () => {
   };
   const [imageURL, setImageURL] = useState<string>();
 
-  //Blob 말고 url 로만 지정할 수 있게
   const setImageChange = (newImage: string | undefined) => {
     setValues((prevValues) => ({
       ...prevValues,
@@ -321,6 +320,7 @@ const MyPageUpdate = () => {
             <div>
               <p css={subTitleCSS}>닉네임</p>
               <NameBox name={values.nickName} onChange={handleNicknameChange} />
+
               {/* <MbtiBox /> */}
               <p css={subTitleCSS}>MBTI</p>
               <div css={userinfoCSS}>
