@@ -156,7 +156,7 @@ const DetailDebatePage = () => {
             </div>
           </div>
           <div>
-              {comments &&
+              {/* {comments &&
                 comments.result.map((comment) => (
                   <div key={comment.commentId}>
                     {comment.parentId === 0 && (
@@ -190,15 +190,15 @@ const DetailDebatePage = () => {
                         />
                       )}
                   </div>
-                ))}
+                ))} */}
             </div>
             <div css={commentTextCSS}>댓글 쓰기</div>
             <hr css={hrCSS} />
-            <CommentCreate
+            {/* <CommentCreate
               onSubmit={handleCommentSubmit}
               content={content}
               setContent={setContent}
-            />
+            /> */}
           </>
         )}
         </Container>

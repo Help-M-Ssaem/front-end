@@ -69,7 +69,7 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
           isOpen={isEvaluationModalOpen}
           onClose={handleCloseModal}
           onClick={() => {}}
-          // profileData={profile}
+          profile={profile}
         />
       )} */}
     </div>
