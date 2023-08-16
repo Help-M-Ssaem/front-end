@@ -4,35 +4,141 @@ import { useState } from "react";
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
-import Badge from "../../components/badge/Badge";
-import BoardComponent from "../../components/board/Board";
-import Profile from "../../components/profile/Profile";
 import ActivityList from "../../components/mypage/MyPage";
 import { useGetProfile } from "../../hooks/user/useProfile";
-import { SettingIcon } from "../../assets/CommonIcons";
 import { useNavigate } from "react-router-dom";
-import UserInfo from "../auth/UserInfo";
-import MbtiBox from "../../components/mypage/mbtiBox";
 import NameBox from "../../components/mypage/nameBox";
-import Input from "../../components/input/Input";
 import Input2 from "../../components/input/Input2";
 import Button from "../../components/button/Button";
+import { useForm } from "react-hook-form";
+import { CancelIcon, PolygonIcon } from "../../assets/CommonIcons";
+import useMemberInfo from "../../hooks/user/useMemberInfo";
+import { mssaemAxios as axios } from "../../apis/axios";
+import { useDeleteImage } from "../../hooks/mypage/useDeleteImage";
 
 const MyPageUpdate = () => {
   const navigate = useNavigate();
-  const { profileData } = useGetProfile(1);
-  const [selectedBadgeId, setSelectedBadgeId] = useState(null);
 
-  const handleSettingClick = () => {
-    navigate("/mypage/update");
+  const { user } = useMemberInfo();
+  const { profileData } = useGetProfile(user!!.id);
+  const [mbtiNum, setMbtinum] = useState<string | null>(null);
+  const [invalidInput, setInvalidInput] = useState<string | null>(null);
+  const [mbti, setMbti] = useState<string | undefined>(undefined);
+  const [badgeId, setBadgeId] = useState<number | null>(null);
+
+  //초기화 및 set 하는 부분
+  const [values, setValues] = useState(() => ({
+    introduction: profileData?.teacherInfo.introduction,
+    nickName: profileData?.teacherInfo.nickName,
+    image: profileData?.teacherInfo.profileImgUrl,
+    badge: profileData?.teacherInfo.badge,
+  }));
+
+  const mbtiInputs = [
+    { name: "mbti_1", values: ["i", "I", "e", "E"] },
+    { name: "mbti_2", values: ["s", "S", "n", "N"] },
+    { name: "mbti_3", values: ["f", "F", "t", "T"] },
+    { name: "mbti_4", values: ["p", "P", "j", "J"] },
+  ];
+
+  const [mbtiValue, setMbtiValue] = useState<
+    { name: string; values: string[] }[]
+  >(() => {
+    if (profileData) {
+      return mbtiInputs.map((mbti, index) => ({
+        ...mbti,
+        values: [profileData.teacherInfo.mbti[Number(mbti.name.charAt(5)) - 1]],
+        key: index,
+      }));
+    }
+
+    return mbtiInputs.map((mbti, index) => ({
+      ...mbti,
+      values: [""],
+      key: index,
+    }));
+  });
+
+  //초기값 넣는 부분
+  useEffect(() => {
+    if (profileData) {
+      setValues((prevValues) => ({
+        ...prevValues,
+        introduction: profileData.teacherInfo.introduction,
+        nickName: profileData.teacherInfo.nickName,
+        image: profileData.teacherInfo.profileImgUrl,
+        badge: profileData.teacherInfo.badge,
+      }));
+      setMbti(profileData.teacherInfo.mbti);
+      setMbtiValue(
+        mbtiInputs.map((mbti) => ({
+          ...mbti,
+          values: [
+            profileData.teacherInfo.mbti[Number(mbti.name.charAt(5)) - 1],
+          ],
+        })),
+      );
+    }
+  }, [profileData]);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<any>();
+
+  const setIntroductionChange = (newIntroduction: string) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      introduction: newIntroduction,
+    }));
   };
 
-  const [menuSelected, setMenuSelected] = useState(1);
-  const clickMenu = (type: number) => {
-    setMenuSelected(type);
+  const handleNicknameChange = (newNickname: string) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      nickName: newNickname,
+    }));
   };
+
+  const data = {
+    nickName: values.nickName,
+    introduction: values.introduction,
+    mbti: mbti,
+    caseSensitivity: mbtiNum,
+    badgeId: badgeId,
+  };
+  //  --------- Submit --------------
+  // 취소하기
+  const handleCancel = () => {
+    navigate("/");
+  };
+
+  //제출하기
+  const onSubmit = async () => {
+    console.log(data);
+
+    try {
+      const response = await axios.patch("/member/profile", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.data == "수정 성공") {
+        navigate("/");
+      } else {
+        console.log("error 발생");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //-------- Badge ----------------------
   const selectBadge = (value: any) => {
-    const isSelectedBadge = value.id === selectedBadgeId;
+    const isSelectedBadge = value.id === values.image;
+
     switch (value.type) {
       case 1:
         return badgeCSS1;
@@ -47,6 +153,136 @@ const MyPageUpdate = () => {
     }
   };
 
+  const setBadgeChange = (newBadge: string) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      badge: newBadge,
+    }));
+  };
+
+  // ------- MBTI 부분 ----------
+
+  useEffect(() => {
+    const getmbti = updateSelectedMBTI(mbtiValue);
+    const mbtiNum = MBTItoNumbers(getmbti);
+    const mbtiUpperValue = getmbti.toUpperCase();
+
+    setMbtinum(mbtiNum);
+    setMbti(mbtiUpperValue);
+
+    setValues((prevValues) => ({
+      ...prevValues,
+    }));
+  }, [mbti, mbtiNum, mbtiValue]);
+
+  const updateSelectedMBTI = (updatedMbtiValue: typeof mbtiValue) => {
+    const updatedSelectedMBTI = updatedMbtiValue
+      .map((mbti) => mbti.values[0])
+      .join("");
+
+    return updatedSelectedMBTI;
+  };
+  const MBTItoNumbers = (mbtiString: string) => {
+    const convertedString = mbtiString
+      .split("")
+      .map((char) => (char.toUpperCase() === char ? "1" : "0"))
+      .join("");
+
+    return convertedString;
+  };
+
+  const handlePolygonClick = (name: string) => {
+    const mbtiKey = name;
+    const mbtiIndex = mbtiValue.findIndex((mbti) => mbti.name === mbtiKey);
+    const valuesArray = mbtiInputs.find(
+      (mbti) => mbti.name === mbtiKey,
+    )?.values;
+
+    if (!valuesArray) return;
+
+    const currentMbti = mbtiValue[mbtiIndex];
+    const currentIndex = valuesArray.indexOf(currentMbti.values[0]);
+    const updatedValue = valuesArray[(currentIndex + 1) % valuesArray.length];
+
+    const updatedMbtiValues = [...mbtiValue];
+    updatedMbtiValues[mbtiIndex] = { ...currentMbti, values: [updatedValue] };
+    setMbtiValue(updatedMbtiValues);
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    name: string,
+  ) => {
+    const inputValue = e.target.value;
+
+    const updatedMbtiValue = mbtiValue.map((mbti) =>
+      mbti.name === name ? { ...mbti, values: [inputValue] } : mbti,
+    );
+
+    const valuesArray = mbtiInputs.find((mbti) => mbti.name === name)?.values;
+
+    if (!valuesArray) return;
+
+    if (!valuesArray.includes(inputValue)) {
+      setInvalidInput(inputValue);
+    } else {
+      setInvalidInput(null);
+    }
+    setMbtiValue(updatedMbtiValue);
+  };
+
+  // --------  이미지 부분 ---------
+  const handleImageBlobHook = async (blob: Blob) => {
+    const imgUrl = URL.createObjectURL(blob);
+    setImageChange(imgUrl);
+    return imgUrl;
+  };
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      try {
+        const imgUrl = await handleImageBlobHook(file);
+        const result = await uploadImage(file);
+        setImageURL(result); // Set the image URL after successful upload
+        setImageChange(imgUrl); // Call setI
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
+    }
+  };
+
+  const uploadImage = async (blob: Blob) => {
+    const formData = new FormData();
+    formData.append("image", blob);
+    const imgUrl = await axios.post("/member/profile/file", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return imgUrl.data;
+  };
+  const [imageURL, setImageURL] = useState<string>();
+
+  //Blob 말고 url 로만 지정할 수 있게
+  const setImageChange = (newImage: string | undefined) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      image: newImage,
+    }));
+  };
+  const deleteImageMutation = useDeleteImage();
+
+  const handleImageCancel = () => {
+    // handleImageChange(profileData?.teacherInfo.profileImgUrl);
+    try {
+      deleteImageMutation.mutate();
+      // setImageChange(un);
+    } catch (error) {
+      console.log(errors);
+    }
+  };
+
   return (
     <div>
       <div css={mainTitleCSS}>프로필</div>
@@ -56,21 +292,72 @@ const MyPageUpdate = () => {
           <div css={profileContainerCSS}>
             <div css={profileImageContainerCSS}>
               <img
+                css={imageCSS}
                 style={{
                   objectFit: "contain",
                 }}
-                src={profileData?.teacherInfo?.profileImgUrl}
+                src={values.image}
                 alt="프로필"
               />
             </div>
-            <span css={modifyCSS}>프로필 설정</span>
+            <div css={cancelCSS2}>
+              <CancelIcon onClick={handleImageCancel} />
+            </div>
+            {/* 프로필 설정  */}
+
+            <label css={uploadLabelCSS}>
+              <span css={settingCSS}>프로필 설정</span>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                css={uploadInputCSS}
+              />
+            </label>
             <div>
               <p css={subTitleCSS}>닉네임</p>
-              <NameBox />
+              <NameBox name={values.nickName} onChange={handleNicknameChange} />
+              {/* <MbtiBox /> */}
               <p css={subTitleCSS}>MBTI</p>
-              <MbtiBox />
+              <div css={userinfoCSS}>
+                <div css={mbtiBox}>
+                  {mbtiInputs.map((mbti, index) => (
+                    <div key={mbti.name} css={mbtiContainerCSS}>
+                      <input
+                        type="text"
+                        css={mbtiCSS}
+                        value={mbtiValue[index].values[0]}
+                        onChange={(e) => handleInputChange(e, mbti.name)}
+                        placeholder={profileData?.teacherInfo.mbti}
+                      />
+                      <div css={arrowContainerCSS}>
+                        <PolygonIcon
+                          width={"9"}
+                          height={"70"}
+                          onClick={() => handlePolygonClick(mbti.name)}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {invalidInput &&
+                  !mbtiInputs.some((mbti) =>
+                    mbti.values.includes(invalidInput),
+                  ) && (
+                    <div css={warningContainerCSS}>
+                      <p css={warningMessageCSS}>
+                        "{invalidInput}"은(는) 유효한 MBTI 요소가 아닙니다.
+                      </p>
+                    </div>
+                  )}
+              </div>
               <p css={subTitleCSS}>한줄소개</p>
-              <Input2 placeholder="한줄 소개 들어가야함" />
+              <Input2
+                placeholder={profileData?.teacherInfo.introduction}
+                value={values.introduction}
+                onChange={(e) => setIntroductionChange(e.target.value)}
+              />
             </div>
           </div>
         </div>
@@ -81,9 +368,32 @@ const MyPageUpdate = () => {
           <div css={collectedTitleContainer}>
             {profileData?.badgeInfos?.map(
               (value: { id: number; name: string }, idx: number) => {
-                const isSelected = value.id === selectedBadgeId;
+                const isSelected = value.name === values.badge;
+                // 클릭 이벤트 핸들러
+                const handleBadgeClick = () => {
+                  if (isSelected) {
+                    setBadgeChange("");
+                  } else {
+                    setBadgeChange(value.name as string);
+                    setBadgeId(value.id);
+                  }
+                };
+
                 return (
-                  <p key={idx} css={selectBadge(value)}>
+                  <p
+                    key={idx}
+                    css={[
+                      selectBadge(value),
+                      isSelected && {
+                        border: `0.2rem solid ${COLOR.MAIN1} `,
+                        padding: `0.6rem 0.5rem`,
+                        display: "flex",
+                        alignItems: "center",
+                      },
+                    ]}
+                    onClick={handleBadgeClick}
+                    style={{ cursor: "pointer" }}
+                  >
                     {value.name}
                   </p>
                 );
@@ -92,15 +402,15 @@ const MyPageUpdate = () => {
           </div>
         </div>
         {/* box3 */}
-        <ActivityList profileData={profileData}></ActivityList>
+        <ActivityList profileData={profileData} />
       </div>
       <div css={buttonCSS}>
-        <Button addCSS={calcelCSS}>취소하기</Button>
-        <Button>수정하기</Button>
-      </div>
-      <div css={buttonCSS}>
-        <Button addCSS={calcelCSS}>취소하기</Button>
-        <Button>수정하기</Button>
+        <Button addCSS={calcelCSS} onClick={handleCancel}>
+          취소하기
+        </Button>
+        <Button type="submit" onClick={handleSubmit(onSubmit)}>
+          수정하기
+        </Button>
       </div>
     </div>
   );
@@ -150,10 +460,6 @@ const box2CSS = css`
   padding: 2.5rem 3.125rem;
 `;
 
-const badgeCSS = css`
-  // border: 2px solid ${COLOR.WHITE};
-`;
-
 const subTitleCSS = css`
   font-size: ${FONT.SIZE.TITLE3};
   font-weight: ${FONT.WEIGHT.BOLD};
@@ -166,6 +472,8 @@ const profileContainerCSS = css`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  position: relative;
 `;
 
 const profileImageContainerCSS = css`
@@ -221,10 +529,6 @@ const badgeCSS4 = css`
   width: fit-content;
 `;
 
-const modifyCSS = css`
-  font-size: ${FONT.SIZE.BODY};
-  padding-top: 1rem;
-`;
 const calcelCSS = css`
   opacity: 0.5;
   margin-right: 1rem;
@@ -235,4 +539,89 @@ const buttonCSS = css`
   justify-content: flex-end;
   margin-right: 5rem;
   margin-top: -5rem;
+`;
+
+const cancelCSS2 = css`
+  position: absolute;
+  top: 0;
+  right: 0;
+`;
+//------------MBTI-----------//
+
+const userinfoCSS = css`
+  display: flex;
+  justify-content: center;
+  max-width: 100rem;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100%;
+`;
+
+const mbtiCSS = css`
+  border: 0.1rem solid ${COLOR.GRAY4};
+  font-size: ${FONT.SIZE.TITLE3};
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 0.5rem;
+  margin-top: 0.5rem;
+  text-align: center;
+`;
+const mbtiBox = css`
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  text_align: center;
+  margin-right: 1rem;
+`;
+
+const mbtiContainerCSS = css`
+  display: flex;
+  align-items: center;
+  position: relative;
+  text_align: center;
+`;
+
+const warningMessageCSS = css`
+  padding-top: 1rem;
+  color: red;
+`;
+
+const warningContainerCSS = css`
+  font-size: ${FONT.SIZE.BODY};
+`;
+const arrowContainerCSS = css`
+  position: absolute;
+  left: 70%;
+  transform: translateX(-50%);
+  top: 33%;
+  transform: translateY(-50%);
+  padding-right: 0.4rem;
+  padding-left: 0.4rem;
+`;
+// -------프로필 사진 ---
+const uploadLabelCSS = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  // height: 100%;
+  // border: 1.5px solid ${COLOR.GRAY4};
+  border-radius: 0.5rem;
+`;
+const uploadInputCSS = css`
+  display: none;
+`;
+const imageCSS = css`
+  width: 11rem;
+  height: auto;
+  max-height: 9rem;
+  object-fit: contain;
+`;
+
+const settingCSS = css`
+  padding-top: 1rem;
+  cursor: pointer;
+  text-decoration-line: underline;
+  color: ${COLOR.GRAY2};
 `;

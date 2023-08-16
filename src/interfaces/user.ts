@@ -35,7 +35,7 @@ export interface UserProfile {
   };
   worryBoardHistory: {
     worryBoardCount: number;
-    solveWorryBoardCount: number;
+    solvedWorryBoardCount: number;
     evaluationCount: number;
   };
 }

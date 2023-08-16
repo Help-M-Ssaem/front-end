@@ -20,7 +20,6 @@ import RedButton from "../../components/button/plusbutton/RedButton";
 import DeleteModal from "../../components/modal/DeletModal";
 import PageDebate from "../../components/debate/pageMapingDebate/PageDebate";
 
-
 const DetailDebatePage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -58,80 +57,76 @@ const DetailDebatePage = () => {
     setContent("");
   };
   return (
-    <div  css={ContainerCSS}>
-    <Container>
-      {debate && (
-        <>
-          
-            {debate.isEditAllowed &&
-            <div css={buttonBoxCSS}>
-            <Button
-              onClick={() => navigate(`/debate/${id}/update`)}
-              addCSS={updateButtonCSS}
-            >
-              수정
-            </Button>
-            <Button onClick={handleDeleteOpen}>삭제</Button>
-            </div>
-            }
-          
-          <div css={detailCSS}>
-            <div css={detailHeaderCSS}>
-              <Profile
-                image={
-                  debate.discussionSimpleInfo.memberSimpleInfo.profileImgUrl
-                }
-                name={debate.discussionSimpleInfo.memberSimpleInfo.nickName}
-                mbti={debate.discussionSimpleInfo.memberSimpleInfo.mbti}
-                badge={debate.discussionSimpleInfo.memberSimpleInfo.badge}
-              />
-              <div css={dateCSS}>{debate.discussionSimpleInfo.createdAt}</div>
-            </div>
-            <div css={titleCSS}>{debate.discussionSimpleInfo.title}</div>
-            <div css={contentCSS}>{debate.discussionSimpleInfo.content}</div>
-            <VoteItemList
-              options={debate.discussionSimpleInfo.options}
-              debateId={debate.discussionSimpleInfo.id}
-            />
-            <div css={BottomdetailCSS}>
-            <RedButton count = {`${debate.discussionSimpleInfo.participantCount}명이 참여중`}></RedButton>
-            </div>
-            <div css={commentTextCSS}>
-              전체 댓글 {comments ? comments.result.length : 0}개
-            </div>
-          </div>
-          <div>
-            {bestComments &&
-              bestComments.map((comment) => (
-                <CommentComponent comment={comment} best={true} />
-              ))}
-            {comments &&
-              comments.result.map((comment) => (
-                <CommentComponent comment={comment} />
-              ))}
-          </div>
-          <div css={commentTextCSS}>댓글 쓰기</div>
-          <hr css={hrCSS} />
-          <form css={submitButtonBoxCSS} onSubmit={handleCommentSubmit}>
-            <Input
-              onChange={(e) => setContent(e.target.value)}
-              value={content}
-            />
-            <Button addCSS={buttonCSS}>등록</Button>
-          </form>
-        </>
-      )}
-          {isDeleteModalOpen && 
-      <DeleteModal
-        isOpen={isDeleteModalOpen}
-        onClose={handleDeleteClose}
-        onClick={handleDebateDelete}/>
-      }
-    </Container>
+    <div css={ContainerCSS}>
+      <Container>
+        {debate && (
+          <>
+            {debate.isEditAllowed && (
+              <div css={buttonBoxCSS}>
+                <Button
+                  onClick={() => navigate(`/debate/${id}/update`)}
+                  addCSS={updateButtonCSS}
+                >
+                  수정
+                </Button>
+                <Button onClick={handleDeleteOpen}>삭제</Button>
+              </div>
+            )}
 
-    <PageDebate
-      pathMov = {"discusstion"}
-      />
+            <div css={detailCSS}>
+              <div css={detailHeaderCSS}>
+                <Profile
+                  image={
+                    debate.discussionSimpleInfo.memberSimpleInfo.profileImgUrl
+                  }
+                  name={debate.discussionSimpleInfo.memberSimpleInfo.nickName}
+                  mbti={debate.discussionSimpleInfo.memberSimpleInfo.mbti}
+                  badge={debate.discussionSimpleInfo.memberSimpleInfo.badge}
+                />
+                <div css={dateCSS}>{debate.discussionSimpleInfo.createdAt}</div>
+              </div>
+              <div css={titleCSS}>{debate.discussionSimpleInfo.title}</div>
+              <div css={contentCSS}>{debate.discussionSimpleInfo.content}</div>
+              <VoteItemList
+                options={debate.discussionSimpleInfo.options}
+                debateId={debate.discussionSimpleInfo.id}
+              />
+              <div css={BottomdetailCSS}>
+                <RedButton
+                  count={`${debate.discussionSimpleInfo.participantCount}명이 참여중`}
+                ></RedButton>
+              </div>
+              <div css={commentTextCSS}>
+                전체 댓글 {comments ? comments.result.length : 0}개
+              </div>
+            </div>
+            <div>
+              {comments &&
+                comments.result.map((comment) => (
+                  <CommentComponent comment={comment} />
+                ))}
+            </div>
+            <div css={commentTextCSS}>댓글 쓰기</div>
+            <hr css={hrCSS} />
+            <form css={submitButtonBoxCSS} onSubmit={handleCommentSubmit}>
+              <Input
+                onChange={(e) => setContent(e.target.value)}
+                value={content}
+              />
+              <Button addCSS={buttonCSS}>등록</Button>
+            </form>
+          </>
+        )}
+        {isDeleteModalOpen && (
+          <DeleteModal
+            isOpen={isDeleteModalOpen}
+            onClose={handleDeleteClose}
+            onClick={handleDebateDelete}
+          />
+        )}
+      </Container>
+
+      <PageDebate pathMov={"discusstion"} />
     </div>
   );
 };
@@ -208,8 +203,8 @@ const updateButtonCSS = css`
 `;
 
 const BottomdetailCSS = css`
-margin-top:1rem;
-display: flex;
-justify-content: space-between;
-align-items: center;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;

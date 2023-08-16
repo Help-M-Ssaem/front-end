@@ -1,35 +1,40 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
+import { ChatMessage } from "../../interfaces/chatting";
+import FONT from "../../styles/font";
+import useMemberInfo from "../../hooks/user/useMemberInfo";
+import Time from "../../utils/Time";
 
-type MessageItemProps = {
-  message: string;
-  createdAt: string;
-  isCurrentUser: boolean;
-  profile?: string;
-};
+interface MessageItemProps {
+  message: ChatMessage;
+  profile: string;
+}
 
-const MessageItem: React.FC<MessageItemProps> = ({
-  message,
-  createdAt,
-  isCurrentUser,
-  profile,
-}) => {
+const MessageItem: React.FC<MessageItemProps> = ({ message, profile }) => {
+  const { user } = useMemberInfo();
+
   return (
-    <div>
-      {isCurrentUser ? (
-        <div css={sendCSS}>
-          <img src={profile} alt="Profile" css={proflieimgCSS} />
-          <div css={otherUserMessageCSS}>{message}</div>
-          <div css={timeCSS}>{createdAt}</div>
-        </div>
-      ) : (
+    <>
+      {message.type === "ENTER" && <div css={enterCSS}>{message.message}</div>}
+      {message.type === "TALK" && message.sender === `${user?.nickName}` && (
         <div css={chatboxCSS}>
-          <div css={timeCSS}>{createdAt}</div>
-          <div css={currentUserMessageCSS}>{message}</div>
+          <div css={timeCSS}>
+            <Time createdAt={message.createdAt} />
+          </div>
+          <div css={currentUserMessageCSS}>{message.message}</div>
         </div>
       )}
-    </div>
+      {message.type === "TALK" && message.sender !== `${user?.nickName}` && (
+        <div css={sendCSS}>
+          <img src={profile} alt="Profile" css={proflieimgCSS} />
+          <div css={otherUserMessageCSS}>{message.message}</div>
+          <div css={timeCSS}>
+            <Time createdAt={message.createdAt} />
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
@@ -47,10 +52,13 @@ const sendCSS = css`
 const messageBoxCSS = css`
   max-width: 50%;
   flex-wrap: wrap;
-  padding: 0.625rem;
+  padding: 0.6rem 1rem;
   border-radius: 2rem;
   line-height: 1.5rem;
   color: ${COLOR.GRAY2};
+
+  font-size: ${FONT.SIZE.HEADLINE};
+  font-weight: ${FONT.WEIGHT.SEMIBOLD};
 `;
 
 const currentUserMessageCSS = css`
@@ -58,8 +66,8 @@ const currentUserMessageCSS = css`
   // align-self: flex-end;
   justify-content: end;
   background-color: ${COLOR.WHITE};
+  border: 1px solid ${COLOR.MAIN};
   margin: 0.25rem 1.3rem 0.625rem 0.25rem;
-  border: 1px solid ${COLOR.GRAY4};
 `;
 
 const otherUserMessageCSS = css`
@@ -83,4 +91,19 @@ const timeCSS = css`
   display: flex;
   align-items: flex-end;
   padding-bottom: 0.5rem;
+`;
+
+const enterCSS = css`
+  font-size: ${FONT.SIZE.HEADLINE};
+  font-weight: ${FONT.WEIGHT.REGULAR};
+
+  background: ${COLOR.GRAY5};
+  border-radius: 1rem;
+
+  color: ${COLOR.GRAY2};
+  display: flex;
+  justify-content: center;
+
+  padding: 0.3rem 0;
+  margin-bottom: 0.5rem;
 `;

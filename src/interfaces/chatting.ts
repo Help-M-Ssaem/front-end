@@ -1,5 +1,6 @@
+import { User } from "./user";
+
 export interface ChattingHistory {
-  //sender
   name: string;
   profile: string;
   mbti: string;
@@ -11,6 +12,7 @@ export interface ChattingHistory {
 
   text: text[];
 }
+
 export interface text {
   userId: string;
   message: string;
@@ -24,10 +26,35 @@ export interface ChattingTitle {
   progress: string;
 }
 
-export interface ChattingProps {
-  Chattinghistory: ChattingHistory;
-}
 export interface EvaluationProps {
   worryBoardId: number;
   evaluations: string[];
+}
+
+export interface ChatRoom {
+  chatRoomId: number;
+  chatRoomTitle: string;
+  state: boolean;
+  lastMessage: string;
+  lastSendAt: string;
+  memberMbti: string;
+  targetMbti: string;
+  memberSimpleInfo: User;
+}
+
+export interface ChatMessage {
+  chatRoomId: number;
+  message: string;
+  createdAt: string;
+  sender: string;
+  type: string;
+  worryBoardId: number;
+}
+
+export interface MsseamProps {
+  id: number;
+  nickName?: string;
+  mbti?: string;
+  badge?: string;
+  profileImgUrl?: string;
 }
