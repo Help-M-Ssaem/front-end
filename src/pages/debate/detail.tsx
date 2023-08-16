@@ -100,7 +100,6 @@ const DetailDebatePage = () => {
     setReplyCommentId(commentId);
   };
 
-
   return (
     <div css={ContainerCSS}>
       <Container>
@@ -147,20 +146,17 @@ const DetailDebatePage = () => {
               </div>
             </div>
             <div css={commentBoxCSS}>
-            <div>전체 댓글 {comments ? comments.result.length : 0}개</div>
-            <div css={shareDeclarationCSS}>
-              <div 
-                css={shareCSS}
-                onClick={handleShare}
-                >공유</div>
-              <div 
-                css={declarationCSS}
-                onClick={handleReport}
-                >신고</div>
+              <div>전체 댓글 {comments ? comments.result.length : 0}개</div>
+              <div css={shareDeclarationCSS}>
+                <div css={shareCSS} onClick={handleShare}>
+                  공유
+                </div>
+                <div css={declarationCSS} onClick={handleReport}>
+                  신고
+                </div>
               </div>
             </div>
-          </div>
-          <div>
+            <div>
               {/* {comments &&
                 comments.result.map((comment) => (
                   <div key={comment.commentId}>
@@ -206,8 +202,8 @@ const DetailDebatePage = () => {
             /> */}
           </>
         )}
-        </Container>
-        {isReportModalOpen && (
+      </Container>
+      {isReportModalOpen && (
         <ReportModal
           isOpen={isReportModalOpen}
           onClose={handleCloseModal}
@@ -215,23 +211,22 @@ const DetailDebatePage = () => {
           isType="DISCUSSION"
         />
       )}
-            {isShareModalOpen && (
+      {isShareModalOpen && (
         <ShareModal
           isOpen={isShareModalOpen}
           onClose={handleCloseModal}
           url={`/discussions/${debateId}`}
         />
       )}
-          {isDeleteModalOpen && 
-      <DeleteModal
-        isOpen={isDeleteModalOpen}
-        onClose={handleDeleteClose}
-        onClick={handleDebateDelete}/>
-      }
+      {isDeleteModalOpen && (
+        <DeleteModal
+          isOpen={isDeleteModalOpen}
+          onClose={handleDeleteClose}
+          onClick={handleDebateDelete}
+        />
+      )}
 
-    <PageDebate
-      pathMov = {"discusstion"}
-      />
+      <PageDebate pathMov={"discusstion"} />
     </div>
   );
 };
