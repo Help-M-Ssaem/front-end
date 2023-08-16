@@ -64,11 +64,22 @@ const EvaluationModal: React.FC<ModalProps> = ({
           <div css={[boXTopCSS, boXCSS]}>
             {profile !== undefined ? (
               <div>
-                <img css={profileImgCSS} src={profile?.profileImgUrl} />
-                <div css={profileDetailCSS}>{profile?.nickName}</div>
+                <img
+                  css={profileImgCSS}
+                  src={profile?.memberSimpleInfo.profileImgUrl}
+                />
+                <div css={profileDetailCSS}>
+                  {profile?.memberSimpleInfo.nickName}
+                </div>
                 <div css={[profileDetailCSS, marginLeftCSS]}>
-                  <Badge mbti={profile?.mbti || ""} color={"#F8CAFF"} />
-                  <Badge mbti={profile?.badge || ""} color={"#5BE1A9"} />
+                  <Badge
+                    mbti={profile?.memberSimpleInfo.mbti || ""}
+                    color={"#F8CAFF"}
+                  />
+                  <Badge
+                    mbti={profile?.memberSimpleInfo.badge || ""}
+                    color={"#5BE1A9"}
+                  />
                 </div>
               </div>
             ) : (

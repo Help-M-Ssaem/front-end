@@ -25,7 +25,6 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
   const worryBoardId = chatRoom.worryBoardId;
 
   const handleEvaluation = async () => {
-    console.log(worryBoardId);
     try {
       const res = await getSolved(worryBoardId);
       console.log(res);
