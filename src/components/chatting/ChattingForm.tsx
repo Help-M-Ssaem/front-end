@@ -3,44 +3,28 @@ import { css } from "@emotion/react";
 import { PhotoIcon } from "../../assets/ChattingIcons";
 import Button from "../button/Button";
 import Input from "../input/Input";
-import { useRecoilValue } from "recoil";
-import { stompClientState } from "../../states/chatting";
+import { useChatContext } from "../../hooks/chatting/ChatProvider";
 import { useState } from "react";
 
-export const ChattingForm = () => {
-  const [inputMessage, setInputMessage] = useState("");
-  const token = localStorage.getItem("accessToken");
-  const stompClient = useRecoilValue(stompClientState);
+interface ChattingFormProps {
+  chatRoomId: number;
+}
 
-  const sendHandler = () => {
-    if (stompClient.current && inputMessage.trim() !== "") {
-      stompClient.current.send(
-        `/pub/chat/message`,
-        {
-          token: token,
-        },
-        JSON.stringify({
-          roomId: 1,
-          message: inputMessage,
-          type: "TALK",
-        }),
-      );
-      setInputMessage("");
-    }
-  };
+export const ChattingForm = ({ chatRoomId }: ChattingFormProps) => {
+  const [message, setMessage] = useState("");
+  const { send } = useChatContext();
+
   const handleChattingSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    sendHandler();
+    send(chatRoomId, message);
+    setMessage("");
   };
 
   return (
     <div css={dateBottom}>
       <form css={submitButtonBoxCSS} onSubmit={handleChattingSubmit}>
         <div css={inlineInputCSS}>
-          <Input
-            value={inputMessage}
-            onChange={(e) => setInputMessage(e.target.value)}
-          />
+          <Input value={message} onChange={(e) => setMessage(e.target.value)} />
           <label css={labelContainerCSS}>
             <PhotoIcon />
             <input

@@ -9,6 +9,7 @@ import FONT from "../../styles/font";
 import { Editor } from "@toast-ui/react-editor";
 import { useCreateBoard } from "../../hooks/worry/useCreateWorry";
 import { mssaemAxios as axios } from "../../apis/axios";
+
 const categoryList = [
   "ISTJ",
   "ISFJ",
@@ -69,11 +70,13 @@ const CreateMatchingPage = () => {
   const handleContentChange = () => {
     setContent(editorRef.current.getInstance().getHTML());
   };
+
   const createMutation = useCreateBoard(formData);
   const handleSubmit = () => {
     createMutation.mutate();
     navigate(-1);
   };
+
   const uploadImage = async (blob: Blob) => {
     const formData = new FormData();
     formData.append("image", blob);

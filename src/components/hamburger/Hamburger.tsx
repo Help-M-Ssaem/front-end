@@ -5,27 +5,17 @@ import COLOR from "../../styles/color";
 import ExitModal from "../modal/ExitModal";
 import ReportModal from "../modal/ReportModal";
 import { HamburgerIcon } from "../../assets/ChattingIcons";
-import { useRecoilState } from "recoil";
-import { stompClientState } from "../../states/chatting";
+import { useChatContext } from "../../hooks/chatting/ChatProvider";
 
 const Hamburger = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isExitModalOpen, setIsExitModalOpen] = useState(false);
 
-  const [stompClient, setStompClient] = useRecoilState(stompClientState);
+  const { disconnect } = useChatContext();
 
-  // 채팅 나가기
-  const disconnectHandler = () => {
-    if (stompClient) {
-      stompClient.client.disconnect(() => {
-        setStompClient(null);
-        window.location.reload(); // 새로고침
-      });
-    }
-  };
   const handleChattingExit = () => {
-    disconnectHandler();
+    disconnect();
     setIsOpen(false);
   };
 

@@ -10,88 +10,26 @@ import Button from "../../components/button/Button";
 import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
 import { useChatRooms } from "../../hooks/chatting/useChatRooms";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { activeRoomIdState, messageState } from "../../states/chatting";
 import { useEffect, useRef, useState } from "react";
-import { CompatClient, Stomp } from "@stomp/stompjs";
-import Input from "../../components/input/Input";
-import { PhotoIcon } from "../../assets/ChattingIcons";
-import { ChatMessage } from "../../interfaces/chatting";
+import { ChattingForm } from "../../components/chatting/ChattingForm";
 import CurrentChatting from "../../components/chatting/CurrentChatting";
 
 const ChattingPage = () => {
   const [activeRoomId, setActiveRoomId] = useRecoilState(activeRoomIdState);
   const [active, setActive] = useState(false);
-  const [inputMessage, setInputMessage] = useState("");
-  const [messages, setMessages] = useRecoilState(messageState);
-  const token = localStorage.getItem("accessToken");
+  const messages = useRecoilValue(messageState);
   const { chatRooms } = useChatRooms();
+  const activeRoomMessages = messages[activeRoomId] || [];
+
   const navigate = useNavigate();
   let profileUrl = "";
-
-  // 채팅 연결 구독
-  const client = useRef<CompatClient>();
-  const connectHandler = () => {
-    client.current = Stomp.over(() => {
-      const sock = new WebSocket("wss://m-ssaem.com:8080/stomp/chat");
-      return sock;
-    });
-    client.current.connect(
-      {
-        token: token,
-      },
-      () => {
-        client.current &&
-          client.current.subscribe(`/sub/chat/room/1`, onMessageReceived, {
-            token: token!,
-          });
-      },
-    );
-    return client;
-  };
-  const onMessageReceived = (message: any) => {
-    setMessages((prevMessage) => [...prevMessage, JSON.parse(message.body)]);
-  };
-
-  // 채팅 나가기
-  const disconnectHandler = () => {
-    if (client.current) {
-      client.current.disconnect(() => {
-        window.location.reload(); // 새로고침
-      });
-    }
-  };
-  // 채팅 보내기
-  const sendHandler = () => {
-    if (client.current && inputMessage.trim() !== "") {
-      client.current.send(
-        `/pub/chat/message`,
-        {
-          token: token,
-        },
-        JSON.stringify({
-          roomId: 1,
-          message: inputMessage,
-          type: "TALK",
-        }),
-      );
-      setInputMessage("");
-    }
-  };
-  const handleChattingSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    sendHandler();
-  };
 
   const handleChatRoomClick = (roomId: number) => {
     setActiveRoomId(roomId);
     setActive(true);
   };
-
-  const selectedChattingData = chatRooms?.find(
-    (chatRoom) => chatRoom.chatRoomId === activeRoomId,
-  );
-
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const scrollToBottom = () => {
     if (scrollRef.current) {
@@ -104,8 +42,6 @@ const ChattingPage = () => {
 
   return (
     <div css={editorContainerCSS}>
-      <div onClick={connectHandler}>채팅 시작</div>
-      <div onClick={disconnectHandler}>채팅 나가기</div>
       <Container addCSS={containerCSS}>
         <div css={alignmentCSS}>
           <div css={boderRightCSS}>
@@ -160,78 +96,54 @@ const ChattingPage = () => {
             )}
           </div>
           <div css={chattingRightCSS}>
-            {!chatRooms ||
-              (chatRooms && !active && (
-                <div css={noChatCSS}>
-                  <img
-                    css={smallImgCSS}
-                    src="https://i.ibb.co/YRZSTTL/rhdiddl4.png"
-                    alt="rhdiddl4"
-                  />
-                  <div css={topFontSIZE}>나의 채팅</div>
-                  <div css={bottomFontSIZE}>M쌤이 되어 고민을 해결해보세요</div>
-                  <Button onClick={() => navigate("/match/matching")}>
-                    고민 보러가기
-                  </Button>
-                </div>
-              ))}
-            {chatRooms && active && (
+            {!chatRooms && (
+              <div css={noChatCSS}>
+                <img
+                  css={smallImgCSS}
+                  src="https://i.ibb.co/YRZSTTL/rhdiddl4.png"
+                  alt="rhdiddl4"
+                />
+                <div css={topFontSIZE}>나의 채팅</div>
+                <div css={bottomFontSIZE}>M쌤이 되어 고민을 해결해보세요</div>
+                <Button onClick={() => navigate("/match/matching")}>
+                  고민 보러가기
+                </Button>
+              </div>
+            )}
+            {chatRooms && active ? (
               <>
-                {/* 고민글이랑 프로필 받아오는 부분 */}
                 <div css={dateTop}>
-                  <CurrentChatting profile={selectedChattingData} />
+                  {chatRooms.map((chatRoom) => {
+                    if (chatRoom.chatRoomId === activeRoomId) {
+                      return <CurrentChatting chatRoom={chatRoom} />;
+                    }
+                  })}
                 </div>
-                {/* 채팅창 */}
                 <div css={dateMiddle} ref={scrollRef}>
                   <div css={chattingBox}>
-                    {messages ? (
-                      messages.map((message, index) => (
+                    {activeRoomMessages &&
+                      activeRoomMessages.map((message: any, index: number) => (
                         <MessageItem
                           key={index}
                           message={message}
                           profile={profileUrl}
                         />
-                      ))
-                    ) : (
-                      <div css={[noChatCSS, noMassageCSS]}>
-                        <div css={bottomFontSIZE}>
-                          익명성을 악욕한 욕설, 비방, 불건전한 정보 유통 등
-                          상대방을 불쾌하게 하는 행위를 저지를 시
-                        </div>
-                        <div css={bottomFontSIZE}>
-                          커뮤니티 가이드 라인에 따라 불이익을 받거나 심한경우
-                          계정이 해지될 수 있습니다.
-                        </div>
-                      </div>
-                    )}
+                      ))}
                   </div>
                 </div>
-                {/* 채팅 입력폼 */}
-                <div css={dateBottom}>
-                  <form
-                    css={submitButtonBoxCSS}
-                    onSubmit={handleChattingSubmit}
-                  >
-                    <div css={inlineInputCSS}>
-                      <Input
-                        value={inputMessage}
-                        onChange={(e) => setInputMessage(e.target.value)}
-                      />
-                      <label css={labelContainerCSS}>
-                        <PhotoIcon />
-                        <input
-                          type="file"
-                          name="photo"
-                          id="photo"
-                          accept="image/*"
-                          css={fileInputCSS}
-                        />
-                      </label>
-                    </div>
-                    <Button addCSS={buttonCSS}>등록</Button>
-                  </form>
-                </div>
+                <ChattingForm chatRoomId={activeRoomId} />
               </>
+            ) : (
+              <div css={[noChatCSS, noMassageCSS]}>
+                <div css={bottomFontSIZE}>
+                  익명성을 악욕한 욕설, 비방, 불건전한 정보 유통 등 상대방을
+                  불쾌하게 하는 행위를 저지를 경우
+                </div>
+                <div css={bottomFontSIZE}>
+                  커뮤니티 가이드 라인에 따라 불이익을 받거나 심한 경우 계정이
+                  해지될 수 있습니다.
+                </div>
+              </div>
             )}
           </div>
         </div>
@@ -359,53 +271,9 @@ const bottomFontSIZE = css`
 
 const noMassageCSS = css`
   display: flex;
-  padding-top: 7rem;
 `;
 
 // 채팅 박스
 const chattingBox = css`
   padding: 0.8rem;
-`;
-
-// 채팅 입력 폼
-const dateBottom = css`
-  display: flex;
-  width: 100%;
-  height: 4rem;
-  padding: 0.8rem 2rem 0.8rem 2rem;
-`;
-
-const buttonCSS = css`
-  margin-left: 0.5rem;
-  width: 5rem;
-  height: 100%;
-  white-space: nowrap;
-`;
-
-const submitButtonBoxCSS = css`
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const inlineInputCSS = css`
-  display: flex;
-  width: 100%;
-  height: 100%;
-  position: relative;
-`;
-
-const labelContainerCSS = css`
-  display: flex;
-  cursor: pointer;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 1rem;
-  align-items: center;
-`;
-
-const fileInputCSS = css`
-  display: none;
 `;
