@@ -16,7 +16,6 @@ const MessageItem: React.FC<MessageItemProps> = ({ message, profile }) => {
 
   return (
     <>
-      {message.type === "ENTER" && <div css={enterCSS}>{message.message}</div>}
       {message.type === "TALK" && message.sender === `${user?.nickName}` && (
         <div css={chatboxCSS}>
           <div css={timeCSS}>
