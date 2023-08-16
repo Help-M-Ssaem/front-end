@@ -41,7 +41,20 @@ const CreateBoardPage = () => {
   const [content, setContent] = useState("");
   const [category, setCategory] = useRecoilState(mbtiState);
   if (category === "전체") {
-    setCategory(user!!.mbti);
+    let mbti = "";
+    if (user!!.mbti[0] === "e") mbti = "E";
+    else if (user!!.mbti[0] === "i") mbti = "I";
+    else mbti = user!!.mbti[0];
+    if (user!!.mbti[1] === "s") mbti += "S";
+    else if (user!!.mbti[1] === "n") mbti += "N";
+    else mbti += user!!.mbti[1];
+    if (user!!.mbti[2] === "t") mbti += "T";
+    else if (user!!.mbti[2] === "f") mbti += "F";
+    else mbti += user!!.mbti[2];
+    if (user!!.mbti[3] === "j") mbti += "J";
+    else if (user!!.mbti[3] === "p") mbti += "P";
+    else mbti += user!!.mbti[3];
+    setCategory(mbti);
   }
 
   const [image, setImage] = useState<string[]>([]);
