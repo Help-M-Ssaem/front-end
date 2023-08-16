@@ -96,6 +96,8 @@ const DetailBoardPage = () => {
     setMbtiSelected((board && board.boardMbti) as string);
   };
 
+  const token = localStorage.getItem("accessToken");
+
   return (
     <>
       <Container addCSS={containerCSS}>
@@ -146,14 +148,12 @@ const DetailBoardPage = () => {
               <div css={commentBoxCSS}>
                 <div>전체 댓글 {comments ? comments.result.length : 0}개</div>
                 <div css={shareDeclarationCSS}>
-                  <div 
-                    css={shareCSS}
-                    onClick={handleShare}
-                  >공유</div>
-                  <div 
-                    css={declarationCSS}
-                    onClick={handleReport}
-                  >신고</div>
+                  <div css={shareCSS} onClick={handleShare}>
+                    공유
+                  </div>
+                  <div css={declarationCSS} onClick={handleReport}>
+                    신고
+                  </div>
                 </div>
               </div>
             </div>
@@ -207,7 +207,9 @@ const DetailBoardPage = () => {
       )}
       <Container addCSS={containerCSS}>
         <div css={createButtonCSS}>
-          <Button onClick={() => navigate("/board/create")}>글 쓰기</Button>
+          {token && (
+            <Button onClick={() => navigate("/board/create")}>글 쓰기</Button>
+          )}
         </div>
         {boardList &&
           boardList.result.map((board) => (
