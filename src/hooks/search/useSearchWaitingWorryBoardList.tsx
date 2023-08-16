@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import { mssaemAxios as axios } from "../../apis/axios";
-import { debateKeys } from "../../constants/debateKey";
-import { DebateList } from "../../interfaces/debate";
+import { WorryList } from "../../interfaces/worry";
+import { SearchKeys } from "../../constants/searchKey";
 
 export async function getSearchWaitingWorryBoardList(
   searchType: number,
@@ -10,7 +10,7 @@ export async function getSearchWaitingWorryBoardList(
   strToMbti: string,
   page: number,
   size: number,
-): Promise<DebateList> {
+): Promise<WorryList> {
   const { data } = await axios.get(
     `/worry-board/waiting/search?searchType=${searchType}&keyword=${keyword}&strFromMbti=${strFromMbti}&strToMbti=${strToMbti}&page=${page}&size=${size}`,
   );
@@ -18,7 +18,7 @@ export async function getSearchWaitingWorryBoardList(
 }
 
 interface UseSearchWaitingWorryBoardList {
-  searchWaitingWorryBoardList?: DebateList;
+  searchWaitingWorryBoardList?: WorryList;
 }
 
 export function useSearchWaitingWorryBoardList(
@@ -29,7 +29,7 @@ export function useSearchWaitingWorryBoardList(
   page: number,
   size: number,
 ): UseSearchWaitingWorryBoardList {
-  const { data: searchWaitingWorryBoardList } = useQuery(debateKeys.all, () =>
+  const { data: searchWaitingWorryBoardList } = useQuery(SearchKeys.all, () =>
     getSearchWaitingWorryBoardList(
       searchType,
       keyword,
