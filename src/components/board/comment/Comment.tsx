@@ -41,6 +41,7 @@ const CommentComponent = ({ comment, onClick, best, reply }: CommentProps) => {
             name={comment.memberSimpleInfo.nickName}
             mbti={comment.memberSimpleInfo.mbti}
             badge={comment.memberSimpleInfo.badge}
+            createdAt={comment.createdAt}
           />
         </div>
         {comment.isEditAllowed ? (
