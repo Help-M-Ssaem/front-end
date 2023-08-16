@@ -45,8 +45,12 @@ const CommentComponent = ({ comment, onClick, best, reply }: CommentProps) => {
           />
         </div>
         {comment.isEditAllowed ? (
-          <div css={deleteCSS} onClick={handleCommentDeleteClick}>
-            삭제
+          <div css={likeCountCSS} onClick={handleLikeClick}>
+            <div css={deleteCSS} onClick={handleCommentDeleteClick}>
+              삭제
+            </div>
+            <HeartIcon />
+            <div>{comment.likeCount}</div>
           </div>
         ) : (
           <div css={likeCountCSS} onClick={handleLikeClick}>
@@ -107,4 +111,5 @@ const deleteCSS = css`
   font-size: ${FONT.SIZE.BODY};
   font-weight: ${FONT.WEIGHT.REGULAR};
   color: ${COLOR.GRAY2};
+  margin-right: 0.5rem;
 `;
