@@ -24,7 +24,7 @@ const PageDebate: React.FC<Props> = ({pathMov}) => {
     <Container addCSS={containerCSS}>
       <div>
         {debateLists &&
-          debateLists.result.map((debate: Debate, index) => (
+          debateLists.result.map((debate: Debate, index: number) => (
             <DebateComponent
               debate={debate}
               key={debate.id}
@@ -51,5 +51,5 @@ export default PageDebate;
 
 const containerCSS = css`
   background: ${COLOR.WHITE};
-  padding: 1.5rem 0 0 0;
+  padding: 1rem 0 0 0;
 `;

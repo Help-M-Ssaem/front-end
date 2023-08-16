@@ -71,6 +71,7 @@ const imgCSS = css`
   width: 6rem;
   height: 6rem;
   margin: 0.5rem 0 0.5rem 0.8rem;
+  object-fit: cover;
 `;
 
 const titleCSS = css`

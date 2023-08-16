@@ -11,6 +11,8 @@ import {
   replyCommentIdState,
   replyCommentOpenState,
 } from "../../../states/board";
+import COLOR from "../../../styles/color";
+import FONT from "../../../styles/font";
 
 interface CommentCreateProps {
   addCSS?: SerializedStyles;
@@ -48,14 +50,15 @@ const CommentCreate = ({ addCSS, reply }: CommentCreateProps) => {
     replyCommentId,
   );
 
-  const handleCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleCommentSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
+    e && e.preventDefault();
     createMutation.mutate();
     setContent("");
     setReplyCommentOpen(false);
   };
-  const handleReplyCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+
+  const handleReplyCommentSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
+    e && e.preventDefault();
     createReplyMutation.mutate();
     setReplyContent("");
     setReplyCommentOpen(false);
@@ -66,6 +69,14 @@ const CommentCreate = ({ addCSS, reply }: CommentCreateProps) => {
       setContent(e.target.value);
     } else {
       setReplyContent(e.target.value);
+    }
+  };
+
+  const handleButtonClick = () => {
+    if (reply) {
+      handleReplyCommentSubmit();
+    } else {
+      handleCommentSubmit();
     }
   };
 
@@ -80,7 +91,9 @@ const CommentCreate = ({ addCSS, reply }: CommentCreateProps) => {
           onChange={handleCommentChange}
           value={reply ? replyContent : content}
         />
-        <Button addCSS={buttonCSS}>등록</Button>
+        <button css={buttonCSS} onSubmit={handleButtonClick}>
+          등록
+        </button>
       </form>
     </div>
   );
@@ -98,6 +111,19 @@ const commentCreateBoxCSS = css`
 `;
 
 const buttonCSS = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: ${COLOR.WHITE};
+  background: ${COLOR.MAIN2};
+  font-size: ${FONT.SIZE.BODY};
+  font-weight: ${FONT.WEIGHT.BOLD};
+
+  padding: 0.5rem 1.7rem;
+  border-radius: 2rem;
+  cursor: pointer;
+
   margin-left: 0.5rem;
   width: 5rem;
 `;
