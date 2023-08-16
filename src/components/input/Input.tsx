@@ -6,10 +6,19 @@ import FONT from "../../styles/font";
 interface InputProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value?: string;
+  placeholder?: string;
 }
 
-const Input = ({ onChange, value }: InputProps) => {
-  return <input type="text" css={inputCSS} onChange={onChange} value={value} />;
+const Input = ({ onChange, value, placeholder }: InputProps) => {
+  return (
+    <input
+      type="text"
+      css={inputCSS}
+      onChange={onChange}
+      value={value}
+      placeholder={placeholder}
+    />
+  );
 };
 
 const inputCSS = css`
