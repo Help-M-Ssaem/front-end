@@ -19,6 +19,7 @@ const MyDebateComponent = ({ debate, onClick }: DebateProps) => {
         <div css={dateTop}>
           <div css={profileBoxCSS}>
             <Profile
+              id={debate.memberSimpleInfo.id}
               image={debate.memberSimpleInfo.profileImgUrl}
               name={debate.memberSimpleInfo.nickName}
               mbti={debate.memberSimpleInfo.mbti}
@@ -27,10 +28,7 @@ const MyDebateComponent = ({ debate, onClick }: DebateProps) => {
           </div>
           <div css={marginRightCSS}>{debate.createdAt}</div>
         </div>
-        <div 
-          onClick={() => onClick(debate.id)}
-          css={onclickCSS}
-          >
+        <div onClick={() => onClick(debate.id)} css={onclickCSS}>
           <div css={titleCSS}>{debate.title}</div>
           <div css={contentCSS}>{debate.content}</div>
         </div>
@@ -56,14 +54,14 @@ const debateBoxCSS = css`
 const leftCSS = css`
   display: flex;
   flex-direction: column;
-  flex-grow: 1; 
+  flex-grow: 1;
   padding-top: 1.4rem;
 `;
 
 const dateTop = css`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const titleCSS = css`
@@ -114,7 +112,7 @@ const buttonBoxCSS = css`
 `;
 
 const onclickCSS = css`
-cursor: pointer;
+  cursor: pointer;
 `;
 
 //=---------------------------------------------

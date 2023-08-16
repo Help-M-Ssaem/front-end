@@ -9,7 +9,6 @@ import { useBoardCommentLike } from "../../../hooks/board/comment/useBoardCommen
 import { useParams } from "react-router";
 import { useBoardCommentDelete } from "../../../hooks/board/comment/useBoardCommentDelete";
 import { ReplyIcon } from "../../../assets/CommentIcons";
-import { useState } from "react";
 import { useRecoilState } from "recoil";
 import {
   replyCommentIdState,
@@ -53,6 +52,7 @@ const CommentComponent = ({ comment, best, reply }: CommentProps) => {
           {best && <BestIcon />}
           {reply && <ReplyIcon />}
           <Profile
+            id={comment.memberSimpleInfo.id}
             image={comment.memberSimpleInfo.profileImgUrl}
             name={comment.memberSimpleInfo.nickName}
             mbti={comment.memberSimpleInfo.mbti}

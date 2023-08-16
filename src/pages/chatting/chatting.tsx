@@ -58,6 +58,7 @@ const ChattingPage = () => {
                         profileUrl = chatRoom.memberSimpleInfo.profileImgUrl;
                         return (
                           <Profile
+                            id={chatRoom.memberSimpleInfo.id}
                             image={chatRoom.memberSimpleInfo.profileImgUrl}
                             name={chatRoom.memberSimpleInfo.nickName}
                             mbti={chatRoom.memberSimpleInfo.mbti}

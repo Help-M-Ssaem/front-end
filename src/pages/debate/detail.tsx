@@ -76,6 +76,7 @@ const DetailDebatePage = () => {
             <div css={detailCSS}>
               <div css={detailHeaderCSS}>
                 <Profile
+                  id={debate.discussionSimpleInfo.memberSimpleInfo.id}
                   image={
                     debate.discussionSimpleInfo.memberSimpleInfo.profileImgUrl
                   }

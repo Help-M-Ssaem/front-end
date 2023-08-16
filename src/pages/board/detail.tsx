@@ -101,6 +101,7 @@ const DetailBoardPage = () => {
             <div css={detailCSS}>
               <div css={detailHeaderCSS}>
                 <Profile
+                  id={board.memberSimpleInfo.id}
                   image={board.memberSimpleInfo.profileImgUrl}
                   name={board.memberSimpleInfo.nickName}
                   mbti={board.memberSimpleInfo.mbti}

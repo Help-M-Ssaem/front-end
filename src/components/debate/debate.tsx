@@ -47,6 +47,7 @@ const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
         <div css={dateTop}>
           <div css={profileBoxCSS}>
             <Profile
+              id={debate.memberSimpleInfo.id}
               image={debate.memberSimpleInfo.profileImgUrl}
               name={debate.memberSimpleInfo.nickName}
               mbti={debate.memberSimpleInfo.mbti}
