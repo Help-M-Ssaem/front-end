@@ -2,7 +2,6 @@ import { useQuery } from "react-query";
 import { mssaemAxios as axios } from "../../apis/axios";
 import { alarmKeys } from "../../constants/alarmKey";
 import { AlarmList } from "../../interfaces/alarm";
-import { useInfiniteQuery } from 'react-query';
 
 export async function getAlarmList(
   page: number,
