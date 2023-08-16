@@ -10,7 +10,7 @@ import { ChattingHistory, MsseamProps } from "../../interfaces/chatting";
 import EvaluationModal from "../modal/EvaluationModal";
 import { useCreateEvaluation } from "../../hooks/worry/useEvaluation";
 import { ChatRoom } from "../../interfaces/chatting";
-import { useSolveWorry } from "../../hooks/worry/useWorrySolved";
+
 import { mssaemAxios as axios } from "../../apis/axios";
 interface CurrentChattingProps {
   chatRoom: ChatRoom;
@@ -26,10 +26,12 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
 
   const handleEvaluation = async () => {
     try {
+      console.log(worryBoardId);
       const res = await getSolved(worryBoardId);
-      console.log(res);
+
       setProfileData(res);
       setIsEvaluationModalOpen(true);
+      console.log(isEvaluationModalOpen);
     } catch (error) {
       console.error("Error fetching solved data:", error);
     }
