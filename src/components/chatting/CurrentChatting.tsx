@@ -6,7 +6,11 @@ import Badge from "../badge/Badge";
 import { RightArrowIcon } from "../../assets/CommonIcons";
 import Button from "../button/Button";
 import { useEffect, useState } from "react";
-import { ChattingHistory, MsseamProps } from "../../interfaces/chatting";
+import {
+  ChatRoom,
+  ChattingHistory,
+  MsseamProps,
+} from "../../interfaces/chatting";
 import EvaluationModal from "../modal/EvaluationModal";
 import { useCreateEvaluation } from "../../hooks/worry/useEvaluation";
 import { useSolveWorry } from "../../hooks/worry/useWorrySolved";
@@ -29,7 +33,7 @@ const matching = {
 };
 
 interface Profile {
-  profile: ChattingHistory | null;
+  profile: ChatRoom | undefined;
 }
 
 const CurrentChatting: React.FC<Profile> = ({ profile }) => {
@@ -37,6 +41,8 @@ const CurrentChatting: React.FC<Profile> = ({ profile }) => {
   const [selectedOption, setSelectedOption] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [profileData, setProfileData] = useState<MsseamProps | null>(null);
+  console.log(profile);
+
   const worryBoardId = 24;
 
   const handleOpenModalWithData = async () => {

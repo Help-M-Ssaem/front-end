@@ -14,6 +14,8 @@ const LoginPage = () => {
 
   function KakaoLogin() {
     const URL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_KAKAO_API_KEY}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}&response_type=code`;
+
+    // https://kauth.kakao.com/oauth/authorize?client_id=0b193a8cee2b14d1a2c57470cb2d8e3b&redirect_uri=https://m-ssaem.vercel.app/kakao/login&response_type=code
     loginHandler(URL);
   }
 
@@ -24,6 +26,7 @@ const LoginPage = () => {
 
   function GoogleLogin() {
     const URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.REACT_APP_GOOGLE_API_KEY}&redirect_uri=${process.env.REACT_APP_GOOGLE_REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email`;
+
     loginHandler(URL);
   }
 

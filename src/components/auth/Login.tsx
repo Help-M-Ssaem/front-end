@@ -6,7 +6,6 @@ import Container from "../container/Container";
 import Profile from "../profile/Profile";
 import { User } from "../../interfaces/user";
 import { useNavigate } from "react-router-dom";
-import { useCallback } from "react";
 
 interface userProps {
   user: User;

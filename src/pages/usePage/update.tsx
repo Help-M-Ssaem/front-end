@@ -15,20 +15,18 @@ import { CancelIcon, PolygonIcon } from "../../assets/CommonIcons";
 import useMemberInfo from "../../hooks/user/useMemberInfo";
 import { mssaemAxios as axios } from "../../apis/axios";
 import { useDeleteImage } from "../../hooks/mypage/useDeleteImage";
-import { UserProfile } from "../../interfaces/user";
-import { badge } from "@material-tailwind/react";
 
 const MyPageUpdate = () => {
   const navigate = useNavigate();
 
   const { user } = useMemberInfo();
   const { profileData } = useGetProfile(user!!.id);
-
   const [mbtiNum, setMbtinum] = useState<string | null>(null);
   const [invalidInput, setInvalidInput] = useState<string | null>(null);
   const [mbti, setMbti] = useState<string | undefined>(undefined);
-  const [setBadge, setSetBadge] = useState<string | undefined>(undefined);
+  const [badgeId, setBadgeId] = useState<number | null>(null);
 
+  //초기화 및 set 하는 부분
   const [values, setValues] = useState(() => ({
     introduction: profileData?.teacherInfo.introduction,
     nickName: profileData?.teacherInfo.nickName,
@@ -47,15 +45,17 @@ const MyPageUpdate = () => {
     { name: string; values: string[] }[]
   >(() => {
     if (profileData) {
-      return mbtiInputs.map((mbti) => ({
+      return mbtiInputs.map((mbti, index) => ({
         ...mbti,
         values: [profileData.teacherInfo.mbti[Number(mbti.name.charAt(5)) - 1]],
+        key: index,
       }));
     }
 
-    return mbtiInputs.map((mbti) => ({
+    return mbtiInputs.map((mbti, index) => ({
       ...mbti,
       values: [""],
+      key: index,
     }));
   });
 
@@ -87,11 +87,6 @@ const MyPageUpdate = () => {
     formState: { errors },
   } = useForm<any>();
 
-  // onClick ()
-  const handleCancel = () => {
-    navigate("/");
-  };
-
   const setIntroductionChange = (newIntroduction: string) => {
     setValues((prevValues) => ({
       ...prevValues,
@@ -99,47 +94,34 @@ const MyPageUpdate = () => {
     }));
   };
 
-  const setBadgeChange = (newBadge: string) => {
+  const handleNicknameChange = (newNickname: string) => {
     setValues((prevValues) => ({
       ...prevValues,
-      badge: newBadge,
+      nickName: newNickname,
     }));
   };
 
+  const data = {
+    nickName: values.nickName,
+    introduction: values.introduction,
+    mbti: mbti,
+    caseSensitivity: mbtiNum,
+    badgeId: badgeId,
+  };
   //  --------- Submit --------------
+  // 취소하기
+  const handleCancel = () => {
+    navigate("/");
+  };
 
+  //제출하기
   const onSubmit = async () => {
-    const formData = new FormData();
-
-    let badgeId: number | null = null;
-
-    profileData?.badgeInfos?.forEach((value: { id: number; name: string }) => {
-      if (value.name === values.badge) {
-        badgeId = value.id;
-      }
-    });
-
-    const data = {
-      nickName: values.nickName,
-      introduction: values.introduction,
-      mbti: mbti,
-      caseSensitivity: mbtiNum,
-      badgeId: badgeId,
-    };
+    console.log(data);
 
     try {
-      if (values.image) {
-        // formData.append("image", values.image);
-      }
-      console.log(data);
-      formData.append(
-        "modifyProfile",
-        new Blob([JSON.stringify(data)], { type: "application/json" }),
-      );
-
-      const response = await axios.patch("/member/profile", formData, {
+      const response = await axios.patch("/member/profile", data, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
         },
       });
 
@@ -156,6 +138,7 @@ const MyPageUpdate = () => {
   //-------- Badge ----------------------
   const selectBadge = (value: any) => {
     const isSelectedBadge = value.id === values.image;
+
     switch (value.type) {
       case 1:
         return badgeCSS1;
@@ -169,10 +152,11 @@ const MyPageUpdate = () => {
         return badgeCSS1;
     }
   };
-  const handleNicknameChange = (newNickname: string) => {
+
+  const setBadgeChange = (newBadge: string) => {
     setValues((prevValues) => ({
       ...prevValues,
-      nickName: newNickname,
+      badge: newBadge,
     }));
   };
 
@@ -185,9 +169,6 @@ const MyPageUpdate = () => {
 
     setMbtinum(mbtiNum);
     setMbti(mbtiUpperValue);
-
-    console.log(mbti);
-    console.log(mbtiValue); //여기서 값 설정이 제대로 안됨
 
     setValues((prevValues) => ({
       ...prevValues,
@@ -226,9 +207,6 @@ const MyPageUpdate = () => {
     const updatedMbtiValues = [...mbtiValue];
     updatedMbtiValues[mbtiIndex] = { ...currentMbti, values: [updatedValue] };
     setMbtiValue(updatedMbtiValues);
-
-    console.log(updatedMbtiValues); //여기서는 잘 되는데
-    console.log(mbtiValue); //여기서 한 동작씩 느려
   };
 
   const handleInputChange = (
@@ -256,7 +234,7 @@ const MyPageUpdate = () => {
   // --------  이미지 부분 ---------
   const handleImageBlobHook = async (blob: Blob) => {
     const imgUrl = URL.createObjectURL(blob);
-
+    setImageChange(imgUrl);
     return imgUrl;
   };
 
@@ -265,13 +243,28 @@ const MyPageUpdate = () => {
     if (file) {
       try {
         const imgUrl = await handleImageBlobHook(file);
-        setImageChange(imgUrl);
+        const result = await uploadImage(file);
+        setImageURL(result); // Set the image URL after successful upload
+        setImageChange(imgUrl); // Call setI
       } catch (error) {
         console.error("Error uploading image:", error);
       }
     }
   };
 
+  const uploadImage = async (blob: Blob) => {
+    const formData = new FormData();
+    formData.append("image", blob);
+    const imgUrl = await axios.post("/member/profile/file", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return imgUrl.data;
+  };
+  const [imageURL, setImageURL] = useState<string>();
+
+  //Blob 말고 url 로만 지정할 수 있게
   const setImageChange = (newImage: string | undefined) => {
     setValues((prevValues) => ({
       ...prevValues,
@@ -376,13 +369,13 @@ const MyPageUpdate = () => {
             {profileData?.badgeInfos?.map(
               (value: { id: number; name: string }, idx: number) => {
                 const isSelected = value.name === values.badge;
-
                 // 클릭 이벤트 핸들러
                 const handleBadgeClick = () => {
                   if (isSelected) {
                     setBadgeChange("");
                   } else {
                     setBadgeChange(value.name as string);
+                    setBadgeId(value.id);
                   }
                 };
 

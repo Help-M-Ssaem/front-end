@@ -17,6 +17,7 @@ import { CompatClient, Stomp } from "@stomp/stompjs";
 import Input from "../../components/input/Input";
 import { PhotoIcon } from "../../assets/ChattingIcons";
 import { ChatMessage } from "../../interfaces/chatting";
+import CurrentChatting from "../../components/chatting/CurrentChatting";
 
 const ChattingPage = () => {
   const [activeRoomId, setActiveRoomId] = useRecoilState(activeRoomIdState);
@@ -178,7 +179,7 @@ const ChattingPage = () => {
               <>
                 {/* 고민글이랑 프로필 받아오는 부분 */}
                 <div css={dateTop}>
-                  {/* <CurrentChatting profile={selectedChattingData} /> */}
+                  <CurrentChatting profile={selectedChattingData} />
                 </div>
                 {/* 채팅창 */}
                 <div css={dateMiddle} ref={scrollRef}>
