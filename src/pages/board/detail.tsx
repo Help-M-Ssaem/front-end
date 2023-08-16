@@ -106,7 +106,11 @@ const DetailBoardPage = () => {
                   mbti={board.memberSimpleInfo.mbti}
                   badge={board.memberSimpleInfo.badge}
                 />
-                <div css={dateCSS}>{board.createdAt}</div>
+                <div css={dateBoxCSS}>
+                  <div css={dateCSS}>조회수 {board.hits}회</div>
+                  <div css={dateCSS}>|</div>
+                  <div css={dateCSS}>{board.createdAt}</div>
+                </div>
               </div>
               <div css={titleCSS}>{board.title}</div>
               <div
@@ -215,10 +219,15 @@ const detailHeaderCSS = css`
   margin-bottom: 1rem;
 `;
 
+const dateBoxCSS = css`
+  display: flex;
+`;
+
 const dateCSS = css`
   font-size: ${FONT.SIZE.BODY};
   font-weight: ${FONT.WEIGHT.REGULAR};
   color: ${COLOR.GRAY2};
+  margin-left: 0.5rem;
 `;
 
 const titleCSS = css`
