@@ -9,15 +9,20 @@ import { useBoardCommentLike } from "../../../hooks/board/comment/useBoardCommen
 import { useParams } from "react-router";
 import { useBoardCommentDelete } from "../../../hooks/board/comment/useBoardCommentDelete";
 import { ReplyIcon } from "../../../assets/CommentIcons";
+import { useState } from "react";
+import { useRecoilState } from "recoil";
+import {
+  replyCommentIdState,
+  replyCommentOpenState,
+} from "../../../states/board";
 
 interface CommentProps {
   comment: Comment;
-  onClick?: () => void;
   best?: boolean;
   reply?: boolean;
 }
 
-const CommentComponent = ({ comment, onClick, best, reply }: CommentProps) => {
+const CommentComponent = ({ comment, best, reply }: CommentProps) => {
   const { id } = useParams();
   const boardId = Number(id);
 
@@ -28,6 +33,17 @@ const CommentComponent = ({ comment, onClick, best, reply }: CommentProps) => {
   const deleteMutation = useBoardCommentDelete(boardId, comment.commentId);
   const handleCommentDeleteClick = () => {
     deleteMutation.mutate();
+  };
+
+  const [replyCommentId, setReplyCommentId] =
+    useRecoilState(replyCommentIdState);
+  const [replyCommentOpen, setReplyCommentOpen] = useRecoilState(
+    replyCommentOpenState,
+  );
+
+  const handleCommentClick = () => {
+    setReplyCommentOpen(!replyCommentOpen);
+    setReplyCommentId(reply ? comment.parentId : comment.commentId);
   };
 
   return (
@@ -67,7 +83,7 @@ const CommentComponent = ({ comment, onClick, best, reply }: CommentProps) => {
           </div>
         )}
       </div>
-      <div css={[contentCSS, reply && replyCSS]} onClick={onClick}>
+      <div css={[contentCSS, reply && replyCSS]} onClick={handleCommentClick}>
         {comment.content}
       </div>
     </div>
