@@ -26,6 +26,7 @@ const LoginComponent = ({ user }: userProps) => {
       </div>
       <div css={profileCSS}>
         <Profile
+          id={user.id}
           image={user.profileImgUrl}
           name={user.nickName}
           mbti={user.mbti}

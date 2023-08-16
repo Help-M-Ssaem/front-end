@@ -17,10 +17,14 @@ const HotDebateComponent = ({ hotDebate, addCSS }: HotDebateProps) => {
   const navigate = useNavigate();
   return (
     <Container>
-      <div css={[leftCSS,onclickCSS]} onClick={() => navigate(`/debate/${hotDebate.id}`)}>
+      <div
+        css={[leftCSS, onclickCSS]}
+        onClick={() => navigate(`/debate/${hotDebate.id}`)}
+      >
         <div css={dateTop}>
           <div css={profileBoxCSS}>
             <Profile
+              id={hotDebate.memberSimpleInfo.id}
               image={hotDebate.memberSimpleInfo.profileImgUrl}
               name={hotDebate.memberSimpleInfo.nickName}
               mbti={hotDebate.memberSimpleInfo.mbti}
@@ -29,22 +33,22 @@ const HotDebateComponent = ({ hotDebate, addCSS }: HotDebateProps) => {
           </div>
           <div css={marginRightCSS}>{hotDebate.createdAt}</div>
         </div>
-          <div css={titleCSS}>{hotDebate.title}</div>
-          <div css={contentCSS}>
+        <div css={titleCSS}>{hotDebate.title}</div>
+        <div css={contentCSS}>
           {hotDebate.content.length > 30
             ? `${hotDebate.content.slice(0, 30)}...`
             : hotDebate.content}
         </div>
-        </div>
-        <VoteItemList options={hotDebate.options} debateId={hotDebate.id} />
+      </div>
+      <VoteItemList options={hotDebate.options} debateId={hotDebate.id} />
 
-        <div css={detailCSS}>
-          <RedButton
-            count={`${hotDebate.participantCount}명이 참여중`}
-          ></RedButton>
-          <div>댓글 {hotDebate.commentCount}</div>
-        </div>
-      </Container>
+      <div css={detailCSS}>
+        <RedButton
+          count={`${hotDebate.participantCount}명이 참여중`}
+        ></RedButton>
+        <div>댓글 {hotDebate.commentCount}</div>
+      </div>
+    </Container>
   );
 };
 export default HotDebateComponent;
@@ -52,13 +56,13 @@ export default HotDebateComponent;
 const leftCSS = css`
   display: flex;
   flex-direction: column;
-  flex-grow: 1; 
+  flex-grow: 1;
 `;
 
 const dateTop = css`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const titleCSS = css`
@@ -102,5 +106,5 @@ const detailCSS = css`
 `;
 
 const onclickCSS = css`
-cursor: pointer;
+  cursor: pointer;
 `;

@@ -32,6 +32,7 @@ const Header = () => {
           </Button>
         ) : (
           <Profile
+            id={user.id}
             image={user.profileImgUrl}
             name={user.nickName}
             mbti={user.mbti}

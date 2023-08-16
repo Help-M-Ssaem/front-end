@@ -3,8 +3,11 @@ import { css } from "@emotion/react";
 import Badge from "../badge/Badge";
 import FONT from "../../styles/font";
 import COLOR from "../../styles/color";
+import { useNavigate } from "react-router";
+import useMemberInfo from "../../hooks/user/useMemberInfo";
 
 interface profileProps {
+  id: number;
   image: string;
   name: string;
   mbti: string;
@@ -12,9 +15,20 @@ interface profileProps {
   createdAt?: string;
 }
 
-const Profile = ({ image, name, mbti, badge, createdAt }: profileProps) => {
+const Profile = ({ id, image, name, mbti, badge, createdAt }: profileProps) => {
+  const navigate = useNavigate();
+  const { user } = useMemberInfo();
+
+  const handleProfileClick = () => {
+    if (user && user.id === id) {
+      navigate(`/profile/myprofile`);
+    } else {
+      navigate(`/profile/user/${id}`);
+    }
+  };
+
   return (
-    <div css={profileBoxCSS}>
+    <div css={profileBoxCSS} onClick={handleProfileClick}>
       <img css={profileImgCSS} src={image} alt="profile" />
       <div css={profileCSS}>
         <div css={detailCSS}>
@@ -35,6 +49,7 @@ export default Profile;
 const profileBoxCSS = css`
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 
 const profileImgCSS = css`
