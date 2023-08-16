@@ -6,7 +6,7 @@ export interface Comment {
   parentId: number;
   createdAt: string;
   isLiked: boolean;
-  isAllowed: boolean;
+  isEditAllowed: boolean;
   memberSimpleInfo: User;
   content: string;
 }

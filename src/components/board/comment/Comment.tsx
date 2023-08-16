@@ -11,7 +11,7 @@ import { useBoardCommentDelete } from "../../../hooks/board/comment/useBoardComm
 import { ReplyIcon } from "../../../assets/CommentIcons";
 
 interface CommentProps {
-  comment: any; // TODO: Comment 타입으로 수정
+  comment: Comment;
   onClick?: () => void;
   best?: boolean;
   reply?: boolean;
@@ -43,7 +43,7 @@ const CommentComponent = ({ comment, onClick, best, reply }: CommentProps) => {
             badge={comment.memberSimpleInfo.badge}
           />
         </div>
-        {comment.isAllowed ? (
+        {comment.isEditAllowed ? (
           <div css={deleteCSS} onClick={handleCommentDeleteClick}>
             삭제
           </div>
