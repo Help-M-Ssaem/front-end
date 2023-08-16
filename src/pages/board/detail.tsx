@@ -22,6 +22,15 @@ import { useBoardList } from "../../hooks/board/useBoardList";
 import BoardComponent from "../../components/board/Board";
 import ListPagination from "../../components/Pagination/ListPagination";
 import Text from "../../components/text/Text";
+import ReportModal from "../../components/modal/ReportModal";
+import ShareModal from "../../components/modal/ShareModal";
+import { useRecoilState } from "recoil";
+import {
+  mbtiState,
+  replyCommentIdState,
+  replyCommentOpenState,
+} from "../../states/board";
+import { useEffect } from "react";
 
 const DetailBoardPage = () => {
   const navigate = useNavigate();
@@ -41,15 +50,21 @@ const DetailBoardPage = () => {
   const [blockNum, setBlockNum] = useState(0);
   const { boardList } = useBoardList(page, limit, boardId);
   const totalPage = boardList ? boardList.totalSize - 1 : 1;
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
-  // TODO: 더보기 구현되면 page, size 수정
-  const { comments } = useBoardComment(boardId, 0, 10);
-  const { bestComments } = useBoardBestComment(boardId);
-  const [content, setContent] = useState("");
+  const handleReport = () => {
+    setIsReportModalOpen(true);
+  };
+  const handleShare = () => {
+    setIsShareModalOpen(true);
+  };
+  const handleCloseModal = () => {
+    setIsReportModalOpen(false);
+    setIsShareModalOpen(false);
+  };
 
-  const [replyContent, setReplyContent] = useState("");
-  const [replyCommentId, setReplyCommentId] = useState(0);
-  const [replyCommentOpen, setReplyCommentOpen] = useState(false);
+  const [mbtiSelected, setMbtiSelected] = useRecoilState(mbtiState);
 
   const deleteMutation = useDeleteBoard(boardId);
   const likeMutation = useBoardLike(boardId);
@@ -58,46 +73,30 @@ const DetailBoardPage = () => {
     deleteMutation.mutate();
     navigate(-1);
   };
-
   const handleLikeClick = () => {
     likeMutation.mutate();
   };
 
-  const formData = new FormData();
-  formData.append(
-    "postBoardCommentReq",
-    new Blob([JSON.stringify(content)], { type: "application/json" }),
+  // TODO: 더보기 구현되면 page, size 수정
+  const { comments } = useBoardComment(boardId, 0, 10);
+  const { bestComments } = useBoardBestComment(boardId);
+
+  const [replyCommentId, setReplyCommentId] =
+    useRecoilState(replyCommentIdState);
+  const [replyCommentOpen, setReplyCommentOpen] = useRecoilState(
+    replyCommentOpenState,
   );
 
-  const replyFormData = new FormData();
-  replyFormData.append(
-    "postBoardCommentReq",
-    new Blob([JSON.stringify(replyContent)], { type: "application/json" }),
-  );
-
-  const createMutation = useBoardCommentCreate(boardId, formData);
-  const createReplyMutation = useBoardCommentCreate(
-    boardId,
-    replyFormData,
-    replyCommentId,
-  );
-
-  const handleCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    createMutation.mutate();
-    setContent("");
-  };
-  const handleReplyCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    createReplyMutation.mutate();
-    setReplyContent("");
+  useEffect(() => {
     setReplyCommentOpen(false);
+  }, []);
+
+  const handleCategoryClick = () => {
+    navigate("/board/mbti");
+    setMbtiSelected((board && board.boardMbti) as string);
   };
 
-  const handleCommentClick = (commentId: number) => {
-    setReplyCommentOpen(!replyCommentOpen);
-    setReplyCommentId(commentId);
-  };
+  const token = localStorage.getItem("accessToken");
 
   return (
     <>
@@ -105,7 +104,9 @@ const DetailBoardPage = () => {
         {board && (
           <>
             <div css={buttonBoxCSS}>
-              <Text>{board.boardMbti} 게시판</Text>
+              <Text onClick={handleCategoryClick} addCSS={categoryCSS}>
+                {board.boardMbti} 게시판
+              </Text>
               {board.isAllowed && (
                 <div css={buttonsCSS}>
                   <Button onClick={() => navigate("update")} addCSS={buttonCSS}>
@@ -118,34 +119,41 @@ const DetailBoardPage = () => {
             <div css={detailCSS}>
               <div css={detailHeaderCSS}>
                 <Profile
+                  id={board.memberSimpleInfo.id}
                   image={board.memberSimpleInfo.profileImgUrl}
                   name={board.memberSimpleInfo.nickName}
                   mbti={board.memberSimpleInfo.mbti}
                   badge={board.memberSimpleInfo.badge}
                 />
-                <div css={dateCSS}>{board.createdAt}</div>
+                <div css={dateBoxCSS}>
+                  <div css={dateCSS}>조회수 {board.hits}회</div>
+                  <div css={dateCSS}>|</div>
+                  <div css={dateCSS}>{board.createdAt}</div>
+                </div>
               </div>
               <div css={titleCSS}>{board.title}</div>
               <div
                 css={contentCSS}
                 dangerouslySetInnerHTML={{ __html: board.content }}
               />
-              {!board.isAllowed && (
-                <div css={likeButtonBoxCSS}>
-                  <div css={likeCountCSS}>{board.likeCount}</div>
-                  {board.isLiked ? (
-                    <LikeClickedIcon onClick={handleLikeClick} />
-                  ) : (
-                    <LikeIcon onClick={handleLikeClick} />
-                  )}
-                </div>
-              )}
+              <div css={likeButtonBoxCSS}>
+                <div css={likeCountCSS}>{board.likeCount}</div>
+                {board.isLiked ? (
+                  <LikeClickedIcon onClick={handleLikeClick} />
+                ) : (
+                  <LikeIcon onClick={handleLikeClick} />
+                )}
+              </div>
 
               <div css={commentBoxCSS}>
                 <div>전체 댓글 {comments ? comments.result.length : 0}개</div>
                 <div css={shareDeclarationCSS}>
-                  <div css={shareCSS}>공유</div>
-                  <div css={declarationCSS}>신고</div>
+                  <div css={shareCSS} onClick={handleShare}>
+                    공유
+                  </div>
+                  <div css={declarationCSS} onClick={handleReport}>
+                    신고
+                  </div>
                 </div>
               </div>
             </div>
@@ -155,18 +163,12 @@ const DetailBoardPage = () => {
                   <div key={comment.commentId}>
                     {comment.parentId === 0 && (
                       <>
-                        <CommentComponent
-                          comment={comment}
-                          onClick={() => handleCommentClick(comment.commentId)}
-                        />
+                        <CommentComponent comment={comment} />
                         {comments.result.map(
                           (replyComment) =>
                             replyComment.parentId === comment.commentId && (
                               <CommentComponent
                                 comment={replyComment}
-                                onClick={() =>
-                                  handleCommentClick(replyComment.parentId)
-                                }
                                 reply={true}
                               />
                             ),
@@ -175,31 +177,39 @@ const DetailBoardPage = () => {
                     )}
                     {replyCommentOpen &&
                       replyCommentId === comment.commentId && (
-                        <CommentCreate
-                          onSubmit={handleReplyCommentSubmit}
-                          content={replyContent}
-                          setContent={setReplyContent}
-                          addCSS={replyComment}
-                          reply={true}
-                        />
+                        <CommentCreate addCSS={replyComment} reply={true} />
                       )}
                   </div>
                 ))}
             </div>
             <div css={commentTextCSS}>댓글 쓰기</div>
             <hr css={hrCSS} />
-            <CommentCreate
-              onSubmit={handleCommentSubmit}
-              content={content}
-              setContent={setContent}
-            />
+            <CommentCreate />
           </>
         )}
       </Container>
+      {isReportModalOpen && (
+        <ReportModal
+          isOpen={isReportModalOpen}
+          onClose={handleCloseModal}
+          onClick={() => {}}
+          isType="BOARD"
+        />
+      )}
 
+      {/* 채팅 나가기 모달 */}
+      {isShareModalOpen && (
+        <ShareModal
+          isOpen={isShareModalOpen}
+          onClose={handleCloseModal}
+          url={`/boards/${boardId}`}
+        />
+      )}
       <Container addCSS={containerCSS}>
         <div css={createButtonCSS}>
-          <Button onClick={() => navigate("/board/create")}>글 쓰기</Button>
+          {token && (
+            <Button onClick={() => navigate("/board/create")}>글 쓰기</Button>
+          )}
         </div>
         {boardList &&
           boardList.result.map((board) => (
@@ -250,10 +260,15 @@ const detailHeaderCSS = css`
   margin-bottom: 1rem;
 `;
 
+const dateBoxCSS = css`
+  display: flex;
+`;
+
 const dateCSS = css`
   font-size: ${FONT.SIZE.BODY};
   font-weight: ${FONT.WEIGHT.REGULAR};
   color: ${COLOR.GRAY2};
+  margin-left: 0.5rem;
 `;
 
 const titleCSS = css`
@@ -340,4 +355,8 @@ const likeButtonBoxCSS = css`
 
 const replyComment = css`
   margin-top: 1rem;
+`;
+
+const categoryCSS = css`
+  cursor: pointer;
 `;

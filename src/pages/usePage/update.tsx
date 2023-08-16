@@ -15,7 +15,7 @@ import { CancelIcon, PolygonIcon } from "../../assets/CommonIcons";
 import useMemberInfo from "../../hooks/user/useMemberInfo";
 import { mssaemAxios as axios } from "../../apis/axios";
 import { useDeleteImage } from "../../hooks/mypage/useDeleteImage";
-
+import Catlogo from "../../assets/logo/CatLogo.svg";
 const MyPageUpdate = () => {
   const navigate = useNavigate();
 
@@ -61,6 +61,7 @@ const MyPageUpdate = () => {
 
   //초기값 넣는 부분
   useEffect(() => {
+    getBadgeId(profileData?.teacherInfo.badge);
     if (profileData) {
       setValues((prevValues) => ({
         ...prevValues,
@@ -68,6 +69,7 @@ const MyPageUpdate = () => {
         nickName: profileData.teacherInfo.nickName,
         image: profileData.teacherInfo.profileImgUrl,
         badge: profileData.teacherInfo.badge,
+        badgeId: badgeId,
       }));
       setMbti(profileData.teacherInfo.mbti);
       setMbtiValue(
@@ -101,6 +103,8 @@ const MyPageUpdate = () => {
     }));
   };
 
+  //  --------- Submit --------------
+
   const data = {
     nickName: values.nickName,
     introduction: values.introduction,
@@ -108,7 +112,6 @@ const MyPageUpdate = () => {
     caseSensitivity: mbtiNum,
     badgeId: badgeId,
   };
-  //  --------- Submit --------------
   // 취소하기
   const handleCancel = () => {
     navigate("/");
@@ -116,9 +119,8 @@ const MyPageUpdate = () => {
 
   //제출하기
   const onSubmit = async () => {
-    console.log(data);
-
     try {
+      console.log(data);
       const response = await axios.patch("/member/profile", data, {
         headers: {
           "Content-Type": "application/json",
@@ -158,6 +160,16 @@ const MyPageUpdate = () => {
       ...prevValues,
       badge: newBadge,
     }));
+  };
+
+  const getBadgeId = (badge: string | undefined) => {
+    profileData?.badgeInfos?.map(
+      (value: { id: number; name: string }, idx: number) => {
+        if (value.name == badge) {
+          setBadgeId(value.id);
+        }
+      },
+    );
   };
 
   // ------- MBTI 부분 ----------
@@ -244,8 +256,8 @@ const MyPageUpdate = () => {
       try {
         const imgUrl = await handleImageBlobHook(file);
         const result = await uploadImage(file);
-        setImageURL(result); // Set the image URL after successful upload
-        setImageChange(imgUrl); // Call setI
+        setImageURL(result);
+        setImageChange(imgUrl);
       } catch (error) {
         console.error("Error uploading image:", error);
       }
@@ -264,7 +276,6 @@ const MyPageUpdate = () => {
   };
   const [imageURL, setImageURL] = useState<string>();
 
-  //Blob 말고 url 로만 지정할 수 있게
   const setImageChange = (newImage: string | undefined) => {
     setValues((prevValues) => ({
       ...prevValues,
@@ -274,10 +285,9 @@ const MyPageUpdate = () => {
   const deleteImageMutation = useDeleteImage();
 
   const handleImageCancel = () => {
-    // handleImageChange(profileData?.teacherInfo.profileImgUrl);
     try {
       deleteImageMutation.mutate();
-      // setImageChange(un);
+      setImageChange(Catlogo);
     } catch (error) {
       console.log(errors);
     }
@@ -291,14 +301,7 @@ const MyPageUpdate = () => {
         <div css={box1CSS}>
           <div css={profileContainerCSS}>
             <div css={profileImageContainerCSS}>
-              <img
-                css={imageCSS}
-                style={{
-                  objectFit: "contain",
-                }}
-                src={values.image}
-                alt="프로필"
-              />
+              <img css={imageCSS} src={values.image} alt="프로필" />
             </div>
             <div css={cancelCSS2}>
               <CancelIcon onClick={handleImageCancel} />
@@ -317,6 +320,7 @@ const MyPageUpdate = () => {
             <div>
               <p css={subTitleCSS}>닉네임</p>
               <NameBox name={values.nickName} onChange={handleNicknameChange} />
+
               {/* <MbtiBox /> */}
               <p css={subTitleCSS}>MBTI</p>
               <div css={userinfoCSS}>
@@ -613,10 +617,10 @@ const uploadInputCSS = css`
   display: none;
 `;
 const imageCSS = css`
-  width: 11rem;
+  width: auto;
   height: auto;
-  max-height: 9rem;
-  object-fit: contain;
+  max-height: 12.125rem;
+  // object-fit: contain;
 `;
 
 const settingCSS = css`

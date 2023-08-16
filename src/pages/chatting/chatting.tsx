@@ -15,6 +15,7 @@ import { activeRoomIdState, messageState } from "../../states/chatting";
 import { useEffect, useRef, useState } from "react";
 import { ChattingForm } from "../../components/chatting/ChattingForm";
 import CurrentChatting from "../../components/chatting/CurrentChatting";
+import { CatLogoIcon } from "../../assets/CommonIcons";
 
 const ChattingPage = () => {
   const [activeRoomId, setActiveRoomId] = useRecoilState(activeRoomIdState);
@@ -22,8 +23,6 @@ const ChattingPage = () => {
   const messages = useRecoilValue(messageState);
   const { chatRooms } = useChatRooms();
   const activeRoomMessages = messages[activeRoomId] || [];
-
-  console.log(chatRooms);
 
   const navigate = useNavigate();
   let profileUrl = "";
@@ -59,6 +58,7 @@ const ChattingPage = () => {
                         profileUrl = chatRoom.memberSimpleInfo.profileImgUrl;
                         return (
                           <Profile
+                            id={chatRoom.memberSimpleInfo.id}
                             image={chatRoom.memberSimpleInfo.profileImgUrl}
                             name={chatRoom.memberSimpleInfo.nickName}
                             mbti={chatRoom.memberSimpleInfo.mbti}
@@ -102,11 +102,7 @@ const ChattingPage = () => {
           <div css={chattingRightCSS}>
             {!chatRooms && (
               <div css={noChatCSS}>
-                <img
-                  css={smallImgCSS}
-                  src="https://i.ibb.co/YRZSTTL/rhdiddl4.png"
-                  alt="rhdiddl4"
-                />
+                <CatLogoIcon />
                 <div css={topFontSIZE}>나의 채팅</div>
                 <div css={bottomFontSIZE}>M쌤이 되어 고민을 해결해보세요</div>
                 <Button onClick={() => navigate("/match/matching")}>

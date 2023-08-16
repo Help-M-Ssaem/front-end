@@ -9,15 +9,19 @@ import { useBoardCommentLike } from "../../../hooks/board/comment/useBoardCommen
 import { useParams } from "react-router";
 import { useBoardCommentDelete } from "../../../hooks/board/comment/useBoardCommentDelete";
 import { ReplyIcon } from "../../../assets/CommentIcons";
+import { useRecoilState } from "recoil";
+import {
+  replyCommentIdState,
+  replyCommentOpenState,
+} from "../../../states/board";
 
 interface CommentProps {
   comment: Comment;
-  onClick?: () => void;
   best?: boolean;
   reply?: boolean;
 }
 
-const CommentComponent = ({ comment, onClick, best, reply }: CommentProps) => {
+const CommentComponent = ({ comment, best, reply }: CommentProps) => {
   const { id } = useParams();
   const boardId = Number(id);
 
@@ -30,6 +34,17 @@ const CommentComponent = ({ comment, onClick, best, reply }: CommentProps) => {
     deleteMutation.mutate();
   };
 
+  const [replyCommentId, setReplyCommentId] =
+    useRecoilState(replyCommentIdState);
+  const [replyCommentOpen, setReplyCommentOpen] = useRecoilState(
+    replyCommentOpenState,
+  );
+
+  const handleCommentClick = () => {
+    setReplyCommentOpen(!replyCommentOpen);
+    setReplyCommentId(reply ? comment.parentId : comment.commentId);
+  };
+
   return (
     <div css={commentBoxCSS} key={comment.commentId}>
       <div css={profileBoxCSS}>
@@ -37,24 +52,38 @@ const CommentComponent = ({ comment, onClick, best, reply }: CommentProps) => {
           {best && <BestIcon />}
           {reply && <ReplyIcon />}
           <Profile
+            id={comment.memberSimpleInfo.id}
             image={comment.memberSimpleInfo.profileImgUrl}
             name={comment.memberSimpleInfo.nickName}
             mbti={comment.memberSimpleInfo.mbti}
             badge={comment.memberSimpleInfo.badge}
+            createdAt={comment.createdAt}
           />
         </div>
         {comment.isEditAllowed ? (
-          <div css={deleteCSS} onClick={handleCommentDeleteClick}>
-            삭제
+          <div css={likeCountCSS} onClick={handleLikeClick}>
+            <div css={deleteCSS} onClick={handleCommentDeleteClick}>
+              삭제
+            </div>
+            {comment.content !== "삭제된 댓글입니다." && (
+              <>
+                <HeartIcon />
+                <div>{comment.likeCount}</div>
+              </>
+            )}
           </div>
         ) : (
           <div css={likeCountCSS} onClick={handleLikeClick}>
-            <HeartIcon />
-            <div>{comment.likeCount}</div>
+            {comment.content !== "삭제된 댓글입니다." && (
+              <>
+                <HeartIcon />
+                <div>{comment.likeCount}</div>
+              </>
+            )}
           </div>
         )}
       </div>
-      <div css={[contentCSS, reply && replyCSS]} onClick={onClick}>
+      <div css={[contentCSS, reply && replyCSS]} onClick={handleCommentClick}>
         {comment.content}
       </div>
     </div>
@@ -106,4 +135,5 @@ const deleteCSS = css`
   font-size: ${FONT.SIZE.BODY};
   font-weight: ${FONT.WEIGHT.REGULAR};
   color: ${COLOR.GRAY2};
+  margin-right: 0.5rem;
 `;

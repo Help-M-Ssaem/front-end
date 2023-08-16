@@ -30,7 +30,6 @@ import CreateDebatePage from "./pages/debate/create";
 import MbtiTypePage from "./pages/mbtitype/mbtitype";
 import ChattingPage from "./pages/chatting/chatting";
 import AlarmPage from "./pages/alarm/alarm";
-import FavoritesPage from "./pages/favorites/favorites";
 import Layout from "./components/layout/Layout";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
@@ -105,7 +104,6 @@ function App() {
 
             <Route path="/chatting" element={<ChattingPage />} />
             <Route path="/alarm" element={<AlarmPage />} />
-            <Route path="/favorites" element={<FavoritesPage />} />
           </Routes>
         </Layout>
         <Footer />
