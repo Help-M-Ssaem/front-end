@@ -7,6 +7,9 @@ import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import Button from "../button/Button";
 import useMemberInfo from "../../hooks/user/useMemberInfo";
+import { useState } from "react";
+import AlarmMenu from "../side/Alarm";
+import FavoritesMenu from "../side/Favorites";
 import Profile from "../profile/Profile";
 
 const Header = () => {
@@ -14,6 +17,19 @@ const Header = () => {
   const location = useLocation();
   const { user } = useMemberInfo();
 
+  const [alarmOpen, setAlarmOpen] = useState(false);
+  const [favoritesOpen, setFavoritesOpen] = useState(false);
+
+  const handleAlarm = () => {
+    setAlarmOpen((prevIsOpen) => !prevIsOpen);
+  };
+  const handleFavoritesOpen = () => {
+    setFavoritesOpen((prevIsOpen) => !prevIsOpen);
+  };
+  const handleCloseAll = () => {
+    alarmOpen && setAlarmOpen(false);
+    favoritesOpen && setFavoritesOpen(false);
+  };
   const handleLoginClick = () => {
     navigate("/login");
   };
@@ -23,7 +39,7 @@ const Header = () => {
   const homeRouteList = ["/", "/hotBoard", "/hotDebate"];
 
   return (
-    <header css={headerCSS}>
+    <header css={headerCSS} onClick={handleCloseAll}>
       <div css={headerTopCSS}>
         <LogoIcon onClick={() => navigate("/")} />
         {!user ? (
@@ -79,19 +95,23 @@ const Header = () => {
             채팅
           </li>
           <li
-            onClick={() => navigate("/alarm")}
-            className={location.pathname.startsWith("/alarm") ? "active" : ""}
+            onClick={handleAlarm}
+            className={alarmOpen ? "active" : ""}
+            css = {AlarmPotintCSS}
           >
             알람
           </li>
+          {alarmOpen && 
+            <div css={AlarmContainerCSS}><AlarmMenu/></div>}
           <li
-            onClick={() => navigate("/favorites")}
-            className={
-              location.pathname.startsWith("/favorites") ? "active" : ""
-            }
+            onClick={handleFavoritesOpen}
+            className={favoritesOpen ? "active" : ""}
+            css = {AlarmPotintCSS}
           >
             즐겨찾기
           </li>
+          {favoritesOpen && 
+            <div css={FavoritesContainerCSS}><FavoritesMenu/></div>}
           <li onClick={handleSearchClick}>
             <SearchIcon />
           </li>
@@ -194,4 +214,24 @@ const right = css`
 
 const buttonCSS = css`
   font-size: ${FONT.SIZE.HEADLINE};
+`;
+
+ const AlarmPotintCSS = css`
+  position: relative;
+ `;
+
+ const AlarmContainerCSS = css`
+  position: absolute;
+  top: 110%;
+  right: 20;
+  width: 20%;
+  z-index: 11;
+`;
+
+const FavoritesContainerCSS = css`
+position: absolute;
+top: 110%;
+right: 10;
+width: 20%;
+z-index: 11;
 `;

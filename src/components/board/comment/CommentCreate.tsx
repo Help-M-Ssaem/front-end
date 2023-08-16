@@ -56,6 +56,7 @@ const CommentCreate = ({ addCSS, reply }: CommentCreateProps) => {
     setContent("");
     setReplyCommentOpen(false);
   };
+
   const handleReplyCommentSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
     e && e.preventDefault();
     createReplyMutation.mutate();

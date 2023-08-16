@@ -36,7 +36,7 @@ const MatchingComponent = ({ matching, solve, onClick }: MatchingProps) => {
           />
       </div>
       <div css={rightCSS}>
-        {matching.imgUrl !== "default" &&<img css={thumbnailCSS} src={matching.imgUrl} alt="default" />}
+        {matching.imgUrl &&<img css={thumbnailCSS} src={matching.imgUrl} alt="thumbnail" />}
       </div>
     </div>
   );
@@ -61,6 +61,7 @@ const rightCSS = css``;
 const thumbnailCSS = css`
   width: 7rem;
   height: 7rem;
+  object-fit: cover
 `;
 
 const titleCSS = css`

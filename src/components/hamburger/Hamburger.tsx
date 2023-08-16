@@ -50,20 +50,21 @@ const Hamburger = () => {
           </div>
         </div>
       )}
+      {isReportModalOpen && (
+        <ReportModal
+          isOpen={isReportModalOpen}
+          onClose={handleCloseModal}
+          onClick={() => {}}
+          isType="MEMBER"
+        />
+      )}
+
       {/* 채팅 나가기 모달 */}
       {isExitModalOpen && (
         <ExitModal
           isOpen={isExitModalOpen}
           onClose={handleCloseModal}
           onClick={handleChattingExit}
-        />
-      )}
-      {/* 신고하기 모달 */}
-      {isReportModalOpen && (
-        <ReportModal
-          isOpen={isReportModalOpen}
-          onClose={handleCloseModal}
-          onClick={() => {}}
         />
       )}
     </div>

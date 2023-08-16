@@ -43,6 +43,7 @@ const profileCSS = css`
   height: 10rem;
   border-radius: 50%;
   margin: 2rem 0 1rem 0;
+  object-fit: cover;
 `;
 
 const nameCSS = css`

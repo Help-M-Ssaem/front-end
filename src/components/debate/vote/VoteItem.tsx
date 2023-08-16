@@ -4,9 +4,11 @@ import COLOR from "../../../styles/color";
 import FONT from "../../../styles/font";
 import { useState } from "react";
 import { Option } from "../../../interfaces/debate";
-import { mssaemAxios as axios } from "../../../apis/axios";
+import { useSelectedItem } from "../../../hooks/debate/useVoteItem";
+
 interface VoteItemProps extends Option {
     PostId: number;
+    optionSelected : boolean;
   }
 const VoteItem = ({
     id,
@@ -15,20 +17,12 @@ const VoteItem = ({
     selectedPercent,
     selected,
     PostId,
+    optionSelected,
 }: VoteItemProps ) => {
     const [isHovered, setIsHovered] = useState(false);
-    const fetchData = async () => {
-        try {
-          const response = await axios.get(`/discussions/${PostId}`);
-          const data = response.data;
-          const optionList = data.discussionSimpleInfo.options;
-          const isAnyOptionSelected = optionList.some((option: { selected: boolean; }) => option.selected === true);
-          if (!isAnyOptionSelected) {
-            axios.post(`/member/discussions/${PostId}/discussion-options/${id}`,selected=true);
-          }
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
+    const selectedMutation = useSelectedItem(PostId, id);
+    const handleClick = () => {
+        selectedMutation.mutate();
     }
     const handleMouseEnter = () => {
         setIsHovered(true);
@@ -37,16 +31,12 @@ const VoteItem = ({
         setIsHovered(false);
     };
 
-    const handleClick = () => {
-        fetchData();
-    };
-
     return(
         <div
             css= {[ImgBoxCSS, (selected) && activeItemCSS]}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            onClick={handleClick}
+            onClick={!optionSelected ? handleClick : undefined}
         >
             <div css={imageWrapperCSS2}>
             {imgUrl !== undefined && imgUrl !== null && (imgUrl.endsWith(".png") || imgUrl.endsWith(".jpg"))&& !isHovered ? (
@@ -117,7 +107,7 @@ const imageCSS = css`
     width: auto; 
     height: auto; 
     max-height: 9rem; 
-    object-fit: contain; 
+    object-fit: cover; 
 `;
 
 const textCSS = ({ size, weight }: { size: string, weight: number }) => css`
