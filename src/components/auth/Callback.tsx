@@ -36,6 +36,7 @@ const Callback = () => {
 
       if ("accessToken" in data && "refreshToken" in data) {
         navigate("/");
+        window.location.reload();
       } else if ("message" in data) {
         navigate("/signin");
       }

@@ -17,16 +17,16 @@ const CreateDebatePage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [options, setOptions] = useState<CreateDebateOption[]>([
-      {
-        content: "",
-        hasImage: false,
-        image: null,
-      },
-      {
-        content: "",
-        hasImage: false,
-        image: null,
-      },
+    {
+      content: "",
+      hasImage: false,
+      image: null,
+    },
+    {
+      content: "",
+      hasImage: false,
+      image: null,
+    },
   ]);
   const [image, setImage] = useState<string[]>([]);
 
@@ -37,10 +37,13 @@ const CreateDebatePage = () => {
     setContent(e.target.value);
   };
 
-  const handleOptionTextChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOptionTextChange = (
+    index: number,
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const { value } = e.target;
     const updatedOptions = options.map((option, i) =>
-      i === index ? { ...option, content: value } : option
+      i === index ? { ...option, content: value } : option,
     );
     setOptions(updatedOptions);
   };
@@ -49,13 +52,16 @@ const CreateDebatePage = () => {
     setImage([...image, imgUrl]);
     return imgUrl;
   };
-  const handleImageChange = async (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (
+    index: number,
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = e.target.files?.[0];
     if (file) {
       try {
         const imgUUrl = await handleImageBlobHook(file); // 기다려서 이미지 URL을 얻음
         const updatedOptions = options.map((option, i) =>
-          i === index ? { ...option, image: imgUUrl, hasImage: true } : option
+          i === index ? { ...option, image: imgUUrl, hasImage: true } : option,
         );
         setOptions(updatedOptions);
       } catch (error) {
@@ -63,7 +69,7 @@ const CreateDebatePage = () => {
       }
     }
   };
-  
+
   const formData = new FormData();
   const data = {
     title: title,
@@ -71,24 +77,27 @@ const CreateDebatePage = () => {
     getOptionReqs: options.map(({ image, ...rest }) => rest),
   };
 
-formData.append(
-  "DiscussionReq",
-  new Blob([JSON.stringify(data)], { type: "application/json" }),
-);
-formData.append(
-  "image",
-  new Blob([JSON.stringify(image)], { type: "application/json" }),
-);
-
+  formData.append(
+    "DiscussionReq",
+    new Blob([JSON.stringify(data)], { type: "application/json" }),
+  );
+  formData.append(
+    "image",
+    new Blob([JSON.stringify(image)], { type: "application/json" }),
+  );
 
   const uploadImage = async (blob: Blob) => {
     const formData = new FormData();
     formData.append("image", blob);
-    const imgUrl = await axios.post("/member/discussion-options/files", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
+    const imgUrl = await axios.post(
+      "/member/discussion-options/files",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       },
-    });
+    );
     return imgUrl.data;
   };
 
@@ -117,47 +126,50 @@ formData.append(
     if (options.length > 2) {
       image.splice(indexToRemove, 1);
       const updatedOptions = options.map((option, index) =>
-        index === indexToRemove ? { ...option, hasImage: false } : option
+        index === indexToRemove ? { ...option, hasImage: false } : option,
       );
       setOptions(updatedOptions);
       setOptions(options.filter((option, index) => index !== indexToRemove));
     }
   };
 
-
   return (
     <div css={editorContainerCSS}>
       <Container addCSS={containerCSS}>
         <div css={titleCSS}>과몰입 토론</div>
         <div css={contentCSS}>제목을 입력해주세요.</div>
-        <input 
-          type="text" 
-          value={title} 
-          onChange={handleTitleChange} 
-          css={inputCSS}/>
+        <input
+          type="text"
+          value={title}
+          onChange={handleTitleChange}
+          css={inputCSS}
+        />
         <div css={imagecontentCSS}>선택지를 선택해주세요. (2~4개)</div>
         <div css={selectuplodGrid}>
           {options.map((option, index) => (
-          <div css={selectuplodGridinContents} key={index}>
-            <div css={selectuplodGridinContentsBox}>
-              <div css={controlSize}>
-                <div css={controlSizetop}>
-                {options.length > 2 && (
-                  <Button onClick={() => handleRemoveOption(index)}>X</Button>
-                )}
-                </div>
+            <div css={selectuplodGridinContents} key={index}>
+              <div css={selectuplodGridinContentsBox}>
+                <div css={controlSize}>
+                  <div css={controlSizetop}>
+                    {options.length > 2 && (
+                      <Button onClick={() => handleRemoveOption(index)}>
+                        X
+                      </Button>
+                    )}
+                  </div>
 
-                <label css={uploadLabelCSS}>
-                {option.image !==null
-                  && (<img src={option.image} alt="Selected" css={imageCSS} />)}
-                {option.image ===null
-                  && <PlusButton>+</PlusButton>}
-                <input 
-                  type="file" 
-                  accept="image/*" 
-                  onChange={(e) =>handleImageChange(index, e)}
-                  css={uploadInputCSS} />
-                </label>
+                  <label css={uploadLabelCSS}>
+                    {option.image !== null && (
+                      <img src={option.image} alt="Selected" css={imageCSS} />
+                    )}
+                    {option.image === null && <PlusButton>+</PlusButton>}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImageChange(index, e)}
+                      css={uploadInputCSS}
+                    />
+                  </label>
                   <input
                     type="text"
                     value={option.content}
@@ -167,26 +179,23 @@ formData.append(
                 </div>
               </div>
             </div>
-            ))}
-            {options.length < 4 && (
-              <Button onClick={handleAddOption}>+</Button>
-             )}
+          ))}
+          {options.length < 4 && <Button onClick={handleAddOption}>+</Button>}
         </div>
 
         <div css={contentCSS}>내용을 입력해주세요. (선택)</div>
-        <textarea 
-          value={content} 
-          onChange={handleContentChange} 
-          css={textareaCSS} />
+        <textarea
+          value={content}
+          onChange={handleContentChange}
+          css={textareaCSS}
+        />
 
         <div css={buttonBoxCSS}>
           <Button addCSS={buttonCSS} onClick={() => navigate(-1)}>
             취소하기
           </Button>
 
-          <Button 
-          onClick={handleSubmit}
-          >글 쓰기</Button>
+          <Button onClick={handleSubmit}>글 쓰기</Button>
         </div>
       </Container>
     </div>

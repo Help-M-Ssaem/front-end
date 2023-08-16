@@ -5,11 +5,19 @@ import COLOR from "../../styles/color";
 import ExitModal from "../modal/ExitModal";
 import ReportModal from "../modal/ReportModal";
 import { HamburgerIcon } from "../../assets/ChattingIcons";
+import { useChatContext } from "../../hooks/chatting/ChatProvider";
 
 const Hamburger = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isExitModalOpen, setIsExitModalOpen] = useState(false);
+
+  const { disconnect } = useChatContext();
+
+  const handleChattingExit = () => {
+    disconnect();
+    setIsOpen(false);
+  };
 
   const handleMenuToggle = () => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
@@ -56,7 +64,7 @@ const Hamburger = () => {
         <ExitModal
           isOpen={isExitModalOpen}
           onClose={handleCloseModal}
-          onClick={() => {}}
+          onClick={handleChattingExit}
         />
       )}
     </div>

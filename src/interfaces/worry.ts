@@ -21,15 +21,15 @@ export interface WorryBoard {
   imgUrl: string;
 }
 
-export interface WorryList{
+export interface WorryList {
   page: number;
   totalSize: number;
   result: WorryBoard[];
 }
 
-export interface UseWorryBoard extends WorryList{
-  departMbti: string,
-  endMbti: string,
+export interface UseWorryBoard extends WorryList {
+  departMbti: string;
+  endMbti: string;
 }
 
 export interface DetailWorry {
@@ -42,4 +42,5 @@ export interface DetailWorry {
   imgList: string[];
   isEditAllowed: boolean;
   isChatAllowed: boolean;
+  chatRoomId?: number;
 }

@@ -2,114 +2,45 @@
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
-import { useState } from "react";
 import ChattingComponent from "../../components/chatting/ChattingComponent";
-import { ChattingHistory } from "../../interfaces/chatting";
 import Profile from "../../components/profile/Profile";
 import Hamburger from "../../components/hamburger/Hamburger";
-import CurrentChatting from "../../components/chatting/CurrentChatting";
-import CurrentChattingForm from "../../components/chatting/CurrentChattingForm";
 import MessageItem from "../../components/chatting/MessageItem";
 import Button from "../../components/button/Button";
 import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
+import { useChatRooms } from "../../hooks/chatting/useChatRooms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { activeRoomIdState, messageState } from "../../states/chatting";
+import { useEffect, useRef, useState } from "react";
+import { ChattingForm } from "../../components/chatting/ChattingForm";
+import CurrentChatting from "../../components/chatting/CurrentChatting";
 
-const chattinglist1 = [
-  {
-    roomId: 0,
-    name: "신강희",
-    profile: "https://i.ibb.co/jJt16M0/image.png",
-    mbti: "Infj",
-    badge: "마스터",
-    latestMessage: "카페에서 남자친구랑 싸웠어요..저도아이유최고얌",
-    createdAt: "3분전",
-    resolved: false,
-    text: [
-      { userId: "user1", message: "안녕하세요!", createdAt: "3분전" },
-      {
-        userId: "user2",
-        message: "카페에서 남자친구랑 싸웠어요..저도아이유최고얌",
-        createdAt: "4분전",
-      },
-    ],
-  },
-  {
-    roomId: 1,
-    name: "신강희",
-    profile: "https://i.ibb.co/jJt16M0/image.png",
-    mbti: "Infj",
-    badge: "마스터",
-    latestMessage: "네, 정말 좋은 날씨입니다!",
-    createdAt: "5분전",
-    resolved: false,
-    text: [
-      { userId: "user1", message: "안녕하세요!", createdAt: "5분전" },
-      {
-        userId: "user2",
-        message: "안녕하세요! 반갑습니다!",
-        createdAt: "6분전",
-      },
-      {
-        userId: "user1",
-        message: "오늘 날씨가 참 좋네요!",
-        createdAt: "7분전",
-      },
-      {
-        userId: "user2",
-        message: "네, 정말 좋은 날씨입니다!",
-        createdAt: "8분전",
-      },
-    ],
-  },
-  {
-    roomId: 2,
-    name: "배고파",
-    profile: "https://i.ibb.co/jJt16M0/image.png",
-    mbti: "Infj",
-    badge: "엽떡마스터",
-    latestMessage: "",
-    createdAt: "5분전",
-    text: [],
-  },
-];
+const ChattingPage = () => {
+  const [activeRoomId, setActiveRoomId] = useRecoilState(activeRoomIdState);
+  const [active, setActive] = useState(false);
+  const messages = useRecoilValue(messageState);
+  const { chatRooms } = useChatRooms();
+  const activeRoomMessages = messages[activeRoomId] || [];
 
-interface Message {
-  userId: string;
-  message: string;
-  createdAt: string;
-}
+  console.log(chatRooms);
 
-const ChattingPage: React.FC = () => {
-  const [activeRoomId, setActiveRoomId] = useState<number>(-1);
-  const [selectedChattingData, setSelectedChattingData] =
-    useState<ChattingHistory | null>(null);
-  const [messageData, setMessageData] = useState<Message[] | null>(null);
   const navigate = useNavigate();
+  let profileUrl = "";
 
-  const handleButtonClick = () => {
-    navigate("/match/maching");
+  const handleChatRoomClick = (roomId: number) => {
+    setActiveRoomId(roomId);
+    setActive(true);
   };
-
-  const handleItemClick = (roomId: number) => {
-    setActiveRoomId((prevId) => (prevId === roomId ? -1 : roomId));
-
-    const selectedChattingHistory =
-      chattinglist1.length > 0
-        ? (chattinglist1.find(
-            (chattinghistory) => chattinghistory.roomId === roomId,
-          ) as ChattingHistory)
-        : null;
-
-    setSelectedChattingData(selectedChattingHistory);
-
-    if (selectedChattingHistory) {
-      if (selectedChattingHistory.text.length > 0) {
-        setMessageData(selectedChattingHistory.text);
-      } else setMessageData(null);
-    } else {
-      setMessageData(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const scrollToBottom = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   };
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   return (
     <div css={editorContainerCSS}>
@@ -119,21 +50,24 @@ const ChattingPage: React.FC = () => {
             <div css={titleCSS}>채팅목록</div>
           </div>
           <div css={ChatProfileCSS}>
-            {chattinglist1.length === 0 ? (
-              <div></div>
-            ) : (
+            {chatRooms && active && (
               <>
                 <div>
-                  {selectedChattingData && (
-                    <Profile
-                      image={selectedChattingData.profile}
-                      name={selectedChattingData.name}
-                      mbti={selectedChattingData.mbti}
-                      badge={selectedChattingData.badge}
-                    />
-                  )}
+                  {Array.isArray(chatRooms) &&
+                    chatRooms.map((chatRoom) => {
+                      if (chatRoom.chatRoomId === activeRoomId) {
+                        profileUrl = chatRoom.memberSimpleInfo.profileImgUrl;
+                        return (
+                          <Profile
+                            image={chatRoom.memberSimpleInfo.profileImgUrl}
+                            name={chatRoom.memberSimpleInfo.nickName}
+                            mbti={chatRoom.memberSimpleInfo.mbti}
+                            badge={chatRoom.memberSimpleInfo.badge}
+                          />
+                        );
+                      }
+                    })}
                 </div>
-
                 <div css={ChatMenuCSS}>
                   <Hamburger />
                 </div>
@@ -144,26 +78,29 @@ const ChattingPage: React.FC = () => {
 
         <div css={chattingInnerCSS}>
           <div css={chattingLeftCSS}>
-            {chattinglist1.length === 0 ? (
-              <div></div>
-            ) : (
-              <ul css={ChattingItem}>
-                {chattinglist1.map((chattinghistory) => (
-                  <li
-                    key={chattinghistory.roomId}
-                    onClick={() => handleItemClick(chattinghistory.roomId)}
-                    css={[
-                      activeRoomId === chattinghistory.roomId && activeStyle,
-                    ]}
-                  >
-                    <ChattingComponent Chattinghistory={chattinghistory} />
-                  </li>
-                ))}
+            {chatRooms && (
+              <ul>
+                {Array.isArray(chatRooms) &&
+                  chatRooms.map((chatRoom) => {
+                    return (
+                      <li
+                        onClick={() => handleChatRoomClick(chatRoom.chatRoomId)}
+                        key={chatRoom.chatRoomId}
+                        css={[
+                          activeRoomId === chatRoom.chatRoomId &&
+                            active &&
+                            activeStyle,
+                        ]}
+                      >
+                        <ChattingComponent chatRoom={chatRoom} />
+                      </li>
+                    );
+                  })}
               </ul>
             )}
           </div>
           <div css={chattingRightCSS}>
-            {chattinglist1.length === 0 ? (
+            {!chatRooms && (
               <div css={noChatCSS}>
                 <img
                   css={smallImgCSS}
@@ -172,47 +109,46 @@ const ChattingPage: React.FC = () => {
                 />
                 <div css={topFontSIZE}>나의 채팅</div>
                 <div css={bottomFontSIZE}>M쌤이 되어 고민을 해결해보세요</div>
-                <Button onClick={handleButtonClick}>고민 보러가기</Button>
+                <Button onClick={() => navigate("/match/matching")}>
+                  고민 보러가기
+                </Button>
               </div>
-            ) : (
+            )}
+            {chatRooms && active ? (
               <>
-                {/* 서버 연결하시면 이것도 바꿔야해여.. 고민글이랑 프로필 받아오는 부분 */}
                 <div css={dateTop}>
-                  <CurrentChatting profile={selectedChattingData} />
+                  {Array.isArray(chatRooms) &&
+                    chatRooms.map((chatRoom) => {
+                      if (chatRoom.chatRoomId === activeRoomId) {
+                        return <CurrentChatting chatRoom={chatRoom} />;
+                      }
+                    })}
                 </div>
-                {/* 채팅창 */}
-                <div css={dateMiddle}>
-                  <div css={{ padding: "0.8rem" }}>
-                    {messageData !== null ? (
-                      messageData &&
-                      messageData.map((message, index) => (
+                <div css={dateMiddle} ref={scrollRef}>
+                  <div css={chattingBox}>
+                    {activeRoomMessages &&
+                      activeRoomMessages.map((message: any, index: number) => (
                         <MessageItem
                           key={index}
-                          message={message.message}
-                          createdAt={message.createdAt}
-                          isCurrentUser={message.userId === "user1"}
-                          profile={selectedChattingData?.profile}
+                          message={message}
+                          profile={profileUrl}
                         />
-                      ))
-                    ) : (
-                      <div css={[noChatCSS, noMassageCSS]}>
-                        <div css={bottomFontSIZE}>
-                          익명성을 악욕한 욕설, 비방, 불건전한 정보 유통 등
-                          상대방을 불쾌하게 하는 행위를 저지를 시
-                        </div>
-                        <div css={bottomFontSIZE}>
-                          커뮤니티 가이드 라인에 따라 불이익을 받거나 심한경우
-                          계정이 해지될 수 있습니다.
-                        </div>
-                      </div>
-                    )}
+                      ))}
                   </div>
                 </div>
-                {/* 보내는 거 */}
-                <div css={dateBottom}>
-                  <CurrentChattingForm />
-                </div>
+                <ChattingForm chatRoomId={activeRoomId} />
               </>
+            ) : (
+              <div css={[noChatCSS, noMassageCSS]}>
+                <div css={bottomFontSIZE}>
+                  익명성을 악욕한 욕설, 비방, 불건전한 정보 유통 등 상대방을
+                  불쾌하게 하는 행위를 저지를 경우
+                </div>
+                <div css={bottomFontSIZE}>
+                  커뮤니티 가이드 라인에 따라 불이익을 받거나 심한 경우 계정이
+                  해지될 수 있습니다.
+                </div>
+              </div>
             )}
           </div>
         </div>
@@ -266,7 +202,7 @@ const alignmentCSS = css`
   align-items: center;
   border-bottom: 1px solid ${COLOR.GRAY4};
   display: grid;
-  grid-template-columns: 1.91fr 5fr; //스크롤바때문에 조금 다르게 나온다..
+  grid-template-columns: 1.91fr 5fr;
   grid-template-rows: 1fr;
   height: 5rem;
 `;
@@ -292,15 +228,6 @@ const chattingRightCSS = css`
   border-left: 1px solid ${COLOR.GRAY4};
 `;
 
-const ChattingItem = css`
-  li {
-    cursor: pointer;
-  }
-  li:hover {
-    background-color: ${COLOR.MAIN4};
-  }
-`;
-
 const activeStyle = css`
   background-color: ${COLOR.MAIN4};
 `;
@@ -310,7 +237,7 @@ const dateTop = css`
   align-items: center;
   padding: 0.8rem 2rem 0.8rem 2rem;
   background-color: ${COLOR.MAIN4};
-  height: 4.95rem;
+  height: 5rem;
   width: 100%;
 `;
 
@@ -320,13 +247,6 @@ const dateMiddle = css`
     width: 0;
   }
   height: 21rem;
-`;
-
-const dateBottom = css`
-  display: flex;
-  width: 100%;
-  height: 4rem;
-  padding: 0.8rem 2rem 0.8rem 2rem;
 `;
 
 const noChatCSS = css`
@@ -356,5 +276,9 @@ const bottomFontSIZE = css`
 
 const noMassageCSS = css`
   display: flex;
-  padding-top: 7rem;
+`;
+
+// 채팅 박스
+const chattingBox = css`
+  padding: 0.8rem;
 `;

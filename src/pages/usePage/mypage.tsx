@@ -77,6 +77,7 @@ const MyPage = () => {
           <div css={profileContainerCSS}>
             <div css={profileImageContainerCSS}>
               <img
+                css={imageCSS}
                 style={{
                   objectFit: "contain",
                 }}
@@ -163,9 +164,10 @@ const MyPage = () => {
           debateList &&
           debateList.result.map((debateList) => (
             <MyDebateComponent
-              debate={debateList} 
+              debate={debateList}
               onClick={() => navigate(`/debate/${debateList.id}`)}
-              key={debateList.id} />
+              key={debateList.id}
+            />
           ))}
         {menuSelected === 3 &&
           worryPostList &&
@@ -180,13 +182,14 @@ const MyPage = () => {
         {menuSelected === 4 &&
           worrySolveList &&
           worrySolveList.result.map((worrySolve) => (
-            <>{console.log(worrySolve.title)}
-            <MatchingComponent
-              matching={worrySolve}
-              solve={"solved"}
-              onClick={() => navigate(`/match/${worrySolve.id}`)}
-              key={worrySolve.id}
-            />
+            <>
+              {console.log(worrySolve.title)}
+              <MatchingComponent
+                matching={worrySolve}
+                solve={"solved"}
+                onClick={() => navigate(`/match/${worrySolve.id}`)}
+                key={worrySolve.id}
+              />
             </>
           ))}
       </Container>
@@ -355,4 +358,10 @@ const menuBox = css`
   text-align: center;
   flex: 1;
   padding: 1.875rem 2.5625rem;
+`;
+const imageCSS = css`
+  width: 11rem;
+  height: auto;
+  max-height: 9rem;
+  object-fit: contain;
 `;

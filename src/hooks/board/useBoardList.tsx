@@ -19,6 +19,10 @@ interface UseBoardList {
   boardList?: BoardList;
 }
 
+interface UseBoardListAll {
+  boardListAll?: BoardList;
+}
+
 export function useBoardList(
   page: number,
   size: number,
@@ -27,5 +31,15 @@ export function useBoardList(
   const { data: boardList } = useQuery(boardKeys.all, () =>
     getBoardList(page, size, boardId),
   );
+  const { data: boardListAll } = useQuery(boardKeys.all, () =>
+    getBoardList(page, size),
+  );
   return { boardList };
+}
+
+export function useBoardListAll(page: number, size: number): UseBoardListAll {
+  const { data: boardListAll } = useQuery(boardKeys.all, () =>
+    getBoardList(page, size),
+  );
+  return { boardListAll };
 }
