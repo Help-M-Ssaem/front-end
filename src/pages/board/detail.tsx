@@ -23,9 +23,12 @@ import BoardComponent from "../../components/board/Board";
 import ListPagination from "../../components/Pagination/ListPagination";
 import Text from "../../components/text/Text";
 import { useRecoilState } from "recoil";
-import { replyCommentIdState, replyCommentOpenState } from "../../states/board";
+import {
+  mbtiState,
+  replyCommentIdState,
+  replyCommentOpenState,
+} from "../../states/board";
 import { useEffect } from "react";
-import { set } from "date-fns";
 
 const DetailBoardPage = () => {
   const navigate = useNavigate();
@@ -45,6 +48,7 @@ const DetailBoardPage = () => {
   const [blockNum, setBlockNum] = useState(0);
   const { boardList } = useBoardList(page, limit, boardId);
   const totalPage = boardList ? boardList.totalSize - 1 : 1;
+  const [mbtiSelected, setMbtiSelected] = useRecoilState(mbtiState);
 
   const deleteMutation = useDeleteBoard(boardId);
   const likeMutation = useBoardLike(boardId);
@@ -71,13 +75,20 @@ const DetailBoardPage = () => {
     setReplyCommentOpen(false);
   }, []);
 
+  const handleCategoryClick = () => {
+    navigate("/board/mbti");
+    setMbtiSelected((board && board.boardMbti) as string);
+  };
+
   return (
     <>
       <Container addCSS={containerCSS}>
         {board && (
           <>
             <div css={buttonBoxCSS}>
-              <Text>{board.boardMbti} 게시판</Text>
+              <Text onClick={handleCategoryClick} addCSS={categoryCSS}>
+                {board.boardMbti} 게시판
+              </Text>
               {board.isAllowed && (
                 <div css={buttonsCSS}>
                   <Button onClick={() => navigate("update")} addCSS={buttonCSS}>
@@ -296,4 +307,8 @@ const likeButtonBoxCSS = css`
 
 const replyComment = css`
   margin-top: 1rem;
+`;
+
+const categoryCSS = css`
+  cursor: pointer;
 `;
