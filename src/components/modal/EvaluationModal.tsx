@@ -70,8 +70,8 @@ const EvaluationModal: React.FC<ModalProps> = ({
                 <img css={profileImgCSS} src={profile.profileImgUrl} />
                 <div css={profileDetailCSS}>{profile.nickName}</div>
                 <div css={[profileDetailCSS, marginLeftCSS]}>
-                  <Badge mbti={profile.mbti || ""} color={"#F8CAFF"} />
-                  <Badge mbti={profile.badge || ""} color={"#5BE1A9"} />
+                  <Badge mbti={profile.mbti || ""} />
+                  <Badge mbti={profile.badge || ""} />
                 </div>
               </div>
             ) : (

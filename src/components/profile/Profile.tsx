@@ -36,8 +36,8 @@ const Profile = ({ id, image, name, mbti, badge, createdAt }: profileProps) => {
           <div css={createdAtCSS}>{createdAt}</div>
         </div>
         <div css={profileDetailCSS}>
-          <Badge mbti={mbti} color={"#F8CAFF"} />
-          {badge && <Badge mbti={badge} color={"#5BE1A9"} />}
+          <Badge mbti={mbti} />
+          {badge && <Badge mbti={badge} />}
         </div>
       </div>
     </div>
