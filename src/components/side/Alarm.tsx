@@ -8,6 +8,7 @@ import AlarmComponent from "../../components/alarm/Alarm";
 import { useReadALLAlarm } from "../../hooks/alarm/useReadALLAlarm";
 import { useDeleteAllAlarm } from "../../hooks/alarm/useDeletAllAlarm";
 import { useInfiniteAlarmList } from "../../hooks/alarm/useInfiniteAlarmList";
+import { CatLogoIcon } from "../../assets/CommonIcons";
 
 const AlarmMenu = () => {
   const allReadMutation = useReadALLAlarm();
@@ -29,7 +30,7 @@ const AlarmMenu = () => {
   }, [fetchNextPage, data?.pages, isFetchingNextPage]);
   
   return (
-   <Container>
+   <Container addCSS={containerCSS}>
     <div css={AlarmHeaderBoxCSS}>
       <div>전체알림 </div>
       <div css={AlarmControlCSS}>
@@ -48,10 +49,16 @@ const AlarmMenu = () => {
         data.pages.map((page, pageIndex) => (
           <div key={pageIndex}>
             {page.result.map((alarm) => (
-            <AlarmComponent alarm={alarm} key={alarm.resourceId} />
+            <AlarmComponent alarm={alarm} key={alarm.id} />
             ))}
           </div>
         ))}
+      {/* {(data&&Array.isArray(data.pages))&& (
+        <div css={noChatCSS}>
+          <CatLogoIcon />
+          <div css={bottomFontSIZE}>알람이 없어요!</div>
+        </div>
+        )} */}
 
     </div>
    </Container>
@@ -60,7 +67,9 @@ const AlarmMenu = () => {
 
 export default AlarmMenu;
 
-
+const containerCSS = css`
+  box-shadow: 0rem 0.3rem 0.4rem rgba(0, 0, 0, 0.2);
+`;
 const AlarmHeaderBoxCSS = css`
   display: flex;
   justify-content: space-between;
@@ -101,4 +110,17 @@ const scrollContainerCSS = css`
   }
 `;
 
+const noChatCSS = css`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
 
+const bottomFontSIZE = css`
+  padding-bottom: 0.5rem;
+  font-size: ${FONT.SIZE.HEADLINE};
+  color: ${COLOR.GRAY2};
+`;
