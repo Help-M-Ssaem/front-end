@@ -4,7 +4,8 @@ import { mssaemAxios as axios } from "../../apis/axios";
 import { debateKeys } from "../../constants/debateKey";
 
 export async function PostVoteItem(postId: number, itemId: number) : Promise<void> {
-  await axios.post(`/member/discussions/${postId}/discussion-options/${itemId}`, {selected: true} );
+  const { data }= await axios.post(`/member/discussions/${postId}/discussion-options/${itemId}`, {selected: true} );
+  return data;
 }
 
 interface UseSelectedItem {
@@ -15,7 +16,7 @@ export function useSelectedItem(postId: number, itemId: number): UseSelectedItem
   const queryClient = useQueryClient();
   const { mutate } = useMutation(() => PostVoteItem(postId, itemId), {
     onSuccess: () => {
-      queryClient.invalidateQueries(debateKeys.all);
+      queryClient.invalidateQueries("debate");
     },
   });
       
