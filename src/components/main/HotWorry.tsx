@@ -15,30 +15,29 @@ interface MatchingProps {
 const MAX_CONTENT_LENGTH = 60;
 
 const HotWorryComponent = ({ hotWorry, addCSS }: MatchingProps) => {
-    const navigate = useNavigate();
-    const truncatedContent =
-  hotWorry.content.length > MAX_CONTENT_LENGTH
-    ? hotWorry.content.substring(0, MAX_CONTENT_LENGTH) + "..."
-    : hotWorry.content;
+  const navigate = useNavigate();
+  const truncatedContent =
+    hotWorry.content.length > MAX_CONTENT_LENGTH
+      ? hotWorry.content.substring(0, MAX_CONTENT_LENGTH) + "..."
+      : hotWorry.content;
 
   return (
-    <div 
-        css={MatchingBoxCSS} 
-        onClick={() => navigate(`/match/${hotWorry.id}`)}>
+    <div css={MatchingBoxCSS} onClick={() => navigate(`/match/${hotWorry.id}`)}>
       <div css={leftCSS}>
         <div css={mbtiBoxCSS}>
-          <Badge mbti={hotWorry.memberMbti} color={COLOR.MAIN4} />
+          <Badge mbti={hotWorry.memberMbti} />
           <RightArrowIcon />
-          <Badge mbti={hotWorry.targetMbti} color={COLOR.YELLOW} />
+          <Badge mbti={hotWorry.targetMbti} />
         </div>
         <div css={titleCSS}>{hotWorry.title}</div>
-        <div css={contentCSS}
+        <div
+          css={contentCSS}
           dangerouslySetInnerHTML={{ __html: truncatedContent }}
-          />
+        />
       </div>
       <div css={rightCSS}>
-      <div css={createAtCSS}>{hotWorry.createdDate}</div>
-      {hotWorry.imgUrl && hotWorry.imgUrl !== "default" &&(
+        <div css={createAtCSS}>{hotWorry.createdDate}</div>
+        {hotWorry.imgUrl && hotWorry.imgUrl !== "default" && (
           <img css={imgCSS} src={hotWorry.imgUrl} alt="thumbnail" />
         )}
       </div>
@@ -60,11 +59,11 @@ const leftCSS = css`
 `;
 
 const rightCSS = css`
-height: 100%;
-display: flex;
-flex-direction: column;
-align-items: flex-end;
-justify-content: space-between;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
 `;
 
 const imgCSS = css`
@@ -97,9 +96,10 @@ const mbtiBoxCSS = css`
 `;
 
 const createAtCSS = css`
-color: ${COLOR.GRAY2};
-font-size: ${FONT.SIZE.FOOTNOTE};
-font-weight: ${FONT.WEIGHT.REGULAR};
+  color: ${COLOR.GRAY2};
+  font-size: ${FONT.SIZE.FOOTNOTE};
+  font-weight: ${FONT.WEIGHT.REGULAR};
+  white-space: nowrap;
 `;
 
 export default HotWorryComponent;

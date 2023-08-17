@@ -4,7 +4,11 @@ import { Comment } from "../../../interfaces/comment";
 import Profile from "../../profile/Profile";
 import FONT from "../../../styles/font";
 import COLOR from "../../../styles/color";
-import { BestIcon, HeartIcon } from "../../../assets/CommonIcons";
+import {
+  BestIcon,
+  HeartEmptyIcon,
+  HeartIcon,
+} from "../../../assets/CommonIcons";
 import { useBoardCommentLike } from "../../../hooks/board/comment/useBoardCommentLike";
 import { useParams } from "react-router";
 import { useBoardCommentDelete } from "../../../hooks/board/comment/useBoardCommentDelete";
@@ -61,29 +65,32 @@ const CommentComponent = ({ comment, best, reply }: CommentProps) => {
           />
         </div>
         {comment.isEditAllowed ? (
-          <div css={likeCountCSS} onClick={handleLikeClick}>
+          <div css={[likeCountCSS, best && bestCSS]} onClick={handleLikeClick}>
             <div css={deleteCSS} onClick={handleCommentDeleteClick}>
               삭제
             </div>
             {comment.content !== "삭제된 댓글입니다." && (
               <>
-                <HeartIcon />
+                {comment.isLiked ? <HeartIcon /> : <HeartEmptyIcon />}
                 <div>{comment.likeCount}</div>
               </>
             )}
           </div>
         ) : (
-          <div css={likeCountCSS} onClick={handleLikeClick}>
+          <div css={[likeCountCSS, best && bestCSS]} onClick={handleLikeClick}>
             {comment.content !== "삭제된 댓글입니다." && (
               <>
-                <HeartIcon />
+                {comment.isLiked ? <HeartIcon /> : <HeartEmptyIcon />}
                 <div>{comment.likeCount}</div>
               </>
             )}
           </div>
         )}
       </div>
-      <div css={[contentCSS, reply && replyCSS]} onClick={handleCommentClick}>
+      <div
+        css={[contentCSS, reply && replyCSS, best && bestCSS]}
+        onClick={handleCommentClick}
+      >
         {comment.content}
       </div>
     </div>
@@ -119,6 +126,10 @@ const contentCSS = css`
 
 const replyCSS = css`
   margin-left: 1.8rem;
+`;
+
+const bestCSS = css`
+  cursor: auto;
 `;
 
 const likeCountCSS = css`

@@ -72,14 +72,8 @@ const EvaluationModal: React.FC<ModalProps> = ({
                   {profile?.memberSimpleInfo.nickName}
                 </div>
                 <div css={[profileDetailCSS, marginLeftCSS]}>
-                  <Badge
-                    mbti={profile?.memberSimpleInfo.mbti || ""}
-                    color={"#F8CAFF"}
-                  />
-                  <Badge
-                    mbti={profile?.memberSimpleInfo.badge || ""}
-                    color={"#5BE1A9"}
-                  />
+                  <Badge mbti={profile?.memberSimpleInfo.mbti || ""} />
+                  <Badge mbti={profile?.memberSimpleInfo.badge || ""} />
                 </div>
               </div>
             ) : (

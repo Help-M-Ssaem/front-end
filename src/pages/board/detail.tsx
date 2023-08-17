@@ -78,7 +78,7 @@ const DetailBoardPage = () => {
   };
 
   // TODO: 더보기 구현되면 page, size 수정
-  const { comments } = useBoardComment(boardId, 0, 10);
+  const { comments } = useBoardComment(boardId, 0, 100);
   const { bestComments } = useBoardBestComment(boardId);
 
   const [replyCommentId, setReplyCommentId] =
@@ -95,6 +95,8 @@ const DetailBoardPage = () => {
     navigate("/board/mbti");
     setMbtiSelected((board && board.boardMbti) as string);
   };
+
+  const token = localStorage.getItem("accessToken");
 
   return (
     <>
@@ -146,18 +148,23 @@ const DetailBoardPage = () => {
               <div css={commentBoxCSS}>
                 <div>전체 댓글 {comments ? comments.result.length : 0}개</div>
                 <div css={shareDeclarationCSS}>
-                  <div 
-                    css={shareCSS}
-                    onClick={handleShare}
-                  >공유</div>
-                  <div 
-                    css={declarationCSS}
-                    onClick={handleReport}
-                  >신고</div>
+                  <div css={shareCSS} onClick={handleShare}>
+                    공유
+                  </div>
+                  <div css={declarationCSS} onClick={handleReport}>
+                    신고
+                  </div>
                 </div>
               </div>
             </div>
             <div>
+              {bestComments &&
+                bestComments.map((bestComment) => (
+                  <div key={bestComment.commentId}>
+                    <CommentComponent comment={bestComment} best={true} />
+                  </div>
+                ))}
+
               {comments &&
                 comments.result.map((comment) => (
                   <div key={comment.commentId}>
@@ -207,7 +214,9 @@ const DetailBoardPage = () => {
       )}
       <Container addCSS={containerCSS}>
         <div css={createButtonCSS}>
-          <Button onClick={() => navigate("/board/create")}>글 쓰기</Button>
+          {token && (
+            <Button onClick={() => navigate("/board/create")}>글 쓰기</Button>
+          )}
         </div>
         {boardList &&
           boardList.result.map((board) => (
