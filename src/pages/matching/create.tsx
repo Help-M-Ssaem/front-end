@@ -126,7 +126,7 @@ const CreateMatchingPage = () => {
         <div css={contentCSS}>내용을 입력해주세요.</div>
         <Editor
           ref={editorRef}
-          initialValue="M쌤 매칭 고민글 생성"
+          initialValue=" "
           previewStyle="vertical"
           height="30rem"
           initialEditType="wysiwyg"

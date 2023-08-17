@@ -43,4 +43,5 @@ export interface DetailWorry {
   isEditAllowed: boolean;
   isChatAllowed: boolean;
   chatRoomId?: number;
+  hits: number;
 }

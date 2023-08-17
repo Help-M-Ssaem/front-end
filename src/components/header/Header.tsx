@@ -11,6 +11,7 @@ import { useState } from "react";
 import AlarmMenu from "../side/Alarm";
 import FavoritesMenu from "../side/Favorites";
 import Profile from "../profile/Profile";
+import { useEffect, useRef } from "react";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -37,9 +38,20 @@ const Header = () => {
     navigate("/search");
   };
   const homeRouteList = ["/", "/hotBoard", "/hotDebate"];
-
+  const menuRef = useRef<HTMLDivElement | null>(null);  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setAlarmOpen(false);
+        setFavoritesOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
-    <header css={headerCSS} onClick={handleCloseAll}>
+    <header css={headerCSS} onClick={handleCloseAll} ref={menuRef}>
       <div css={headerTopCSS}>
         <LogoIcon onClick={() => navigate("/")} />
         {!user ? (

@@ -5,53 +5,51 @@ import { SearchIcon } from "../../assets/CommonIcons";
 import { useNavigate } from "react-router-dom";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
+import { useRecentSearch } from "../../hooks/keywords/useGetRecentSearch";
+import { useSerch } from "../../hooks/keywords/usePostSearchWord";
 
 const SearchBar: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchHistory, setSearchHistory] = useState<string[]>([]);
+  const { keywords } = useRecentSearch();
+  const [searchWord, setSearchWord] = useState("");
+  const search = useSerch(searchWord);
   const navigate = useNavigate();
 
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchWord(event.target.value);
+    // handleSearch();
+  };
   const handleSearch = () => {
-    if (searchQuery) {
-      setSearchHistory((prevHistory) => [searchQuery, ...prevHistory]);
-      navigate(`/search/result?query=${searchQuery}`);
+    search.mutate();
+    navigate(`/search/result?query=${searchWord}`);
+  };
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleSearch();
     }
   };
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-  };
-
-  const clearSearchHistory = () => {
-    setSearchHistory([]);
-  };
-
   return (
     <>
       <div css={searchBarContainer}>
         <input
           type="text"
-          value={searchQuery}
+          value={searchWord}
           onChange={handleInputChange}
           placeholder="검색어를 입력하세요"
           css={searchInput}
+          onKeyUp={handleKeyPress}
         />
-        <button onClick={handleSearch} css={searchIconContainer}>
-          <SearchIcon />
-        </button>
+        <SearchIcon css={searchIconContainer} onClick={handleSearch}/>
       </div>
 
       <div css={searchHistoryContainer}>
         <h2>이전 검색어</h2>
         <div css={searchHistoryKeyword}>
-          {searchHistory.map((query, index) => (
+          {keywords && keywords.map((word, index) => (
             <div css={historyKeyword} key={index}>
-              {query}
+              {word.keyword}
             </div>
           ))}
-          {/* {searchHistory.length > 0 && (
-          <button onClick={clearSearchHistory}>지우기</button>
-        )} */}
         </div>
       </div>
     </>
@@ -60,22 +58,23 @@ const SearchBar: React.FC = () => {
 
 const historyKeyword = css`
   background-color: ${COLOR.MAIN4};
-  padding: 0.625rem;
+  padding: 0.8rem;
   color: ${COLOR.GRAY3};
   font-size: ${FONT.SIZE.TITLE3};
   font-weight: ${FONT.WEIGHT.SEMIBOLD};
-  border-radius: 1.875rem;
-  margin-right: 0.625rem;
+  border-radius: 1.2rem;
+  margin: 0.5rem 0.5rem 0 0;
+  word-break: break-all;
 `;
 
 const searchHistoryKeyword = css`
   display: flex;
-  margin-top: 0.6875rem;
+  flex-wrap: wrap;
 `;
 const searchBarContainer = css`
   display: flex;
   align-items: center;
-  border-bottom: 0.0625rem solid ${COLOR.BLACK};
+  border-bottom: 1px solid ${COLOR.BLACK};
 `;
 
 const searchInput = css`
@@ -100,6 +99,7 @@ const searchHistoryContainer = css`
 
 const searchIconContainer = css`
   margin-left: auto;
+  cursor: pointer;
 `;
 
 export default SearchBar;
