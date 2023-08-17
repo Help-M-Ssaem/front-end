@@ -36,10 +36,9 @@ const FavoritesComponent = ({ mbti, bookmark }: FavoritesProps) => {
     <>
     { bookmark &&
     <div css={boardBoxCSS}>
-      <div css ={haderCSS}
-       onClick={() => handleMbtiClick(mbti)}>
+      <div css ={haderCSS}>
         <div css={titleCSS}
-          // onClick={() => handleMbtiClick(mbti)}
+          onClick={() => handleMbtiClick(mbti)}
         >
           {mbti}게시판
         </div>

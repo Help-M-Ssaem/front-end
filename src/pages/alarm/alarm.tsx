@@ -3,22 +3,29 @@ import { css } from "@emotion/react";
 import Container from "../../components/container/Container";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AlarmComponent from "../../components/alarm/Alarm";
 import { useReadALLAlarm } from "../../hooks/alarm/useReadALLAlarm";
 import { useDeleteAllAlarm } from "../../hooks/alarm/useDeletAllAlarm";
 import ListPagination from "../../components/Pagination/ListPagination";
-import useAlarmPaging from "../../hooks/alarm/usePageAlarm";
+import { BigCatLogoIcon } from "../../assets/CommonIcons";
+import { mssaemAxios as axios } from "../../apis/axios";
+import { AlarmList } from "../../interfaces/alarm";
 
 const AlarmPage = () => {
   const allReadMutation = useReadALLAlarm();
   const allDeleteAlarmMutation = useDeleteAllAlarm();
+  const [alarmList, setAlarmList] = useState<AlarmList>();
   const [page, setPage] = useState(1);
-  const alarmList = useAlarmPaging(page-1)
   const limit = 10;
   const totalPage = alarmList ? alarmList.totalSize : 1;
   const [blockNum, setBlockNum] = useState(0);
 
+    useEffect(() => {
+        axios.get(`/member/notifications?page=${page-1}&size=${10}`).then((res) => {
+        setAlarmList(res.data);
+        })
+    }, [page]);
   const handleAllReadPost = () => {
     allReadMutation.mutate();
   };
@@ -44,10 +51,15 @@ const AlarmPage = () => {
         alarmList.result.map((alarm) => (
           <AlarmComponent
             alarm={alarm}
-          key={alarm.resourceId}
-          
+          key={alarm.id}
         />
         ))}
+      {/* {(!alarmList)&& (
+        <div css={noChatCSS}>
+          <BigCatLogoIcon />
+          <div css={bottomFontSIZE}>알람이 없어요!</div>
+        </div>
+        )} */}
         <ListPagination
           limit={limit}
           page={page}
@@ -88,4 +100,16 @@ const DeleteCSS = css`
   cursor: pointer;
 `;
 
+const noChatCSS = css`
+  display: flex;
+  width: 100%;
+  height: ;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
 
+const bottomFontSIZE = css`
+  font-size: ${FONT.SIZE.HEROTITLE};
+  color: ${COLOR.GRAY2};
+`;

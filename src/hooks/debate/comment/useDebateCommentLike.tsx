@@ -2,11 +2,11 @@ import { useMutation, useQueryClient } from "react-query";
 import { mssaemAxios as axios } from "../../../apis/axios";
 import { commentKeys } from "../../../constants/commentKey";
 
-async function boardCommentLike(
-  boardId: number,
+async function debateCommentLike(
+  debateId: number,
   commentId: number,
 ): Promise<void> {
-  await axios.post(`/member/discussions/${boardId}/comments/${commentId}/like`);
+  await axios.post(`/member/discussions/${debateId}/comments/${commentId}/like`);
 }
 
 interface UseDebateCommentLike {
@@ -14,12 +14,12 @@ interface UseDebateCommentLike {
 }
 
 export function useDebateCommentLike(
-  boardId: number,
+  debateId: number,
   commentId: number,
 ): UseDebateCommentLike {
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(() => boardCommentLike(boardId, commentId), {
+  const { mutate } = useMutation(() => debateCommentLike(debateId, commentId), {
     onSuccess: () => {
       queryClient.invalidateQueries(commentKeys.all);
     },
