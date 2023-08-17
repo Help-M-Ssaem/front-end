@@ -16,7 +16,7 @@ const Input2 = ({ onChange, placeholder, value }: InputProps) => {
       placeholder={placeholder}
       onChange={onChange}
       value={value}
-      maxLength={15}
+      maxLength={26}
     />
   );
 };

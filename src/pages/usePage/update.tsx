@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
@@ -129,7 +129,7 @@ const MyPageUpdate = () => {
       });
 
       if (response.data == "수정 성공") {
-        navigate("/");
+        navigate("/profile/myprofile");
       } else {
         console.log("error 발생");
       }
@@ -276,6 +276,7 @@ const MyPageUpdate = () => {
     return imgUrl.data;
   };
   const [imageURL, setImageURL] = useState<string>();
+  const imageUrlToPreload = values.image;
 
   const setImageChange = (newImage: string | undefined) => {
     setValues((prevValues) => ({
@@ -288,7 +289,8 @@ const MyPageUpdate = () => {
   const handleImageCancel = () => {
     try {
       deleteImageMutation.mutate();
-      setImageChange(Catlogo);
+      // setImageChange(undefined);
+      setImageChange(user?.profileImgUrl);
     } catch (error) {
       console.log(errors);
     }
@@ -303,7 +305,12 @@ const MyPageUpdate = () => {
           <div css={box1CSS}>
             <div css={profileContainerCSS}>
               <div css={profileImageContainerCSS}>
-                <img css={imageCSS} src={values.image} alt="프로필" />
+                <img
+                  css={imageCSS}
+                  src={values.image}
+                  alt="프로필"
+                  decoding="async"
+                />
               </div>
               <div css={cancelCSS2}>
                 <CancelIcon onClick={handleImageCancel} />

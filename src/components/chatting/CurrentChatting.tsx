@@ -10,7 +10,6 @@ import { ChattingHistory, MsseamProps } from "../../interfaces/chatting";
 import EvaluationModal from "../modal/EvaluationModal";
 import { useCreateEvaluation } from "../../hooks/worry/useEvaluation";
 import { ChatRoom } from "../../interfaces/chatting";
-
 import { mssaemAxios as axios } from "../../apis/axios";
 import { info } from "console";
 import useMemberInfo from "../../hooks/user/useMemberInfo";
@@ -26,14 +25,16 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
 
   const worryBoardId = chatRoom.worryBoardId;
   const { user } = useMemberInfo();
-
+  console.log(chatRoom.writerId, user?.id);
+  console.log(chatRoom);
   const handleEvaluation = async () => {
     try {
+      console.log(isEvaluationModalOpen);
       const res = await getSolved(worryBoardId);
       setProfileData(res);
       setIsSubmitted(true);
       setIsEvaluationModalOpen(true);
-      console.log(isEvaluationModalOpen);
+      console.log(isEvaluationModalOpen); //false
     } catch (error) {
       console.error("Error fetching solved data:", error);
     }
@@ -43,24 +44,26 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
     setIsEvaluationModalOpen(false);
     setIsSubmitted(true);
   };
+
   const worrySolverId = chatRoom.memberSimpleInfo.id;
-  const formData = {
-    worryBoardId: worryBoardId,
-    evaluations: [selectedOption],
-  };
+  // const formData = {
+  //   worryBoardId: worryBoardId,
+  //   evaluations: [selectedOption],
+  // };
 
   async function getSolved(id: number): Promise<MsseamProps> {
+    console.log(selectedOption); //여기 값이 잘 전달이 안되는거 같은데
     const { data } = await axios.patch(`/member/worry-board/${id}/solved`, {
       worrySolverId: worrySolverId,
     });
     return data;
   }
-  const createMutation = useCreateEvaluation(formData);
+  // const createMutation = useCreateEvaluation(formData);
 
   const handleSubmit = (selectedOption: string) => {
-    setSelectedOption(selectedOption);
     if (selectedOption) {
-      createMutation.mutate();
+      setSelectedOption(selectedOption);
+      // createMutation.mutate();
     }
   };
 
@@ -80,22 +83,23 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
       <div css={rightCSS}>
         {/* 정보가 같으면 보이면 안되고 ,다르면 보여야해 */}
 
-        <Button
-          onClick={handleEvaluation}
-          addCSS={isSubmitted ? buttonCSS : buttonCSS2}
-          disabled={isSubmitted}
-        >
-          해결완료
-        </Button>
+        {chatRoom.writerId === user?.id && (
+          <Button
+            onClick={handleEvaluation}
+            addCSS={isSubmitted ? buttonCSS : buttonCSS2}
+            disabled={isSubmitted}
+          >
+            해결완료
+          </Button>
+        )}
       </div>
-      {isEvaluationModalOpen && profileData !== null && !isSubmitted && (
+      {isEvaluationModalOpen && profileData !== null && (
         <EvaluationModal
           isOpen={isEvaluationModalOpen}
           onClose={handleCloseModal}
           onClick={(option) => {
             handleSubmit(option);
           }}
-          // profile={chatRoom.memberSimpleInfo}
           profile={profileData}
         />
       )}

@@ -41,6 +41,7 @@ export interface ChatRoom {
   targetMbti: string;
   memberSimpleInfo: User;
   worryBoardId: number;
+  writerId: number;
 }
 
 export interface ChatMessage {

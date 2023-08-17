@@ -7,6 +7,7 @@ import Button from "../button/Button";
 import { ChattingHistory, MsseamProps } from "../../interfaces/chatting";
 import Badge from "../badge/Badge";
 import { CancelIcon } from "../../assets/CommonIcons";
+import { useCreateEvaluation } from "../../hooks/worry/useEvaluation";
 
 interface ModalProps {
   isOpen: boolean;
@@ -30,6 +31,13 @@ const EvaluationModal: React.FC<ModalProps> = ({
 }) => {
   const [selectedOption, setSelectedOption] = useState<string>("");
   const [profileData, setProfileData] = useState<MsseamProps | null>(profile);
+  const worryBoardId = profile!!.worryBoardId;
+
+  const formData = {
+    worryBoardId: worryBoardId,
+    evaluations: [selectedOption],
+  };
+  const createMutation = useCreateEvaluation(formData);
 
   useEffect(() => {
     if (profile !== undefined) {
@@ -47,10 +55,12 @@ const EvaluationModal: React.FC<ModalProps> = ({
   const handleSubmit = () => {
     const option = options.find((option) => option.value === selectedOption);
     if (option) {
+      createMutation.mutate();
       onClick(option.id);
       onClose();
     }
   };
+
   return (
     <div css={modalBackground} onClick={onClose}>
       <div css={modalMain} onClick={(e) => e.stopPropagation()}>
