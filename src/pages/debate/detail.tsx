@@ -11,7 +11,6 @@ import VoteItemList from "../../components/debate/vote/VoteItemList";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { useDebateDetail } from "../../hooks/debate/useDetailDebate";
-import CommentComponent from "../../components/board/comment/Comment";
 import { useDebateComment } from "../../hooks/debate/comment/useDebateComment";
 import { useDebateBestComment } from "../../hooks/debate/comment/useDebateBestComment";
 import { useDebateCommentCreate } from "../../hooks/debate/comment/useDebateCommentCreate";
@@ -21,7 +20,12 @@ import PageDebate from "../../components/debate/pageMapingDebate/PageDebate";
 import CommentCreate from "../../components/board/comment/CommentCreate";
 import ReportModal from "../../components/modal/ReportModal";
 import ShareModal from "../../components/modal/ShareModal";
-
+import CommentComponent from "../../components/board/comment/Comment";
+import {
+  replyCommentIdState,
+  replyCommentOpenState,
+} from "../../states/debate";
+import { useRecoilState } from "recoil";
 const DetailDebatePage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -36,14 +40,14 @@ const DetailDebatePage = () => {
     setIsDeleteModalOpen(false);
   };
 
-  const { comments } = useDebateComment(debateId, 0, 10);
+  const { comments } = useDebateComment(debateId, 0, 20);
   const { bestComments } = useDebateBestComment(debateId);
-  const [content, setContent] = useState("");
 
-  const [replyContent, setReplyContent] = useState("");
-  const [replyCommentId, setReplyCommentId] = useState(0);
-  const [replyCommentOpen, setReplyCommentOpen] = useState(false);
-
+  const [replyCommentId, setReplyCommentId] =
+    useRecoilState(replyCommentIdState);
+  const [replyCommentOpen, setReplyCommentOpen] = useRecoilState(
+    replyCommentOpenState,
+  );
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
@@ -64,42 +68,6 @@ const DetailDebatePage = () => {
     navigate(-1);
   };
 
-  const formData = new FormData();
-  formData.append(
-    "postDiscussionCommentReq",
-    new Blob([JSON.stringify(content)], { type: "application/json" }),
-  );
-
-  const replyFormData = new FormData();
-  replyFormData.append(
-    "postDiscussionCommentReq",
-    new Blob([JSON.stringify(replyContent)], { type: "application/json" }),
-  );
-
-  const createMutation = useDebateCommentCreate(debateId, formData);
-  const createReplyMutation = useDebateCommentCreate(
-    debateId,
-    replyFormData,
-    replyCommentId,
-  );
-
-  const handleCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    createMutation.mutate();
-    setContent("");
-  };
-  const handleReplyCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    createReplyMutation.mutate();
-    setReplyContent("");
-    setReplyCommentOpen(false);
-  };
-
-  const handleCommentClick = (commentId: number) => {
-    setReplyCommentOpen(!replyCommentOpen);
-    setReplyCommentId(commentId);
-  };
-
   return (
     <div css={ContainerCSS}>
       <Container>
@@ -107,12 +75,6 @@ const DetailDebatePage = () => {
           <>
             {debate.isEditAllowed && (
               <div css={buttonBoxCSS}>
-                <Button
-                  onClick={() => navigate(`/debate/${id}/update`)}
-                  addCSS={updateButtonCSS}
-                >
-                  수정
-                </Button>
                 <Button onClick={handleDeleteOpen}>삭제</Button>
               </div>
             )}
@@ -141,11 +103,7 @@ const DetailDebatePage = () => {
                   count={`${debate.discussionSimpleInfo.participantCount}명이 참여중`}
                 ></RedButton>
               </div>
-              <div css={commentTextCSS}>
-                전체 댓글 {comments ? comments.result.length : 0}개
-              </div>
-            </div>
-            <div css={commentBoxCSS}>
+              <div css={commentBoxCSS}>
               <div>전체 댓글 {comments ? comments.result.length : 0}개</div>
               <div css={shareDeclarationCSS}>
                 <div css={shareCSS} onClick={handleShare}>
@@ -156,24 +114,26 @@ const DetailDebatePage = () => {
                 </div>
               </div>
             </div>
+            </div>
             <div>
-              {/* {comments &&
+            {bestComments &&
+                bestComments.map((bestComment) => (
+                  <div key={bestComment.commentId}>
+                    <CommentComponent comment={bestComment} best={true} />
+                  </div>
+                ))}
+
+              {comments &&
                 comments.result.map((comment) => (
                   <div key={comment.commentId}>
                     {comment.parentId === 0 && (
                       <>
-                        <CommentComponent
-                          comment={comment}
-                          onClick={() => handleCommentClick(comment.commentId)}
-                        />
+                        <CommentComponent comment={comment} />
                         {comments.result.map(
                           (replyComment) =>
                             replyComment.parentId === comment.commentId && (
                               <CommentComponent
                                 comment={replyComment}
-                                onClick={() =>
-                                  handleCommentClick(replyComment.parentId)
-                                }
                                 reply={true}
                               />
                             ),
@@ -182,24 +142,14 @@ const DetailDebatePage = () => {
                     )}
                     {replyCommentOpen &&
                       replyCommentId === comment.commentId && (
-                        <CommentCreate
-                          onSubmit={handleReplyCommentSubmit}
-                          content={replyContent}
-                          setContent={setReplyContent}
-                          addCSS={replyComment}
-                          reply={true}
-                        />
+                        <CommentCreate addCSS={replyComment} reply={true} />
                       )}
                   </div>
-                ))} */}
+                ))}
             </div>
             <div css={commentTextCSS}>댓글 쓰기</div>
             <hr css={hrCSS} />
-            {/* <CommentCreate
-              onSubmit={handleCommentSubmit}
-              content={content}
-              setContent={setContent}
-            /> */}
+            <CommentCreate />
           </>
         )}
       </Container>
@@ -226,7 +176,7 @@ const DetailDebatePage = () => {
         />
       )}
 
-      <PageDebate pathMov={"discusstion"} />
+      <PageDebate pathMov={"discusstion"} postId={Number(id)}/>
     </div>
   );
 };
@@ -237,7 +187,6 @@ const ContainerCSS = css`
   margin-top: 1rem;
 `;
 const detailCSS = css`
-  // padding: 1.2rem 0;
   padding-bottom: 1.2rem;
   border-bottom: 1px solid ${COLOR.MAIN};
 `;
@@ -285,11 +234,8 @@ const buttonBoxCSS = css`
   justify-content: end;
   margin-bottom: 1rem;
   align-items: center;
-`;
-
-const updateButtonCSS = css`
-  margin-right: 0.5rem;
-  background: ${COLOR.MAIN};
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid ${COLOR.MAIN};
 `;
 
 const BottomdetailCSS = css`
@@ -324,7 +270,4 @@ const declarationCSS = css`
 
 const replyComment = css`
   margin-top: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 `;
