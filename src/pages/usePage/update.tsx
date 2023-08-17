@@ -295,8 +295,8 @@ const MyPageUpdate = () => {
   };
 
   return (
-    <Container addCSS={containerCSS}>
-      <div>
+    <div css={containerCSS}>
+      <Container>
         <div css={mainTitleCSS}>프로필</div>
         <div css={boxContainerCSS}>
           {/* box1 */}
@@ -421,15 +421,15 @@ const MyPageUpdate = () => {
             수정하기
           </Button>
         </div>
-      </div>
-    </Container>
+      </Container>
+    </div>
   );
 };
 
 export default MyPageUpdate;
 
 const containerCSS = css`
-  // padding-top: 10rem;
+  padding-top: 3rem;
 `;
 
 const mainTitleCSS = css`

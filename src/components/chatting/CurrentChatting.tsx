@@ -12,6 +12,8 @@ import { useCreateEvaluation } from "../../hooks/worry/useEvaluation";
 import { ChatRoom } from "../../interfaces/chatting";
 
 import { mssaemAxios as axios } from "../../apis/axios";
+import { info } from "console";
+import useMemberInfo from "../../hooks/user/useMemberInfo";
 interface CurrentChattingProps {
   chatRoom: ChatRoom;
 }
@@ -23,13 +25,16 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
   const [profileData, setProfileData] = useState<MsseamProps | null>(null);
 
   const worryBoardId = chatRoom.worryBoardId;
+  const { user } = useMemberInfo();
+
+  console.log(chatRoom.memberSimpleInfo.id, user?.id);
 
   const handleEvaluation = async () => {
     try {
       console.log(worryBoardId);
       const res = await getSolved(worryBoardId);
-
       setProfileData(res);
+      setIsSubmitted(true);
       setIsEvaluationModalOpen(true);
       console.log(isEvaluationModalOpen);
     } catch (error) {
@@ -37,16 +42,11 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
     }
   };
 
-  // const handleEvaluation = () => {
-  //   const profile = getSolved(chatRoom.worryBoardId);
-  //   setIsEvaluationModalOpen(true);
-  // };
-
   const handleCloseModal = () => {
     setIsEvaluationModalOpen(false);
     setIsSubmitted(true);
   };
-
+  const worrySolverId = chatRoom.memberSimpleInfo.id;
   const formData = {
     worryBoardId: worryBoardId,
     evaluations: [selectedOption],
@@ -54,14 +54,13 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
 
   async function getSolved(id: number): Promise<MsseamProps> {
     const { data } = await axios.patch(`/member/worry-board/${id}/solved`, {
-      worrySolverId: id,
+      worrySolverId: worrySolverId,
     });
     return data;
   }
   const createMutation = useCreateEvaluation(formData);
 
   const handleSubmit = (selectedOption: string) => {
-    console.log(formData);
     setSelectedOption(selectedOption);
     if (selectedOption) {
       createMutation.mutate();
@@ -82,15 +81,18 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
         <div css={titleCSS}>{chatRoom.chatRoomTitle}</div>
       </div>
       <div css={rightCSS}>
-        <Button
-          onClick={handleEvaluation}
-          addCSS={isSubmitted ? buttonCSS : buttonCSS2}
-          disabled={isSubmitted}
-        >
-          해결완료
-        </Button>
+        {/* 정보가 같으면 보이면 안되고 ,다르면 보여야해 */}
+        {user?.id !== chatRoom?.memberSimpleInfo.id && (
+          <Button
+            onClick={handleEvaluation}
+            addCSS={isSubmitted ? buttonCSS : buttonCSS2}
+            disabled={isSubmitted}
+          >
+            해결완료
+          </Button>
+        )}
       </div>
-      {isEvaluationModalOpen && profileData !== null && (
+      {isEvaluationModalOpen && profileData !== null && !isSubmitted && (
         <EvaluationModal
           isOpen={isEvaluationModalOpen}
           onClose={handleCloseModal}
