@@ -46,11 +46,11 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
     <div css={MatchingBoxCSS}>
       <div css={leftCSS}>
         <div css={solveCSS}>
-          {isSubmitted && <Badge mbti="해결 완료" color={COLOR.MAIN1} />}
+          {isSubmitted && <Badge mbti="해결 완료" />}
           <div css={mbtiBoxCSS}>
-            <Badge mbti={chatRoom.memberMbti} color={"#F8CAFF"} />
+            <Badge mbti={chatRoom.memberMbti} />
             <RightArrowIcon />
-            <Badge mbti={chatRoom.targetMbti} color={"#5BE1A9"} />
+            <Badge mbti={chatRoom.targetMbti} />
           </div>
         </div>
         <div css={titleCSS}>{chatRoom.chatRoomTitle}</div>

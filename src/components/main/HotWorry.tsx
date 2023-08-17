@@ -25,9 +25,9 @@ const HotWorryComponent = ({ hotWorry, addCSS }: MatchingProps) => {
     <div css={MatchingBoxCSS} onClick={() => navigate(`/match/${hotWorry.id}`)}>
       <div css={leftCSS}>
         <div css={mbtiBoxCSS}>
-          <Badge mbti={hotWorry.memberMbti} color={COLOR.MAIN4} />
+          <Badge mbti={hotWorry.memberMbti} />
           <RightArrowIcon />
-          <Badge mbti={hotWorry.targetMbti} color={COLOR.YELLOW} />
+          <Badge mbti={hotWorry.targetMbti} />
         </div>
         <div css={titleCSS}>{hotWorry.title}</div>
         <div
