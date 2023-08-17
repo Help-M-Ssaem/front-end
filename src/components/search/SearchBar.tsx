@@ -16,7 +16,6 @@ const SearchBar: React.FC = () => {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchWord(event.target.value);
-    // handleSearch();
   };
   const handleSearch = () => {
     search.mutate();
@@ -35,7 +34,6 @@ const SearchBar: React.FC = () => {
           type="text"
           value={searchWord}
           onChange={handleInputChange}
-          placeholder="검색어를 입력하세요"
           css={searchInput}
           onKeyUp={handleKeyPress}
         />
