@@ -29,7 +29,6 @@ const PageDebate: React.FC<Props> = ({pathMov, postId}) => {
             <DebateComponent
               debate={debate}
               key={debate.id}
-              onClick={() => navigate(`/debate/${debate.id}`)}
               index={index}
               mode={pathMov}
             />

@@ -98,7 +98,6 @@ const SearchResult: React.FC = () => {
                   <DebateComponent
                     debate={debate}
                     key={debate.id}
-                    onClick={() => navigate(`/debate/${debate.id}`)}
                     mode=""
                     index={index}
                   />
