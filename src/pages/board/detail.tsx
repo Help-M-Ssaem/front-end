@@ -78,7 +78,7 @@ const DetailBoardPage = () => {
   };
 
   // TODO: 더보기 구현되면 page, size 수정
-  const { comments } = useBoardComment(boardId, 0, 10);
+  const { comments } = useBoardComment(boardId, 0, 100);
   const { bestComments } = useBoardBestComment(boardId);
 
   const [replyCommentId, setReplyCommentId] =
@@ -158,6 +158,13 @@ const DetailBoardPage = () => {
               </div>
             </div>
             <div>
+              {bestComments &&
+                bestComments.map((bestComment) => (
+                  <div key={bestComment.commentId}>
+                    <CommentComponent comment={bestComment} best={true} />
+                  </div>
+                ))}
+
               {comments &&
                 comments.result.map((comment) => (
                   <div key={comment.commentId}>
