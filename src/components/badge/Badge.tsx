@@ -2,13 +2,16 @@
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
+import { MBTICOLOR } from "../../styles/color";
 
-type BadgeProps = {
+interface BadgeProps {
   mbti: string;
-  color?: string;
-};
+}
+type MBTIColors = typeof MBTICOLOR;
 
-const Badge = ({ mbti, color }: BadgeProps) => {
+const Badge = ({ mbti }: BadgeProps) => {
+  const badgeMbti = mbti.toUpperCase();
+
   const badgeCSS = css`
     display: flex;
     justify-content: center;
@@ -17,7 +20,7 @@ const Badge = ({ mbti, color }: BadgeProps) => {
     color: ${COLOR.WHITE};
     font-size: ${FONT.SIZE.BODY};
     font-weight: ${FONT.WEIGHT.REGULAR};
-    background: ${color || "#F8CAFF"};
+    background: ${MBTICOLOR[badgeMbti as keyof MBTIColors] || "#5BE1A9"};
     padding: 0 0.5rem;
     border-radius: 0.9rem;
     margin-right: 0.4rem;

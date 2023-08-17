@@ -80,6 +80,8 @@ const CommentCreate = ({ addCSS, reply }: CommentCreateProps) => {
     }
   };
 
+  const token = localStorage.getItem("accessToken");
+
   return (
     <div css={[commentCreateBoxCSS, addCSS]}>
       {reply && <ReplyIcon />}
@@ -90,6 +92,7 @@ const CommentCreate = ({ addCSS, reply }: CommentCreateProps) => {
         <Input
           onChange={handleCommentChange}
           value={reply ? replyContent : content}
+          placeholder={!token ? "댓글을 작성하려면 로그인 해주세요." : ""}
         />
         <button css={buttonCSS} onSubmit={handleButtonClick}>
           등록

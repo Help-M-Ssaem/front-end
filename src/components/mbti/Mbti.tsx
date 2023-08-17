@@ -40,11 +40,13 @@ const Mbti = ({ mbti, bookmark }: MbtiProps) => {
         <div css={mbtiTextCSS}>{mbti}</div>
         <div>({count ? count : 0})</div>
       </div>
-      {bookmark ? (
-        <FilledStarIcon onClick={handleStarClick} />
-      ) : (
-        <EmptyStarIcon onClick={handleStarClick} />
-      )}
+      <div css={starCSS}>
+        {bookmark ? (
+          <FilledStarIcon onClick={handleStarClick} />
+        ) : (
+          <EmptyStarIcon onClick={handleStarClick} />
+        )}
+      </div>
     </div>
   );
 };
@@ -81,4 +83,9 @@ const mbtiCSS = css`
 
 const mbtiTextCSS = css`
   width: 2.4rem;
+`;
+
+const starCSS = css`
+  display: flex;
+  align-items: center;
 `;
