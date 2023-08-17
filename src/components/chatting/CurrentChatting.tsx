@@ -27,11 +27,8 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
   const worryBoardId = chatRoom.worryBoardId;
   const { user } = useMemberInfo();
 
-  console.log(chatRoom.memberSimpleInfo.id, user?.id);
-
   const handleEvaluation = async () => {
     try {
-      console.log(worryBoardId);
       const res = await getSolved(worryBoardId);
       setProfileData(res);
       setIsSubmitted(true);
@@ -82,15 +79,14 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
       </div>
       <div css={rightCSS}>
         {/* 정보가 같으면 보이면 안되고 ,다르면 보여야해 */}
-        {user?.id !== chatRoom?.memberSimpleInfo.id && (
-          <Button
-            onClick={handleEvaluation}
-            addCSS={isSubmitted ? buttonCSS : buttonCSS2}
-            disabled={isSubmitted}
-          >
-            해결완료
-          </Button>
-        )}
+
+        <Button
+          onClick={handleEvaluation}
+          addCSS={isSubmitted ? buttonCSS : buttonCSS2}
+          disabled={isSubmitted}
+        >
+          해결완료
+        </Button>
       </div>
       {isEvaluationModalOpen && profileData !== null && !isSubmitted && (
         <EvaluationModal
