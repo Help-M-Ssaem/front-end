@@ -12,12 +12,13 @@ import { useDebatePaging } from "../../../hooks/debate/useDebatePaging";
 
 interface Props {
     pathMov: string;
+    postId: number;
   }
-const PageDebate: React.FC<Props> = ({pathMov}) => {
+const PageDebate: React.FC<Props> = ({pathMov, postId}) => {
   const navigate = useNavigate();
   const [blockNum, setBlockNum] = useState(0); //블록 설정하는 함수
   const [page, setPage] = useState(1);
-  const debateLists = useDebatePaging(pathMov, page-1);
+  const debateLists = useDebatePaging(pathMov, page-1, postId);
   const limit = 6; //한 페이지당 아이템의 개수
   const totalPage = debateLists ? debateLists.totalSize : 1; //전체 페이지 수
   return (
