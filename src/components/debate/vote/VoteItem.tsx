@@ -21,8 +21,8 @@ const VoteItem = ({
 }: VoteItemProps ) => {
     const [isHovered, setIsHovered] = useState(false);
     const selectedMutation = useSelectedItem(PostId, id);
-    const handleClick = async () => {
-        (await selectedMutation).mutate();
+    const handleClick = () => {
+        selectedMutation.mutate();
     }
     const handleMouseEnter = () => {
         setIsHovered(true);

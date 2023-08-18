@@ -81,6 +81,7 @@ const DetailMatchingPage = () => {
              <div css={startButtonBoxCSS}>
               {(worryBoard.isChatAllowed && chatExist) ? (
                 <Button onClick={handleStartChatting}>채팅 시작</Button>) : (
+                  !(worryBoard.isEditAllowed) &&
                   <Button disabled={true}>다른 사용자와 채팅 중입니다.</Button>)
               }
               </div>
