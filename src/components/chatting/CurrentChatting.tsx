@@ -27,9 +27,12 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
   const { user } = useMemberInfo();
   console.log(chatRoom.writerId, user?.id);
   console.log(chatRoom);
+  console.log(chatRoom.worryBoardState);
   const handleEvaluation = async () => {
     try {
+      console.log(chatRoom.worryBoardState);
       console.log(isEvaluationModalOpen);
+
       const res = await getSolved(worryBoardId);
       setProfileData(res);
       setIsSubmitted(true);
@@ -44,12 +47,8 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
     setIsEvaluationModalOpen(false);
     // setIsSubmitted(true);
   };
-
+  console.log(chatRoom.writerId, user?.id);
   const worrySolverId = chatRoom.memberSimpleInfo.id;
-  // const formData = {
-  //   worryBoardId: worryBoardId,
-  //   evaluations: [selectedOption],
-  // };
 
   async function getSolved(id: number): Promise<MsseamProps> {
     console.log(selectedOption); //여기 값이 잘 전달이 안되는거 같은데
@@ -58,7 +57,6 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
     });
     return data;
   }
-  // const createMutation = useCreateEvaluation(formData);
 
   const handleSubmit = (selectedOption: string) => {
     if (selectedOption) {
@@ -86,22 +84,24 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
       </div>
       <div css={rightCSS}>
         {/* 정보가 같으면 보이면 안되고 ,다르면 보여야해 */}
-        {/* {chatRoom.writerId !== user?.id && ( */}
-        <Button
-          onClick={handleEvaluation}
-          addCSS={isSubmitted ? buttonCSS : buttonCSS2}
-          disabled={!isSubmitted}
-        >
-          해결완료
-        </Button>
-        {/* )} */}
+        {chatRoom.writerId === user?.id &&
+          !isSubmitted &&
+          chatRoom.worryBoardState && (
+            <Button
+              onClick={handleEvaluation}
+              addCSS={isSubmitted ? buttonCSS : buttonCSS2}
+              disabled={!isSubmitted}
+            >
+              해결완료
+            </Button>
+          )}
       </div>
       {isEvaluationModalOpen && profileData !== null && (
         <EvaluationModal
           isOpen={isEvaluationModalOpen}
           onClose={handleCloseModal}
-          onClick={(option) => {
-            handleSubmit(option);
+          onClick={(optionId) => {
+            handleSubmit(optionId);
           }}
           profile={profileData}
         />
@@ -114,9 +114,12 @@ export default CurrentChatting;
 
 const buttonCSS = css`
   background: ${COLOR.GRAY3};
+  cursor: pointer;
 `;
 
-const buttonCSS2 = css``;
+const buttonCSS2 = css`
+  cursor: pointer;
+`;
 
 const MatchingBoxCSS = css`
   display: flex;

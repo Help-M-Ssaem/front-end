@@ -42,6 +42,7 @@ export interface ChatRoom {
   memberSimpleInfo: User;
   worryBoardId: number;
   writerId: number;
+  worryBoardState: boolean;
 }
 
 export interface ChatMessage {

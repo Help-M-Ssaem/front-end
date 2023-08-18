@@ -32,10 +32,12 @@ const EvaluationModal: React.FC<ModalProps> = ({
   const [selectedOption, setSelectedOption] = useState<string>("");
   const [profileData, setProfileData] = useState<MsseamProps | null>(profile);
   const worryBoardId = profile!!.worryBoardId;
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [optionId, setOptionId] = useState<string>("");
 
   const formData = {
     worryBoardId: worryBoardId,
-    evaluations: [],
+    evaluations: [optionId],
   };
 
   const createMutation = useCreateEvaluation(formData);
@@ -50,14 +52,17 @@ const EvaluationModal: React.FC<ModalProps> = ({
   if (!isOpen || profileData === null) return null; // 모달 열리기 전에 데이터가 없으면 null 반환
 
   const handleOptionClick = (optionValue: string) => {
+    const option = options.find((option) => option.value === optionValue); // Use optionValue instead of selectedOption
     setSelectedOption(optionValue);
-  };
-
-  const handleSubmit = () => {
-    const option = options.find((option) => option.value === selectedOption);
     if (option) {
+      setOptionId(option.id);
+    }
+  };
+  const handleSubmit = () => {
+    if (optionId) {
       createMutation.mutate();
-      onClick(option.id);
+      onClick(optionId);
+      setIsSubmitted(true);
       onClose();
     }
   };
