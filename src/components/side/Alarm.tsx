@@ -48,18 +48,20 @@ const AlarmMenu = () => {
       {data &&
         data.pages.map((page, pageIndex) => (
           <div key={pageIndex}>
-            {page.result.map((alarm) => (
-            <AlarmComponent alarm={alarm} key={alarm.id} />
-            ))}
+            {page.result.length > 0 ?
+              <>
+                {page.result.map((alarm) => (
+                  <AlarmComponent alarm={alarm} key={alarm.id} />
+                ))}
+              </>
+             :         
+              <div css={noChatCSS}>
+                <CatLogoIcon />
+                <div css={bottomFontSIZE}>알람이 없어요!</div>
+              </div>
+            }
           </div>
-        ))}
-      {/* {(data&&Array.isArray(data.pages))&& (
-        <div css={noChatCSS}>
-          <CatLogoIcon />
-          <div css={bottomFontSIZE}>알람이 없어요!</div>
-        </div>
-        )} */}
-
+      ))}
     </div>
    </Container>
   );

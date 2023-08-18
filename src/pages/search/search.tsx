@@ -1,13 +1,18 @@
 /** @jsxImportSource @emotion/react */
-import React from "react";
+import React, { useState } from "react";
 import { css } from "@emotion/react";
 import SearchBar from "../../components/search/SearchBar";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import { usePopularSearch } from "../../hooks/keywords/useGetPopularSearch";
+import { useSerch } from "../../hooks/keywords/usePostSearchWord";
+import { useNavigate } from "react-router-dom";
 
 const Search: React.FC = () => {
   const { keywordList} = usePopularSearch();
+  const [searchWord, setSearchWord] = useState("");
+  const search = useSerch(searchWord);
+  const navigate = useNavigate();
   const currentDate = new Date();
 
   function formatDate(date: Date) {
@@ -22,6 +27,11 @@ const Search: React.FC = () => {
 
   const formattedDate = formatDate(currentDate);
 
+  const handleSearch = (clickedKeyword: string) => {
+    setSearchWord(clickedKeyword);
+    search.mutate();
+    navigate(`/search/result?query=${clickedKeyword}`);
+  };
   return (
     <div css={searchContainer}>
       <SearchBar />
@@ -30,12 +40,12 @@ const Search: React.FC = () => {
           <h2>인기 검색어</h2>
           <span css={timeNow}>{formattedDate}</span>
         </div>
-        {/* 모션 넣기, 클릭시 해당 필터 게시글 이동 */}
+        {/* 모션 넣기 */}
         { keywordList && keywordList.map((keyword, index) => (
             <div
-              css={[trendingKeywordWrapper,]}
+              css={[trendingKeywordWrapper]}
               key={index}
-              // onClick={}
+              onClick={() => handleSearch(keyword.keyword)}
             >
               <span css={indexStyle}>{index + 1}</span>
               <span css={trendingKeyword}>{keyword.keyword}</span>
