@@ -10,7 +10,9 @@ import { ChattingHistory, MsseamProps } from "../../interfaces/chatting";
 import EvaluationModal from "../modal/EvaluationModal";
 import { useCreateEvaluation } from "../../hooks/worry/useEvaluation";
 import { ChatRoom } from "../../interfaces/chatting";
-
+import { mssaemAxios as axios } from "../../apis/axios";
+import { info } from "console";
+import useMemberInfo from "../../hooks/user/useMemberInfo";
 interface CurrentChattingProps {
   chatRoom: ChatRoom;
 }
@@ -19,28 +21,53 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
   const [isEvaluationModalOpen, setIsEvaluationModalOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [profileData, setProfileData] = useState<MsseamProps | null>(null);
 
-  const handleEvaluation = () => {
-    setIsEvaluationModalOpen(true);
-  };
-  const handleCloseModal = () => {
-    setIsEvaluationModalOpen(false);
-    setIsSubmitted(true);
-  };
+  const worryBoardId = chatRoom.worryBoardId;
+  const { user } = useMemberInfo();
+  console.log(chatRoom.writerId, user?.id);
+  console.log(chatRoom);
+  console.log(chatRoom.worryBoardState);
+  const handleEvaluation = async () => {
+    try {
+      console.log(chatRoom.worryBoardState);
+      console.log(isEvaluationModalOpen);
 
-  const formData = {
-    worryBoardId: chatRoom.chatRoomId,
-    evaluations: [selectedOption],
-  };
-  const createMutation = useCreateEvaluation(formData);
-  const handleSubmit = (selectedOption: string) => {
-    setSelectedOption(selectedOption);
-    if (selectedOption) {
-      createMutation.mutate();
+      const res = await getSolved(worryBoardId);
+      setProfileData(res);
+      setIsSubmitted(true);
+      setIsEvaluationModalOpen(true);
+      console.log(isEvaluationModalOpen); //false
+    } catch (error) {
+      console.error("Error fetching solved data:", error);
     }
   };
 
-  console.log(chatRoom);
+  const handleCloseModal = () => {
+    setIsEvaluationModalOpen(false);
+    // setIsSubmitted(true);
+  };
+  console.log(chatRoom.writerId, user?.id);
+  const worrySolverId = chatRoom.memberSimpleInfo.id;
+
+  async function getSolved(id: number): Promise<MsseamProps> {
+    console.log(selectedOption); //여기 값이 잘 전달이 안되는거 같은데
+    const { data } = await axios.patch(`/member/worry-board/${id}/solved`, {
+      worrySolverId: worrySolverId,
+    });
+    return data;
+  }
+
+  const handleSubmit = (selectedOption: string) => {
+    if (selectedOption) {
+      setSelectedOption(selectedOption);
+      setIsEvaluationModalOpen(false);
+      setIsSubmitted(true);
+
+      console.log(isSubmitted);
+      // createMutation.mutate();
+    }
+  };
 
   return (
     <div css={MatchingBoxCSS}>
@@ -56,22 +83,29 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
         <div css={titleCSS}>{chatRoom.chatRoomTitle}</div>
       </div>
       <div css={rightCSS}>
-        <Button
-          onClick={handleEvaluation}
-          addCSS={isSubmitted ? buttonCSS : buttonCSS2}
-          disabled={isSubmitted}
-        >
-          해결완료
-        </Button>
+        {/* 정보가 같으면 보이면 안되고 ,다르면 보여야해 */}
+        {chatRoom.writerId === user?.id &&
+          !isSubmitted &&
+          chatRoom.worryBoardState && (
+            <Button
+              onClick={handleEvaluation}
+              addCSS={isSubmitted ? buttonCSS : buttonCSS2}
+              disabled={!isSubmitted}
+            >
+              해결완료
+            </Button>
+          )}
       </div>
-      {/* {isEvaluationModalOpen && (
+      {isEvaluationModalOpen && profileData !== null && (
         <EvaluationModal
           isOpen={isEvaluationModalOpen}
           onClose={handleCloseModal}
-          onClick={() => {}}
-          profile={profile}
+          onClick={(optionId) => {
+            handleSubmit(optionId);
+          }}
+          profile={profileData}
         />
-      )} */}
+      )}
     </div>
   );
 };
@@ -80,9 +114,12 @@ export default CurrentChatting;
 
 const buttonCSS = css`
   background: ${COLOR.GRAY3};
+  cursor: pointer;
 `;
 
-const buttonCSS2 = css``;
+const buttonCSS2 = css`
+  cursor: pointer;
+`;
 
 const MatchingBoxCSS = css`
   display: flex;
