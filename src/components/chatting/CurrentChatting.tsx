@@ -42,7 +42,7 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
 
   const handleCloseModal = () => {
     setIsEvaluationModalOpen(false);
-    setIsSubmitted(true);
+    // setIsSubmitted(true);
   };
 
   const worrySolverId = chatRoom.memberSimpleInfo.id;
@@ -63,6 +63,10 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
   const handleSubmit = (selectedOption: string) => {
     if (selectedOption) {
       setSelectedOption(selectedOption);
+      setIsEvaluationModalOpen(false);
+      setIsSubmitted(true);
+
+      console.log(isSubmitted);
       // createMutation.mutate();
     }
   };
@@ -82,16 +86,15 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
       </div>
       <div css={rightCSS}>
         {/* 정보가 같으면 보이면 안되고 ,다르면 보여야해 */}
-
-        {chatRoom.writerId === user?.id && (
-          <Button
-            onClick={handleEvaluation}
-            addCSS={isSubmitted ? buttonCSS : buttonCSS2}
-            disabled={isSubmitted}
-          >
-            해결완료
-          </Button>
-        )}
+        {/* {chatRoom.writerId !== user?.id && ( */}
+        <Button
+          onClick={handleEvaluation}
+          addCSS={isSubmitted ? buttonCSS : buttonCSS2}
+          disabled={!isSubmitted}
+        >
+          해결완료
+        </Button>
+        {/* )} */}
       </div>
       {isEvaluationModalOpen && profileData !== null && (
         <EvaluationModal

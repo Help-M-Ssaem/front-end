@@ -35,8 +35,9 @@ const EvaluationModal: React.FC<ModalProps> = ({
 
   const formData = {
     worryBoardId: worryBoardId,
-    evaluations: [selectedOption],
+    evaluations: [],
   };
+
   const createMutation = useCreateEvaluation(formData);
 
   useEffect(() => {
