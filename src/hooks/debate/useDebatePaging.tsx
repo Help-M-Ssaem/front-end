@@ -12,15 +12,15 @@ export function useDebatePaging ( path: string, page: number, postId: number) {
       if (path === "discusstion") {
         axios.get(`/discussions?discussionId=${postId}&page=${page}&size=${6}`).then((res) => {
             setDebateList(res.data);
-            queryClient.setQueryData(debateKeys.all, res.data);
+            queryClient.setQueryData("debate", res.data);
         });
     } else if (path === "hotDiscusstion"){
         axios.get(`/discussions/hot?discussionId=${postId}&page=${page}&size=${6}`).then((res) => {
             setDebateList(res.data);
-            queryClient.setQueryData(debateKeys.hot, res.data);
+            queryClient.setQueryData("debatehot", res.data);
         }); 
     }
-}, [path, page, queryClient, postId]);
+}, [path, page, queryClient, postId ]);
     return DebateList;
   };
   
