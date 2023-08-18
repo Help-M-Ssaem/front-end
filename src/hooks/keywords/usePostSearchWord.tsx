@@ -14,7 +14,7 @@ export function useSerch(keyWord: string): UseSerchWord {
 
   const { mutate } = useMutation(() => postSerch(keyWord), {
     onSuccess: () => {
-      queryClient.invalidateQueries("keyword");
+      queryClient.invalidateQueries("keyWordKeys");
     },
   });
 

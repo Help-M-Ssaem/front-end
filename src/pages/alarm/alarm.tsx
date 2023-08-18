@@ -46,6 +46,7 @@ const AlarmPage = () => {
         >전체 삭제</div>
       </div>
     </div>
+    {alarmList && alarmList.result.length > 0 && 
     <div>
       {alarmList &&
         alarmList.result.map((alarm) => (
@@ -54,12 +55,6 @@ const AlarmPage = () => {
           key={alarm.id}
         />
         ))}
-      {/* {(!alarmList)&& (
-        <div css={noChatCSS}>
-          <BigCatLogoIcon />
-          <div css={bottomFontSIZE}>알람이 없어요!</div>
-        </div>
-        )} */}
         <ListPagination
           limit={limit}
           page={page}
@@ -68,7 +63,14 @@ const AlarmPage = () => {
           setBlockNum={setBlockNum}
           totalPage={totalPage}
         />
-    </div>
+    </div>}
+    {alarmList && !(alarmList.result.length > 0) && 
+    <div>
+      {<div css={noChatCSS}>
+        <BigCatLogoIcon />
+        <div css={bottomFontSIZE}>알람이 없어요!</div>
+      </div>}
+    </div>}
    </Container>
   );
 };

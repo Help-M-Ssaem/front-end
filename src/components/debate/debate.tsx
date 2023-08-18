@@ -13,17 +13,18 @@ import { useState } from "react";
 
 interface DebateProps {
   debate: Debate;
-  onClick: (id: number) => void;
   mode: string;
   index: number;
 }
 
-const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
+const DebateComponent = ({ debate, mode, index }: DebateProps) => {
   const navigate = useNavigate();
   const isNotSearchResult = !window.location.href.includes("search");
   const [isNotSearch, setIsNotSearch] = useState(isNotSearchResult);
   const token = localStorage.getItem("accessToken");
-
+  const hadleDetail = () => {
+    navigate(`/debate/${debate.id}`);
+  }
   const debateBoxCSS = css`
     padding: ${isNotSearch && "0 1.5rem 1.5rem 1.5rem"};
     margin: ${isNotSearch && "0 0 4rem 0"};
@@ -35,7 +36,6 @@ const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
     <div 
       css={[debateBoxCSS]} 
       >
-      
         {index % 6 === 0 && isNotSearch && (
           <div css={buttonBoxCSS}>
           {mode === "discusstion" ? <Text>MBTI 과몰입 토론</Text> : <Text>HOT 토론글</Text>}
@@ -43,7 +43,7 @@ const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
           </div>
         )}
       <div>
-      <div css={[leftCSS, onclickCSS]} onClick={() => onClick(debate.id)}>
+      <div css={[leftCSS, onclickCSS]} onClick={hadleDetail}>
         <div css={dateTop}>
           <div css={profileBoxCSS}>
             <Profile
@@ -61,7 +61,7 @@ const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
         </div>
         <VoteItemList options={debate.options} debateId={debate.id} />
 
-        <div css={[detailCSS, onclickCSS]} onClick={() => onClick(debate.id)}>
+        <div css={[detailCSS, onclickCSS]} onClick={hadleDetail}>
           <RedButton
             count={`${debate.participantCount}명이 참여중`}
           ></RedButton>

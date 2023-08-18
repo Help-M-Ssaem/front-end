@@ -13,11 +13,9 @@ import { useState } from "react";
 import { useDebateDetail } from "../../hooks/debate/useDetailDebate";
 import { useDebateComment } from "../../hooks/debate/comment/useDebateComment";
 import { useDebateBestComment } from "../../hooks/debate/comment/useDebateBestComment";
-import { useDebateCommentCreate } from "../../hooks/debate/comment/useDebateCommentCreate";
 import RedButton from "../../components/button/plusbutton/RedButton";
 import DeleteModal from "../../components/modal/DeletModal";
 import PageDebate from "../../components/debate/pageMapingDebate/PageDebate";
-import CommentCreate from "../../components/board/comment/CommentCreate";
 import ReportModal from "../../components/modal/ReportModal";
 import ShareModal from "../../components/modal/ShareModal";
 import CommentComponent from "../../components/board/comment/Comment";
@@ -26,6 +24,7 @@ import {
   replyCommentOpenState,
 } from "../../states/debate";
 import { useRecoilState } from "recoil";
+import CommentCreate from "../../components/debate/comment/CommentCreate";
 const DetailDebatePage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
