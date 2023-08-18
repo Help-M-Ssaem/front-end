@@ -19,9 +19,9 @@ interface DesignationMappings {
 
 const AlarmComponent = ({ alarm }: AlarmProps) => {
   const navigate = useNavigate();
-  const markAsReadMutation = useReadPostAlarm(alarm.resourceId);
-  const deleteAlarmMutation = useDeleteAlarm(alarm.resourceId);
-  const alarmValue = alarm.type;
+  const markAsReadMutation = useReadPostAlarm(alarm.id);
+  const deleteAlarmMutation = useDeleteAlarm(alarm.id);
+  const alarmValue = alarm.notificationType;
   const valueData = alarmValue.split('_');
   const designation = valueData[0]
   
@@ -40,28 +40,24 @@ const AlarmComponent = ({ alarm }: AlarmProps) => {
 
   const handleReadPost = () => {
     markAsReadMutation.mutate();
-    navigate(`/${updatedDesignation}/${alarm.resourceId}`);//api수정되면 경로 수정
+    navigate(`/${updatedDesignation}/${alarm.resourceId}`);
   };
-  const handleDelete = () => {
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
     deleteAlarmMutation.mutate();
   };
-  const userContent = alarm.content.replace(/\\n/g, "\n");
-  const splittedData = userContent.split('\n');
-  //데이터 분리
-  const title = splittedData[0];
-  const content = splittedData[1];
   return (
     <div css={boardBoxCSS} onClick={handleReadPost}>
       <div css ={haderCSS}>
-        <div css={titleCSS}>{title}</div>
+        <div css={titleCSS}>{alarm.notificationTypeContent}</div>
         <div css={readDetailCSS}>
-          {!alarm.state && <div css={marginRightTopCSS}><RedButtonIcons/></div>}
-          {alarm.state && <div css={marginRightTopCSS}><XButtonIcons onClick={handleDelete}/></div>}
+          {!alarm.state && <div css={marginRightTopCSS} onClick={handleReadPost}><RedButtonIcons/></div>}
+          {alarm.state && <div css={marginRightTopCSS} onClick={handleDelete}><XButtonIcons /></div>}
         </div>
       </div>
       <div>
       <div css={leftCSS}>
-        <div css={contentCSS}>{content}</div>
+        <div css={contentCSS}>{alarm.content}</div>
       </div>
       <div css={detailCSS}>
           <div css={marginRightCSS}>{alarm.createdAt}</div>

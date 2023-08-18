@@ -22,6 +22,7 @@ const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
   const navigate = useNavigate();
   const isNotSearchResult = !window.location.href.includes("search");
   const [isNotSearch, setIsNotSearch] = useState(isNotSearchResult);
+  const token = localStorage.getItem("accessToken");
 
   const debateBoxCSS = css`
     padding: ${isNotSearch && "0 1.5rem 1.5rem 1.5rem"};
@@ -38,7 +39,7 @@ const DebateComponent = ({ debate, onClick, mode, index }: DebateProps) => {
         {index % 6 === 0 && isNotSearch && (
           <div css={buttonBoxCSS}>
           {mode === "discusstion" ? <Text>MBTI 과몰입 토론</Text> : <Text>HOT 토론글</Text>}
-          <Button onClick={() => navigate("/debate/create")}>글 쓰기</Button>
+          {token && <Button onClick={() => navigate("/debate/create")}>글 쓰기</Button>}
           </div>
         )}
       <div>

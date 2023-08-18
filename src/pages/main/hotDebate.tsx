@@ -4,7 +4,10 @@ import PageDebate from "../../components/debate/pageMapingDebate/PageDebate";
 const HotDebatePage = () => {
   return (
     <>
-      <PageDebate pathMov={"hotDiscusstion"} />
+      <PageDebate 
+        pathMov={"hotDiscusstion"}
+        postId={-1}
+       />
     </>
   );
 };

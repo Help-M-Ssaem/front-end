@@ -4,7 +4,7 @@ import { Editor } from "@toast-ui/react-editor";
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import Container from "../../components/container/Container";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import FONT from "../../styles/font";
 import Button from "../../components/button/Button";
 import { useNavigate } from "react-router";
@@ -41,26 +41,9 @@ const CreateBoardPage = () => {
   const [content, setContent] = useState("");
   const [category, setCategory] = useRecoilState(mbtiState);
   if (category === "전체") {
-    let mbti = "";
-    if (user!!.mbti[0] === "e") mbti = "E";
-    else if (user!!.mbti[0] === "i") mbti = "I";
-    else mbti = user!!.mbti[0];
-    if (user!!.mbti[1] === "s") mbti += "S";
-    else if (user!!.mbti[1] === "n") mbti += "N";
-    else mbti += user!!.mbti[1];
-    if (user!!.mbti[2] === "t") mbti += "T";
-    else if (user!!.mbti[2] === "f") mbti += "F";
-    else mbti += user!!.mbti[2];
-    if (user!!.mbti[3] === "j") mbti += "J";
-    else if (user!!.mbti[3] === "p") mbti += "P";
-    else mbti += user!!.mbti[3];
-    setCategory(mbti);
+    const Mbti = user!!.mbti.toUpperCase();
+    setCategory(Mbti);
   }
-
-  const [image, setImage] = useState<string[]>([]);
-  const [openCategory, setOpenCategory] = useState(false);
-  const navigate = useNavigate();
-
   const handleCategoryButtonClick = () => {
     setOpenCategory(!openCategory);
   };
@@ -72,6 +55,11 @@ const CreateBoardPage = () => {
     setTitle(e.target.value);
   };
 
+  const [image, setImage] = useState<string[]>([]); // 업로드된 모든 이미지 리스트
+  const [uploadImage, setUploadImage] = useState<string[]>([]); // 최종 업로드 이미지 리스트
+  const [openCategory, setOpenCategory] = useState(false);
+  const navigate = useNavigate();
+
   const formData = new FormData();
   const data = {
     title: title,
@@ -82,14 +70,40 @@ const CreateBoardPage = () => {
     "postBoardReq",
     new Blob([JSON.stringify(data)], { type: "application/json" }),
   );
+  // 업로드된 모든 이미지 리스트
   formData.append(
     "image",
     new Blob([JSON.stringify(image)], { type: "application/json" }),
   );
+  // 최종 업로드 이미지 리스트
+  formData.append(
+    "uploadImage",
+    new Blob([JSON.stringify(uploadImage)], { type: "application/json" }),
+  );
+
+  // 현재 글에 있는 이미지 url 추출
+  const extractImageUrls = (content: string) => {
+    const imgTagRegex = /<img[^>]*src="([^"]+)"[^>]*>/g;
+    const matches = content.match(imgTagRegex);
+    if (!matches) {
+      return [];
+    }
+    const imageUrls = matches.map((match) => {
+      const srcMatch = match.match(/src="([^"]+)"/);
+      return srcMatch ? srcMatch[1] : null;
+    });
+    return imageUrls.filter((url) => url !== null);
+  };
 
   const editorRef = useRef<any>(null);
   const handleContentChange = () => {
     setContent(editorRef.current.getInstance().getHTML());
+    const content = editorRef.current.getInstance().getHTML();
+    const extractedImageUrls = extractImageUrls(content);
+    const filteredImageUrls = extractedImageUrls.filter(
+      (url) => url !== null,
+    ) as string[];
+    setUploadImage(filteredImageUrls);
   };
   const createMutation = useCreateBoard(formData);
   const handleSubmit = () => {
@@ -97,7 +111,7 @@ const CreateBoardPage = () => {
     navigate(-1);
   };
 
-  const uploadImage = async (blob: Blob) => {
+  const handleUploadImage = async (blob: Blob) => {
     const formData = new FormData();
     formData.append("image", blob);
     const imgUrl = await axios.post("/member/boards/files", formData, {
@@ -145,8 +159,8 @@ const CreateBoardPage = () => {
           onChange={handleContentChange}
           hooks={{
             addImageBlobHook: async (blob, callback) => {
-              const imgUrl = await uploadImage(blob);
-              setImage([...image, imgUrl]);
+              const imgUrl = await handleUploadImage(blob);
+              setImage((prev) => [...prev, imgUrl]);
               callback(imgUrl, "image");
             },
           }}

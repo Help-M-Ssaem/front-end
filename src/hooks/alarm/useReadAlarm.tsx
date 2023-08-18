@@ -9,7 +9,8 @@ export function useReadPostAlarm(id: number,) {
   const queryClient = useQueryClient();
   const markAsReadMutation = useMutation(() => readPostAlarm(id), {
     onSuccess: () => {
-      queryClient.invalidateQueries(alarmKeys.all);
+      // queryClient.invalidateQueries(alarmKeys.all);
+      queryClient.invalidateQueries("alramList");
     },
   });
   return markAsReadMutation;

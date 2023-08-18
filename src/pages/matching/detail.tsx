@@ -67,18 +67,23 @@ const DetailMatchingPage = () => {
                 memberMbti={worryBoard.memberSimpleInfo.mbti}
                 targetMbti={worryBoard.targetMbti}
               />
-              <div css={dateCSS}>{worryBoard.createdAt}</div>
+              <div css={dateBoxCSS}>
+                <div css={dateCSS}>조회수 {worryBoard.hits}회</div>
+                <div css={dateCSS}>|</div>
+                <div css={dateCSS}>{worryBoard.createdAt}</div>
+              </div>
             </div>
             <div css={titleCSS}>{worryBoard.title}</div>
             <div
               css={contentCSS}
               dangerouslySetInnerHTML={{ __html: worryBoard.content }}
             />
-            {worryBoard.isChatAllowed && chatExist && (
-              <div css={startButtonBoxCSS} onClick={handleStartChatting}>
-                <Button>채팅 시작</Button>
+             <div css={startButtonBoxCSS}>
+              {(worryBoard.isChatAllowed && chatExist) ? (
+                <Button onClick={handleStartChatting}>채팅 시작</Button>) : (
+                  <Button disabled={true}>다른 사용자와 채팅 중입니다.</Button>)
+              }
               </div>
-            )}
           </div>
           {isDeleteModalOpen && (
             <DeleteModal
@@ -90,8 +95,8 @@ const DetailMatchingPage = () => {
         </Container>
       )}
 
-      <WorryList pathMove={"waiting"} SaW={"M쌤 매칭을 기다리는 고민"} />
-      <WorryList pathMove={"solved"} SaW={"해결 완료된 고민"} />
+      <WorryList pathMove={"waiting"} SaW={"M쌤 매칭을 기다리는 고민"} postId={Number(id)}/>
+      <WorryList pathMove={"solved"} SaW={"해결 완료된 고민"} postId={Number(id)}/>
     </>
   );
 };
@@ -115,6 +120,7 @@ const dateCSS = css`
   font-size: ${FONT.SIZE.BODY};
   font-weight: ${FONT.WEIGHT.REGULAR};
   color: ${COLOR.GRAY2};
+  margin-left: 0.5rem;
 `;
 
 const titleCSS = css`
@@ -150,4 +156,7 @@ const startButtonBoxCSS = css`
 const updateButtonCSS = css`
   margin-right: 0.5rem;
   background: ${COLOR.MAIN};
+`;
+const dateBoxCSS = css`
+  display: flex;
 `;
