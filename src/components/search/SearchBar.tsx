@@ -27,6 +27,13 @@ const SearchBar: React.FC = () => {
       handleSearch();
     }
   };
+
+  const handleRecentSearch = (clickedKeyword: string) => {
+    setSearchWord(clickedKeyword);
+    search.mutate();
+    navigate(`/search/result?query=${clickedKeyword}`);
+  };
+
   return (
     <>
       <div css={searchBarContainer}>
@@ -44,7 +51,7 @@ const SearchBar: React.FC = () => {
         <h2>이전 검색어</h2>
         <div css={searchHistoryKeyword}>
           {keywords && keywords.map((word, index) => (
-            <div css={historyKeyword} key={index}>
+            <div css={historyKeyword} key={index} onClick={() => handleRecentSearch(word.keyword)}>
               {word.keyword}
             </div>
           ))}
@@ -63,6 +70,7 @@ const historyKeyword = css`
   border-radius: 1.2rem;
   margin: 0.5rem 0.5rem 0 0;
   word-break: break-all;
+  cursor: pointer;
 `;
 
 const searchHistoryKeyword = css`
