@@ -12,7 +12,7 @@ interface UseSelectedItem {
   mutate: () => void;
 }
 
-export function useSelectedItem(postId: number, itemId: number): UseSelectedItem {
+export async function useSelectedItem(postId: number, itemId: number):  Promise<UseSelectedItem> {
   const queryClient = useQueryClient();
   const { mutate } = useMutation(() => PostVoteItem(postId, itemId), {
     onSuccess: () => {
