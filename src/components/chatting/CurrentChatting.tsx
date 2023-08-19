@@ -13,6 +13,8 @@ import { ChatRoom } from "../../interfaces/chatting";
 import { mssaemAxios as axios } from "../../apis/axios";
 import { info } from "console";
 import useMemberInfo from "../../hooks/user/useMemberInfo";
+import { useChatRooms } from "../../hooks/chatting/useChatRooms";
+import { setSelectionRange } from "@testing-library/user-event/dist/utils";
 interface CurrentChattingProps {
   chatRoom: ChatRoom;
 }
@@ -22,22 +24,36 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
   const [selectedOption, setSelectedOption] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [profileData, setProfileData] = useState<MsseamProps | null>(null);
+  const [state, setState] = useState<boolean>(false);
 
   const worryBoardId = chatRoom.worryBoardId;
   const { user } = useMemberInfo();
-  console.log(chatRoom.writerId, user?.id);
-  console.log(chatRoom);
-  console.log(chatRoom.worryBoardState);
+  const { chatRooms, isLoading } = useChatRooms();
+
+  useEffect(() => {
+    if (!isLoading && chatRooms) {
+      const updatedStage = chatRoom.worryBoardState;
+      setState(updatedStage);
+    }
+  }, [
+    chatRooms,
+    isLoading,
+    chatRoom.worryBoardState,
+    isSubmitted,
+    isEvaluationModalOpen,
+  ]);
+
   const handleEvaluation = async () => {
     try {
-      console.log(chatRoom.worryBoardState);
-      console.log(isEvaluationModalOpen);
-
       const res = await getSolved(worryBoardId);
       setProfileData(res);
       setIsSubmitted(true);
       setIsEvaluationModalOpen(true);
-      console.log(isEvaluationModalOpen); //false
+
+      const updatedChatRoom = {
+        ...chatRoom,
+        worryBoardState: true,
+      };
     } catch (error) {
       console.error("Error fetching solved data:", error);
     }
@@ -45,13 +61,11 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
 
   const handleCloseModal = () => {
     setIsEvaluationModalOpen(false);
-    // setIsSubmitted(true);
   };
-  console.log(chatRoom.writerId, user?.id);
+
   const worrySolverId = chatRoom.memberSimpleInfo.id;
 
   async function getSolved(id: number): Promise<MsseamProps> {
-    console.log(selectedOption); //여기 값이 잘 전달이 안되는거 같은데
     const { data } = await axios.patch(`/member/worry-board/${id}/solved`, {
       worrySolverId: worrySolverId,
     });
@@ -65,7 +79,6 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
       setIsSubmitted(true);
 
       console.log(isSubmitted);
-      // createMutation.mutate();
     }
   };
 
@@ -73,7 +86,9 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
     <div css={MatchingBoxCSS}>
       <div css={leftCSS}>
         <div css={solveCSS}>
-          {isSubmitted && <Badge mbti="해결 완료" />}
+          {!isSubmitted && chatRoom.worryBoardState && state && (
+            <Badge mbti="해결 완료" />
+          )}
           <div css={mbtiBoxCSS}>
             <Badge mbti={chatRoom.memberMbti} />
             <RightArrowIcon />
@@ -83,10 +98,9 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
         <div css={titleCSS}>{chatRoom.chatRoomTitle}</div>
       </div>
       <div css={rightCSS}>
-        {/* 정보가 같으면 보이면 안되고 ,다르면 보여야해 */}
         {chatRoom.writerId === user?.id &&
           !isSubmitted &&
-          chatRoom.worryBoardState && (
+          !chatRoom.worryBoardState && (
             <Button
               onClick={handleEvaluation}
               addCSS={isSubmitted ? buttonCSS : buttonCSS2}
