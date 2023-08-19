@@ -12,10 +12,13 @@ interface UseSelectedItem {
   mutate: () => void;
 }
 
-export async function useSelectedItem(postId: number, itemId: number):  Promise<UseSelectedItem> {
+export function useSelectedItem(postId: number, itemId: number):  UseSelectedItem {
   const queryClient = useQueryClient();
   const { mutate } = useMutation(() => PostVoteItem(postId, itemId), {
-    onSuccess: () => {
+    onSuccess: async () => {
+      // 선택된 투표 항목에 대한 쿼리도 리패치
+      await queryClient.invalidateQueries(["debateOption", postId, itemId]);
+      // 전체 토론 목록 쿼리 리패치
       queryClient.invalidateQueries("debate");
     },
   });

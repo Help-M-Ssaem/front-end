@@ -12,14 +12,19 @@ interface MatchingProps {
   addCSS?: SerializedStyles;
 }
 
-const MAX_CONTENT_LENGTH = 60;
+const MAX_CONTENT_LENGTH = 47;
 
 const HotWorryComponent = ({ hotWorry, addCSS }: MatchingProps) => {
   const navigate = useNavigate();
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(hotWorry.content, "text/html");
+  const imgElement = doc.querySelector("img");
+  const textContent = doc.body.innerHTML.replace(imgElement?.outerHTML || "", "");
+
   const truncatedContent =
-    hotWorry.content.length > MAX_CONTENT_LENGTH
-      ? hotWorry.content.substring(0, MAX_CONTENT_LENGTH) + "..."
-      : hotWorry.content;
+  textContent.length > MAX_CONTENT_LENGTH
+      ? textContent.substring(0, MAX_CONTENT_LENGTH) + "...더보기"
+      : textContent;
 
   return (
     <div css={MatchingBoxCSS} onClick={() => navigate(`/match/${hotWorry.id}`)}>
@@ -37,7 +42,7 @@ const HotWorryComponent = ({ hotWorry, addCSS }: MatchingProps) => {
       </div>
       <div css={rightCSS}>
         <div css={createAtCSS}>{hotWorry.createdDate}</div>
-        {hotWorry.imgUrl && hotWorry.imgUrl !== "default" && (
+        {hotWorry.imgUrl && (
           <img css={imgCSS} src={hotWorry.imgUrl} alt="thumbnail" />
         )}
       </div>
@@ -87,6 +92,7 @@ const contentCSS = css`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: pre-wrap
 `;
 
 const mbtiBoxCSS = css`

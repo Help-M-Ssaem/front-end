@@ -168,6 +168,7 @@ const UserInfo = () => {
               {...register("nickName")}
               placeholder="닉네임"
               ref={inputRef}
+              maxLength={8}
               onChange={handleNickNameChange}
             />
           </label>

@@ -11,27 +11,31 @@ import ListPagination from "../../components/Pagination/ListPagination";
 import { BigCatLogoIcon } from "../../assets/CommonIcons";
 import { mssaemAxios as axios } from "../../apis/axios";
 import { AlarmList } from "../../interfaces/alarm";
+import { useAlarmPaging } from "../../hooks/alarm/usePageAlarm";
 
 const AlarmPage = () => {
   const allReadMutation = useReadALLAlarm();
   const allDeleteAlarmMutation = useDeleteAllAlarm();
-  const [alarmList, setAlarmList] = useState<AlarmList>();
   const [page, setPage] = useState(1);
+  const { alarmList, refetch } = useAlarmPaging(page-1)
   const limit = 10;
   const totalPage = alarmList ? alarmList.totalSize : 1;
   const [blockNum, setBlockNum] = useState(0);
 
-    useEffect(() => {
-        axios.get(`/member/notifications?page=${page-1}&size=${10}`).then((res) => {
-        setAlarmList(res.data);
-        })
-    }, [page]);
   const handleAllReadPost = () => {
     allReadMutation.mutate();
   };
   const handleDelete = () => {
     allDeleteAlarmMutation.mutate();
   };
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+    refetch();
+  };
+  useEffect(() => {
+    setPage(page);
+    refetch();
+  }, [page, refetch]);
   return (
    <Container>
     <div css={AlarmHeaderBoxCSS}>
@@ -58,7 +62,7 @@ const AlarmPage = () => {
         <ListPagination
           limit={limit}
           page={page}
-          setPage={setPage}
+          setPage={handlePageChange}
           blockNum={blockNum}
           setBlockNum={setBlockNum}
           totalPage={totalPage}

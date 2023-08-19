@@ -15,10 +15,15 @@ interface MatchingProps {
 const MAX_CONTENT_LENGTH = 60;
 
 const MatchingComponent = ({ matching, solve, onClick }: MatchingProps) => {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(matching.content, "text/html");
+  const imgElement = doc.querySelector("img");
+  const textContent = doc.body.innerHTML.replace(imgElement?.outerHTML || "", "");
+
   const truncatedContent =
-    matching.content.length > MAX_CONTENT_LENGTH
-      ? matching.content.substring(0, MAX_CONTENT_LENGTH) + "..."
-      : matching.content;
+    textContent.length > MAX_CONTENT_LENGTH
+      ? textContent.substring(0, MAX_CONTENT_LENGTH) + "..."
+      : textContent;
 
   return (
     <div css={MatchingBoxCSS} onClick={() => onClick(matching.id)}>

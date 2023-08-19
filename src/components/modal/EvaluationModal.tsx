@@ -7,12 +7,13 @@ import Button from "../button/Button";
 import { ChattingHistory, MsseamProps } from "../../interfaces/chatting";
 import Badge from "../badge/Badge";
 import { CancelIcon } from "../../assets/CommonIcons";
+import { useCreateEvaluation } from "../../hooks/worry/useEvaluation";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   onClick: (result: string) => void;
-  profile: MsseamProps | undefined;
+  profile: MsseamProps | null;
 }
 
 const options = [
@@ -29,9 +30,17 @@ const EvaluationModal: React.FC<ModalProps> = ({
   profile,
 }) => {
   const [selectedOption, setSelectedOption] = useState<string>("");
-  const [profileData, setProfileData] = useState<MsseamProps | undefined>(
-    profile,
-  );
+  const [profileData, setProfileData] = useState<MsseamProps | null>(profile);
+  const worryBoardId = profile!!.worryBoardId;
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [optionId, setOptionId] = useState<string>("");
+
+  const formData = {
+    worryBoardId: worryBoardId,
+    evaluations: [optionId],
+  };
+
+  const createMutation = useCreateEvaluation(formData);
 
   useEffect(() => {
     if (profile !== undefined) {
@@ -42,18 +51,22 @@ const EvaluationModal: React.FC<ModalProps> = ({
 
   if (!isOpen || profileData === null) return null; // 모달 열리기 전에 데이터가 없으면 null 반환
 
-  console.log(profile);
   const handleOptionClick = (optionValue: string) => {
+    const option = options.find((option) => option.value === optionValue); // Use optionValue instead of selectedOption
     setSelectedOption(optionValue);
-  };
-
-  const handleSubmit = () => {
-    const option = options.find((option) => option.value === selectedOption);
     if (option) {
-      onClick(option.id);
+      setOptionId(option.id);
+    }
+  };
+  const handleSubmit = () => {
+    if (optionId) {
+      createMutation.mutate();
+      onClick(optionId);
+      setIsSubmitted(true);
       onClose();
     }
   };
+
   return (
     <div css={modalBackground} onClick={onClose}>
       <div css={modalMain} onClick={(e) => e.stopPropagation()}>
@@ -67,11 +80,16 @@ const EvaluationModal: React.FC<ModalProps> = ({
           <div css={[boXTopCSS, boXCSS]}>
             {profile !== undefined ? (
               <div>
-                <img css={profileImgCSS} src={profile.profileImgUrl} />
-                <div css={profileDetailCSS}>{profile.nickName}</div>
+                <img
+                  css={profileImgCSS}
+                  src={profile?.memberSimpleInfo.profileImgUrl}
+                />
+                <div css={profileDetailCSS}>
+                  {profile?.memberSimpleInfo.nickName}
+                </div>
                 <div css={[profileDetailCSS, marginLeftCSS]}>
-                  <Badge mbti={profile.mbti || ""} />
-                  <Badge mbti={profile.badge || ""} />
+                  <Badge mbti={profile?.memberSimpleInfo.mbti || ""} />
+                  <Badge mbti={profile?.memberSimpleInfo.badge || ""} />
                 </div>
               </div>
             ) : (

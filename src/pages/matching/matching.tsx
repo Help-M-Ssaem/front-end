@@ -38,6 +38,7 @@ const headerCSS = css`
 
 const mssaemListCSS = css`
   display: flex;
+  justify-content: center;
 `;
 
 const mbtiTitleCSS = css`

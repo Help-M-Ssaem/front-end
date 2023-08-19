@@ -25,6 +25,11 @@ const ListPagination = ({
   const nArr = createArr(totalPage);
   const pArr = nArr.slice(blockArea, blockArea + pageLimit);
 
+  const scrollRef = useRef();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [page]);
+
   const prevPage = () => {
     if (page <= 1) {
       return;

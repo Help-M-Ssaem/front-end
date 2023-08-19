@@ -137,7 +137,7 @@ const MainPage = () => {
           )}
 
           {selected === 1 && Array.isArray(mainTeacher) && (
-            <div css={MssaemCSS}>
+            <div css={MssaemCenterCSS}>
               {mainTeacher.map((hotboard: MainTeacher) => (
                 <Mssaem mssaem={hotboard} key={hotboard.id} css={MssaemCSS} />
               ))}
@@ -230,4 +230,10 @@ const bottomTitleCSS = css`
 const MssaemCSS = css`
   display: flex;
   margin-bottom: 2rem;
+`;
+
+const MssaemCenterCSS = css`
+justify-content: center;
+display: flex;
+margin-bottom: 2rem;
 `;

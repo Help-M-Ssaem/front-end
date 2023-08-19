@@ -17,5 +17,6 @@ export function useChatRooms(): UseChatRooms {
   const { data: chatRooms, isLoading } = useQuery(chattingKeys.all, () =>
     getChatRooms(),
   );
+  console.log(chatRooms, isLoading);
   return { chatRooms, isLoading };
 }

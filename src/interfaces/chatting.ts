@@ -40,6 +40,9 @@ export interface ChatRoom {
   memberMbti: string;
   targetMbti: string;
   memberSimpleInfo: User;
+  worryBoardId: number;
+  writerId: number;
+  worryBoardState: boolean;
 }
 
 export interface ChatMessage {
@@ -52,9 +55,6 @@ export interface ChatMessage {
 }
 
 export interface MsseamProps {
-  id: number;
-  nickName?: string;
-  mbti?: string;
-  badge?: string;
-  profileImgUrl?: string;
+  memberSimpleInfo: User;
+  worryBoardId: number;
 }
