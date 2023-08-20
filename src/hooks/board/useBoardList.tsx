@@ -31,9 +31,7 @@ export function useBoardList(
   const { data: boardList } = useQuery(boardKeys.all, () =>
     getBoardList(page, size, boardId),
   );
-  const { data: boardListAll } = useQuery(boardKeys.all, () =>
-    getBoardList(page, size),
-  );
+
   return { boardList };
 }
 

@@ -1,19 +1,17 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { css } from "@emotion/react";
 import FONT from "../../styles/font";
-import Text from "../../components/text/Text";
 import ListPagination from "../../components/Pagination/ListPagination";
 import { useNavigate } from "react-router-dom";
-import SearchBar from "../../components/search/SearchBar";
 import Container from "../../components/container/Container";
-import { BoardList } from "../../interfaces/board";
 import BoardComponent from "../../components/board/Board";
-import { useBoardListAll } from "../../hooks/board/useBoardList";
 import SelectBox from "../../components/Pagination/SelectBox";
 import { useLocation } from "react-router-dom";
 import { mssaemAxios as axios } from "../../apis/axios";
 import COLOR from "../../styles/color";
+import { useSearchBoardList } from "../../hooks/search/useSearchBoardList";
+import { SearchBoardList } from "../../interfaces/moresearch";
 
 function useQuery() {
   const { search } = useLocation();
@@ -21,28 +19,39 @@ function useQuery() {
 }
 
 const MoreBoardResult = () => {
+  let query = useQuery();
   const navigate = useNavigate();
-  const [boardList, setBoardList] = useState<BoardList>();
-
+  const [searchBoardList, setSearchBoardList] = useState<SearchBoardList>();
+  const mbti = "ALL";
   const limit = 10; //한 페이지당 아이템의 개수
-  const { boardListAll } = useBoardListAll(1, limit);
+  const [page, setPage] = useState(1); // 현재 페이지 설정하는 함수
 
-  const totalPage = boardListAll ? boardListAll.totalSize : 1; //전체 페이지 수
-  const pageNum = boardListAll ? boardListAll.page : 1;
-  const [page, setPage] = useState(pageNum); // 현재 페이지 설정하는 함수
+  const searchData = useSearchBoardList(
+    0,
+    query.get("query"),
+    mbti,
+    page,
+    limit,
+  );
+
+  useEffect(() => {
+    setSearchBoardList(searchData.searchBoardList);
+  }, [searchData.searchBoardList]);
+
+  const totalPage = searchBoardList ? searchBoardList.totalSize : 1; //전체 페이지
   const [blockNum, setBlockNum] = useState(0); //블록 설정하는 함수
 
-  let query = useQuery();
-
-  async function changePage(page: number) {
-    let { data } = await axios.get(
-      `/boards/search?page=${page}&size=${limit}`,
-      {
-        // strMbti: 'ALL',
-      },
-    );
-    setBoardList(data);
-  }
+  useEffect(() => {
+    axios
+      .get(
+        `/boards/search?searchType=0&keyword=${query.get(
+          "query",
+        )}&strMbti=${mbti}&page=${page - 1}&size=${limit}`,
+      )
+      .then((res) => {
+        setSearchBoardList(res.data);
+      });
+  }, [page]);
 
   return (
     <>
@@ -58,8 +67,8 @@ const MoreBoardResult = () => {
         <Container>
           <div css={boardTitleCSS}>MBTI 게시판</div>
 
-          {boardList &&
-            boardList.result.map((board) => (
+          {searchBoardList &&
+            searchBoardList.result.map((board) => (
               <div css={boardListWrapper}>
                 <BoardComponent
                   board={board}
@@ -77,6 +86,10 @@ const MoreBoardResult = () => {
             totalPage={totalPage}
           />
           <SelectBox />
+          {/* <div css={noResult}>
+              {!searchBoardList.result.length &&
+                "검색 결과가 없습니다 🥲"}
+            </div> */}
         </Container>
       </div>
     </>
@@ -107,8 +120,8 @@ const boardBoxCSS = css`
 
 const boardListWrapper = css`
   &:first-child {
-    border-top: none;
+    border-top: 0.625rem solid ${COLOR.ALARM};
   }
-  border-top: 0.625rem solid ${COLOR.ALARM};
+  border-top: none;
 `;
 export default MoreBoardResult;

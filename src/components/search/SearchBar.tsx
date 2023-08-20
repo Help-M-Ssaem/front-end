@@ -18,6 +18,13 @@ const SearchBar: React.FC = () => {
     }
   };
 
+  const handleOnKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      setSearchHistory((prevHistory) => [searchQuery, ...prevHistory]);
+      handleSearch();
+    }
+  };
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
@@ -35,6 +42,7 @@ const SearchBar: React.FC = () => {
           onChange={handleInputChange}
           placeholder="검색어를 입력하세요"
           css={searchInput}
+          onKeyDown={handleOnKeyPress}
         />
         <button onClick={handleSearch} css={searchIconContainer}>
           <SearchIcon />
