@@ -5,7 +5,7 @@ import { SearchKeys } from "../../constants/searchKey";
 
 export async function getSearchSolvedWorryList(
   searchType: number,
-  keyword: any,
+  keyword: string,
   strFromMbti: string,
   strToMbti: string,
   page: number,
@@ -23,7 +23,7 @@ interface UseSearchSolvedWorryList {
 
 export function useSearchSolvedWorryList(
   searchType: number,
-  keyword: any,
+  keyword: string,
   strFromMbti: string,
   strToMbti: string,
   page: number,

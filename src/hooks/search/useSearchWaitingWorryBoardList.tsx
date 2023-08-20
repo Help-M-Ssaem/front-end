@@ -5,7 +5,7 @@ import { SearchKeys } from "../../constants/searchKey";
 
 export async function getSearchWaitingWorryList(
   searchType: number,
-  keyword: any,
+  keyword: string,
   strFromMbti: string,
   strToMbti: string,
   page: number,
@@ -23,7 +23,7 @@ interface UseSearchWaitingWorryList {
 
 export function useSearchWaitingWorryList(
   searchType: number,
-  keyword: any,
+  keyword: string,
   strFromMbti: string,
   strToMbti: string,
   page: number,

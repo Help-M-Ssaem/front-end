@@ -5,7 +5,7 @@ import { DebateList } from "../../interfaces/debate";
 
 export async function getSearchDebateList(
   searchType: number,
-  keyword: any,
+  keyword: string,
   page: number,
   size: number,
 ): Promise<DebateList> {
@@ -21,7 +21,7 @@ interface UseSearchDebateList {
 
 export function useSearchDebateList(
   searchType: number,
-  keyword: any,
+  keyword: string,
   page: number,
   size: number,
 ): UseSearchDebateList {

@@ -5,7 +5,7 @@ import { SearchBoardList } from "../../interfaces/moresearch";
 
 export async function getSearchBoardList(
   searchType: number,
-  keyword: any,
+  keyword: string,
   strMbti: string,
   page: number,
   size: number,
@@ -22,7 +22,7 @@ interface UseSearchBoard {
 
 export function useSearchBoardList(
   searchType: number,
-  keyword: any,
+  keyword: string,
   strMbti: string,
   page: number,
   size: number,

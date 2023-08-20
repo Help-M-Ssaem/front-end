@@ -26,13 +26,8 @@ const MoreBoardResult = () => {
   const limit = 10; //한 페이지당 아이템의 개수
   const [page, setPage] = useState(1); // 현재 페이지 설정하는 함수
 
-  const searchData = useSearchBoardList(
-    0,
-    query.get("query"),
-    mbti,
-    page,
-    limit,
-  );
+  const queryValue = query.get("query") || ""; // null값일 때 빈 문자열로
+  const searchData = useSearchBoardList(0, queryValue, mbti, page, limit);
 
   useEffect(() => {
     setSearchBoardList(searchData.searchBoardList);
@@ -44,9 +39,9 @@ const MoreBoardResult = () => {
   useEffect(() => {
     axios
       .get(
-        `/boards/search?searchType=0&keyword=${query.get(
-          "query",
-        )}&strMbti=${mbti}&page=${page - 1}&size=${limit}`,
+        `/boards/search?searchType=0&keyword=${queryValue}&strMbti=${mbti}&page=${
+          page - 1
+        }&size=${limit}`,
       )
       .then((res) => {
         setSearchBoardList(res.data);

@@ -32,9 +32,11 @@ const MoreMatchingResult = () => {
   const [pageWaiting, setPageWaiting] = useState(1); // 현재 페이지 설정하는 함수
   const [pageSolved, setPageSolved] = useState(1); // 현재 페이지 설정하는 함수
 
+  const queryValue = query.get("query") || ""; // null값일 때 빈 문자열로
+
   const searchWaitingData = useSearchWaitingWorryList(
     0,
-    query.get("query"),
+    queryValue,
     mbti,
     mbti,
     pageWaiting,
@@ -42,7 +44,7 @@ const MoreMatchingResult = () => {
   );
   const searchSolvedData = useSearchSolvedWorryList(
     0,
-    query.get("query"),
+    queryValue,
     mbti,
     mbti,
     pageSolved,
@@ -71,9 +73,7 @@ const MoreMatchingResult = () => {
   useEffect(() => {
     axios
       .get(
-        `/worry-board/solved/search?searchType=0&keyword=${query.get(
-          "query",
-        )}&strFromMbti=${mbti}&strToMbti=${mbti}&page=${
+        `/worry-board/solved/search?searchType=0&keyword=${queryValue}&strFromMbti=${mbti}&strToMbti=${mbti}&page=${
           pageWaiting - 1
         }&size=${limit}`,
       )
@@ -85,9 +85,7 @@ const MoreMatchingResult = () => {
   useEffect(() => {
     axios
       .get(
-        `/worry-board/waiting/search?searchType=0&keyword=${query.get(
-          "query",
-        )}&strFromMbti=${mbti}&strToMbti=${mbti}&page=${
+        `/worry-board/waiting/search?searchType=0&keyword=${queryValue}&strFromMbti=${mbti}&strToMbti=${mbti}&page=${
           pageSolved - 1
         }&size=${limit}`,
       )
