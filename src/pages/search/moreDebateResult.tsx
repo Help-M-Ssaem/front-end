@@ -67,7 +67,6 @@ const MoreDebateResult = () => {
               <DebateComponent
                 debate={debate}
                 key={debate.id}
-                onClick={() => navigate(`/debate/${debate.id}`)}
                 index={index}
                 mode="discusstion"
               />

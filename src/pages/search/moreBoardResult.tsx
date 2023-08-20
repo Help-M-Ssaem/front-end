@@ -86,10 +86,6 @@ const MoreBoardResult = () => {
             totalPage={totalPage}
           />
           <SelectBox />
-          {/* <div css={noResult}>
-              {!searchBoardList.result.length &&
-                "검색 결과가 없습니다 🥲"}
-            </div> */}
         </Container>
       </div>
     </>
