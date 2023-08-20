@@ -6,6 +6,7 @@ import ExitModal from "../modal/ExitModal";
 import ReportModal from "../modal/ReportModal";
 import { HamburgerIcon } from "../../assets/ChattingIcons";
 import { useChatContext } from "../../hooks/chatting/ChatProvider";
+import { useEffect, useRef } from "react";
 
 const Hamburger = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,7 +14,7 @@ const Hamburger = () => {
   const [isExitModalOpen, setIsExitModalOpen] = useState(false);
 
   const { disconnect } = useChatContext();
-
+  
   const handleChattingExit = () => {
     disconnect();
     setIsOpen(false);
@@ -35,8 +36,20 @@ const Hamburger = () => {
     setIsExitModalOpen(false);
   };
 
+  const menuRef = useRef<HTMLDivElement | null>(null);  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div css={hamburgerMenuCSS}>
+    <div css={hamburgerMenuCSS} ref={menuRef}>
       <div css={hamburgerIconCSS} onClick={handleMenuToggle}>
         <HamburgerIcon />
       </div>
@@ -50,20 +63,21 @@ const Hamburger = () => {
           </div>
         </div>
       )}
+      {isReportModalOpen && (
+        <ReportModal
+          isOpen={isReportModalOpen}
+          onClose={handleCloseModal}
+          onClick={() => {}}
+          isType="MEMBER"
+        />
+      )}
+
       {/* 채팅 나가기 모달 */}
       {isExitModalOpen && (
         <ExitModal
           isOpen={isExitModalOpen}
           onClose={handleCloseModal}
           onClick={handleChattingExit}
-        />
-      )}
-      {/* 신고하기 모달 */}
-      {isReportModalOpen && (
-        <ReportModal
-          isOpen={isReportModalOpen}
-          onClose={handleCloseModal}
-          onClick={() => {}}
         />
       )}
     </div>

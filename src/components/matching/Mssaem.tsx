@@ -21,7 +21,7 @@ const Mssaem: React.FC<MssaemProps> = ({ mssaem }) => {
       <div css={nameCSS}>{mssaem.nickName} 님</div>
       <div css={badgeBoxCSS}>
         <Badge mbti={mssaem.mbti} />
-        {mssaem.badge &&<Badge mbti={mssaem.badge} color={"#5BE1A9"} />}
+        {mssaem.badge && <Badge mbti={mssaem.badge} />}
       </div>
       <div css={titleCSS}>{mssaem.introduction}</div>
     </div>
@@ -43,6 +43,7 @@ const profileCSS = css`
   height: 10rem;
   border-radius: 50%;
   margin: 2rem 0 1rem 0;
+  object-fit: cover;
 `;
 
 const nameCSS = css`

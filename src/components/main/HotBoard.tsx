@@ -23,6 +23,7 @@ const HotBoardComponent = ({ hotBoard, addCSS }: HotBoardProps) => {
       <div css={leftCSS}>
         <div css={profileCSS}>
           <Profile
+            id={hotBoard.memberSimpleInfo.id}
             image={hotBoard.memberSimpleInfo.profileImgUrl}
             name={hotBoard.memberSimpleInfo.nickName}
             mbti={hotBoard.memberSimpleInfo.mbti}

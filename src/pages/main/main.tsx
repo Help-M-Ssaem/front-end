@@ -34,27 +34,23 @@ const MainPage = () => {
 
   const navigate = useNavigate();
   const gridContainerCSS = css`
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    > *:nth-child(2n + 1) {
-      border-right: 1px solid ${COLOR.MAIN};
-      padding-right: 1rem;
-    }
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  > *:nth-of-type(2n + 1) {
+    border-right: 1px solid ${COLOR.MAIN};
+    padding-right: 1rem;
+  }
 
-    > *:nth-child(1),
-    > *:nth-child(2) {
-      ${Array.isArray(mainMatching) &&
-      mainMatching.length > 2 &&
-      `
+  > *:nth-of-type(1),
+  > *:nth-of-type(2){
+    ${(Array.isArray(mainMatching) && (mainMatching.length > 2)) && `
       border-bottom: 1px solid ${COLOR.MAIN};
     `}
     }
 
-    > *:nth-child(3),
-    > *:nth-child(4) {
-      ${Array.isArray(mainMatching) &&
-      mainMatching.length > 4 &&
-      `
+  > *:nth-of-type(3),
+  > *:nth-of-type(4){
+    ${(Array.isArray(mainMatching) && (mainMatching.length > 4)) && `
       border-bottom: 1px solid ${COLOR.MAIN};
     `}
     }
@@ -141,7 +137,7 @@ const MainPage = () => {
           )}
 
           {selected === 1 && Array.isArray(mainTeacher) && (
-            <div css={MssaemCSS}>
+            <div css={MssaemCenterCSS}>
               {mainTeacher.map((hotboard: MainTeacher) => (
                 <Mssaem mssaem={hotboard} key={hotboard.id} css={MssaemCSS} />
               ))}
@@ -234,4 +230,10 @@ const bottomTitleCSS = css`
 const MssaemCSS = css`
   display: flex;
   margin-bottom: 2rem;
+`;
+
+const MssaemCenterCSS = css`
+justify-content: center;
+display: flex;
+margin-bottom: 2rem;
 `;

@@ -10,7 +10,11 @@ import { ChattingHistory, MsseamProps } from "../../interfaces/chatting";
 import EvaluationModal from "../modal/EvaluationModal";
 import { useCreateEvaluation } from "../../hooks/worry/useEvaluation";
 import { ChatRoom } from "../../interfaces/chatting";
-
+import { mssaemAxios as axios } from "../../apis/axios";
+import { info } from "console";
+import useMemberInfo from "../../hooks/user/useMemberInfo";
+import { useChatRooms } from "../../hooks/chatting/useChatRooms";
+import { setSelectionRange } from "@testing-library/user-event/dist/utils";
 interface CurrentChattingProps {
   chatRoom: ChatRoom;
 }
@@ -19,59 +23,103 @@ const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
   const [isEvaluationModalOpen, setIsEvaluationModalOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [profileData, setProfileData] = useState<MsseamProps | null>(null);
+  const [state, setState] = useState<boolean>(false);
 
-  const handleEvaluation = () => {
-    setIsEvaluationModalOpen(true);
-  };
-  const handleCloseModal = () => {
-    setIsEvaluationModalOpen(false);
-    setIsSubmitted(true);
-  };
+  const worryBoardId = chatRoom.worryBoardId;
+  const { user } = useMemberInfo();
+  const { chatRooms, isLoading } = useChatRooms();
 
-  const formData = {
-    worryBoardId: chatRoom.chatRoomId,
-    evaluations: [selectedOption],
-  };
-  const createMutation = useCreateEvaluation(formData);
-  const handleSubmit = (selectedOption: string) => {
-    setSelectedOption(selectedOption);
-    if (selectedOption) {
-      createMutation.mutate();
+  useEffect(() => {
+    if (!isLoading && chatRooms) {
+      const updatedStage = chatRoom.worryBoardState;
+      setState(updatedStage);
+    }
+  }, [
+    chatRooms,
+    isLoading,
+    chatRoom.worryBoardState,
+    isSubmitted,
+    isEvaluationModalOpen,
+  ]);
+
+  const handleEvaluation = async () => {
+    try {
+      const res = await getSolved(worryBoardId);
+      setProfileData(res);
+      setIsSubmitted(true);
+      setIsEvaluationModalOpen(true);
+
+      const updatedChatRoom = {
+        ...chatRoom,
+        worryBoardState: true,
+      };
+    } catch (error) {
+      console.error("Error fetching solved data:", error);
     }
   };
 
-  console.log(chatRoom);
+  const handleCloseModal = () => {
+    setIsEvaluationModalOpen(false);
+  };
+
+  const worrySolverId = chatRoom.memberSimpleInfo.id;
+
+  async function getSolved(id: number): Promise<MsseamProps> {
+    const { data } = await axios.patch(`/member/worry-board/${id}/solved`, {
+      worrySolverId: worrySolverId,
+    });
+    return data;
+  }
+
+  const handleSubmit = (selectedOption: string) => {
+    if (selectedOption) {
+      setSelectedOption(selectedOption);
+      setIsEvaluationModalOpen(false);
+      setIsSubmitted(true);
+
+      console.log(isSubmitted);
+    }
+  };
 
   return (
     <div css={MatchingBoxCSS}>
       <div css={leftCSS}>
         <div css={solveCSS}>
-          {isSubmitted && <Badge mbti="해결 완료" color={COLOR.MAIN1} />}
+          {!isSubmitted && chatRoom.worryBoardState && state && (
+            <Badge mbti="해결 완료" />
+          )}
           <div css={mbtiBoxCSS}>
-            <Badge mbti={chatRoom.memberMbti} color={"#F8CAFF"} />
+            <Badge mbti={chatRoom.memberMbti} />
             <RightArrowIcon />
-            <Badge mbti={chatRoom.targetMbti} color={"#5BE1A9"} />
+            <Badge mbti={chatRoom.targetMbti} />
           </div>
         </div>
         <div css={titleCSS}>{chatRoom.chatRoomTitle}</div>
       </div>
       <div css={rightCSS}>
-        <Button
-          onClick={handleEvaluation}
-          addCSS={isSubmitted ? buttonCSS : buttonCSS2}
-          disabled={isSubmitted}
-        >
-          해결완료
-        </Button>
+        {chatRoom.writerId === user?.id &&
+          !isSubmitted &&
+          !chatRoom.worryBoardState && (
+            <Button
+              onClick={handleEvaluation}
+              addCSS={isSubmitted ? buttonCSS : buttonCSS2}
+              disabled={!isSubmitted}
+            >
+              해결완료
+            </Button>
+          )}
       </div>
-      {/* {isEvaluationModalOpen && (
+      {isEvaluationModalOpen && profileData !== null && (
         <EvaluationModal
           isOpen={isEvaluationModalOpen}
           onClose={handleCloseModal}
-          onClick={() => {}}
-          // profileData={profile}
+          onClick={(optionId) => {
+            handleSubmit(optionId);
+          }}
+          profile={profileData}
         />
-      )} */}
+      )}
     </div>
   );
 };
@@ -80,9 +128,12 @@ export default CurrentChatting;
 
 const buttonCSS = css`
   background: ${COLOR.GRAY3};
+  cursor: pointer;
 `;
 
-const buttonCSS2 = css``;
+const buttonCSS2 = css`
+  cursor: pointer;
+`;
 
 const MatchingBoxCSS = css`
   display: flex;

@@ -12,16 +12,21 @@ interface MatchingprofileProps {
   targetMbti: string;
 }
 
-const MatchingProfile = ({ image, name, memberMbti, targetMbti }: MatchingprofileProps) => {
+const MatchingProfile = ({
+  image,
+  name,
+  memberMbti,
+  targetMbti,
+}: MatchingprofileProps) => {
   return (
     <div css={profileBoxCSS}>
       <img css={profileImgCSS} src={image} alt="profile" />
       <div css={profileCSS}>
         <div css={nameCSS}>{name} 님</div>
         <div css={mbtiBoxCSS}>
-          <Badge mbti={memberMbti} color={COLOR.MAIN4} />
+          <Badge mbti={memberMbti} />
           <RightArrowIcon />
-          <Badge mbti={targetMbti} color={COLOR.YELLOW} />
+          <Badge mbti={targetMbti} />
         </div>
       </div>
     </div>

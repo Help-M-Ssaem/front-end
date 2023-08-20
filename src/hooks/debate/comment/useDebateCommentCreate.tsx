@@ -3,10 +3,14 @@ import { mssaemAxios as axios } from "../../../apis/axios";
 import { commentKeys } from "../../../constants/commentKey";
 
 async function createDebateComment(
-  boardId: number,
+  debateId: number,
   comment: FormData,
+  commentId?: number,
 ): Promise<void> {
-  await axios.post(`/member/discussions/${boardId}/comments?commentId`, comment, {
+  let url = `/member/discussions/${debateId}/comments`;
+  commentId && (url += `?commentId=${commentId}`);
+
+  await axios.post(url, comment, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -18,12 +22,13 @@ interface UseDebateCommentCreate {
 }
 
 export function useDebateCommentCreate(
-  boardId: number,
+  debateId: number,
   comment: FormData,
+  commentId?: number,
 ): UseDebateCommentCreate {
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(() => createDebateComment(boardId, comment), {
+  const { mutate } = useMutation(() => createDebateComment(debateId, comment, commentId), {
     onSuccess: () => {
       queryClient.invalidateQueries(commentKeys.all);
     },

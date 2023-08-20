@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
@@ -15,7 +15,8 @@ import { CancelIcon, PolygonIcon } from "../../assets/CommonIcons";
 import useMemberInfo from "../../hooks/user/useMemberInfo";
 import { mssaemAxios as axios } from "../../apis/axios";
 import { useDeleteImage } from "../../hooks/mypage/useDeleteImage";
-
+import Catlogo from "../../assets/logo/CatLogo.svg";
+import Container from "../../components/container/Container";
 const MyPageUpdate = () => {
   const navigate = useNavigate();
 
@@ -61,6 +62,7 @@ const MyPageUpdate = () => {
 
   //초기값 넣는 부분
   useEffect(() => {
+    getBadgeId(profileData?.teacherInfo.badge);
     if (profileData) {
       setValues((prevValues) => ({
         ...prevValues,
@@ -68,6 +70,7 @@ const MyPageUpdate = () => {
         nickName: profileData.teacherInfo.nickName,
         image: profileData.teacherInfo.profileImgUrl,
         badge: profileData.teacherInfo.badge,
+        badgeId: badgeId,
       }));
       setMbti(profileData.teacherInfo.mbti);
       setMbtiValue(
@@ -101,6 +104,8 @@ const MyPageUpdate = () => {
     }));
   };
 
+  //  --------- Submit --------------
+
   const data = {
     nickName: values.nickName,
     introduction: values.introduction,
@@ -108,7 +113,6 @@ const MyPageUpdate = () => {
     caseSensitivity: mbtiNum,
     badgeId: badgeId,
   };
-  //  --------- Submit --------------
   // 취소하기
   const handleCancel = () => {
     navigate("/");
@@ -116,9 +120,8 @@ const MyPageUpdate = () => {
 
   //제출하기
   const onSubmit = async () => {
-    console.log(data);
-
     try {
+      console.log(data);
       const response = await axios.patch("/member/profile", data, {
         headers: {
           "Content-Type": "application/json",
@@ -126,7 +129,7 @@ const MyPageUpdate = () => {
       });
 
       if (response.data == "수정 성공") {
-        navigate("/");
+        navigate("/profile/myprofile");
       } else {
         console.log("error 발생");
       }
@@ -158,6 +161,16 @@ const MyPageUpdate = () => {
       ...prevValues,
       badge: newBadge,
     }));
+  };
+
+  const getBadgeId = (badge: string | undefined) => {
+    profileData?.badgeInfos?.map(
+      (value: { id: number; name: string }, idx: number) => {
+        if (value.name == badge) {
+          setBadgeId(value.id);
+        }
+      },
+    );
   };
 
   // ------- MBTI 부분 ----------
@@ -244,8 +257,8 @@ const MyPageUpdate = () => {
       try {
         const imgUrl = await handleImageBlobHook(file);
         const result = await uploadImage(file);
-        setImageURL(result); // Set the image URL after successful upload
-        setImageChange(imgUrl); // Call setI
+        setImageURL(result);
+        setImageChange(imgUrl);
       } catch (error) {
         console.error("Error uploading image:", error);
       }
@@ -263,8 +276,8 @@ const MyPageUpdate = () => {
     return imgUrl.data;
   };
   const [imageURL, setImageURL] = useState<string>();
+  const imageUrlToPreload = values.image;
 
-  //Blob 말고 url 로만 지정할 수 있게
   const setImageChange = (newImage: string | undefined) => {
     setValues((prevValues) => ({
       ...prevValues,
@@ -274,149 +287,157 @@ const MyPageUpdate = () => {
   const deleteImageMutation = useDeleteImage();
 
   const handleImageCancel = () => {
-    // handleImageChange(profileData?.teacherInfo.profileImgUrl);
     try {
       deleteImageMutation.mutate();
-      // setImageChange(un);
+      // setImageChange(undefined);
+      setImageChange(user?.profileImgUrl);
     } catch (error) {
       console.log(errors);
     }
   };
 
   return (
-    <div>
-      <div css={mainTitleCSS}>프로필</div>
-      <div css={boxContainerCSS}>
-        {/* box1 */}
-        <div css={box1CSS}>
-          <div css={profileContainerCSS}>
-            <div css={profileImageContainerCSS}>
-              <img
-                css={imageCSS}
-                style={{
-                  objectFit: "contain",
-                }}
-                src={values.image}
-                alt="프로필"
-              />
-            </div>
-            <div css={cancelCSS2}>
-              <CancelIcon onClick={handleImageCancel} />
-            </div>
-            {/* 프로필 설정  */}
-
-            <label css={uploadLabelCSS}>
-              <span css={settingCSS}>프로필 설정</span>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                css={uploadInputCSS}
-              />
-            </label>
-            <div>
-              <p css={subTitleCSS}>닉네임</p>
-              <NameBox name={values.nickName} onChange={handleNicknameChange} />
-              {/* <MbtiBox /> */}
-              <p css={subTitleCSS}>MBTI</p>
-              <div css={userinfoCSS}>
-                <div css={mbtiBox}>
-                  {mbtiInputs.map((mbti, index) => (
-                    <div key={mbti.name} css={mbtiContainerCSS}>
-                      <input
-                        type="text"
-                        css={mbtiCSS}
-                        value={mbtiValue[index].values[0]}
-                        onChange={(e) => handleInputChange(e, mbti.name)}
-                        placeholder={profileData?.teacherInfo.mbti}
-                      />
-                      <div css={arrowContainerCSS}>
-                        <PolygonIcon
-                          width={"9"}
-                          height={"70"}
-                          onClick={() => handlePolygonClick(mbti.name)}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {invalidInput &&
-                  !mbtiInputs.some((mbti) =>
-                    mbti.values.includes(invalidInput),
-                  ) && (
-                    <div css={warningContainerCSS}>
-                      <p css={warningMessageCSS}>
-                        "{invalidInput}"은(는) 유효한 MBTI 요소가 아닙니다.
-                      </p>
-                    </div>
-                  )}
+    <div css={containerCSS}>
+      <Container>
+        <div css={mainTitleCSS}>프로필</div>
+        <div css={boxContainerCSS}>
+          {/* box1 */}
+          <div css={box1CSS}>
+            <div css={profileContainerCSS}>
+              <div css={profileImageContainerCSS}>
+                <img
+                  css={imageCSS}
+                  src={values.image}
+                  alt="프로필"
+                  decoding="async"
+                />
               </div>
-              <p css={subTitleCSS}>한줄소개</p>
-              <Input2
-                placeholder={profileData?.teacherInfo.introduction}
-                value={values.introduction}
-                onChange={(e) => setIntroductionChange(e.target.value)}
-              />
+              <div css={cancelCSS2}>
+                <CancelIcon onClick={handleImageCancel} />
+              </div>
+              {/* 프로필 설정  */}
+
+              <label css={uploadLabelCSS}>
+                <span css={settingCSS}>프로필 설정</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  css={uploadInputCSS}
+                />
+              </label>
+              <div>
+                <p css={subTitleCSS}>닉네임</p>
+                <NameBox
+                  name={values.nickName}
+                  onChange={handleNicknameChange}
+                />
+
+                {/* <MbtiBox /> */}
+                <p css={subTitleCSS}>MBTI</p>
+                <div css={userinfoCSS}>
+                  <div css={mbtiBox}>
+                    {mbtiInputs.map((mbti, index) => (
+                      <div key={mbti.name} css={mbtiContainerCSS}>
+                        <input
+                          type="text"
+                          css={mbtiCSS}
+                          value={mbtiValue[index].values[0]}
+                          onChange={(e) => handleInputChange(e, mbti.name)}
+                          placeholder={profileData?.teacherInfo.mbti}
+                        />
+                        <div css={arrowContainerCSS}>
+                          <PolygonIcon
+                            width={"9"}
+                            height={"70"}
+                            onClick={() => handlePolygonClick(mbti.name)}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {invalidInput &&
+                    !mbtiInputs.some((mbti) =>
+                      mbti.values.includes(invalidInput),
+                    ) && (
+                      <div css={warningContainerCSS}>
+                        <p css={warningMessageCSS}>
+                          "{invalidInput}"은(는) 유효한 MBTI 요소가 아닙니다.
+                        </p>
+                      </div>
+                    )}
+                </div>
+                <p css={subTitleCSS}>한줄소개</p>
+                <Input2
+                  placeholder={profileData?.teacherInfo.introduction}
+                  value={values.introduction}
+                  onChange={(e) => setIntroductionChange(e.target.value)}
+                />
+              </div>
             </div>
           </div>
-        </div>
-        {/* box2 */}
+          {/* box2 */}
 
-        <div css={box2CSS}>
-          <p css={subTitleCSS}>수집한 칭호</p>
-          <div css={collectedTitleContainer}>
-            {profileData?.badgeInfos?.map(
-              (value: { id: number; name: string }, idx: number) => {
-                const isSelected = value.name === values.badge;
-                // 클릭 이벤트 핸들러
-                const handleBadgeClick = () => {
-                  if (isSelected) {
-                    setBadgeChange("");
-                  } else {
-                    setBadgeChange(value.name as string);
-                    setBadgeId(value.id);
-                  }
-                };
+          <div css={box2CSS}>
+            <p css={subTitleCSS}>수집한 칭호</p>
+            <div css={collectedTitleContainer}>
+              {profileData?.badgeInfos?.map(
+                (value: { id: number; name: string }, idx: number) => {
+                  const isSelected = value.name === values.badge;
+                  // 클릭 이벤트 핸들러
+                  const handleBadgeClick = () => {
+                    if (isSelected) {
+                      setBadgeChange("");
+                    } else {
+                      setBadgeChange(value.name as string);
+                      setBadgeId(value.id);
+                    }
+                  };
 
-                return (
-                  <p
-                    key={idx}
-                    css={[
-                      selectBadge(value),
-                      isSelected && {
-                        border: `0.2rem solid ${COLOR.MAIN1} `,
-                        padding: `0.6rem 0.5rem`,
-                        display: "flex",
-                        alignItems: "center",
-                      },
-                    ]}
-                    onClick={handleBadgeClick}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {value.name}
-                  </p>
-                );
-              },
-            )}
+                  return (
+                    <p
+                      key={idx}
+                      css={[
+                        selectBadge(value),
+                        isSelected && {
+                          border: `0.2rem solid ${COLOR.MAIN1} `,
+                          padding: `0.6rem 0.5rem`,
+                          display: "flex",
+                          alignItems: "center",
+                        },
+                      ]}
+                      onClick={handleBadgeClick}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {value.name}
+                    </p>
+                  );
+                },
+              )}
+            </div>
           </div>
+          {/* box3 */}
+          <ActivityList profileData={profileData} />
         </div>
-        {/* box3 */}
-        <ActivityList profileData={profileData} />
-      </div>
-      <div css={buttonCSS}>
-        <Button addCSS={calcelCSS} onClick={handleCancel}>
-          취소하기
-        </Button>
-        <Button type="submit" onClick={handleSubmit(onSubmit)}>
-          수정하기
-        </Button>
-      </div>
+        <div css={buttonCSS}>
+          <Button addCSS={calcelCSS} onClick={handleCancel}>
+            취소하기
+          </Button>
+          <Button type="submit" onClick={handleSubmit(onSubmit)}>
+            수정하기
+          </Button>
+        </div>
+      </Container>
     </div>
   );
 };
 
 export default MyPageUpdate;
+
+const containerCSS = css`
+  padding-top: 3rem;
+`;
 
 const mainTitleCSS = css`
   display: flex;
@@ -613,10 +634,10 @@ const uploadInputCSS = css`
   display: none;
 `;
 const imageCSS = css`
-  width: 11rem;
+  width: auto;
   height: auto;
-  max-height: 9rem;
-  object-fit: contain;
+  max-height: 12.125rem;
+  // object-fit: contain;
 `;
 
 const settingCSS = css`

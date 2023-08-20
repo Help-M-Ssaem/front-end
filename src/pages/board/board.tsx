@@ -7,7 +7,7 @@ const Board = () => {
   const setMbtiSelected = useSetRecoilState(mbtiState);
 
   useEffect(() => {
-    setMbtiSelected("전체");
+    // setMbtiSelected("전체");
   }, []);
 
   return <Outlet />;

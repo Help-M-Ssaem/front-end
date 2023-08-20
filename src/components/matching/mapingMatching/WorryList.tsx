@@ -18,10 +18,12 @@ import ListPagination from "../../Pagination/ListPagination";
 interface WorryProps {
   pathMove: string;
   SaW: string;
+  postId: number
 }
 
-const WorryList: React.FC<WorryProps> = ({ pathMove, SaW }) => {
+const WorryList: React.FC<WorryProps> = ({ pathMove, SaW, postId }) => {
   const navigate = useNavigate();
+  const token = localStorage.getItem("accessToken");
   const [openMbti1, setOpenMbti1] = useState(false);
   const [mbti1, setMbti1] = useState("전체");
   const [openMbti2, setOpenMbti2] = useState(false);
@@ -29,7 +31,7 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW }) => {
 
   const [blockNum, setBlockNum] = useState(0); //블록 설정하는 함수
   const [page, setPage] = useState(1);
-  const worryBoardLists = useFetchWorryBoardList(mbti1, mbti2, pathMove, page);
+  const worryBoardLists = useFetchWorryBoardList(mbti1, mbti2, pathMove, page, postId);
   const limit = 10; //한 페이지당 아이템의 개수
   const totalPage = worryBoardLists ? worryBoardLists.totalSize : 1; //전체 페이지 수
 
@@ -59,6 +61,7 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW }) => {
     mbti2,
     pathMove,
     page - 1,
+    postId,
   );
   useEffect(() => {
     setMbti1("전체");
@@ -84,7 +87,7 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW }) => {
               {openMbti2 && <MbtiList onClick={handleMbti2Click} />}
             </div>
           </div>
-          {pathMove === "waiting" && (
+          {pathMove === "waiting" && token && (
             <Button onClick={() => navigate("/match/create")}>글 쓰기</Button>
           )}
         </div>

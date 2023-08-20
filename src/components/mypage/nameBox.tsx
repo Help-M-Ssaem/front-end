@@ -1,13 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import React, { useEffect, useState, useRef } from "react";
 import { css } from "@emotion/react";
-import { useForm } from "react-hook-form";
 import FONT from "../../styles/font";
-import COLOR from "../../styles/color";
-import { PolygonIcon } from "../../assets/CommonIcons";
 import { useNickName } from "../../hooks/user/userNickname";
-import { usePostUserInfo } from "../../hooks/user/signup";
-import { useNavigate } from "react-router-dom";
 
 const NameBox = ({
   name,
@@ -19,7 +14,6 @@ const NameBox = ({
   const [invalidInput, setInvalidInput] = useState<string | null>(null);
   const [nickName, setnickName] = useState("");
   const [result, setResult] = useState<boolean | null>(null);
-
   const inputRef = useRef<HTMLInputElement | null>(null);
   const checkNickNameMutation = useNickName();
 
@@ -49,7 +43,12 @@ const NameBox = ({
   return (
     <div css={userinfoCSS}>
       <div css={nickNameCSS({ result })}>
-        <input value={name} ref={inputRef} onChange={handleNickNameChange} />
+        <input
+          placeholder={name}
+          ref={inputRef}
+          maxLength={8}
+          onChange={handleNickNameChange}
+        />
 
         <div css={NickNameContainer}>
           {result !== null && (

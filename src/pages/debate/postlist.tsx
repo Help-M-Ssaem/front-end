@@ -5,6 +5,7 @@ const PostListDebatePage = () => {
   <>
     <PageDebate
       pathMov = {"discusstion"}
+      postId={-1}
       />
     </>
   );
