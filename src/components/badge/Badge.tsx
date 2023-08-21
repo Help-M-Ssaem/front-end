@@ -14,15 +14,15 @@ const Badge = ({ mbti }: BadgeProps) => {
   const badgeMbti = mbti.toUpperCase();
   const [color, setColor] = useState("#7A7A7B");
 
-  if (mbti === "엠비티어른" || mbti === "FUNFUN") {
-    setColor("#C85287");
-  } else if (mbti === "MBTMI") {
-    setColor("#F6E0A6");
-  } else if (mbti === "엠비티라노") {
-    setColor("#00AF76");
-  } else if (mbti === "NEWBIE") {
-    setColor("#9BF266");
-  }
+  // if (mbti === "엠비티어른" || mbti === "FUNFUN") {
+  //   setColor("#C85287");
+  // } else if (mbti === "MBTMI") {
+  //   setColor("#F6E0A6");
+  // } else if (mbti === "엠비티라노") {
+  //   setColor("#00AF76");
+  // } else if (mbti === "NEWBIE") {
+  //   setColor("#9BF266");
+  // }
 
   const badgeCSS = css`
     display: flex;
