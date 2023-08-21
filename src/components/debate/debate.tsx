@@ -24,6 +24,7 @@ const DebateComponent = ({ debate, mode, index }: DebateProps) => {
   const token = localStorage.getItem("accessToken");
   const hadleDetail = () => {
     navigate(`/debate/${debate.id}`);
+    window.location.reload();
   }
   const debateBoxCSS = css`
     padding: ${isNotSearch && "0 1.5rem 1.5rem 1.5rem"};

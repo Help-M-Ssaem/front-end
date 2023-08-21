@@ -31,7 +31,7 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW, postId }) => {
 
   const [blockNum, setBlockNum] = useState(0); //블록 설정하는 함수
   const [page, setPage] = useState(1);
-  const worryBoardLists = useFetchWorryBoardList(mbti1, mbti2, pathMove, page, postId);
+  const worryBoardLists = useFetchWorryBoardList(mbti1, mbti2, pathMove, page-1, postId);
   const limit = 10; //한 페이지당 아이템의 개수
   const totalPage = worryBoardLists ? worryBoardLists.totalSize : 1; //전체 페이지 수
 
@@ -55,14 +55,8 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW, postId }) => {
 
   const handleMatchingClick = (id: number) => {
     navigate(`/match/${id}`);
+    window.location.reload();
   };
-  const worryBoardList = useFetchWorryBoardList(
-    mbti1,
-    mbti2,
-    pathMove,
-    page - 1,
-    postId,
-  );
   useEffect(() => {
     setMbti1("전체");
     setMbti2("전체");
@@ -73,14 +67,14 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW, postId }) => {
         <div css={buttonBoxCSS}>
           <div css={mbtiBoxCSS}>
             <Text>{SaW}</Text>
-            <div css={mbtiSelectBoxCSS}>
+            <div css={mbtiSelectBoxCSS1}>
               <div css={mbtiCSS} onClick={handleOpenMbti1}>
                 {mbti1} <SmallArrowIcon />
               </div>
               {openMbti1 && <MbtiList onClick={handleMbti1Click} />}
             </div>
             <RightArrowIcon />
-            <div css={mbtiSelectBoxCSS}>
+            <div css={mbtiSelectBoxCSS2}>
               <div css={mbtiCSS} onClick={handleOpenMbti2}>
                 {mbti2} <SmallArrowIcon />
               </div>
@@ -91,8 +85,8 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW, postId }) => {
             <Button onClick={() => navigate("/match/create")}>글 쓰기</Button>
           )}
         </div>
-        {worryBoardList &&
-          worryBoardList.result.map((matching) => (
+        {worryBoardLists &&
+          worryBoardLists.result.map((matching) => (
             <MatchingComponent
               matching={matching}
               solve={pathMove}
@@ -125,11 +119,18 @@ const mbtiBoxCSS = css`
   align-items: center;
 `;
 
-const mbtiSelectBoxCSS = css`
+const mbtiSelectBoxCSS1 = css`
   display: flex;
   align-items: center;
   position: relative;
   margin-left: 0.5rem;
+`;
+
+const mbtiSelectBoxCSS2 = css`
+  display: flex;
+  align-items: center;
+  position: relative;
+  // margin-left: 0.5rem;
 `;
 
 const mbtiCSS = css`

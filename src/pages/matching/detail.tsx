@@ -79,10 +79,29 @@ const DetailMatchingPage = () => {
               dangerouslySetInnerHTML={{ __html: worryBoard.content }}
             />
              <div css={startButtonBoxCSS}>
-              {(worryBoard.isChatAllowed && chatExist) ? (
-                <Button onClick={handleStartChatting}>채팅 시작</Button>) : (
-                  !(worryBoard.isEditAllowed) &&
-                  <Button disabled={true}>다른 사용자와 채팅 중입니다.</Button>)
+              {/* 내글 x, 타겟 o, 채팅 인원 X */}
+              {worryBoard.isChatAllowed && !worryBoard.isSolved && chatExist && !worryBoard.isEditAllowed &&
+                <Button onClick={handleStartChatting}>채팅 시작</Button>
+              }
+               {/* 내글 x, 타겟 o, 채팅 인원 o */}
+              {
+                worryBoard.isChatAllowed && !worryBoard.isSolved && !chatExist &&!worryBoard.isEditAllowed &&
+                <Button disabled={true}>다른 사용자와 채팅 중입니다.</Button>
+              }
+               {/* 내글 x, 타겟 o, 해결 o */}
+              {
+                 worryBoard.isSolved && !worryBoard.isEditAllowed &&
+                 <Button disabled={true}>해결 완료</Button>
+              }
+              {/* 내글 o 해결 x 타겟 x*/}
+              {
+                !worryBoard.isSolved && !worryBoard.isChatAllowed && !worryBoard.isEditAllowed &&
+                <Button disabled={true}>답변 MBTI가 달라요</Button>
+              }
+              {/* 내글 o*/}
+              {
+                 (worryBoard.isEditAllowed) &&
+                 <></>
               }
               </div>
           </div>
@@ -149,9 +168,9 @@ const startButtonBoxCSS = css`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 2rem 0;
+  margin-top: 2rem;
   border-top: 1px solid ${COLOR.MAIN};
-  padding-top: 2rem;
+  padding-top: 1.5rem;
 `;
 
 const updateButtonCSS = css`
