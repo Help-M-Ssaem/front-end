@@ -4,7 +4,7 @@ import { useState } from "react";
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
-import ActivityList from "../../components/mypage/MyPage";
+import ActivityList from "../../components/mypage/ActivityList";
 import { useGetProfile } from "../../hooks/user/useProfile";
 import { useNavigate } from "react-router-dom";
 import NameBox from "../../components/mypage/nameBox";

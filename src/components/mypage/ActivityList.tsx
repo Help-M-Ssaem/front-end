@@ -1,13 +1,20 @@
 /** @jsxImportSource @emotion/react */
 import React, { useEffect } from "react";
 import { css } from "@emotion/react";
-import Container from "../../components/container/Container";
+import Container from "../container/Container";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import { useGetProfile } from "../../hooks/user/useProfile";
+import useMemberInfo from "../../hooks/user/useMemberInfo";
+import { useParams } from "react-router-dom";
 
 const ActivityList = (props: any) => {
-  const { profileData } = useGetProfile(1);
+  const { id } = useParams<{ id: string }>();
+  const { user } = useMemberInfo();
+  const userId = Number(id);
+  const myId = user?.id;
+  const { profileData } = useGetProfile(userId);
+
   useEffect(() => {
     if (profileData?.worryBoardHistory) {
     }

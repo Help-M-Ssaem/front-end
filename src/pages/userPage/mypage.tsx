@@ -5,7 +5,6 @@ import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import BoardComponent from "../../components/board/Board";
-import ActivityList from "../../components/mypage/MyPage";
 import { useGetProfile } from "../../hooks/user/useProfile";
 import { SettingIcon } from "../../assets/CommonIcons";
 import { useNavigate } from "react-router-dom";
@@ -14,32 +13,29 @@ import { useBoardListMember } from "../../hooks/board/useBoardListMember";
 import { useWorryPostListMember } from "../../hooks/worry/useWorryPostListMember";
 import { useWorrySolveListMember } from "../../hooks/worry/useWorrySolveListMember";
 import MatchingComponent from "../../components/matching/Matching";
+import useMemberInfo from "../../hooks/user/useMemberInfo";
 import ListPagination from "../../components/Pagination/ListPagination";
 import { useDebateListMember } from "../../hooks/debate/useDebateListMember";
 import MyDebateComponent from "../../components/debate/myDebate";
-import { useParams } from "react-router-dom";
-import useMemberInfo from "../../hooks/user/useMemberInfo";
 import Badge from "../../components/badge/Badge";
+import MyActivityList from "../../components/mypage/MyActivityList";
 
-const UserPage = () => {
+const menuTabBar = [
+  { type: 1, title: "내가 쓴 게시글" },
+  { type: 2, title: "내가 쓴 토론글" },
+  { type: 3, title: "내가 쓴 고민글" },
+  { type: 4, title: "내가 해결한 고민" },
+];
+
+const MyPage = () => {
   const navigate = useNavigate();
-  const { id } = useParams<{ id: string }>();
   const { user } = useMemberInfo();
-  const userId = Number(id);
-  const myId = user?.id;
-
+  const userId = user?.id || 1;
   const { profileData } = useGetProfile(userId);
   const mbti = profileData?.teacherInfo?.mbti || "";
   const badge = profileData?.teacherInfo?.badge || "";
+  // console.log(profileData);
 
-  // console.log({ myId, userId, profileData });
-
-  const menuTabBar = [
-    { type: 1, title: `${profileData?.teacherInfo.nickName}의 게시글` },
-    { type: 2, title: `${profileData?.teacherInfo.nickName}의 토론글` },
-    { type: 3, title: `${profileData?.teacherInfo.nickName}의 고민글` },
-    { type: 4, title: `${profileData?.teacherInfo.nickName}님이 해결한 고민` },
-  ];
   const limit = 6;
   const [page, setPage] = useState(1);
   const [blockNum, setBlockNum] = useState(0);
@@ -80,13 +76,7 @@ const UserPage = () => {
     <div>
       <div css={boxHeadContainerCSS}>
         <div css={mainTitleCSS}>프로필</div>
-        <button
-          style={{
-            display: userId === myId ? "" : "none",
-          }}
-          onClick={handleSettingClick}
-          css={settingIconContainerCSS}
-        >
+        <button onClick={handleSettingClick} css={settingIconContainerCSS}>
           수정하기
         </button>
       </div>
@@ -107,15 +97,13 @@ const UserPage = () => {
             <p css={profilenameCSS}>
               {profileData?.teacherInfo?.nickName} 님
               {/* <button
-                style={{
-                  display: userId === myId ? "" : "none",
-                }}
                 onClick={handleSettingClick}
                 css={settingIconContainerCSS}
               >
                 <SettingIcon />
               </button> */}
             </p>
+
             {/* <div css={bedgeContainer}>
               <p css={selectBadge(1)}>{profileData?.teacherInfo?.mbti}</p>
               <p css={selectBadge(1)}>{profileData?.teacherInfo?.badge}</p>
@@ -143,8 +131,9 @@ const UserPage = () => {
             )}
           </div>
         </div>
+
         {/* box3 */}
-        <ActivityList profileData={profileData}></ActivityList>
+        <MyActivityList profileData={profileData}></MyActivityList>
       </div>
 
       <Container>
@@ -220,7 +209,7 @@ const UserPage = () => {
   );
 };
 
-export default UserPage;
+export default MyPage;
 
 const boxHeadContainerCSS = css`
   margin-bottom: 2rem;
@@ -248,7 +237,7 @@ const box1CSS = css`
   flex-direction: column;
   align-items: center;
   background-color: ${COLOR.MAIN3};
-  min-width: 15.625rem;
+  // min-width: 15.625rem;
   /* max-width: 250px; */
   flex: 1;
   height: 27.0625rem;
@@ -261,7 +250,7 @@ const box2CSS = css`
   display: flex;
   flex-direction: column;
   background-color: ${COLOR.MAIN3};
-  min-width: 15.625rem;
+  // min-width: 15.625rem;
   /* max-width: 250px; */
   flex: 1;
   height: 27.0625rem;
