@@ -136,9 +136,7 @@ const UserPage = () => {
           <div css={collectedTitleContainer}>
             {profileData?.badgeInfos?.map(
               (value: { mbti: string; color?: string }, idx: any) => {
-                return (
-                  <Badge key={idx} color={value?.color} mbti={value?.mbti} />
-                );
+                return <Badge key={idx} mbti={value?.mbti} />;
               },
             )}
           </div>

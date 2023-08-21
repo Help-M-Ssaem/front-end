@@ -15,11 +15,9 @@ import { useWorryPostListMember } from "../../hooks/worry/useWorryPostListMember
 import { useWorrySolveListMember } from "../../hooks/worry/useWorrySolveListMember";
 import MatchingComponent from "../../components/matching/Matching";
 import useMemberInfo from "../../hooks/user/useMemberInfo";
-import ListPagination from "../../components/Pagination/ListPagination";
 import { useDebateListMember } from "../../hooks/debate/useDebateListMember";
 import MyDebateComponent from "../../components/debate/myDebate";
 import Badge from "../../components/badge/Badge";
-import { px } from "framer-motion";
 
 const menuTabBar = [
   { type: 1, title: "내가 쓴 게시글" },
@@ -35,18 +33,13 @@ const MyPage = () => {
   const { profileData } = useGetProfile(userId);
   const mbti = profileData?.teacherInfo?.mbti || "";
   const badge = profileData?.teacherInfo?.badge || "";
-  // console.log(profileData);
 
   const limit = 6;
   const [page, setPage] = useState(1);
-  const [blockNum, setBlockNum] = useState(0);
 
   const { boardList } = useBoardListMember(userId, page - 1, limit);
-  const boardTotalPage = boardList ? boardList.totalSize : 1;
   const { worryPostList } = useWorryPostListMember(userId, page - 1, limit);
-  const worryPostTotalPage = boardList ? boardList.totalSize : 1;
   const { worrySolveList } = useWorrySolveListMember(userId, page - 1, limit);
-  const worrySolveTotalPage = boardList ? boardList.totalSize : 1;
   const { debateList } = useDebateListMember(userId, page - 1, limit);
 
   const handleSettingClick = () => {
@@ -57,20 +50,6 @@ const MyPage = () => {
 
   const clickMenu = (type: number) => {
     setMenuSelected(type);
-  };
-  const selectBadge = (value: any) => {
-    switch (value.type) {
-      case 1:
-        return badgeCSS1;
-      case 2:
-        return badgeCSS2;
-      case 3:
-        return badgeCSS3;
-      case 4:
-        return badgeCSS4;
-      default:
-        return badgeCSS1;
-    }
   };
 
   return (
@@ -83,7 +62,7 @@ const MyPage = () => {
       </div>
       <div css={boxContainerCSS}>
         {/* box1 */}
-        <div css={box1CSS}>
+        <Container addCSS={box1CSS}>
           <div css={profileContainerCSS}>
             <div css={profileImageContainerCSS}>
               <img
@@ -118,23 +97,21 @@ const MyPage = () => {
               {profileData?.teacherInfo?.introduction}
             </p>
           </div>
-        </div>
+        </Container>
         {/* box2 */}
-        <div css={box2CSS}>
+        <Container addCSS={box2CSS}>
           <p css={subTitleCSS}>수집한 칭호</p>
           <div css={collectedTitleContainer}>
             {profileData?.badgeInfos?.map(
               (value: { mbti: string; color?: string }, idx: any) => {
-                return (
-                  <Badge key={idx} color={value?.color} mbti={value?.mbti} />
-                );
+                return <Badge key={idx} mbti={value?.mbti} />;
               },
             )}
           </div>
-        </div>
+        </Container>
 
         {/* box3 */}
-        <ActivityList profileData={profileData}></ActivityList>
+        <ActivityList profileData={profileData} />
       </div>
 
       <Container>
@@ -227,37 +204,25 @@ const mainTitleCSS = css`
 
 const boxContainerCSS = css`
   display: flex;
-  /* background-color: red; */
-  margin: 1.5rem 0 3rem;
-  /* max-width: 80rem; */
-  min-width: 65.625rem;
+  width: 100%;
+  margin: 1.5rem 0;
 `;
 
 const box1CSS = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: ${COLOR.MAIN3};
-  // min-width: 15.625rem;
-  /* max-width: 250px; */
-  flex: 1;
-  height: 27.0625rem;
-  border-radius: 1.875rem;
-  margin-right: 2.875rem;
-  padding: 2.5rem 2.125rem;
+  width: 30%;
+  height: 28rem;
+  margin-right: 1.5rem;
 `;
 
 const box2CSS = css`
   display: flex;
   flex-direction: column;
-  background-color: ${COLOR.MAIN3};
-  // min-width: 15.625rem;
-  /* max-width: 250px; */
-  flex: 1;
-  height: 27.0625rem;
-  border-radius: 1.875rem;
-  margin-right: 2.875rem;
-  padding: 2.5rem 3.125rem;
+  width: 35%;
+  height: 28rem;
+  margin-right: 1.5rem;
 `;
 
 const subTitleCSS = css`
