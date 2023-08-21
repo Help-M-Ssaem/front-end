@@ -74,20 +74,7 @@ const MyPage = () => {
                 alt="프로필"
               />
             </div>
-            <p css={profilenameCSS}>
-              {profileData?.teacherInfo?.nickName} 님
-              {/* <button
-                onClick={handleSettingClick}
-                css={settingIconContainerCSS}
-              >
-                <SettingIcon />
-              </button> */}
-            </p>
-
-            {/* <div css={bedgeContainer}>
-              <p css={selectBadge(1)}>{profileData?.teacherInfo?.mbti}</p>
-              <p css={selectBadge(1)}>{profileData?.teacherInfo?.badge}</p>
-            </div> */}
+            <p css={profilenameCSS}>{profileData?.teacherInfo?.nickName} 님</p>
             <div css={badgeContainer}>
               <Badge mbti={mbti} />
               {badge && <Badge mbti={badge} />}
@@ -140,15 +127,6 @@ const MyPage = () => {
               onClick={() => navigate(`/board/${board.id}`)}
             />
           ))}
-        {/* <ListPagination
-          limit={limit}
-          page={page}
-          setPage={setPage}
-          blockNum={blockNum}
-          setBlockNum={setBlockNum}
-          totalPage={boardTotalPage}
-        /> */}
-
         {menuSelected === 2 &&
           debateList &&
           debateList.result.map((debateList) => (
@@ -195,7 +173,7 @@ const boxHeadContainerCSS = css`
 const mainTitleCSS = css`
   display: flex;
   align-items: center;
-  margin: 2rem 0 0 0;
+  margin-top: 2rem;
   font-size: ${FONT.SIZE.TITLE3};
   font-weight: ${FONT.WEIGHT.BOLD};
   color: ${COLOR.MAINDARK};
@@ -273,7 +251,7 @@ const settingIconContainerCSS = css`
 const badgeContainer = css`
   display: flex;
   margin: 0 auto 1.25rem;
-  column-gap: 0.625rem;
+  column-gap: 0.1rem;
 `;
 
 const collectedTitleContainer = css`
@@ -305,11 +283,13 @@ const menuButtonContainer = css`
   }
   list-style-type: none;
 `;
+
 const menuBox = css`
   text-align: center;
   flex: 1;
   padding: 1.875rem 2.5625rem;
 `;
+
 const imageCSS = css`
   width: auto;
   height: auto;
