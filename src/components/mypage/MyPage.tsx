@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import React, { useEffect } from "react";
 import { css } from "@emotion/react";
+import Container from "../../components/container/Container";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import { useGetProfile } from "../../hooks/user/useProfile";
@@ -150,11 +151,11 @@ const box3CSS = css`
   display: flex;
   flex-direction: column;
   background-color: ${COLOR.MAIN3};
-  min-width: 28.75rem;
+  // min-width: 28.75rem;
   flex: 2;
   height: 27.0625rem;
   border-radius: 1.875rem;
-  margin-right: 2.875rem;
+  margin-right: 0;
   padding: 2.4375rem 5.8125rem 2.4375rem 4.1875rem;
 `;
 

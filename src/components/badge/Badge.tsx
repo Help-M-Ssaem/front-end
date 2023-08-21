@@ -6,10 +6,11 @@ import { MBTICOLOR } from "../../styles/color";
 
 interface BadgeProps {
   mbti: string;
+  color?: string;
 }
 type MBTIColors = typeof MBTICOLOR;
 
-const Badge = ({ mbti }: BadgeProps) => {
+const Badge = ({ mbti, color }: BadgeProps) => {
   const badgeMbti = mbti.toUpperCase();
 
   const badgeCSS = css`
@@ -21,10 +22,11 @@ const Badge = ({ mbti }: BadgeProps) => {
     font-size: ${FONT.SIZE.BODY};
     font-weight: ${FONT.WEIGHT.REGULAR};
     background: ${MBTICOLOR[badgeMbti as keyof MBTIColors] || "#5BE1A9"};
+    // background: ${color || "#F8CAFF"};
     padding: 0 0.5rem;
     border-radius: 0.9rem;
     margin-right: 0.4rem;
-
+    display: badge? "" : "none"
     height: 1.3rem;
     white-space: nowrap;
   `;
