@@ -36,6 +36,9 @@ const Badge = ({ mbti, imgUrl }: BadgeProps) => {
     } else if (mbti === "FUNFUN") {
       setColor("#00B5DC");
       setChangeColor(true);
+    } else if (mbti === "해결 완료") {
+      setColor("#7A7A7B");
+      setChangeColor(true);
     }
   }, []);
 
