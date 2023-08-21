@@ -297,12 +297,13 @@ const MyPageUpdate = () => {
   };
 
   return (
-    <div css={containerCSS}>
-      <Container>
+    <div>
+      <div css={containerCSS}>
         <div css={mainTitleCSS}>프로필</div>
         <div css={boxContainerCSS}>
-          {/* box1 */}
-          <div css={box1CSS}>
+          <Container addCSS={box1CSS}>
+            {/* box1 */}
+
             <div css={profileContainerCSS}>
               <div css={profileImageContainerCSS}>
                 <img
@@ -327,14 +328,14 @@ const MyPageUpdate = () => {
                 />
               </label>
               <div>
-                <p css={subTitleCSS}>닉네임</p>
+                <p css={subTitle2CSS}>닉네임</p>
                 <NameBox
                   name={values.nickName}
                   onChange={handleNicknameChange}
                 />
 
                 {/* <MbtiBox /> */}
-                <p css={subTitleCSS}>MBTI</p>
+                <p css={subTitle2CSS}>MBTI</p>
                 <div css={userinfoCSS}>
                   <div css={mbtiBox}>
                     {mbtiInputs.map((mbti, index) => (
@@ -368,7 +369,7 @@ const MyPageUpdate = () => {
                       </div>
                     )}
                 </div>
-                <p css={subTitleCSS}>한줄소개</p>
+                <p css={subTitle2CSS}>한줄소개</p>
                 <Input2
                   placeholder={profileData?.teacherInfo.introduction}
                   value={values.introduction}
@@ -376,10 +377,10 @@ const MyPageUpdate = () => {
                 />
               </div>
             </div>
-          </div>
-          {/* box2 */}
+          </Container>
 
-          <div css={box2CSS}>
+          {/* box2 */}
+          <Container addCSS={box2CSS}>
             <p css={subTitleCSS}>수집한 칭호</p>
             <div css={collectedTitleContainer}>
               {profileData?.badgeInfos?.map(
@@ -416,10 +417,13 @@ const MyPageUpdate = () => {
                 },
               )}
             </div>
-          </div>
+            {/* </div> */}
+          </Container>
+
           {/* box3 */}
           <ActivityList profileData={profileData} />
         </div>
+
         <div css={buttonCSS}>
           <Button addCSS={calcelCSS} onClick={handleCancel}>
             취소하기
@@ -428,7 +432,7 @@ const MyPageUpdate = () => {
             수정하기
           </Button>
         </div>
-      </Container>
+      </div>
     </div>
   );
 };
@@ -450,19 +454,18 @@ const mainTitleCSS = css`
 
 const boxContainerCSS = css`
   display: flex;
+  width: 100%;
   margin: 1.5rem 0 3rem;
-  max-width: 80rem;
-  min-width: 65.625rem;
+  // max-width: 80rem;
+  // min-width: 65.625rem;
 `;
 
 const box1CSS = css`
   display: flex;
   flex-direction: column;
   background-color: ${COLOR.MAIN3};
-  min-width: 15.625rem;
-  /* max-width: 250px; */
+  width: 30%;
   flex: 1;
-  // height: 27.0625rem;
   border-radius: 1.875rem;
   margin-right: 2.875rem;
   padding: 2.5rem 2.125rem 0 2.125rem;
@@ -472,20 +475,24 @@ const box2CSS = css`
   display: flex;
   flex-direction: column;
   background-color: ${COLOR.MAIN3};
-  min-width: 15.625rem;
-  /* max-width: 250px; */
-  flex: 1;
-  height: 27.0625rem;
+  width: 50%;
+
+  height: 28rem;
   border-radius: 1.875rem;
   margin-right: 2.875rem;
-  padding: 2.5rem 3.125rem;
 `;
 
 const subTitleCSS = css`
   font-size: ${FONT.SIZE.TITLE3};
   font-weight: ${FONT.WEIGHT.BOLD};
-  color: ${COLOR.GRAY2};
-  margin-top: 1.3rem;
+  color: ${COLOR.GRAY1};
+`;
+
+const subTitle2CSS = css`
+  font-size: ${FONT.SIZE.TITLE3};
+  font-weight: ${FONT.WEIGHT.BOLD};
+  color: ${COLOR.GRAY1};
+  padding-top: 1rem;
 `;
 
 const profileContainerCSS = css`
