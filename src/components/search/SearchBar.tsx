@@ -17,10 +17,12 @@ const SearchBar: React.FC = () => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchWord(event.target.value);
   };
+
   const handleSearch = () => {
     search.mutate();
     navigate(`/search/result?query=${searchWord}`);
   };
+
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       event.preventDefault();
@@ -44,17 +46,22 @@ const SearchBar: React.FC = () => {
           css={searchInput}
           onKeyUp={handleKeyPress}
         />
-        <SearchIcon css={searchIconContainer} onClick={handleSearch}/>
+        <SearchIcon css={searchIconContainer} onClick={handleSearch} />
       </div>
 
       <div css={searchHistoryContainer}>
         <h2>이전 검색어</h2>
         <div css={searchHistoryKeyword}>
-          {keywords && keywords.map((word, index) => (
-            <div css={historyKeyword} key={index} onClick={() => handleRecentSearch(word.keyword)}>
-              {word.keyword}
-            </div>
-          ))}
+          {keywords &&
+            keywords.map((word, index) => (
+              <div
+                css={historyKeyword}
+                key={index}
+                onClick={() => handleRecentSearch(word.keyword)}
+              >
+                {word.keyword}
+              </div>
+            ))}
         </div>
       </div>
     </>

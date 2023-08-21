@@ -1,23 +1,23 @@
 import { useQuery } from "react-query";
 import { mssaemAxios as axios } from "../../apis/axios";
 import { boardKeys } from "../../constants/boardKey";
-import { BoardList } from "../../interfaces/board";
+import { SearchBoardList } from "../../interfaces/moresearch";
 
-export async function getBoardSearchList(
+export async function getSearchBoardList(
   searchType: number,
   keyword: string,
   strMbti: string,
   page: number,
   size: number,
-): Promise<BoardList> {
+): Promise<SearchBoardList> {
   const { data } = await axios.get(
     `/boards/search?searchType=${searchType}&keyword=${keyword}&strMbti=${strMbti}&page=${page}&size=${size}`,
   );
   return data;
 }
 
-interface UseBoardSearch {
-  searchBoardList?: BoardList;
+interface UseSearchBoard {
+  searchBoardList?: SearchBoardList;
 }
 
 export function useSearchBoardList(
@@ -26,9 +26,9 @@ export function useSearchBoardList(
   strMbti: string,
   page: number,
   size: number,
-): UseBoardSearch {
+): UseSearchBoard {
   const { data: searchBoardList } = useQuery(boardKeys.all, () =>
-    getBoardSearchList(searchType, keyword, strMbti, page, size),
+    getSearchBoardList(searchType, keyword, strMbti, page, size),
   );
   return { searchBoardList };
 }

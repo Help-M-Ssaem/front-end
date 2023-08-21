@@ -19,7 +19,7 @@ interface UseSearchDebateList {
   searchDebateList?: DebateList;
 }
 
-export function useSearchBoardList(
+export function useSearchDebateList(
   searchType: number,
   keyword: string,
   page: number,
