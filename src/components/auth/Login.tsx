@@ -6,6 +6,7 @@ import Container from "../container/Container";
 import Profile from "../profile/Profile";
 import { User } from "../../interfaces/user";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 interface userProps {
   user: User;
@@ -13,10 +14,18 @@ interface userProps {
 
 const LoginComponent = ({ user }: userProps) => {
   const navigate = useNavigate();
-
+  const logout_url = `https://m-ssaem.vercel.app/logout`;
+  // const logout_url = `https://localhost:3000/logout`;
   const handleLogout = () => {
+    axios
+      .get(
+        `https://kauth.kakao.com/oauth/logout?client_id=${process.env.REACT_APP_KAKAO_API_KEY}&logout_redirect_uri=${logout_url}`,
+      )
+      .catch((error) => {
+        console.error("Kakao logout error:", error);
+      });
+
     localStorage.removeItem("accessToken");
-    window.location.reload();
   };
 
   return (
