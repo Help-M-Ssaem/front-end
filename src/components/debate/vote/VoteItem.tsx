@@ -41,7 +41,7 @@ const VoteItem = ({
 
     return(
         <div
-            css= {[ImgBoxCSS, (selected) && activeItemCSS]}
+            css= {[ImgBoxCSS, (selected) &&activeItemCSS, (!optionSelected) && ImgBoxColorCSS]}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onClick={!optionSelected ? handleClick : undefined}
@@ -81,11 +81,13 @@ const ImgBoxCSS = css`
   border: 1px solid ${COLOR.GRAY4};
   transition: background-color 0.3s, color 0.3s;
   color: ${COLOR.BLACK};
+`;
 
-  &:hover {
-    background-color: ${COLOR.MAIN2};
-    color: ${COLOR.WHITE};
-  }
+const ImgBoxColorCSS = css`
+    &:hover {
+        background-color: ${COLOR.MAIN2};
+        color: ${COLOR.WHITE};
+    }
 `;
 
 const activeItemCSS = css`
