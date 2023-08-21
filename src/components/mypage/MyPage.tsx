@@ -161,11 +161,16 @@ const subTitleCSS = css`
 
 const spaceBetween = css`
   display: flex;
+  margin-right: 20%;
   justify-content: space-between;
+  // justify-content: space-around;
 `;
 const spaceBetweenWithMargin = css`
   display: flex;
+  margin-right: 20%;
   justify-content: space-between;
+
+  // justify-content: space-around;
   margin-top: 2.8125rem;
 `;
 
