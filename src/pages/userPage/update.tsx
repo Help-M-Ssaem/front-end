@@ -17,11 +17,15 @@ import { mssaemAxios as axios } from "../../apis/axios";
 import { useDeleteImage } from "../../hooks/mypage/useDeleteImage";
 import Catlogo from "../../assets/logo/CatLogo.svg";
 import Container from "../../components/container/Container";
+import MyActivityList from "../../components/mypage/MyActivityList";
 const MyPageUpdate = () => {
   const navigate = useNavigate();
-
   const { user } = useMemberInfo();
-  const { profileData } = useGetProfile(user!!.id);
+  const userId = user?.id || 1;
+  const { profileData } = useGetProfile(userId);
+
+  // const { user } = useMemberInfo();
+  // const { profileData } = useGetProfile(user!!.id);
   const [mbtiNum, setMbtinum] = useState<string | null>(null);
   const [invalidInput, setInvalidInput] = useState<string | null>(null);
   const [mbti, setMbti] = useState<string | undefined>(undefined);
@@ -421,7 +425,7 @@ const MyPageUpdate = () => {
           </Container>
 
           {/* box3 */}
-          <ActivityList profileData={profileData} />
+          <MyActivityList profileData={profileData} />
         </div>
 
         <div css={buttonCSS}>
