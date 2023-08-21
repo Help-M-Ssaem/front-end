@@ -17,15 +17,13 @@ const LoginComponent = ({ user }: userProps) => {
   const logout_url = `https://m-ssaem.vercel.app/logout`;
   // const logout_url = `https://localhost:3000/logout`;
   const handleLogout = () => {
-    axios
-      .get(
-        `https://kauth.kakao.com/oauth/logout?client_id=${process.env.REACT_APP_KAKAO_API_KEY}&logout_redirect_uri=${logout_url}`,
-      )
-      .catch((error) => {
-        console.error("Kakao logout error:", error);
-      });
+    axios.get(
+      `https://kauth.kakao.com/oauth/logout?client_id=${process.env.REACT_APP_KAKAO_API_KEY}&logout_redirect_uri=${logout_url}`,
+    );
 
     localStorage.removeItem("accessToken");
+    window.location.reload();
+    // window.location.href = "/";
   };
 
   return (
