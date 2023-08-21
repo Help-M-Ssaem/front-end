@@ -15,11 +15,9 @@ import { useWorryPostListMember } from "../../hooks/worry/useWorryPostListMember
 import { useWorrySolveListMember } from "../../hooks/worry/useWorrySolveListMember";
 import MatchingComponent from "../../components/matching/Matching";
 import useMemberInfo from "../../hooks/user/useMemberInfo";
-import ListPagination from "../../components/Pagination/ListPagination";
 import { useDebateListMember } from "../../hooks/debate/useDebateListMember";
 import MyDebateComponent from "../../components/debate/myDebate";
 import Badge from "../../components/badge/Badge";
-import { px } from "framer-motion";
 
 const menuTabBar = [
   { type: 1, title: "내가 쓴 게시글" },
@@ -35,18 +33,13 @@ const MyPage = () => {
   const { profileData } = useGetProfile(userId);
   const mbti = profileData?.teacherInfo?.mbti || "";
   const badge = profileData?.teacherInfo?.badge || "";
-  // console.log(profileData);
 
   const limit = 6;
   const [page, setPage] = useState(1);
-  const [blockNum, setBlockNum] = useState(0);
 
   const { boardList } = useBoardListMember(userId, page - 1, limit);
-  const boardTotalPage = boardList ? boardList.totalSize : 1;
   const { worryPostList } = useWorryPostListMember(userId, page - 1, limit);
-  const worryPostTotalPage = boardList ? boardList.totalSize : 1;
   const { worrySolveList } = useWorrySolveListMember(userId, page - 1, limit);
-  const worrySolveTotalPage = boardList ? boardList.totalSize : 1;
   const { debateList } = useDebateListMember(userId, page - 1, limit);
 
   const handleSettingClick = () => {
@@ -57,20 +50,6 @@ const MyPage = () => {
 
   const clickMenu = (type: number) => {
     setMenuSelected(type);
-  };
-  const selectBadge = (value: any) => {
-    switch (value.type) {
-      case 1:
-        return badgeCSS1;
-      case 2:
-        return badgeCSS2;
-      case 3:
-        return badgeCSS3;
-      case 4:
-        return badgeCSS4;
-      default:
-        return badgeCSS1;
-    }
   };
 
   return (
