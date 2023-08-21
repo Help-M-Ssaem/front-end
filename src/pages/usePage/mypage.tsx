@@ -220,7 +220,7 @@ const box1CSS = css`
 const box2CSS = css`
   display: flex;
   flex-direction: column;
-  width: 35%;
+  width: 50%;
   height: 28rem;
   margin-right: 1.5rem;
 `;
