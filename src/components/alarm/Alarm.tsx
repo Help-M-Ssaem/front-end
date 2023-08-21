@@ -41,6 +41,7 @@ const AlarmComponent = ({ alarm }: AlarmProps) => {
   const handleReadPost = () => {
     markAsReadMutation.mutate();
     navigate(`/${updatedDesignation}/${alarm.resourceId}`);
+    window.location.reload();
   };
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
