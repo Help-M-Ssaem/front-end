@@ -20,8 +20,8 @@ const Badge = ({ mbti }: BadgeProps) => {
     color: ${COLOR.WHITE};
     font-size: ${FONT.SIZE.BODY};
     font-weight: ${FONT.WEIGHT.REGULAR};
-    background: ${MBTICOLOR[badgeMbti as keyof MBTIColors] || "#5BE1A9"};
-    padding: 0.1rem 0.5rem;
+    background: ${MBTICOLOR[badgeMbti as keyof MBTIColors] || "#7A7A7B"};
+    padding: 0.15rem 0.5rem;
     border-radius: 0.9rem;
     margin-right: 0.4rem;
     white-space: nowrap;
