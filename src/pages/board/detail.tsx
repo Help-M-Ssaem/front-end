@@ -97,6 +97,10 @@ const DetailBoardPage = () => {
   };
 
   const token = localStorage.getItem("accessToken");
+  const handleBoardClick = (id: number) => {
+    navigate(`/board/${id}`);
+    window.location.reload();
+  };
 
   return (
     <>
@@ -223,7 +227,7 @@ const DetailBoardPage = () => {
             <BoardComponent
               board={board}
               key={board.id}
-              onClick={() => navigate(`/board/${board.id}`)}
+              onClick={() => handleBoardClick(board.id)}
             />
           ))}
         {boardList && boardList.totalSize > 1 && (
@@ -345,7 +349,6 @@ const buttonsCSS = css`
 const createButtonCSS = css`
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 1rem;
 `;
 
 const buttonCSS = css`
