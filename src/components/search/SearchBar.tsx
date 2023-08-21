@@ -69,9 +69,9 @@ const SearchBar: React.FC = () => {
 };
 
 const historyKeyword = css`
-  background-color: ${COLOR.MAIN4};
+  background-color: ${COLOR.MAIN};
   padding: 0.8rem;
-  color: ${COLOR.GRAY3};
+  color: ${COLOR.WHITE};
   font-size: ${FONT.SIZE.TITLE3};
   font-weight: ${FONT.WEIGHT.SEMIBOLD};
   border-radius: 1.2rem;

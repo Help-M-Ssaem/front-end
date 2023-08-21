@@ -190,7 +190,7 @@ const box1CSS = css`
   flex-direction: column;
   align-items: center;
   width: 30%;
-  height: 28rem;
+  height: 26rem;
   margin-right: 1.5rem;
 `;
 

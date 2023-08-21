@@ -157,7 +157,7 @@ export default ActivityList;
 const box3CSS = css`
   display: flex;
   flex-direction: column;
-  height: 28rem;
+  height: 26rem;
 `;
 
 const subTitleCSS = css`
@@ -168,15 +168,16 @@ const subTitleCSS = css`
 
 const spaceBetween = css`
   display: flex;
-  margin-right: 20%;
+  margin-right: 17%;
+  margin-left: 17%;
   justify-content: space-between;
   // justify-content: space-around;
 `;
 const spaceBetweenWithMargin = css`
   display: flex;
-  margin-right: 20%;
+  margin-right: 17%;
+  margin-left: 17%;
   justify-content: space-between;
-
   // justify-content: space-around;
   margin-top: 2.8125rem;
 `;

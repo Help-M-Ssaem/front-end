@@ -248,7 +248,7 @@ const box1CSS = css`
   min-width: 15.625rem;
   /* max-width: 250px; */
   flex: 1;
-  height: 27.0625rem;
+  height: 26rem;
   border-radius: 1.875rem;
   margin-right: 2.875rem;
   padding: 2.5rem 2.125rem;
@@ -261,7 +261,7 @@ const box2CSS = css`
   min-width: 15.625rem;
   /* max-width: 250px; */
   flex: 1;
-  height: 27.0625rem;
+  height: 26rem;
   border-radius: 1.875rem;
   margin-right: 2.875rem;
   padding: 2.5rem 3.125rem;

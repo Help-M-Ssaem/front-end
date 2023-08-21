@@ -59,8 +59,12 @@ const MoreMatchingResult = () => {
     setSearchSolvedWorryList(searchSolvedData.searchSolvedWorryList);
   }, [searchSolvedData.searchSolvedWorryList]);
 
-  console.log(searchSolvedWorryList && searchSolvedWorryList.result);
-  console.log(searchWaitingWorryList && searchWaitingWorryList.result);
+  console.log(
+    "해결완료" + (searchSolvedWorryList && searchSolvedWorryList.result),
+  );
+  console.log(
+    "기다리는" + (searchWaitingWorryList && searchWaitingWorryList.result),
+  );
 
   const totalPageSolved = searchSolvedWorryList
     ? searchSolvedWorryList.totalSize
