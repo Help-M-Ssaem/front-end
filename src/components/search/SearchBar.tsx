@@ -13,7 +13,6 @@ const SearchBar: React.FC = () => {
   const [searchWord, setSearchWord] = useState("");
   const search = useSerch(searchWord);
   const navigate = useNavigate();
-
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchWord(event.target.value);
   };
