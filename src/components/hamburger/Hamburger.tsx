@@ -5,11 +5,26 @@ import COLOR from "../../styles/color";
 import ExitModal from "../modal/ExitModal";
 import ReportModal from "../modal/ReportModal";
 import { HamburgerIcon } from "../../assets/ChattingIcons";
+import { useChatContext } from "../../hooks/chatting/ChatProvider";
+import { useEffect, useRef } from "react";
+import { useChatRoomDelete } from "../../hooks/chatting/useChatRoomDelete";
+import { useRecoilState } from "recoil";
+import { activeRoomIdState } from "../../states/chatting";
 
 const Hamburger = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isExitModalOpen, setIsExitModalOpen] = useState(false);
+  const [activeRoomId, setActiveRoomId] = useRecoilState(activeRoomIdState);
+  const chatRoomDeleteMutation = useChatRoomDelete(activeRoomId);
+
+  const { disconnect } = useChatContext();
+
+  const handleChattingExit = () => {
+    disconnect();
+    setIsExitModalOpen(false);
+    chatRoomDeleteMutation.mutate();
+  };
 
   const handleMenuToggle = () => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
@@ -27,8 +42,21 @@ const Hamburger = () => {
     setIsExitModalOpen(false);
   };
 
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div css={hamburgerMenuCSS}>
+    <div css={hamburgerMenuCSS} ref={menuRef}>
       <div css={hamburgerIconCSS} onClick={handleMenuToggle}>
         <HamburgerIcon />
       </div>
@@ -47,6 +75,7 @@ const Hamburger = () => {
           isOpen={isReportModalOpen}
           onClose={handleCloseModal}
           onClick={() => {}}
+          isType="MEMBER"
         />
       )}
 
@@ -55,7 +84,7 @@ const Hamburger = () => {
         <ExitModal
           isOpen={isExitModalOpen}
           onClose={handleCloseModal}
-          onClick={() => {}}
+          onClick={handleChattingExit}
         />
       )}
     </div>

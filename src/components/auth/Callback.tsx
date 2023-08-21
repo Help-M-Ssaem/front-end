@@ -36,8 +36,9 @@ const Callback = () => {
 
       if ("accessToken" in data && "refreshToken" in data) {
         navigate("/");
+        window.location.reload();
       } else if ("message" in data) {
-        navigate("/signin");
+        navigate("/sign-up");
       }
     }
   }, [loginMutation.isSuccess, loginMutation.data, navigate]);

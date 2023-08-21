@@ -1,82 +1,88 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { css } from "@emotion/react";
 import FONT from "../../styles/font";
-import Text from "../../components/text/Text";
 import ListPagination from "../../components/Pagination/ListPagination";
 import { useNavigate } from "react-router-dom";
-import SearchBar from "../../components/search/SearchBar";
 import Container from "../../components/container/Container";
-import { BoardList } from "../../interfaces/board";
-import BoardComponent from "../../components/board/Board";
-import { useBoardListAll } from "../../hooks/board/useBoardList";
 import SelectBox from "../../components/Pagination/SelectBox";
 import { useLocation } from "react-router-dom";
 import { mssaemAxios as axios } from "../../apis/axios";
 import COLOR from "../../styles/color";
+import { useSearchDebateList } from "../../hooks/search/useSearchDebateList";
+import { SearchDebateList } from "../../interfaces/moresearch";
+import DebateComponent from "../../components/debate/debate";
+import { Debate } from "../../interfaces/debate";
 
 function useQuery() {
   const { search } = useLocation();
   return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
-const MoreBoardResult = () => {
+const MoreDebateResult = () => {
+  let query = useQuery();
   const navigate = useNavigate();
-  const [boardList, setBoardList] = useState<BoardList>();
-
+  const [searchDebateList, setSearchDebateList] = useState<SearchDebateList>();
   const limit = 10; //한 페이지당 아이템의 개수
-  const { boardListAll } = useBoardListAll(1, limit);
+  const [page, setPage] = useState(1); // 현재 페이지 설정하는 함수
 
-  const totalPage = boardListAll ? boardListAll.totalSize : 1; //전체 페이지 수
-  const pageNum = boardListAll ? boardListAll.page : 1;
-  const [page, setPage] = useState(pageNum); // 현재 페이지 설정하는 함수
+  const queryValue = query.get("query") || ""; // null값일 때 빈 문자열로
+  const searchData = useSearchDebateList(0, queryValue, page, limit);
+
+  useEffect(() => {
+    setSearchDebateList(searchData.searchDebateList);
+  }, [searchData.searchDebateList]);
+  // console.log(searchBoardList && searchBoardList.result);
+
+  const totalPage = searchDebateList ? searchDebateList.totalSize : 1; //전체 페이지
   const [blockNum, setBlockNum] = useState(0); //블록 설정하는 함수
 
-  let query = useQuery();
-
-  async function changePage(page: number) {
-    let { data } = await axios.get(
-      `/boards/search?page=${page}&size=${limit}`,
-      {
-        // strMbti: 'ALL',
-      },
-    );
-    setBoardList(data);
-  }
+  useEffect(() => {
+    axios
+      .get(
+        `/discussions/search?searchType=0&keyword=${queryValue}&page=${
+          page - 1
+        }&size=${limit}`,
+      )
+      .then((res) => {
+        setSearchDebateList(res.data);
+      });
+  }, [page]);
 
   return (
     <>
       <div css={pageInfoBoxCSS}>
         <Container>
           <div css={pageInfoBoxMsgCSS}>
-            '{query.get("query")}' 에 대한 일반 게시판 검색 결과입니다.
+            '{query.get("query")}' 에 대한 토론 게시판 검색 결과입니다.
           </div>
         </Container>
       </div>
 
       <div css={boardBoxCSS}>
         <Container>
-          <div css={boardTitleCSS}>MBTI 게시판</div>
+          <div css={boardTitleCSS}>토론 게시판</div>
 
-          {boardList &&
-            boardList.result.map((board) => (
-              <div css={boardListWrapper}>
-                <BoardComponent
-                  board={board}
-                  key={board.id}
-                  onClick={() => navigate(`/board/${board.id}`)}
-                />
-              </div>
+          {searchDebateList &&
+            searchDebateList.result.map((debate: Debate, index) => (
+              <DebateComponent
+                debate={debate}
+                key={debate.id}
+                index={index}
+                mode="discusstion"
+              />
             ))}
-          <ListPagination
-            limit={limit}
-            page={page}
-            setPage={setPage}
-            blockNum={blockNum}
-            setBlockNum={setBlockNum}
-            totalPage={totalPage}
-          />
-          <SelectBox />
+          <div css={pagenationCSS}>
+            <ListPagination
+              limit={limit}
+              page={page}
+              setPage={setPage}
+              blockNum={blockNum}
+              setBlockNum={setBlockNum}
+              totalPage={totalPage}
+            />
+            <SelectBox />
+          </div>
         </Container>
       </div>
     </>
@@ -105,10 +111,7 @@ const boardBoxCSS = css`
   margin-top: 2rem;
 `;
 
-const boardListWrapper = css`
-  &:first-child {
-    border-top: none;
-  }
-  border-top: 0.625rem solid ${COLOR.ALARM};
+const pagenationCSS = css`
+  border-top: none;
 `;
-export default MoreBoardResult;
+export default MoreDebateResult;

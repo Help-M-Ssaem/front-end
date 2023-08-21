@@ -7,12 +7,30 @@ import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import Button from "../button/Button";
 import useMemberInfo from "../../hooks/user/useMemberInfo";
+import { useState } from "react";
+import AlarmMenu from "../side/Alarm";
+import FavoritesMenu from "../side/Favorites";
+import Profile from "../profile/Profile";
+import { useEffect, useRef } from "react";
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useMemberInfo();
 
+  const [alarmOpen, setAlarmOpen] = useState(false);
+  const [favoritesOpen, setFavoritesOpen] = useState(false);
+
+  const handleAlarm = () => {
+    setAlarmOpen((prevIsOpen) => !prevIsOpen);
+  };
+  const handleFavoritesOpen = () => {
+    setFavoritesOpen((prevIsOpen) => !prevIsOpen);
+  };
+  const handleCloseAll = () => {
+    alarmOpen && setAlarmOpen(false);
+    favoritesOpen && setFavoritesOpen(false);
+  };
   const handleLoginClick = () => {
     navigate("/login");
   };
@@ -20,15 +38,34 @@ const Header = () => {
     navigate("/search");
   };
   const homeRouteList = ["/", "/hotBoard", "/hotDebate"];
-
+  const menuRef = useRef<HTMLDivElement | null>(null);  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setAlarmOpen(false);
+        setFavoritesOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
-    <header css={headerCSS}>
+    <header css={headerCSS} onClick={handleCloseAll} ref={menuRef}>
       <div css={headerTopCSS}>
         <LogoIcon onClick={() => navigate("/")} />
-        {!user && (
+        {!user ? (
           <Button onClick={handleLoginClick} addCSS={buttonCSS}>
             로그인하고 이용하기
           </Button>
+        ) : (
+          <Profile
+            id={user.id}
+            image={user.profileImgUrl}
+            name={user.nickName}
+            mbti={user.mbti}
+            badge={user.badge}
+          />
         )}
       </div>
       <div css={headerBottomCSS}>
@@ -70,19 +107,23 @@ const Header = () => {
             채팅
           </li>
           <li
-            onClick={() => navigate("/alarm")}
-            className={location.pathname.startsWith("/alarm") ? "active" : ""}
+            onClick={handleAlarm}
+            className={alarmOpen ? "active" : ""}
+            css = {AlarmPotintCSS}
           >
             알람
           </li>
+          {alarmOpen && 
+            <div css={AlarmContainerCSS}><AlarmMenu/></div>}
           <li
-            onClick={() => navigate("/favorites")}
-            className={
-              location.pathname.startsWith("/favorites") ? "active" : ""
-            }
+            onClick={handleFavoritesOpen}
+            className={favoritesOpen ? "active" : ""}
+            css = {AlarmPotintCSS}
           >
             즐겨찾기
           </li>
+          {favoritesOpen && 
+            <div css={FavoritesContainerCSS}><FavoritesMenu/></div>}
           <li onClick={handleSearchClick}>
             <SearchIcon />
           </li>
@@ -185,4 +226,24 @@ const right = css`
 
 const buttonCSS = css`
   font-size: ${FONT.SIZE.HEADLINE};
+`;
+
+ const AlarmPotintCSS = css`
+  position: relative;
+ `;
+
+ const AlarmContainerCSS = css`
+  position: absolute;
+  top: 110%;
+  right: 20;
+  width: 20%;
+  z-index: 11;
+`;
+
+const FavoritesContainerCSS = css`
+position: absolute;
+top: 110%;
+right: 10;
+width: 20%;
+z-index: 11;
 `;

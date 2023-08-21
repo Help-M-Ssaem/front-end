@@ -1,16 +1,20 @@
 /** @jsxImportSource @emotion/react */
-import React from "react";
-import { useState } from "react";
+import React, { useEffect } from "react";
 import { css } from "@emotion/react";
+import Container from "../../components/container/Container";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
-import Badge from "../badge/Badge";
-import BoardComponent from "../board/Board";
+import { useGetProfile } from "../../hooks/user/useProfile";
 
 const ActivityList = (props: any) => {
-  const { getProfileData } = props;
+  const { profileData } = useGetProfile(1);
+  useEffect(() => {
+    if (profileData?.worryBoardHistory) {
+    }
+  }, [profileData]);
+
   return (
-    <div css={box3CSS}>
+    <Container addCSS={box3CSS}>
       {/* 받은 평가 / 게시판 활동 */}
       <div css={spaceBetween}>
         {/* 받은평가 */}
@@ -20,31 +24,31 @@ const ActivityList = (props: any) => {
             <div css={contentBox}>
               <p>좋아요</p>
               <p css={contentNumber}>
-                {getProfileData?.evaluationCount?.likeCount}
+                {profileData?.evaluationCount?.likeCount}
               </p>
             </div>
             <div css={contentBox}>
               <p>유익해요</p>
               <p css={contentNumber}>
-                {getProfileData?.evaluationCount?.usefulCount}
+                {profileData?.evaluationCount?.usefulCount}
               </p>
             </div>
             <div css={contentBox}>
               <p>재밌어요</p>
               <p css={contentNumber}>
-                {getProfileData?.evaluationCount?.funCount}
+                {profileData?.evaluationCount?.funCount}
               </p>
             </div>
             <div css={contentBox}>
               <p>성의있어요</p>
               <p css={contentNumber}>
-                {getProfileData?.evaluationCount?.sincereCount}
+                {profileData?.evaluationCount?.sincereCount}
               </p>
             </div>
             <div css={contentBox}>
               <p>화끈해요</p>
               <p css={contentNumber}>
-                {getProfileData?.evaluationCount?.hotCount}
+                {profileData?.evaluationCount?.hotCount}
               </p>
             </div>
           </div>
@@ -56,22 +60,20 @@ const ActivityList = (props: any) => {
             {/* 전체 게시글 */}
             <div css={contentBox}>
               <p>전체 게시글</p>
-              <p css={contentNumber}>
-                {getProfileData?.boardHistory?.boardCount}
-              </p>
+              <p css={contentNumber}>{profileData?.boardHistory?.boardCount}</p>
             </div>
             {/* 전체 게시글 */}
             <div css={contentBox}>
               <p>전체 댓글</p>
               <p css={contentNumber}>
-                {getProfileData?.boardHistory?.boardCommentCount}
+                {profileData?.boardHistory?.boardCommentCount}
               </p>
             </div>
             {/* 받은 좋아요 */}
             <div css={contentBox}>
               <p>받은 좋아요</p>
               <p css={contentNumber}>
-                {getProfileData?.boardHistory?.likeAllCount}
+                {profileData?.boardHistory?.likeAllCount}
               </p>
             </div>
             {/* 누른 좋아요 */}
@@ -79,7 +81,7 @@ const ActivityList = (props: any) => {
               <p>누른 좋아요</p>
               <p css={contentNumber}>
                 {/* 누른좋아요 데이터는 없음 */}
-                {getProfileData?.boardHistory?.likeAllCount}
+                {profileData?.boardHistory?.likeAllCount}
               </p>
             </div>
           </div>
@@ -94,19 +96,19 @@ const ActivityList = (props: any) => {
             <div css={contentBox}>
               <p>전체 토론글</p>
               <p css={contentNumber}>
-                {getProfileData?.discussionHistory?.discussionCount}
+                {profileData?.discussionHistory?.discussionCount}
               </p>
             </div>
             <div css={contentBox}>
               <p>전체 댓글</p>
               <p css={contentNumber}>
-                {getProfileData?.discussionHistory?.discussionCommentCount}
+                {profileData?.discussionHistory?.discussionCommentCount}
               </p>
             </div>
             <div css={contentBox}>
               <p>전체 참여자</p>
               <p css={contentNumber}>
-                {getProfileData?.discussionHistory?.participationCount}
+                {profileData?.discussionHistory?.participationCount}
               </p>
             </div>
           </div>
@@ -118,14 +120,14 @@ const ActivityList = (props: any) => {
             <div css={contentBox}>
               <p>전체 고민</p>
               <p css={contentNumber}>
-                {getProfileData?.worryBoardHistory?.worryBoardCount}
+                {profileData?.worryBoardHistory?.worryBoardCount}
               </p>
             </div>
 
             <div css={contentBox}>
               <p>전체 해결</p>
               <p css={contentNumber}>
-                {getProfileData?.worryBoardHistory?.solvedWorryBoardCount}
+                {profileData?.worryBoardHistory?.solvedWorryBoardCount}
               </p>
             </div>
 
@@ -133,13 +135,13 @@ const ActivityList = (props: any) => {
               <p>전체 평가</p>
               <p css={contentNumber}>
                 {" "}
-                {getProfileData?.worryBoardHistory?.evaluationCount}
+                {profileData?.worryBoardHistory?.evaluationCount}
               </p>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
 
@@ -148,13 +150,7 @@ export default ActivityList;
 const box3CSS = css`
   display: flex;
   flex-direction: column;
-  background-color: ${COLOR.MAIN3};
-  min-width: 28.75rem;
-  flex: 2;
-  height: 27.0625rem;
-  border-radius: 1.875rem;
-  margin-right: 2.875rem;
-  padding: 2.4375rem 5.8125rem 2.4375rem 4.1875rem;
+  height: 28rem;
 `;
 
 const subTitleCSS = css`
@@ -165,11 +161,16 @@ const subTitleCSS = css`
 
 const spaceBetween = css`
   display: flex;
+  margin-right: 20%;
   justify-content: space-between;
+  // justify-content: space-around;
 `;
 const spaceBetweenWithMargin = css`
   display: flex;
+  margin-right: 20%;
   justify-content: space-between;
+
+  // justify-content: space-around;
   margin-top: 2.8125rem;
 `;
 

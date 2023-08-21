@@ -4,7 +4,7 @@ import { Editor } from "@toast-ui/react-editor";
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import Container from "../../components/container/Container";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import FONT from "../../styles/font";
 import Button from "../../components/button/Button";
 import { useNavigate } from "react-router";
@@ -40,7 +40,11 @@ const UpdateBoardPage = () => {
   const [title, setTitle] = useState(board!!.title);
   const [content, setContent] = useState(board!!.content);
   const [category, setCategory] = useState(board!!.boardMbti);
+
+  // 현재 글에 있는 이미지 url 추출
   const [image, setImage] = useState<string[]>([]);
+  const [uploadImage, setUploadImage] = useState<string[]>([]); // 최종 업로드 이미지 리스트
+
   const [openCategory, setOpenCategory] = useState(false);
   const navigate = useNavigate();
 
@@ -69,10 +73,41 @@ const UpdateBoardPage = () => {
     "image",
     new Blob([JSON.stringify(image)], { type: "application/json" }),
   );
+  formData.append(
+    "uploadImage",
+    new Blob([JSON.stringify(uploadImage)], { type: "application/json" }),
+  );
+
+  const extractImageUrls = (content: string) => {
+    const imgTagRegex = /<img[^>]*src="([^"]+)"[^>]*>/g;
+    const matches = content.match(imgTagRegex);
+    if (!matches) {
+      return [];
+    }
+    const imageUrls = matches.map((match) => {
+      const srcMatch = match.match(/src="([^"]+)"/);
+      return srcMatch ? srcMatch[1] : null;
+    });
+    return imageUrls.filter((url) => url !== null);
+  };
+
+  const extractedImageUrls = extractImageUrls(content);
+  const filteredImageUrls = extractedImageUrls.filter(
+    (url) => url !== null,
+  ) as string[];
+  useEffect(() => {
+    setImage(filteredImageUrls);
+  }, []);
 
   const editorRef = useRef<any>(null);
   const handleContentChange = () => {
     setContent(editorRef.current.getInstance().getHTML());
+    const content = editorRef.current.getInstance().getHTML();
+    const extractedImageUrls = extractImageUrls(content);
+    const filteredImageUrls = extractedImageUrls.filter(
+      (url) => url !== null,
+    ) as string[];
+    setUploadImage(filteredImageUrls);
   };
   const updateMutation = useUpdateBoard(formData, board!!.boardId);
   const handleSubmit = () => {
@@ -80,7 +115,7 @@ const UpdateBoardPage = () => {
     navigate(-1);
   };
 
-  const uploadImage = async (blob: Blob) => {
+  const handleUploadImage = async (blob: Blob) => {
     const formData = new FormData();
     formData.append("image", blob);
     const imgUrl = await axios.post("/member/boards/files", formData, {
@@ -128,8 +163,8 @@ const UpdateBoardPage = () => {
           useCommandShortcut={true}
           hooks={{
             addImageBlobHook: async (blob, callback) => {
-              const imgUrl = await uploadImage(blob);
-              setImage([...image, imgUrl]);
+              const imgUrl = await handleUploadImage(blob);
+              setImage((prev) => [...prev, imgUrl]);
               callback(imgUrl, "image");
             },
           }}

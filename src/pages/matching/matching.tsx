@@ -20,9 +20,9 @@ const MatchingPage = () => {
             ))}
         </div>
       </div>
-      <WorryList pathMove={"waiting"} SaW={"M쌤 매칭을 기다리는 고민"} />
+      <WorryList pathMove={"waiting"} SaW={"M쌤 매칭을 기다리는 고민"} postId={-1}/>
 
-      <WorryList pathMove={"solved"} SaW={"해결 완료된 고민"} />
+      <WorryList pathMove={"solved"} SaW={"해결 완료된 고민"} postId={-1}/>
     </>
   );
 };
@@ -38,6 +38,7 @@ const headerCSS = css`
 
 const mssaemListCSS = css`
   display: flex;
+  justify-content: center;
 `;
 
 const mbtiTitleCSS = css`

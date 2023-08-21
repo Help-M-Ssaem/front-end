@@ -14,11 +14,19 @@ interface userProps {
 const LoginComponent = ({ user }: userProps) => {
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    window.location.reload();
+  };
+
   return (
     <Container addCSS={containerCSS}>
-      <div css={textCSS}>로그아웃</div>
+      <div css={textCSS} onClick={handleLogout}>
+        로그아웃
+      </div>
       <div css={profileCSS}>
         <Profile
+          id={user.id}
           image={user.profileImgUrl}
           name={user.nickName}
           mbti={user.mbti}
@@ -74,6 +82,7 @@ const detailCSS = css`
   color: ${COLOR.GRAY2};
   margin-top: 0.7rem;
   cursor: pointer;
+  white-space: nowrap;
 `;
 
 const profileCSS = css`
@@ -85,4 +94,5 @@ const verticalBarCSS = css`
   font-size: ${FONT.SIZE.FOOTNOTE};
   margin-top: 0.7rem;
   cursor: default;
+  padding: 0 0.2rem;
 `;

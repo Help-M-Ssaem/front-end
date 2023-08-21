@@ -17,9 +17,9 @@ import { useWorryPostListMember } from "../../hooks/worry/useWorryPostListMember
 import { useWorrySolveListMember } from "../../hooks/worry/useWorrySolveListMember";
 import MatchingComponent from "../../components/matching/Matching";
 import useMemberInfo from "../../hooks/user/useMemberInfo";
-import ListPagination from "../../components/Pagination/ListPagination";
 import { useDebateListMember } from "../../hooks/debate/useDebateListMember";
 import MyDebateComponent from "../../components/debate/myDebate";
+import Badge from "../../components/badge/Badge";
 
 const menuTabBar = [
   { type: 1, title: "내가 쓴 게시글" },
@@ -86,19 +86,17 @@ const myPostArray5 = [
 const MyPage = () => {
   const navigate = useNavigate();
   const { user } = useMemberInfo();
-  const userId = user!!.id;
+  const userId = user?.id || 1;
   const { profileData } = useGetProfile(userId);
+  const mbti = profileData?.teacherInfo?.mbti || "";
+  const badge = profileData?.teacherInfo?.badge || "";
 
   const limit = 6;
   const [page, setPage] = useState(1);
-  const [blockNum, setBlockNum] = useState(0);
 
   const { boardList } = useBoardListMember(userId, page - 1, limit);
-  const boardTotalPage = boardList ? boardList.totalSize : 1;
   const { worryPostList } = useWorryPostListMember(userId, page - 1, limit);
-  const worryPostTotalPage = boardList ? boardList.totalSize : 1;
   const { worrySolveList } = useWorrySolveListMember(userId, page - 1, limit);
-  const worrySolveTotalPage = boardList ? boardList.totalSize : 1;
   const { debateList } = useDebateListMember(userId, page - 1, limit);
 
   const handleSettingClick = () => {
@@ -110,32 +108,24 @@ const MyPage = () => {
   const clickMenu = (type: number) => {
     setMenuSelected(type);
   };
-  const selectBadge = (value: any) => {
-    switch (value.type) {
-      case 1:
-        return badgeCSS1;
-      case 2:
-        return badgeCSS2;
-      case 3:
-        return badgeCSS3;
-      case 4:
-        return badgeCSS4;
-      default:
-        return badgeCSS1;
-    }
-  };
 
   return (
     <div>
-      <div css={mainTitleCSS}>프로필</div>
+      <div css={boxHeadContainerCSS}>
+        <div css={mainTitleCSS}>프로필</div>
+        <button onClick={handleSettingClick} css={settingIconContainerCSS}>
+          수정하기
+        </button>
+      </div>
       <div css={boxContainerCSS}>
         {/* box1 */}
-        <div css={box1CSS}>
+        <Container addCSS={box1CSS}>
           <div css={profileContainerCSS}>
             <div css={profileImageContainerCSS}>
               <img
+                css={imageCSS}
                 style={{
-                  objectFit: "contain",
+                  objectFit: "cover",
                 }}
                 src={profileData?.teacherInfo?.profileImgUrl}
                 alt="프로필"
@@ -143,41 +133,42 @@ const MyPage = () => {
             </div>
             <p css={profilenameCSS}>
               {profileData?.teacherInfo?.nickName} 님
-              <button
+              {/* <button
                 onClick={handleSettingClick}
                 css={settingIconContainerCSS}
               >
                 <SettingIcon />
-              </button>
+              </button> */}
             </p>
 
-            <div css={bedgeContainer}>
+            {/* <div css={bedgeContainer}>
               <p css={selectBadge(1)}>{profileData?.teacherInfo?.mbti}</p>
               <p css={selectBadge(1)}>{profileData?.teacherInfo?.badge}</p>
+            </div> */}
+            <div css={badgeContainer}>
+              <Badge mbti={mbti} />
+              {badge && <Badge mbti={badge} />}
             </div>
             <p css={subTitleCSS}>한줄소개</p>
             <p css={oneLineIntroductionCSS}>
               {profileData?.teacherInfo?.introduction}
             </p>
           </div>
-        </div>
+        </Container>
         {/* box2 */}
-        <div css={box2CSS}>
+        <Container addCSS={box2CSS}>
           <p css={subTitleCSS}>수집한 칭호</p>
           <div css={collectedTitleContainer}>
             {profileData?.badgeInfos?.map(
-              (value: { id: number; name: string }, idx: number) => {
-                return (
-                  <p key={idx} css={selectBadge(value?.id)}>
-                    {value.name}
-                  </p>
-                );
+              (value: { mbti: string; color?: string }, idx: any) => {
+                return <Badge key={idx} mbti={value?.mbti} />;
               },
             )}
           </div>
-        </div>
+        </Container>
+
         {/* box3 */}
-        <ActivityList profileData={profileData}></ActivityList>
+        <ActivityList profileData={profileData} />
       </div>
 
       <Container>
@@ -255,6 +246,10 @@ const MyPage = () => {
 
 export default MyPage;
 
+const boxHeadContainerCSS = css`
+  margin-bottom: 2rem;
+`;
+
 const mainTitleCSS = css`
   display: flex;
   align-items: center;
@@ -266,35 +261,25 @@ const mainTitleCSS = css`
 
 const boxContainerCSS = css`
   display: flex;
-  margin: 1.5rem 0 3rem;
-  max-width: 80rem;
-  min-width: 65.625rem;
+  width: 100%;
+  margin: 1.5rem 0;
 `;
 
 const box1CSS = css`
   display: flex;
   flex-direction: column;
-  background-color: ${COLOR.MAIN3};
-  min-width: 15.625rem;
-  /* max-width: 250px; */
-  flex: 1;
-  height: 27.0625rem;
-  border-radius: 1.875rem;
-  margin-right: 2.875rem;
-  padding: 2.5rem 2.125rem;
+  align-items: center;
+  width: 30%;
+  height: 28rem;
+  margin-right: 1.5rem;
 `;
 
 const box2CSS = css`
   display: flex;
   flex-direction: column;
-  background-color: ${COLOR.MAIN3};
-  min-width: 15.625rem;
-  /* max-width: 250px; */
-  flex: 1;
-  height: 27.0625rem;
-  border-radius: 1.875rem;
-  margin-right: 2.875rem;
-  padding: 2.5rem 3.125rem;
+  width: 50%;
+  height: 28rem;
+  margin-right: 1.5rem;
 `;
 
 const subTitleCSS = css`
@@ -328,7 +313,7 @@ const profileImageContainerCSS = css`
 `;
 
 const profilenameCSS = css`
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   margin: 0.9375rem 0 0.625rem;
   font-weight: ${FONT.WEIGHT.BOLD};
   color: ${COLOR.MAINDARK};
@@ -336,10 +321,14 @@ const profilenameCSS = css`
 `;
 
 const settingIconContainerCSS = css`
-  margin-left: 0.625rem;
+  float: right;
+  color: ${COLOR.GRAY2};
+  text-decoration: underline;
+  text-underline-position: under;
+  margin-right: 1rem;
 `;
 
-const bedgeContainer = css`
+const badgeContainer = css`
   display: flex;
   margin: 0 auto 1.25rem;
   column-gap: 0.625rem;
@@ -415,4 +404,9 @@ const menuBox = css`
   text-align: center;
   flex: 1;
   padding: 0.5rem 2.5625rem;
+`;
+const imageCSS = css`
+  width: auto;
+  height: auto;
+  max-height: 12.125rem;
 `;

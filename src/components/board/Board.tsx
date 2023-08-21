@@ -23,6 +23,7 @@ const BoardComponent = ({ board, onClick }: BoardProps) => {
       <div css={leftCSS}>
         <div css={profileBoxCSS}>
           <Profile
+            id={board.memberSimpleInfo.id}
             image={board.memberSimpleInfo.profileImgUrl}
             name={board.memberSimpleInfo.nickName}
             mbti={board.memberSimpleInfo.mbti}
@@ -92,6 +93,7 @@ const marginRightCSS = css`
 const thumbnailCSS = css`
   width: 9rem;
   height: 9rem;
+  object-fit: cover;
 `;
 
 const detailCSS = css`

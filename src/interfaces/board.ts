@@ -27,6 +27,7 @@ export interface BoardDetail {
   isAllowed: boolean;
   isLiked: boolean;
   boardMbti: string;
+  hits: number;
 }
 
 export interface BoardList {

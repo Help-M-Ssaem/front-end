@@ -3,10 +3,10 @@ import { mssaemAxios as axios } from "../../../apis/axios";
 import { commentKeys } from "../../../constants/commentKey";
 
 async function deleteDebateComment(
-  boardId: number,
+  debateId: number,
   commentId: number,
 ): Promise<void> {
-  await axios.delete(`/member/discussions/${boardId}/comments/${commentId}`);
+  await axios.delete(`/member/discussions/${debateId}/comments/${commentId}`);
 }
 
 interface UseDebateCommentDelete {
@@ -14,12 +14,12 @@ interface UseDebateCommentDelete {
 }
 
 export function useDebateCommentDelete(
-  boardId: number,
+  debateId: number,
   commentId: number,
 ): UseDebateCommentDelete {
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(() => deleteDebateComment(boardId, commentId), {
+  const { mutate } = useMutation(() => deleteDebateComment(debateId, commentId), {
     onSuccess: () => {
       queryClient.invalidateQueries(commentKeys.all);
     },

@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { useRef, useState } from "react";
+import {  useEffect, useRef, useState } from "react";
 import Button from "../../components/button/Button";
 import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
@@ -9,6 +9,7 @@ import FONT from "../../styles/font";
 import { Editor } from "@toast-ui/react-editor";
 import { useCreateBoard } from "../../hooks/worry/useCreateWorry";
 import { mssaemAxios as axios } from "../../apis/axios";
+
 const categoryList = [
   "ISTJ",
   "ISFJ",
@@ -33,7 +34,8 @@ const CreateMatchingPage = () => {
   const [content, setContent] = useState("");
   // TODO: mbti는 로그인한 유저의 mbti로 설정
   const [category, setCategory] = useState("ISFJ");
-  const [image, setImage] = useState<string[]>([]);
+  const [image, setImage] = useState<string[]>([]); // 업로드된 모든 이미지 리스트
+  const [uploadImage, setUploadImage] = useState<string[]>([]); // 최종 업로드 이미지 리스트
   const [openCategory, setOpenCategory] = useState(false);
   const navigate = useNavigate();
 
@@ -64,17 +66,43 @@ const CreateMatchingPage = () => {
     "image",
     new Blob([JSON.stringify(image)], { type: "application/json" }),
   );
+    formData.append(
+    "uploadImage",
+    new Blob([JSON.stringify(uploadImage)], { type: "application/json" }),
+  );
+
+  // 현재 글에 있는 이미지 url 추출
+  const extractImageUrls = (content: string) => {
+    const imgTagRegex = /<img[^>]*src="([^"]+)"[^>]*>/g;
+    const matches = content.match(imgTagRegex);
+    if (!matches) {
+      return [];
+    }
+    const imageUrls = matches.map((match) => {
+      const srcMatch = match.match(/src="([^"]+)"/);
+      return srcMatch ? srcMatch[1] : null;
+    });
+    return imageUrls.filter((url) => url !== null);
+  };
 
   const editorRef = useRef<any>(null);
   const handleContentChange = () => {
     setContent(editorRef.current.getInstance().getHTML());
+    const content = editorRef.current.getInstance().getHTML();
+    const extractedImageUrls = extractImageUrls(content);
+    const filteredImageUrls = extractedImageUrls.filter(
+      (url) => url !== null,
+    ) as string[];
+    setUploadImage(filteredImageUrls);
   };
+
   const createMutation = useCreateBoard(formData);
   const handleSubmit = () => {
     createMutation.mutate();
     navigate(-1);
   };
-  const uploadImage = async (blob: Blob) => {
+
+  const handleUploadImage = async (blob: Blob) => {
     const formData = new FormData();
     formData.append("image", blob);
     const imgUrl = await axios.post("/member/worry-boards/files", formData, {
@@ -123,7 +151,7 @@ const CreateMatchingPage = () => {
         <div css={contentCSS}>내용을 입력해주세요.</div>
         <Editor
           ref={editorRef}
-          initialValue="M쌤 매칭 고민글 생성"
+          initialValue=" "
           previewStyle="vertical"
           height="30rem"
           initialEditType="wysiwyg"
@@ -131,8 +159,8 @@ const CreateMatchingPage = () => {
           onChange={handleContentChange}
           hooks={{
             addImageBlobHook: async (blob, callback) => {
-              const imgUrl = await uploadImage(blob);
-              setImage([...image, imgUrl]);
+              const imgUrl = await handleUploadImage(blob);
+              setImage((prev) => [...prev, imgUrl]);
               callback(imgUrl, "image");
             },
           }}

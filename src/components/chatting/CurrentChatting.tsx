@@ -5,50 +5,80 @@ import FONT from "../../styles/font";
 import Badge from "../badge/Badge";
 import { RightArrowIcon } from "../../assets/CommonIcons";
 import Button from "../button/Button";
-import { useState } from "react";
-import { ChattingHistory } from "../../interfaces/chatting";
+import { useEffect, useState } from "react";
+import { ChattingHistory, MsseamProps } from "../../interfaces/chatting";
 import EvaluationModal from "../modal/EvaluationModal";
 import { useCreateEvaluation } from "../../hooks/worry/useEvaluation";
-//데이터 받아서 해야되는뎅...
-const matching = {
-  id: 1,
-  thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-  title: "학생회장 선배 도와주세요ㅠㅠ",
-  content: "마음이 있는 것 같나요?",
-  createdAt: "2분전",
-  mbti1: "EsFP",
-  mbti2: "ISTJ",
-  color1: "#94E3F8",
-  color2: "#F8CAFF",
-};
-type Profile = {
-  profile: ChattingHistory | null;
-};
+import { ChatRoom } from "../../interfaces/chatting";
+import { mssaemAxios as axios } from "../../apis/axios";
+import { info } from "console";
+import useMemberInfo from "../../hooks/user/useMemberInfo";
+import { useChatRooms } from "../../hooks/chatting/useChatRooms";
+import { setSelectionRange } from "@testing-library/user-event/dist/utils";
+interface CurrentChattingProps {
+  chatRoom: ChatRoom;
+}
 
-const CurrentChatting: React.FC<Profile> = ({ profile }) => {
+const CurrentChatting = ({ chatRoom }: CurrentChattingProps) => {
   const [isEvaluationModalOpen, setIsEvaluationModalOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const handleEvaluation = () => {
-    setIsEvaluationModalOpen(true);
+  const [profileData, setProfileData] = useState<MsseamProps | null>(null);
+  const [state, setState] = useState<boolean>(false);
+
+  const worryBoardId = chatRoom.worryBoardId;
+  const { user } = useMemberInfo();
+  const { chatRooms, isLoading } = useChatRooms();
+
+  useEffect(() => {
+    if (!isLoading && chatRooms) {
+      const updatedStage = chatRoom.worryBoardState;
+      setState(updatedStage);
+    }
+  }, [
+    chatRooms,
+    isLoading,
+    chatRoom.worryBoardState,
+    isSubmitted,
+    isEvaluationModalOpen,
+  ]);
+
+  const handleEvaluation = async () => {
+    try {
+      const res = await getSolved(worryBoardId);
+      setProfileData(res);
+      setIsSubmitted(true);
+      setIsEvaluationModalOpen(true);
+
+      const updatedChatRoom = {
+        ...chatRoom,
+        worryBoardState: true,
+      };
+    } catch (error) {
+      console.error("Error fetching solved data:", error);
+    }
   };
+
   const handleCloseModal = () => {
     setIsEvaluationModalOpen(false);
-    setIsSubmitted(true);
   };
 
-  const formData = {
-    worryBoardId: matching.id,
-    evaluations: [selectedOption],
-  };
+  const worrySolverId = chatRoom.memberSimpleInfo.id;
 
-  const createMutation = useCreateEvaluation(formData);
+  async function getSolved(id: number): Promise<MsseamProps> {
+    const { data } = await axios.patch(`/member/worry-board/${id}/solved`, {
+      worrySolverId: worrySolverId,
+    });
+    return data;
+  }
 
   const handleSubmit = (selectedOption: string) => {
-    setSelectedOption(selectedOption);
-
     if (selectedOption) {
-      createMutation.mutate();
+      setSelectedOption(selectedOption);
+      setIsEvaluationModalOpen(false);
+      setIsSubmitted(true);
+
+      console.log(isSubmitted);
     }
   };
 
@@ -56,35 +86,53 @@ const CurrentChatting: React.FC<Profile> = ({ profile }) => {
     <div css={MatchingBoxCSS}>
       <div css={leftCSS}>
         <div css={solveCSS}>
-          {isSubmitted && <Badge mbti="해결 완료" color={COLOR.MAIN1} />}
+          {!isSubmitted && chatRoom.worryBoardState && state && (
+            <Badge mbti="해결 완료" />
+          )}
           <div css={mbtiBoxCSS}>
-            <Badge mbti={matching.mbti1} color={matching.color1} />
+            <Badge mbti={chatRoom.memberMbti} />
             <RightArrowIcon />
-            <Badge mbti={matching.mbti2} color={matching.color2} />
+            <Badge mbti={chatRoom.targetMbti} />
           </div>
         </div>
-        <div css={titleCSS}>{matching.title}</div>
+        <div css={titleCSS}>{chatRoom.chatRoomTitle}</div>
       </div>
       <div css={rightCSS}>
-        <Button onClick={handleEvaluation} addCSS={buttonCSS}>
-          해결완료
-        </Button>
+        {chatRoom.writerId === user?.id &&
+          !isSubmitted &&
+          !chatRoom.worryBoardState && (
+            <Button
+              onClick={handleEvaluation}
+              addCSS={isSubmitted ? buttonCSS : buttonCSS2}
+              disabled={!isSubmitted}
+            >
+              해결완료
+            </Button>
+          )}
       </div>
-      {isEvaluationModalOpen && (
+      {isEvaluationModalOpen && profileData !== null && (
         <EvaluationModal
           isOpen={isEvaluationModalOpen}
           onClose={handleCloseModal}
-          onClick={() => {}}
-          profileData={profile}
+          onClick={(optionId) => {
+            handleSubmit(optionId);
+          }}
+          profile={profileData}
         />
       )}
     </div>
   );
 };
 
+export default CurrentChatting;
+
 const buttonCSS = css`
-  background: ${COLOR.WHITE};
-  color: ${COLOR.GRAY2};
+  background: ${COLOR.GRAY3};
+  cursor: pointer;
+`;
+
+const buttonCSS2 = css`
+  cursor: pointer;
 `;
 
 const MatchingBoxCSS = css`
@@ -121,5 +169,3 @@ const solveCSS = css`
   margin: 0.3rem 0 0.8rem 0;
   align-items: center;
 `;
-
-export default CurrentChatting;

@@ -6,7 +6,7 @@ import FONT from "../../styles/font";
 interface InputProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
-  value?: string;
+  value?: string | undefined;
 }
 
 const Input2 = ({ onChange, placeholder, value }: InputProps) => {
@@ -16,6 +16,7 @@ const Input2 = ({ onChange, placeholder, value }: InputProps) => {
       placeholder={placeholder}
       onChange={onChange}
       value={value}
+      maxLength={26}
     />
   );
 };

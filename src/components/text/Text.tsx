@@ -5,10 +5,15 @@ import FONT from "../../styles/font";
 interface TextProps {
   children: React.ReactNode;
   addCSS?: SerializedStyles;
+  onClick?: () => void;
 }
 
-const Text = ({ children, addCSS }: TextProps) => {
-  return <div css={[textCSS, addCSS]}>{children}</div>;
+const Text = ({ children, addCSS, onClick }: TextProps) => {
+  return (
+    <div onClick={onClick} css={[textCSS, addCSS]}>
+      {children}
+    </div>
+  );
 };
 
 export default Text;

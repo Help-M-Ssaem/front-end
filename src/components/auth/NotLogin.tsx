@@ -4,12 +4,18 @@ import FONT from "../../styles/font";
 import COLOR from "../../styles/color";
 import Container from "../container/Container";
 import Button from "../button/Button";
+import { useNavigate } from "react-router-dom";
 
 const NotLoginComponent = () => {
+  const navigate = useNavigate();
+  const handleLogin = () => {
+    navigate("/login");
+  };
+
   return (
     <Container addCSS={containerCSS}>
       <div css={textCSS}>M쌤이 되어 더 자유롭게 이용하세요</div>
-      <Button>로그인하고 이용하기</Button>
+      <Button onClick={handleLogin}>로그인하고 이용하기</Button>
       <div css={detailBoxCSS}>
         <div css={detailCSS}>아이디 찾기</div>
         <span css={verticalBarCSS}>|</span>

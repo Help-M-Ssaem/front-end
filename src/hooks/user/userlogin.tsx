@@ -21,7 +21,7 @@ async function userLogin(
   }
   console.log(`/${type}/login`, { idToken });
   const { data } = await axios.post(`/${type}/login`, { idToken });
-  console.log(data);
+
   return data;
 }
 
@@ -39,7 +39,6 @@ export function useLogin(): UseMutationResult<
   >(({ type, idToken }) => userLogin(type as string, idToken as string), {
     onSuccess: (data) => {
       if ("accessToken" in data && "refreshToken" in data) {
-        console.log(data.accessToken);
         saveTokens(data.accessToken, data.refreshToken);
       }
       if ("message" in data) {
@@ -49,7 +48,7 @@ export function useLogin(): UseMutationResult<
 
         if (extractedEmail) {
           const email = extractedEmail[0];
-          console.log(email); //
+
           saveEmail(email);
         } else {
           console.log("Email not found in the message.");

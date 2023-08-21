@@ -5,6 +5,7 @@ import reportWebVitals from "./reportWebVitals";
 import { RecoilRoot } from "recoil";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { ChatProvider } from "./hooks/chatting/ChatProvider";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
@@ -17,7 +18,9 @@ root.render(
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={true} />
       <RecoilRoot>
-        <App />
+        <ChatProvider>
+          <App />
+        </ChatProvider>
       </RecoilRoot>
     </QueryClientProvider>
   </React.StrictMode>,

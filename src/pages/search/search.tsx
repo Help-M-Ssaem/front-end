@@ -4,19 +4,15 @@ import { css } from "@emotion/react";
 import SearchBar from "../../components/search/SearchBar";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
+import { usePopularSearch } from "../../hooks/keywords/useGetPopularSearch";
+import { useSerch } from "../../hooks/keywords/usePostSearchWord";
+import { useNavigate } from "react-router-dom";
 
 const Search: React.FC = () => {
-  const trendingKeywords: string[] = [
-    "ESFP",
-    "INTP",
-    "연애",
-    "썸",
-    "ISTJ",
-    "스트레스",
-    "친구",
-    "잉뿌삐",
-  ];
-
+  const { keywordList} = usePopularSearch();
+  const [searchWord, setSearchWord] = useState("");
+  const search = useSerch(searchWord);
+  const navigate = useNavigate();
   const currentDate = new Date();
 
   function formatDate(date: Date) {
@@ -31,6 +27,11 @@ const Search: React.FC = () => {
 
   const formattedDate = formatDate(currentDate);
 
+  const handleSearch = (clickedKeyword: string) => {
+    setSearchWord(clickedKeyword);
+    search.mutate();
+    navigate(`/search/result?query=${clickedKeyword}`);
+  };
   return (
     <div css={searchContainer}>
       <SearchBar />
@@ -39,11 +40,15 @@ const Search: React.FC = () => {
           <h2>인기 검색어</h2>
           <span css={timeNow}>{formattedDate}</span>
         </div>
-
-        {trendingKeywords.map((keyword, index) => (
-          <div css={trendingKeywordWrapper} key={index}>
-            <span css={indexStyle}>{index + 1}</span>
-            <span css={trendingKeyword}>{keyword}</span>
+        {/* 모션 넣기 */}
+        { keywordList && keywordList.map((keyword, index) => (
+            <div
+              css={[trendingKeywordWrapper]}
+              key={index}
+              onClick={() => handleSearch(keyword.keyword)}
+            >
+              <span css={indexStyle}>{index + 1}</span>
+              <span css={trendingKeyword}>{keyword.keyword}</span>
           </div>
         ))}
       </div>
@@ -58,7 +63,8 @@ const searchContainer = css`
 `;
 
 const trendingKeywordWrapper = css`
-  padding-bottom: 1.25rem;
+  margin-bottom: 1.25rem;
+  cursor: pointer;
 `;
 
 const indexStyle = css`

@@ -50,6 +50,7 @@ const MbtiBoardPage = () => {
   const [blockNum, setBlockNum] = useState(0);
 
   const [containerKey, setContainerKey] = useState(0);
+  const token = localStorage.getItem("accessToken");
 
   useEffect(() => {
     setContainerKey((prevKey) => prevKey + 1);
@@ -99,7 +100,9 @@ const MbtiBoardPage = () => {
       <Container key={containerKey} addCSS={containerCSS}>
         <div css={buttonBoxCSS}>
           <Text>{mbtiSelected} 게시판</Text>
-          <Button onClick={() => navigate("/board/create")}>글 쓰기</Button>
+          {token && (
+            <Button onClick={() => navigate("/board/create")}>글 쓰기</Button>
+          )}
         </div>
         {boardList &&
           boardList.result.map((board) => (
