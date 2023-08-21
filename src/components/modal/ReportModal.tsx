@@ -82,10 +82,7 @@ const ReportModal: React.FC<ModalProps> = ({ isOpen, onClose, onClick, isType })
         </div>
         <div css={textBoxCSS}>
           <div css={textCSS}>
-            게시글과 사용자가 신고되면 어쩌고저쩌고 담장자가 검토해서 커뮤니티
-            가이드라이 어쩌고 저쩌고 뭐시기 계정은 불이익? 받을지도..?
-            반복적이거나 심각한 위반이 발생한 경우에는 계정이 해지될 수
-            있습니다.
+            익명성을 악욕한 욕설, 비방, 불건전한 정보 유통 등 상대방을 불쾌하게 하는 행위를 저지를 경우커뮤니티 가이드 라인에 따라 불이익을 받거나 심한 경우 계정이 해지될 수 있습니다.
           </div>
         </div>
 
