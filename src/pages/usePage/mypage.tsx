@@ -383,8 +383,7 @@ const menuBox = css`
   padding: 1.875rem 2.5625rem;
 `;
 const imageCSS = css`
-  width: 11rem;
+  width: auto;
   height: auto;
-  max-height: 9rem;
-  object-fit: contain;
+  max-height: 12.125rem;
 `;
