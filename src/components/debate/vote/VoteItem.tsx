@@ -5,6 +5,7 @@ import FONT from "../../../styles/font";
 import { useState } from "react";
 import { Option } from "../../../interfaces/debate";
 import { useSelectedItem } from "../../../hooks/debate/useVoteItem";
+import { useNavigate } from "react-router-dom";
 
 interface VoteItemProps extends Option {
     PostId: number;
@@ -19,9 +20,16 @@ const VoteItem = ({
     PostId,
     optionSelected,
 }: VoteItemProps ) => {
+    const navigate = useNavigate();
     const [isHovered, setIsHovered] = useState(false);
     const selectedMutation = useSelectedItem(PostId, id);
+    const token = localStorage.getItem("accessToken");
     const handleClick = () => {
+        if(!token){
+            window.alert("로그인 후 이용할 수 있습니다.");
+            navigate(`/login`);
+            return ;
+        }
         selectedMutation.mutate();
     }
     const handleMouseEnter = () => {
