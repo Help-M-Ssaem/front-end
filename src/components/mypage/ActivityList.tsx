@@ -21,7 +21,7 @@ const ActivityList = (props: any) => {
   }, [profileData]);
 
   return (
-    <div css={box3CSS}>
+    <Container addCSS={box3CSS}>
       {/* 받은 평가 / 게시판 활동 */}
       <div css={spaceBetween}>
         {/* 받은평가 */}
@@ -148,7 +148,7 @@ const ActivityList = (props: any) => {
           </div>
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
 
@@ -157,13 +157,7 @@ export default ActivityList;
 const box3CSS = css`
   display: flex;
   flex-direction: column;
-  background-color: ${COLOR.MAIN3};
-  // min-width: 28.75rem;
-  flex: 2;
-  height: 27.0625rem;
-  border-radius: 1.875rem;
-  margin-right: 0;
-  padding: 2.4375rem 5.8125rem 2.4375rem 4.1875rem;
+  height: 28rem;
 `;
 
 const subTitleCSS = css`
@@ -174,11 +168,16 @@ const subTitleCSS = css`
 
 const spaceBetween = css`
   display: flex;
+  margin-right: 20%;
   justify-content: space-between;
+  // justify-content: space-around;
 `;
 const spaceBetweenWithMargin = css`
   display: flex;
+  margin-right: 20%;
   justify-content: space-between;
+
+  // justify-content: space-around;
   margin-top: 2.8125rem;
 `;
 
