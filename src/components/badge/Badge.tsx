@@ -30,6 +30,9 @@ const Badge = ({ mbti }: BadgeProps) => {
     } else if (mbti === "FUNFUN") {
       setColor("#00B5DC");
       setChangeColor(true);
+    } else {
+      setColor("#7A7A7B");
+      setChangeColor(true);
     }
   }, []);
 
@@ -46,7 +49,7 @@ const Badge = ({ mbti }: BadgeProps) => {
     background: ${changeColor
       ? color
       : MBTICOLOR[formattedMbti as keyof MBTIColors]};
-    padding: 0.15rem 0.5rem;
+    padding: 0.2rem 0.5rem;
     border-radius: 0.9rem;
     margin-right: 0.4rem;
     white-space: nowrap;
