@@ -134,11 +134,10 @@ const UserPage = () => {
         <div css={box2CSS}>
           <p css={subTitleCSS}>수집한 칭호</p>
           <div css={collectedTitleContainer}>
-            {profileData?.badgeInfos?.map(
-              (value: { mbti: string; color?: string }, idx: any) => {
-                return <Badge key={idx} mbti={value?.mbti} />;
-              },
-            )}
+            {profileData?.badgeInfos &&
+              profileData?.badgeInfos.map((badgeInfo: any) => {
+                return <Badge mbti={badgeInfo.name} />;
+              })}
           </div>
         </div>
         {/* box3 */}

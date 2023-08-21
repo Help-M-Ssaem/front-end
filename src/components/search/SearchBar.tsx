@@ -6,12 +6,12 @@ import { useNavigate } from "react-router-dom";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import { useRecentSearch } from "../../hooks/keywords/useGetRecentSearch";
-import { useSerch } from "../../hooks/keywords/usePostSearchWord";
+import { useSearch } from "../../hooks/keywords/usePostSearchWord";
 
 const SearchBar: React.FC = () => {
   const { keywords } = useRecentSearch();
   const [searchWord, setSearchWord] = useState("");
-  const search = useSerch(searchWord);
+  const search = useSearch(searchWord);
   const navigate = useNavigate();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
