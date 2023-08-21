@@ -14,8 +14,9 @@ interface ShareModalProps {
 
   const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, url }) => {
   const [isCopied, setIsCopied] = useState(false);
+  const addressUrl = `https://m-ssaem.vercel.app`+url;
   const handleCopyClick = () => {
-    navigator.clipboard.writeText(url);
+    navigator.clipboard.writeText(addressUrl);
     setIsCopied(true);
   };
   if (!isOpen) return null;
@@ -27,8 +28,7 @@ interface ShareModalProps {
         <input
           css={inputCSS}
           type="text"
-          value={url}
-          placeholder={url}
+          value={addressUrl}
           readOnly
         />
         <div  css ={copyButtonCSS}>

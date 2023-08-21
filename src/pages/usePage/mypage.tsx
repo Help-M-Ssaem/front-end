@@ -52,6 +52,8 @@ const MyPage = () => {
     setMenuSelected(type);
   };
 
+  console.log(profileData);
+
   return (
     <div>
       <div css={boxHeadContainerCSS}>
@@ -74,20 +76,7 @@ const MyPage = () => {
                 alt="프로필"
               />
             </div>
-            <p css={profilenameCSS}>
-              {profileData?.teacherInfo?.nickName} 님
-              {/* <button
-                onClick={handleSettingClick}
-                css={settingIconContainerCSS}
-              >
-                <SettingIcon />
-              </button> */}
-            </p>
-
-            {/* <div css={bedgeContainer}>
-              <p css={selectBadge(1)}>{profileData?.teacherInfo?.mbti}</p>
-              <p css={selectBadge(1)}>{profileData?.teacherInfo?.badge}</p>
-            </div> */}
+            <p css={profilenameCSS}>{profileData?.teacherInfo?.nickName} 님</p>
             <div css={badgeContainer}>
               <Badge mbti={mbti} />
               {badge && <Badge mbti={badge} />}
@@ -102,11 +91,12 @@ const MyPage = () => {
         <Container addCSS={box2CSS}>
           <p css={subTitleCSS}>수집한 칭호</p>
           <div css={collectedTitleContainer}>
-            {profileData?.badgeInfos?.map(
-              (value: { mbti: string; color?: string }, idx: any) => {
-                return <Badge key={idx} mbti={value?.mbti} />;
-              },
-            )}
+            {profileData?.badgeInfos &&
+              profileData?.badgeInfos.map((badgeInfo: any) => {
+                return (
+                  <Badge mbti={badgeInfo.name} imgUrl={badgeInfo.imgUrl} />
+                );
+              })}
           </div>
         </Container>
 
@@ -141,15 +131,6 @@ const MyPage = () => {
               onClick={() => navigate(`/board/${board.id}`)}
             />
           ))}
-        {/* <ListPagination
-          limit={limit}
-          page={page}
-          setPage={setPage}
-          blockNum={blockNum}
-          setBlockNum={setBlockNum}
-          totalPage={boardTotalPage}
-        /> */}
-
         {menuSelected === 2 &&
           debateList &&
           debateList.result.map((debateList) => (
@@ -196,7 +177,7 @@ const boxHeadContainerCSS = css`
 const mainTitleCSS = css`
   display: flex;
   align-items: center;
-  margin: 2rem 0 0 0;
+  margin-top: 2rem;
   font-size: ${FONT.SIZE.TITLE3};
   font-weight: ${FONT.WEIGHT.BOLD};
   color: ${COLOR.MAINDARK};
@@ -274,51 +255,15 @@ const settingIconContainerCSS = css`
 const badgeContainer = css`
   display: flex;
   margin: 0 auto 1.25rem;
-  column-gap: 0.625rem;
+  column-gap: 0.1rem;
 `;
 
 const collectedTitleContainer = css`
   margin: 0.625rem 0 0.625rem;
   display: flex;
   flex-wrap: wrap;
-  column-gap: 0.625rem;
+  column-gap: 0.3rem;
   row-gap: 0.625rem;
-`;
-
-const badgeCSS1 = css`
-  height: 1.4375rem;
-  border-radius: 1.25rem;
-  padding: 0.1875rem 0.625rem;
-  background-color: #f8caff;
-  color: white;
-  width: fit-content;
-`;
-
-const badgeCSS2 = css`
-  height: 1.4375rem;
-  border-radius: 1.25rem;
-  padding: 0.1975rem 0.625rem;
-  background-color: #5be1a9;
-  color: white;
-  width: fit-content;
-`;
-
-const badgeCSS3 = css`
-  height: 1.4375rem;
-  border-radius: 1.25rem;
-  padding: 0.1975rem 0.625rem;
-  background-color: #ad71ea;
-  color: white;
-  width: fit-content;
-`;
-
-const badgeCSS4 = css`
-  height: 1.4375rem;
-  border-radius: 1.25rem;
-  padding: 0.1975rem 0.625rem;
-  background-color: #9ecbff;
-  color: white;
-  width: fit-content;
 `;
 
 const menuButtonContainer = css`
@@ -342,11 +287,13 @@ const menuButtonContainer = css`
   }
   list-style-type: none;
 `;
+
 const menuBox = css`
   text-align: center;
   flex: 1;
   padding: 1.875rem 2.5625rem;
 `;
+
 const imageCSS = css`
   width: auto;
   height: auto;
