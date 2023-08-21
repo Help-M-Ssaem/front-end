@@ -52,6 +52,8 @@ const MyPage = () => {
     setMenuSelected(type);
   };
 
+  console.log(profileData);
+
   return (
     <div>
       <div css={boxHeadContainerCSS}>
@@ -91,7 +93,9 @@ const MyPage = () => {
           <div css={collectedTitleContainer}>
             {profileData?.badgeInfos &&
               profileData?.badgeInfos.map((badgeInfo: any) => {
-                return <Badge mbti={badgeInfo.name} />;
+                return (
+                  <Badge mbti={badgeInfo.name} imgUrl={badgeInfo.imgUrl} />
+                );
               })}
           </div>
         </Container>
