@@ -4,6 +4,8 @@ import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import { MBTICOLOR } from "../../styles/color";
 import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { ContainerAnimation } from "../../styles/animation";
 
 interface BadgeProps {
   mbti: string;
@@ -33,6 +35,9 @@ const Badge = ({ mbti, imgUrl }: BadgeProps) => {
       setChangeColor(true);
     } else if (mbti === "FUNFUN") {
       setColor("#00B5DC");
+      setChangeColor(true);
+    } else if (mbti === "해결 완료") {
+      setColor("#7A7A7B");
       setChangeColor(true);
     }
   }, []);
@@ -74,9 +79,14 @@ const Badge = ({ mbti, imgUrl }: BadgeProps) => {
       </div>
       {modalOpen && imgUrl && (
         <div css={modalBackground} onClick={handleBackgroundClick}>
-          <div css={modalMain}>
+          <motion.div
+            css={modalMain}
+            initial="hidden"
+            animate="visible"
+            variants={ContainerAnimation}
+          >
             <img src={imgUrl} alt="badge" css={imgCSS} />
-          </div>
+          </motion.div>
         </div>
       )}
     </>
