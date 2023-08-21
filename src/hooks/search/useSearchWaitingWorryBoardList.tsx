@@ -3,7 +3,7 @@ import { mssaemAxios as axios } from "../../apis/axios";
 import { WorryList } from "../../interfaces/worry";
 import { SearchKeys } from "../../constants/searchKey";
 
-export async function getSearchWaitingWorryBoardList(
+export async function getSearchWaitingWorryList(
   searchType: number,
   keyword: string,
   strFromMbti: string,
@@ -17,20 +17,20 @@ export async function getSearchWaitingWorryBoardList(
   return data;
 }
 
-interface UseSearchWaitingWorryBoardList {
-  searchWaitingWorryBoardList?: WorryList;
+interface UseSearchWaitingWorryList {
+  searchWaitingWorryList?: WorryList;
 }
 
-export function useSearchWaitingWorryBoardList(
+export function useSearchWaitingWorryList(
   searchType: number,
   keyword: string,
   strFromMbti: string,
   strToMbti: string,
   page: number,
   size: number,
-): UseSearchWaitingWorryBoardList {
-  const { data: searchWaitingWorryBoardList } = useQuery(SearchKeys.all, () =>
-    getSearchWaitingWorryBoardList(
+): UseSearchWaitingWorryList {
+  const { data: searchWaitingWorryList } = useQuery(SearchKeys.all, () =>
+    getSearchWaitingWorryList(
       searchType,
       keyword,
       strFromMbti,
@@ -39,5 +39,5 @@ export function useSearchWaitingWorryBoardList(
       size,
     ),
   );
-  return { searchWaitingWorryBoardList };
+  return { searchWaitingWorryList };
 }

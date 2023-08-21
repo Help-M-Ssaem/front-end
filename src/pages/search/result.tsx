@@ -48,14 +48,16 @@ const SearchResult: React.FC = () => {
             <div css={boardHeader}>
               <div css={boardTitleCSS}>MBTI 게시판 </div>
               <div css={moreButtonCSS}>
-                <button
-                  onClick={() =>
-                    navigate(`/search/moreBoard?query=${query.get("query")}`)
-                  }
-                  css={moreButtonText}
-                >
-                  더보기
-                </button>
+                {multipleBoardList?.boardSimpleInfos.result.length == 5 && (
+                  <button
+                    onClick={() =>
+                      navigate(`/search/moreBoard?query=${query.get("query")}`)
+                    }
+                    css={moreButtonText}
+                  >
+                    더보기
+                  </button>
+                )}
               </div>
             </div>
 
@@ -81,14 +83,16 @@ const SearchResult: React.FC = () => {
             <div css={boardHeader}>
               <div css={boardTitleCSS}>토론 게시판 </div>
               <div css={moreButtonCSS}>
-                <button
-                  css={moreButtonText}
-                  onClick={() =>
-                    navigate(`/search/moreDebate?query=${query.get("query")}`)
-                  }
-                >
-                  더보기
-                </button>
+                {multipleBoardList?.discussionSimpleInfo.result.length == 5 && (
+                  <button
+                    css={moreButtonText}
+                    onClick={() =>
+                      navigate(`/search/moreDebate?query=${query.get("query")}`)
+                    }
+                  >
+                    더보기
+                  </button>
+                )}
               </div>
             </div>
 
@@ -116,14 +120,18 @@ const SearchResult: React.FC = () => {
             <div css={boardHeader}>
               <div css={boardTitleCSS}>M쌤 매칭 게시판 </div>
               <div css={moreButtonCSS}>
-                <button
-                  onClick={() =>
-                    navigate(`/search/moreMatching?query=${query.get("query")}`)
-                  }
-                  css={moreButtonText}
-                >
-                  더보기
-                </button>
+                {multipleBoardList?.getWorriesRes.result.length == 5 && (
+                  <button
+                    onClick={() =>
+                      navigate(
+                        `/search/moreMatching?query=${query.get("query")}`,
+                      )
+                    }
+                    css={moreButtonText}
+                  >
+                    더보기
+                  </button>
+                )}
               </div>
             </div>
             {multipleBoardList &&

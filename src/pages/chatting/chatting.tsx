@@ -110,7 +110,7 @@ const ChattingPage = () => {
                 </Button>
               </div>
             )}
-            {chatRooms && active ? (
+            {chatRooms && active && (
               <>
                 <div css={dateTop}>
                   {Array.isArray(chatRooms) &&
@@ -134,7 +134,8 @@ const ChattingPage = () => {
                 </div>
                 <ChattingForm chatRoomId={activeRoomId} />
               </>
-            ) : (
+            )}
+            {chatRooms && (
               <div css={[noChatCSS, noMassageCSS]}>
                 <div css={bottomFontSIZE}>
                   익명성을 악욕한 욕설, 비방, 불건전한 정보 유통 등 상대방을

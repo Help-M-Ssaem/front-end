@@ -18,7 +18,7 @@ function useQuery() {
   return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
-const MoreBoardResult = () => {
+const BoardSearch = () => {
   let query = useQuery();
   const navigate = useNavigate();
   const [searchBoardList, setSearchBoardList] = useState<SearchBoardList>();
@@ -115,4 +115,4 @@ const boardListWrapper = css`
   }
   border-top: none;
 `;
-export default MoreBoardResult;
+export default BoardSearch;

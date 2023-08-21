@@ -14,14 +14,22 @@ async function postReport(
     reportReason: reason,
     content: content,
   };
-  await axios.post(`/member/reports`, report, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-  .catch(error => {
-    console.error("Error:", error);
-  });
+  try {
+    await axios.post(`/member/reports`, report, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    window.alert("신고되었습니다.");
+
+  } catch (error: any) {
+    if (error.response && error.response.data) {
+      window.alert(error.response.data.message);
+      return error.response.data;
+    } else {
+      console.error("Unknown error:", error);
+    }
+  }
 }
 
 interface UseCreateBoard {
@@ -40,22 +48,7 @@ export function usePostReport(
     reason, content), {
     onSuccess: () => {
       queryClient.invalidateQueries(reportKeys.all);
-      window.alert("신고되었습니다.");
     },
-    // 나중에 에러처리할때 넣기
-    // onError: (error: any) => {
-    //   queryClient.invalidateQueries(reportKeys.all);
-    //   if (error.response) {
-    //     const status = error.response.status;
-    //     if (status === NOT_FOUND) {
-    //       window.alert("존재하지 않는 게시물입니다.");
-    //     } else if (status === CONFLICT) {
-    //       window.alert("이미 신고한 이력이 있습니다.");
-    //     } else if (status === INTERNAL_SERVER_ERROR) {
-    //       window.alert("메일 전송에 실패했습니다.");
-    //     }
-    //   }
-    // }
   });
   return { mutate };
 }

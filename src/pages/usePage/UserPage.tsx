@@ -18,12 +18,22 @@ import ListPagination from "../../components/Pagination/ListPagination";
 import { useDebateListMember } from "../../hooks/debate/useDebateListMember";
 import MyDebateComponent from "../../components/debate/myDebate";
 import { useParams } from "react-router-dom";
+import useMemberInfo from "../../hooks/user/useMemberInfo";
+import Badge from "../../components/badge/Badge";
 
-const UserPage= () => {
+const UserPage = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const userId = (Number(id));
+  const { user } = useMemberInfo();
+  const userId = Number(id);
+  const myId = user?.id;
+
   const { profileData } = useGetProfile(userId);
+  const mbti = profileData?.teacherInfo?.mbti || "";
+  const badge = profileData?.teacherInfo?.badge || "";
+
+  // console.log({ myId, userId, profileData });
+
   const menuTabBar = [
     { type: 1, title: `${profileData?.teacherInfo.nickName}의 게시글` },
     { type: 2, title: `${profileData?.teacherInfo.nickName}의 토론글` },
@@ -68,15 +78,27 @@ const UserPage= () => {
 
   return (
     <div>
-      <div css={mainTitleCSS}>프로필</div>
+      <div css={boxHeadContainerCSS}>
+        <div css={mainTitleCSS}>프로필</div>
+        <button
+          style={{
+            display: userId === myId ? "" : "none",
+          }}
+          onClick={handleSettingClick}
+          css={settingIconContainerCSS}
+        >
+          수정하기
+        </button>
+      </div>
       <div css={boxContainerCSS}>
         {/* box1 */}
         <div css={box1CSS}>
           <div css={profileContainerCSS}>
             <div css={profileImageContainerCSS}>
               <img
+                css={imageCSS}
                 style={{
-                  objectFit: "contain",
+                  objectFit: "cover",
                 }}
                 src={profileData?.teacherInfo?.profileImgUrl}
                 alt="프로필"
@@ -84,17 +106,23 @@ const UserPage= () => {
             </div>
             <p css={profilenameCSS}>
               {profileData?.teacherInfo?.nickName} 님
-              <button
+              {/* <button
+                style={{
+                  display: userId === myId ? "" : "none",
+                }}
                 onClick={handleSettingClick}
                 css={settingIconContainerCSS}
               >
                 <SettingIcon />
-              </button>
+              </button> */}
             </p>
-
-            <div css={bedgeContainer}>
+            {/* <div css={bedgeContainer}>
               <p css={selectBadge(1)}>{profileData?.teacherInfo?.mbti}</p>
               <p css={selectBadge(1)}>{profileData?.teacherInfo?.badge}</p>
+            </div> */}
+            <div css={badgeContainer}>
+              <Badge mbti={mbti} />
+              {badge && <Badge mbti={badge} />}
             </div>
             <p css={subTitleCSS}>한줄소개</p>
             <p css={oneLineIntroductionCSS}>
@@ -107,12 +135,8 @@ const UserPage= () => {
           <p css={subTitleCSS}>수집한 칭호</p>
           <div css={collectedTitleContainer}>
             {profileData?.badgeInfos?.map(
-              (value: { id: number; name: string }, idx: number) => {
-                return (
-                  <p key={idx} css={selectBadge(value?.id)}>
-                    {value.name}
-                  </p>
-                );
+              (value: { mbti: string; color?: string }, idx: any) => {
+                return <Badge key={idx} mbti={value?.mbti} />;
               },
             )}
           </div>
@@ -161,9 +185,10 @@ const UserPage= () => {
           debateList &&
           debateList.result.map((debateList) => (
             <MyDebateComponent
-              debate={debateList} 
+              debate={debateList}
               onClick={() => navigate(`/debate/${debateList.id}`)}
-              key={debateList.id} />
+              key={debateList.id}
+            />
           ))}
         {menuSelected === 3 &&
           worryPostList &&
@@ -178,13 +203,14 @@ const UserPage= () => {
         {menuSelected === 4 &&
           worrySolveList &&
           worrySolveList.result.map((worrySolve) => (
-            <>{console.log(worrySolve.title)}
-            <MatchingComponent
-              matching={worrySolve}
-              solve={"solved"}
-              onClick={() => navigate(`/match/${worrySolve.id}`)}
-              key={worrySolve.id}
-            />
+            <>
+              {console.log(worrySolve.title)}
+              <MatchingComponent
+                matching={worrySolve}
+                solve={"solved"}
+                onClick={() => navigate(`/match/${worrySolve.id}`)}
+                key={worrySolve.id}
+              />
             </>
           ))}
       </Container>
@@ -193,6 +219,10 @@ const UserPage= () => {
 };
 
 export default UserPage;
+
+const boxHeadContainerCSS = css`
+  margin-bottom: 2rem;
+`;
 
 const mainTitleCSS = css`
   display: flex;
@@ -205,14 +235,16 @@ const mainTitleCSS = css`
 
 const boxContainerCSS = css`
   display: flex;
+  /* background-color: red; */
   margin: 1.5rem 0 3rem;
-  max-width: 80rem;
+  /* max-width: 80rem; */
   min-width: 65.625rem;
 `;
 
 const box1CSS = css`
   display: flex;
   flex-direction: column;
+  align-items: center;
   background-color: ${COLOR.MAIN3};
   min-width: 15.625rem;
   /* max-width: 250px; */
@@ -256,7 +288,7 @@ const profileContainerCSS = css`
 `;
 
 const profileImageContainerCSS = css`
-  width: 12.125rem;
+  max-width: 12.125rem;
   height: 12.125rem;
   overflow: hidden;
   border-radius: 6.25rem;
@@ -267,7 +299,7 @@ const profileImageContainerCSS = css`
 `;
 
 const profilenameCSS = css`
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   margin: 0.9375rem 0 0.625rem;
   font-weight: ${FONT.WEIGHT.BOLD};
   color: ${COLOR.MAINDARK};
@@ -275,10 +307,14 @@ const profilenameCSS = css`
 `;
 
 const settingIconContainerCSS = css`
-  margin-left: 0.625rem;
+  float: right;
+  color: ${COLOR.GRAY2};
+  text-decoration: underline;
+  text-underline-position: under;
+  margin-right: 1rem;
 `;
 
-const bedgeContainer = css`
+const badgeContainer = css`
   display: flex;
   margin: 0 auto 1.25rem;
   column-gap: 0.625rem;
@@ -353,4 +389,10 @@ const menuBox = css`
   text-align: center;
   flex: 1;
   padding: 1.875rem 2.5625rem;
+`;
+const imageCSS = css`
+  width: 11rem;
+  height: auto;
+  max-height: 9rem;
+  object-fit: contain;
 `;
