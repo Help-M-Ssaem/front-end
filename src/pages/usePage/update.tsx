@@ -298,7 +298,7 @@ const MyPageUpdate = () => {
 
   const handleImageCancel = async () => {
     try {
-      await deleteImageMutation.mutate();
+      deleteImageMutation.mutate();
       const { profileImgUrl } = await getMemberInfo();
       setImageChange(profileImgUrl);
     } catch (error) {
