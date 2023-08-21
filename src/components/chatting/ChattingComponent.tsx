@@ -27,12 +27,12 @@ const ChattingComponent = ({ chatRoom }: ChattingComponentProps) => {
       <div css={profileCSS}>
         <div css={rightCSS}>
           <div css={nameCSS}>{chatRoom.memberSimpleInfo.nickName} 님</div>
-          {/* <div css={profileDetailCSS}>
-            <Badge mbti={chatRoom.memberSimpleInfo.mbti} color={"#F8CAFF"} />
+          <div css={profileDetailCSS}>
+            <Badge mbti={chatRoom.memberSimpleInfo.mbti} />
             {chatRoom.memberSimpleInfo.badge && (
-              <Badge mbti={chatRoom.memberSimpleInfo.badge} color={"#5BE1A9"} />
+              <Badge mbti={chatRoom.memberSimpleInfo.badge} />
             )}
-          </div> */}
+          </div>
           <div css={marginRightCSS}>{chatRoom.lastSendAt}</div>
         </div>
         <div css={latestMessageCSS}>{truncatedMessage}</div>
