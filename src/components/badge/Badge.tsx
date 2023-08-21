@@ -15,17 +15,20 @@ const Badge = ({ mbti }: BadgeProps) => {
   const [changeColor, setChangeColor] = useState(false);
 
   useEffect(() => {
-    if (mbti === "엠비티어른" || mbti === "FUNFUN") {
-      setColor("#C85287");
+    if (mbti === "엠비티어른") {
+      setColor("#F85CA2");
       setChangeColor(true);
     } else if (mbti === "MBTMI") {
-      setColor("#F6E0A6");
+      setColor("#FAA454");
       setChangeColor(true);
     } else if (mbti === "엠비티라노") {
       setColor("#00AF76");
       setChangeColor(true);
     } else if (mbti === "NEWBIE") {
-      setColor("#9BF266");
+      setColor("#80E045");
+      setChangeColor(true);
+    } else if (mbti === "FUNFUN") {
+      setColor("#00B5DC");
       setChangeColor(true);
     }
   }, []);
