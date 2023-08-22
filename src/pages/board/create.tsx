@@ -107,6 +107,13 @@ const CreateBoardPage = () => {
   };
   const createMutation = useCreateBoard(formData);
   const handleSubmit = () => {
+    if (!title) {
+      alert("제목을 입력해주세요.");
+      return;
+    } else if (!content) {
+      alert("내용을 입력해주세요.");
+      return;
+    }
     createMutation.mutate();
     navigate(-1);
   };

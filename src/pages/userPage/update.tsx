@@ -470,8 +470,7 @@ const box1CSS = css`
   width: 25%;
   flex: 1;
   border-radius: 1.875rem;
-  margin-right: 2.875rem;
-  padding: 2.5rem 2.125rem 0 2.125rem;
+  margin-right: 1.5rem;
 `;
 
 const box2CSS = css`
@@ -479,10 +478,9 @@ const box2CSS = css`
   flex-direction: column;
   background-color: ${COLOR.MAIN3};
   width: 25%;
-
-  height: 28rem;
+  height: 26rem;
   border-radius: 1.875rem;
-  margin-right: 2.875rem;
+  margin-right: 1.5rem;
 `;
 
 const subTitleCSS = css`
@@ -499,7 +497,7 @@ const subTitle2CSS = css`
 `;
 
 const profileContainerCSS = css`
-  margin: 0.625rem 0 2.5rem;
+  // margin: 0.625rem 0 2.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -567,7 +565,7 @@ const calcelCSS = css`
 const buttonCSS = css`
   display: flex;
   justify-content: flex-end;
-  margin-right: 5rem;
+  margin-right: 0rem;
   margin-top: -5rem;
 `;
 

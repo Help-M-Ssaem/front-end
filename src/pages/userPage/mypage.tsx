@@ -6,7 +6,7 @@ import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import BoardComponent from "../../components/board/Board";
 import { useGetProfile } from "../../hooks/user/useProfile";
-import { SettingIcon } from "../../assets/CommonIcons";
+import { BigCatLogoIcon, SettingIcon } from "../../assets/CommonIcons";
 import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
 import { useBoardListMember } from "../../hooks/board/useBoardListMember";
@@ -124,44 +124,82 @@ const MyPage = () => {
 
         {menuSelected === 1 &&
           boardList &&
-          boardList.result.map((board) => (
-            <BoardComponent
-              board={board}
-              key={board.id}
-              onClick={() => navigate(`/board/${board.id}`)}
-            />
+          (boardList.result.length > 0 ? (
+            boardList.result.map((board) => (
+              <BoardComponent
+                board={board}
+                key={board.id}
+                onClick={() => navigate(`/board/${board.id}`)}
+              />
+            ))
+          ) : (
+            <div css={noChatCSS}>
+              <div css={IconCSS}>
+                <BigCatLogoIcon />
+              </div>
+              <div css={bottomFontSIZE}>게시글이 없어요!</div>
+            </div>
           ))}
+
         {menuSelected === 2 &&
           debateList &&
-          debateList.result.map((debateList) => (
-            <MyDebateComponent
-              debate={debateList}
-              onClick={() => navigate(`/debate/${debateList.id}`)}
-              key={debateList.id}
-            />
+          (debateList.result.length > 0 ? (
+            debateList.result.map((debateItem) => (
+              <MyDebateComponent
+                debate={debateItem}
+                onClick={() => navigate(`/debate/${debateItem.id}`)}
+                key={debateItem.id}
+              />
+            ))
+          ) : (
+            <div css={noChatCSS}>
+              <div css={IconCSS}>
+                <BigCatLogoIcon />
+              </div>
+              <div css={bottomFontSIZE}>게시글이 없어요!</div>
+            </div>
           ))}
+
         {menuSelected === 3 &&
           worryPostList &&
-          worryPostList.result.map((worryPost) => (
-            <MatchingComponent
-              matching={worryPost}
-              solve={"waiting"}
-              onClick={() => navigate(`/match/${worryPost.id}`)}
-              key={worryPost.id}
-            />
+          (worryPostList.result.length > 0 ? (
+            worryPostList.result.map((worryPost) => (
+              <MatchingComponent
+                matching={worryPost}
+                solve={"waiting"}
+                onClick={() => navigate(`/match/${worryPost.id}`)}
+                key={worryPost.id}
+              />
+            ))
+          ) : (
+            <div css={noChatCSS}>
+              <div css={IconCSS}>
+                <BigCatLogoIcon />
+              </div>
+              <div css={bottomFontSIZE}>게시글이 없어요!</div>
+            </div>
           ))}
         {menuSelected === 4 &&
           worrySolveList &&
-          worrySolveList.result.map((worrySolve) => (
-            <>
-              {console.log(worrySolve.title)}
-              <MatchingComponent
-                matching={worrySolve}
-                solve={"solved"}
-                onClick={() => navigate(`/match/${worrySolve.id}`)}
-                key={worrySolve.id}
-              />
-            </>
+          (worrySolveList.result.length > 0 ? (
+            worrySolveList.result.map((worrySolve) => (
+              <>
+                {console.log(worrySolve.title)}
+                <MatchingComponent
+                  matching={worrySolve}
+                  solve={"solved"}
+                  onClick={() => navigate(`/match/${worrySolve.id}`)}
+                  key={worrySolve.id}
+                />
+              </>
+            ))
+          ) : (
+            <div css={noChatCSS}>
+              <div css={IconCSS}>
+                <BigCatLogoIcon />
+              </div>
+              <div css={bottomFontSIZE}>게시글이 없어요!</div>
+            </div>
           ))}
       </Container>
     </div>
@@ -169,6 +207,27 @@ const MyPage = () => {
 };
 
 export default MyPage;
+
+const noChatCSS = css`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 1rem;
+`;
+
+const bottomFontSIZE = css`
+  font-size: ${FONT.SIZE.TITLE1};
+  color: ${COLOR.GRAY2};
+`;
+
+const IconCSS = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 const boxHeadContainerCSS = css`
   margin-bottom: 2rem;
@@ -202,7 +261,7 @@ const box2CSS = css`
   display: flex;
   flex-direction: column;
   width: 25%;
-  height: 28rem;
+  height: 26rem;
   margin-right: 1.5rem;
 `;
 

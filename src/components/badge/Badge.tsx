@@ -17,38 +17,42 @@ type MBTIColors = typeof MBTICOLOR;
 
 const Badge = ({ mbti, imgUrl, isSelected, onClick }: BadgeProps) => {
   const [color, setColor] = useState("#7A7A7B");
-  const [changeColor, setChangeColor] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-
   const backgroundRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (mbti === "엠비티어른") {
-      setColor("#F85CA2");
-      setChangeColor(true);
-    } else if (mbti === "MBTMI") {
-      setColor("#FAA454");
-      setChangeColor(true);
-    } else if (mbti === "엠비티라노") {
-      setColor("#00AF76");
-      setChangeColor(true);
-    } else if (mbti === "NEWBIE") {
-      setColor("#80E045");
-      setChangeColor(true);
-    } else if (mbti === "FUNFUN") {
-      setColor("#00B5DC");
-      setChangeColor(true);
-    } else if (mbti === "해결 완료") {
-      setColor("#7A7A7B");
-      setChangeColor(true);
+    const formattedMbti = mbti && mbti.toUpperCase();
+    if (formattedMbti in MBTICOLOR) {
+      setColor(MBTICOLOR[formattedMbti as keyof MBTIColors]);
+    } else {
+      switch (mbti) {
+        case "엠비티어른":
+          setColor("#F85CA2");
+          break;
+        case "MBTMI":
+          setColor("#FAA454");
+          break;
+        case "엠비티라노":
+          setColor("#00AF76");
+          break;
+        case "NEWBIE":
+          setColor("#80E045");
+          break;
+        case "FUNFUN":
+          setColor("#00B5DC");
+          break;
+        case "해결 완료":
+          setColor("#7A7A7B");
+          break;
+        default:
+          break;
+      }
     }
-  }, []);
-
-  const formattedMbti = mbti && mbti.length === 4 && mbti.toUpperCase();
+  }, [mbti]);
 
   const handleBadgeClick = () => {
     if (onClick) {
-      onClick(); // onClick 함수가 정의되어 있을 때만 호출
+      onClick();
     }
     setModalOpen(!modalOpen);
   };
@@ -65,9 +69,7 @@ const Badge = ({ mbti, imgUrl, isSelected, onClick }: BadgeProps) => {
     color: ${COLOR.WHITE};
     font-size: ${FONT.SIZE.BODY};
     font-weight: ${FONT.WEIGHT.REGULAR};
-    background: ${changeColor
-      ? color
-      : MBTICOLOR[formattedMbti as keyof MBTIColors]};
+    background: ${color};
     padding: 0.2rem 0.5rem;
     border-radius: 0.9rem;
     margin-right: 0.4rem;
@@ -75,7 +77,7 @@ const Badge = ({ mbti, imgUrl, isSelected, onClick }: BadgeProps) => {
 
     ${isSelected &&
     css`
-      border: 0.15rem solid ${COLOR.MAIN2};
+      border: 0.2rem solid ${COLOR.MAIN2};
       align-items: center;
       padding: 0.1rem 0.4rem;
       display: flex;
