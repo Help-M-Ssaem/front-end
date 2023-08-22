@@ -234,6 +234,7 @@ const dateTop = css`
   align-items: center;
   padding: 0.8rem 2rem 0.8rem 2rem;
   background-color: ${COLOR.MAIN4};
+  border-bottom: 1px solid ${COLOR.GRAY4};
   height: 5rem;
   width: 100%;
 `;
