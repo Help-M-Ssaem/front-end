@@ -158,6 +158,7 @@ const box3CSS = css`
   display: flex;
   flex-direction: column;
   height: 26rem;
+  width: 50%;
 `;
 
 const subTitleCSS = css`
