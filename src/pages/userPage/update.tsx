@@ -4,7 +4,7 @@ import { useState } from "react";
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
-import ActivityList from "../../components/mypage/MyPage";
+import ActivityList from "../../components/mypage/ActivityList";
 import { useGetProfile } from "../../hooks/user/useProfile";
 import { useNavigate } from "react-router-dom";
 import NameBox from "../../components/mypage/nameBox";
@@ -17,14 +17,18 @@ import { mssaemAxios as axios } from "../../apis/axios";
 import { useDeleteImage } from "../../hooks/mypage/useDeleteImage";
 import Catlogo from "../../assets/logo/CatLogo.svg";
 import Container from "../../components/container/Container";
+import MyActivityList from "../../components/mypage/MyActivityList";
 import Badge from "../../components/badge/Badge";
 import { User } from "../../interfaces/user";
 
 const MyPageUpdate = () => {
   const navigate = useNavigate();
-
   const { user } = useMemberInfo();
-  const { profileData } = useGetProfile(user!!.id);
+  const userId = user?.id || 1;
+  const { profileData } = useGetProfile(userId);
+
+  // const { user } = useMemberInfo();
+  // const { profileData } = useGetProfile(user!!.id);
   const [mbtiNum, setMbtinum] = useState<string | null>(null);
   const [invalidInput, setInvalidInput] = useState<string | null>(null);
   const [mbti, setMbti] = useState<string | undefined>(undefined);
@@ -432,7 +436,7 @@ const MyPageUpdate = () => {
           </Container>
 
           {/* box3 */}
-          <ActivityList profileData={profileData} />
+          <MyActivityList profileData={profileData} />
         </div>
 
         <div css={buttonCSS}>

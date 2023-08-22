@@ -5,9 +5,13 @@ import Container from "../../components/container/Container";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import { useGetProfile } from "../../hooks/user/useProfile";
+import useMemberInfo from "../../hooks/user/useMemberInfo";
 
-const ActivityList = (props: any) => {
-  const { profileData } = useGetProfile(1);
+const MyActivityList = (props: any) => {
+  const { user } = useMemberInfo();
+  const userId = user?.id || 1;
+  const { profileData } = useGetProfile(userId);
+
   useEffect(() => {
     if (profileData?.worryBoardHistory) {
     }
@@ -145,12 +149,12 @@ const ActivityList = (props: any) => {
   );
 };
 
-export default ActivityList;
+export default MyActivityList;
 
 const box3CSS = css`
   display: flex;
   flex-direction: column;
-  height: 28rem;
+  height: 26rem;
 `;
 
 const subTitleCSS = css`
@@ -161,15 +165,16 @@ const subTitleCSS = css`
 
 const spaceBetween = css`
   display: flex;
-  margin-right: 20%;
+  margin-right: 17%;
+  margin-left: 17%;
   justify-content: space-between;
   // justify-content: space-around;
 `;
 const spaceBetweenWithMargin = css`
   display: flex;
-  margin-right: 20%;
+  margin-right: 17%;
+  margin-left: 17%;
   justify-content: space-between;
-
   // justify-content: space-around;
   margin-top: 2.8125rem;
 `;

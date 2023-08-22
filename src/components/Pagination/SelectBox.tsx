@@ -5,13 +5,17 @@ import { SmallArrowIcon } from "../../assets/CommonIcons";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import { FaSearch } from "react-icons/fa";
+import { useSearch } from "../../hooks/keywords/usePostSearchWord";
+import { useNavigate } from "react-router-dom";
 const selectList = ["제목+내용", "제목", "내용", "글쓴이"];
 
 const SelectBox = () => {
   const first = selectList[0];
+  const navigate = useNavigate();
   const [option, setOption] = useState(first);
   const [open, setOpen] = useState(false);
-  const [search, setSearch] = useState("");
+  const [searchWord, setSearchWord] = useState("");
+  const search = useSearch(searchWord);
   const handleOpen = () => {
     setOpen(!open);
   };
@@ -23,12 +27,17 @@ const SelectBox = () => {
   const handleInputChange = (event: {
     target: { value: SetStateAction<string> };
   }) => {
-    setSearch(event.target.value);
+    setSearchWord(event.target.value);
+  };
+
+  const handleSearch = () => {
+    search.mutate();
+    navigate(`/search/result?query=${searchWord}`);
   };
 
   const handleOnKeyPress = (e: { key: string }) => {
     if (e.key === "Enter") {
-      console.log("Enter");
+      handleSearch();
     }
   };
 
@@ -57,14 +66,14 @@ const SelectBox = () => {
         <input
           css={inputCSS}
           type="text"
-          value={search}
+          value={searchWord}
           onChange={handleInputChange}
           placeholder="검색어를 입력해주세요"
           onKeyDown={handleOnKeyPress}
         />
-        {search.length === 0 && <FaSearch css={searchIconCSS} />}
-        {search.length > 0 && (
-          <div css={clearIconCSS} onClick={() => setSearch("")}>
+        {searchWord.length === 0 && <FaSearch css={searchIconCSS} />}
+        {searchWord.length > 0 && (
+          <div css={clearIconCSS} onClick={() => setSearchWord("")}>
             &times;
           </div>
         )}
