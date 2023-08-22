@@ -18,9 +18,14 @@ const SearchBar: React.FC = () => {
   };
 
   const handleSearch = () => {
+    if(searchWord.trim() !== ""){
     search.mutate();
     navigate(`/search/result?query=${searchWord}`);
+  } else{
+      window.alert("공백은 검색이 안됩니다.")
+    }
   };
+
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
