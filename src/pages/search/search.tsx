@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { css } from "@emotion/react";
 import SearchBar from "../../components/search/SearchBar";
 import COLOR from "../../styles/color";
@@ -7,14 +7,15 @@ import FONT from "../../styles/font";
 import { usePopularSearch } from "../../hooks/keywords/useGetPopularSearch";
 import { useSearch } from "../../hooks/keywords/usePostSearchWord";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Search: React.FC = () => {
-  const { keywordList } = usePopularSearch();
+  const { keywordList} = usePopularSearch();
   const [searchWord, setSearchWord] = useState("");
   const search = useSearch(searchWord);
   const navigate = useNavigate();
   const currentDate = new Date();
-
+  const [idx, setIdx] = useState<number>(0);
   function formatDate(date: Date) {
     const year = String(date.getFullYear());
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -26,7 +27,16 @@ const Search: React.FC = () => {
   }
 
   const formattedDate = formatDate(currentDate);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if(keywordList)
+      setIdx((prevIndex) => (prevIndex + 1) % keywordList.length);
+    }, 1500);
 
+    return () => {
+      clearInterval(interval);
+    };
+  }, [keywordList]);
   const handleSearch = (clickedKeyword: string) => {
     setSearchWord(clickedKeyword);
     search.mutate();
@@ -41,17 +51,19 @@ const Search: React.FC = () => {
           <span css={timeNow}>{formattedDate}</span>
         </div>
         {/* 모션 넣기 */}
-        {keywordList &&
-          keywordList.map((keyword, index) => (
-            <div
-              css={[trendingKeywordWrapper]}
+        { keywordList && keywordList.map((keyword, index) => (
+            <motion.div
+              css={[trendingKeywordWrapper, (index === idx) && recentCSS ]}
               key={index}
               onClick={() => handleSearch(keyword.keyword)}
+              initial={{ opacity: 1, scale: 1 }}
+              animate={{ opacity: 1, scale: index === idx ? 1.07 : 1 }}
+              transition={{ duration: 0.5, ease: "easeIn" }}
             >
               <span css={indexStyle}>{index + 1}</span>
               <span css={trendingKeyword}>{keyword.keyword}</span>
-            </div>
-          ))}
+          </motion.div>
+        ))}
       </div>
     </div>
   );
@@ -103,4 +115,7 @@ const timeNow = css`
   font-weight: ${FONT.WEIGHT.REGULAR};
 `;
 
+const recentCSS = css`
+background: ${COLOR.MAIN4};
+`;
 export default Search;
