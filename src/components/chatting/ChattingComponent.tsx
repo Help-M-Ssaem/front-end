@@ -29,9 +29,6 @@ const ChattingComponent = ({ chatRoom }: ChattingComponentProps) => {
           <div css={nameCSS}>{chatRoom.memberSimpleInfo.nickName} 님</div>
           <div css={profileDetailCSS}>
             <Badge mbti={chatRoom.memberSimpleInfo.mbti} />
-            {chatRoom.memberSimpleInfo.badge && (
-              <Badge mbti={chatRoom.memberSimpleInfo.badge} />
-            )}
           </div>
           <div css={marginRightCSS}>{chatRoom.lastSendAt}</div>
         </div>
