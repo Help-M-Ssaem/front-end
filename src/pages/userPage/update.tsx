@@ -505,14 +505,24 @@ const profileContainerCSS = css`
 `;
 
 const profileImageContainerCSS = css`
-  width: 12.125rem;
-  height: 12.125rem;
+  max-width: 12.125rem;
+  max-height: 12.125rem;
   overflow: hidden;
-  border-radius: 6.25rem;
+  border-radius: 50%;
   background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const imageCSS = css`
+  // width: 12.125rem;
+  // height: auto;
+  // width: auto;
+  width: 100%;
+  height: 100%;
+  // max-height: 9rem;
+  object-fit: contain;
 `;
 
 const collectedTitleContainer = css`
@@ -639,12 +649,6 @@ const uploadLabelCSS = css`
 `;
 const uploadInputCSS = css`
   display: none;
-`;
-const imageCSS = css`
-  width: auto;
-  height: auto;
-  max-height: 12.125rem;
-  // object-fit: contain;
 `;
 
 const settingCSS = css`
