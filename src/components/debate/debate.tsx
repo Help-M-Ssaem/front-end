@@ -108,6 +108,7 @@ const contentCSS = css`
   margin-bottom: 1rem;
   font-size: ${FONT.SIZE.HEADLINE};
   font-weight: ${FONT.WEIGHT.REGULAR};
+  line-height: 1.4rem;
 `;
 
 const marginRightCSS = css`

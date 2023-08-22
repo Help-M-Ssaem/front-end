@@ -212,7 +212,7 @@ const titleCSS = css`
 const contentCSS = css`
   font-size: ${FONT.SIZE.HEADLINE};
   font-weight: ${FONT.WEIGHT.REGULAR};
-  padding-bottom: 3rem;
+  padding-bottom: 2rem;
   line-height: 1.4rem;
 `;
 
