@@ -1,16 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import { SerializedStyles, css } from "@emotion/react";
-import Button from "../../button/Button";
 import Input from "../../input/Input";
 import { ReplyIcon } from "../../../assets/CommentIcons";
 import { useState } from "react";
 import { useDebateCommentCreate } from "../../../hooks/debate/comment/useDebateCommentCreate";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import {
   replyCommentIdState,
   replyCommentOpenState,
-} from "../../../states/debate";
+} from "../../../states/board";
 import COLOR from "../../../styles/color";
 import FONT from "../../../styles/font";
 
@@ -20,9 +19,9 @@ interface CommentCreateProps {
 }
 
 const CommentCreate = ({ addCSS, reply }: CommentCreateProps) => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const debateId = Number(id);
-
   const [content, setContent] = useState("");
   const [replyContent, setReplyContent] = useState("");
   const [replyCommentId, setReplyCommentId] =
@@ -30,6 +29,7 @@ const CommentCreate = ({ addCSS, reply }: CommentCreateProps) => {
   const [replyCommentOpen, setReplyCommentOpen] = useRecoilState(
     replyCommentOpenState,
   );
+  const token = localStorage.getItem("accessToken");
 
   const formData = new FormData();
   formData.append(
@@ -52,14 +52,24 @@ const CommentCreate = ({ addCSS, reply }: CommentCreateProps) => {
 
   const handleCommentSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
     e && e.preventDefault();
-    createMutation.mutate();
+    token &&createMutation.mutate();
+    if(!token){
+      window.alert("로그인 후 이용할 수 있습니다.");
+      navigate(`/login`);
+      return ;
+  }
     setContent("");
     setReplyCommentOpen(false);
   };
 
   const handleReplyCommentSubmit = (e?: React.FormEvent<HTMLFormElement>) => {
     e && e.preventDefault();
-    createReplyMutation.mutate();
+    token &&createReplyMutation.mutate();
+    if(!token){
+      window.alert("로그인 후 이용할 수 있습니다.");
+      navigate(`/login`);
+      return ;
+  }
     setReplyContent("");
     setReplyCommentOpen(false);
   };
@@ -79,8 +89,6 @@ const CommentCreate = ({ addCSS, reply }: CommentCreateProps) => {
       handleCommentSubmit();
     }
   };
-
-  const token = localStorage.getItem("accessToken");
 
   return (
     <div css={[commentCreateBoxCSS, addCSS]}>
