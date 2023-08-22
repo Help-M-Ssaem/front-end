@@ -55,7 +55,6 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW, postId }) => {
 
   const handleMatchingClick = (id: number) => {
     navigate(`/match/${id}`);
-    window.location.reload();
   };
   useEffect(() => {
     setMbti1("전체");

@@ -18,9 +18,11 @@ const SearchBar: React.FC = () => {
   };
 
   const handleSearch = () => {
-    if (searchWord.length > 0) {
+    if (searchWord.trim() !== "") {
       search.mutate();
       navigate(`/search/result?query=${searchWord}`);
+    } else {
+      window.alert("공백은 검색이 안됩니다.");
     }
   };
 

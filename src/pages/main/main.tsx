@@ -70,7 +70,7 @@ const MainPage = () => {
           content={"지금의 토론"}
           key={hotThree && `${hotThree.discussionId}`}
           id={hotThree && hotThree.discussionId}
-          category="dabate"
+          category="debate"
         />
         <Hot
           title={hotThree && hotThree.worryBoardTitle}

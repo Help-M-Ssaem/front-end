@@ -471,7 +471,7 @@ const box1CSS = css`
   flex: 1;
   border-radius: 1.875rem;
   margin-right: 2.875rem;
-  padding: 2.5rem 2.125rem 0 2.125rem;
+  padding: 2.5rem 2.125rem;
 `;
 
 const box2CSS = css`
@@ -479,10 +479,10 @@ const box2CSS = css`
   flex-direction: column;
   background-color: ${COLOR.MAIN3};
   width: 25%;
-
-  height: 28rem;
+  height: 26rem;
   border-radius: 1.875rem;
   margin-right: 2.875rem;
+  padding: 2.5rem 3.125rem;
 `;
 
 const subTitleCSS = css`
