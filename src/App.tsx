@@ -60,6 +60,7 @@ function App() {
             <Route path="/hotBoard" element={<HotBoardPage />} />
             <Route path="/hotDebate" element={<HotDebatePage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/logout" element={<MainPage />} />
             <Route path="/kakao/login" element={<Callback />} />
             <Route path="/naver/login" element={<Callback />} />
             <Route path="/google/login" element={<Callback />} />

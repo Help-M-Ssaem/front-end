@@ -18,6 +18,9 @@ import { useDeleteImage } from "../../hooks/mypage/useDeleteImage";
 import Catlogo from "../../assets/logo/CatLogo.svg";
 import Container from "../../components/container/Container";
 import MyActivityList from "../../components/mypage/MyActivityList";
+import Badge from "../../components/badge/Badge";
+import { User } from "../../interfaces/user";
+
 const MyPageUpdate = () => {
   const navigate = useNavigate();
   const { user } = useMemberInfo();
@@ -249,6 +252,7 @@ const MyPageUpdate = () => {
   };
 
   // --------  이미지 부분 ---------
+
   const handleImageBlobHook = async (blob: Blob) => {
     const imgUrl = URL.createObjectURL(blob);
     setImageChange(imgUrl);
@@ -256,7 +260,7 @@ const MyPageUpdate = () => {
   };
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const file = e.target?.files?.[0];
     if (file) {
       try {
         const imgUrl = await handleImageBlobHook(file);
@@ -290,11 +294,17 @@ const MyPageUpdate = () => {
   };
   const deleteImageMutation = useDeleteImage();
 
-  const handleImageCancel = () => {
+  async function getMemberInfo(): Promise<User> {
+    const { data } = await axios.get("/member/info");
+    setImageChange(data.profileImgUrl);
+    return data;
+  }
+
+  const handleImageCancel = async () => {
     try {
       deleteImageMutation.mutate();
-      // setImageChange(undefined);
-      setImageChange(user?.profileImgUrl);
+      const { profileImgUrl } = await getMemberInfo();
+      setImageChange(profileImgUrl);
     } catch (error) {
       console.log(errors);
     }
@@ -401,22 +411,23 @@ const MyPageUpdate = () => {
                   };
 
                   return (
-                    <p
-                      key={idx}
-                      css={[
-                        selectBadge(value),
-                        isSelected && {
-                          border: `0.2rem solid ${COLOR.MAIN1} `,
-                          padding: `0.6rem 0.5rem`,
-                          display: "flex",
-                          alignItems: "center",
-                        },
-                      ]}
-                      onClick={handleBadgeClick}
-                      style={{ cursor: "pointer" }}
-                    >
-                      {value.name}
-                    </p>
+                    <Badge mbti={value.name}></Badge>
+                    // <p
+                    //   key={idx}
+                    //   css={[
+                    //     selectBadge(value),
+                    //     isSelected && {
+                    //       border: `0.2rem solid ${COLOR.MAIN1} `,
+                    //       padding: `0.6rem 0.5rem`,
+                    //       display: "flex",
+                    //       alignItems: "center",
+                    //     },
+                    //   ]}
+                    //   onClick={handleBadgeClick}
+                    //   style={{ cursor: "pointer" }}
+                    // >
+                    //   {value.name}
+                    // </p>
                   );
                 },
               )}
@@ -460,8 +471,6 @@ const boxContainerCSS = css`
   display: flex;
   width: 100%;
   margin: 1.5rem 0 3rem;
-  // max-width: 80rem;
-  // min-width: 65.625rem;
 `;
 
 const box1CSS = css`
