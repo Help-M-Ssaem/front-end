@@ -401,16 +401,6 @@ const MyPageUpdate = () => {
                 (value: { id: number; name: string }, idx: number) => {
                   const isSelected = value.name === values.badge;
 
-                  // 클릭 이벤트 핸들러
-                  // const handleBadgeClick = () => {
-                  //   if (isSelected) {
-                  //     setBadgeChange("");
-                  //   } else {
-                  //     setBadgeChange(value.name as string);
-                  //     setBadgeId(value.id);
-                  //   }
-                  // };
-
                   const handleBadgeClick = () => {
                     if (isSelected) {
                       setBadgeChange("");
@@ -428,23 +418,6 @@ const MyPageUpdate = () => {
                       mbti={value.name}
                       isSelected={isSelected}
                     ></Badge>
-
-                    // <p
-                    //   key={idx}
-                    //   css={[
-                    //     selectBadge(value),
-                    //     isSelected && {
-                    //       border: `0.2rem solid ${COLOR.MAIN1} `,
-                    //       padding: `0.6rem 0.5rem`,
-                    //       display: "flex",
-                    //       alignItems: "center",
-                    //     },
-                    //   ]}
-                    //   onClick={handleBadgeClick}
-                    //   style={{ cursor: "pointer" }}
-                    // >
-                    //   {value.name}
-                    // </p>
                   );
                 },
               )}
@@ -472,7 +445,7 @@ const MyPageUpdate = () => {
 export default MyPageUpdate;
 
 const containerCSS = css`
-  padding-top: 3rem;
+  padding-top: 0.5rem;
 `;
 
 const mainTitleCSS = css`
