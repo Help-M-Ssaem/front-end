@@ -75,7 +75,7 @@ const Badge = ({ mbti, imgUrl, isSelected, onClick }: BadgeProps) => {
 
     ${isSelected &&
     css`
-      border: 0.15rem solid ${COLOR.MAIN2};
+      border: 0.2rem solid ${COLOR.MAIN2};
       align-items: center;
       padding: 0.1rem 0.4rem;
       display: flex;
