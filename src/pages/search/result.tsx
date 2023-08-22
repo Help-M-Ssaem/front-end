@@ -164,7 +164,10 @@ const boardHeader = css`
 
 const searchContainer = css`
   width: 100%;
-  background-color: ${COLOR.MAIN4};
+  // width: calc(100% + 30rem);
+  // margin-left: -15rem;
+  padding-bottom: 1rem;
+  // background-color: ${COLOR.MAIN3};
 `;
 
 const searchBarContainer = css`

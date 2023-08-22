@@ -290,11 +290,20 @@ const profileImageContainerCSS = css`
   max-width: 12.125rem;
   height: 12.125rem;
   overflow: hidden;
-  border-radius: 6.25rem;
+  border-radius: 50%;
   background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const imageCSS = css`
+  // width: 12.125rem;
+  // height: auto;
+  // width: auto;
+  height: 100%;
+  // max-height: 9rem;
+  object-fit: contain;
 `;
 
 const profilenameCSS = css`
@@ -388,10 +397,4 @@ const menuBox = css`
   text-align: center;
   flex: 1;
   padding: 1.875rem 2.5625rem;
-`;
-const imageCSS = css`
-  width: 11rem;
-  height: auto;
-  max-height: 9rem;
-  object-fit: contain;
 `;

@@ -93,6 +93,7 @@ const searchBarContainer = css`
 const searchInput = css`
   border: none;
   padding: 0.25rem 0.75rem 0.25rem 0;
+  // background-color: ${COLOR.MAIN3};
   font-size: ${FONT.SIZE.TITLE2};
   width: 100%;
   &::placeholder {
