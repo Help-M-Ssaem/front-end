@@ -18,7 +18,7 @@ import ListPagination from "../../Pagination/ListPagination";
 interface WorryProps {
   pathMove: string;
   SaW: string;
-  postId: number
+  postId: number;
 }
 
 const WorryList: React.FC<WorryProps> = ({ pathMove, SaW, postId }) => {
@@ -31,7 +31,13 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW, postId }) => {
 
   const [blockNum, setBlockNum] = useState(0); //블록 설정하는 함수
   const [page, setPage] = useState(1);
-  const worryBoardLists = useFetchWorryBoardList(mbti1, mbti2, pathMove, page-1, postId);
+  const worryBoardLists = useFetchWorryBoardList(
+    mbti1,
+    mbti2,
+    pathMove,
+    page - 1,
+    postId,
+  );
   const limit = 10; //한 페이지당 아이템의 개수
   const totalPage = worryBoardLists ? worryBoardLists.totalSize : 1; //전체 페이지 수
 
@@ -101,7 +107,7 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW, postId }) => {
           setBlockNum={setBlockNum}
           totalPage={totalPage}
         />
-        <SelectBox />
+        <SelectBox boardName={"matching"} />
       </Container>
     </>
   );

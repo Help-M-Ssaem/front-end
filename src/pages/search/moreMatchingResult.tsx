@@ -133,7 +133,6 @@ const MoreMatchingResult = () => {
             setBlockNum={setBlockNum}
             totalPage={totalPageWaiting}
           />
-          <SelectBox />
         </Container>
       </div>
 
@@ -158,7 +157,6 @@ const MoreMatchingResult = () => {
             setBlockNum={setBlockNum}
             totalPage={totalPageSolved}
           />
-          <SelectBox />
         </Container>
       </div>
     </>
