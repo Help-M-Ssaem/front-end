@@ -98,6 +98,13 @@ const CreateMatchingPage = () => {
 
   const createMutation = useCreateBoard(formData);
   const handleSubmit = () => {
+    if(title.trim() === ""){
+      window.alert("제목은 공백이면 안됩니다.");
+      return;
+    }else if(title.length < 2){
+      window.alert("제목은 2글자 이상입니다.");
+      return;
+    }
     createMutation.mutate();
     navigate(-1);
   };

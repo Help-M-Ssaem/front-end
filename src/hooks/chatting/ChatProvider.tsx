@@ -2,6 +2,7 @@ import { CompatClient, Stomp } from "@stomp/stompjs";
 import { createContext, useContext, useMemo, useRef } from "react";
 import { useSetRecoilState } from "recoil";
 import { messageState } from "../../states/chatting";
+import audio from "../../audios/chatting.mp3";
 
 const ChatContext = createContext(
   {} as {
@@ -16,8 +17,6 @@ export const useChatContext = () => useContext(ChatContext);
 export function ChatProvider({ children }: any) {
   const setMessages = useSetRecoilState(messageState);
   const token = localStorage.getItem("accessToken");
-  // let token =
-  //   "eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MSwiaWF0IjoxNjg5MzU2NTQwLCJleHAiOjE2OTQ1NDA1NDB9.nvOIStUQzS_-C2mLMX9tuNSUWqVYbPNa9p_5HlMyoDI";
 
   // 채팅 연결 구독
   const client = useRef<CompatClient>();
@@ -44,6 +43,9 @@ export function ChatProvider({ children }: any) {
     return client;
   };
   const onMessageReceived = (message: any, roomId: number) => {
+    const audioElement = new Audio(audio);
+    audioElement.play();
+
     setMessages((prevMessages) => {
       const updatedMessages = {
         ...prevMessages,

@@ -16,10 +16,12 @@ export const ChattingForm = ({ chatRoomId }: ChattingFormProps) => {
 
   const handleChattingSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (message.trim().length === 0) {
+      return;
+    }
     send(chatRoomId, message);
     setMessage("");
   };
-
   return (
     <div css={dateBottom}>
       <form css={submitButtonBoxCSS} onSubmit={handleChattingSubmit}>

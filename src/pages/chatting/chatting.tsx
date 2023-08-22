@@ -135,7 +135,7 @@ const ChattingPage = () => {
                 <ChattingForm chatRoomId={activeRoomId} />
               </>
             )}
-            {chatRooms && (
+            {chatRooms && !active && (
               <div css={[noChatCSS, noMassageCSS]}>
                 <div css={bottomFontSIZE}>
                   익명성을 악욕한 욕설, 비방, 불건전한 정보 유통 등 상대방을
@@ -234,6 +234,7 @@ const dateTop = css`
   align-items: center;
   padding: 0.8rem 2rem 0.8rem 2rem;
   background-color: ${COLOR.MAIN4};
+  border-bottom: 1px solid ${COLOR.GRAY4};
   height: 5rem;
   width: 100%;
 `;

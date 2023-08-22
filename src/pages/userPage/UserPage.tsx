@@ -7,7 +7,7 @@ import FONT from "../../styles/font";
 import BoardComponent from "../../components/board/Board";
 import ActivityList from "../../components/mypage/ActivityList";
 import { useGetProfile } from "../../hooks/user/useProfile";
-import { SettingIcon } from "../../assets/CommonIcons";
+import { BigCatLogoIcon, SettingIcon } from "../../assets/CommonIcons";
 import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
 import { useBoardListMember } from "../../hooks/board/useBoardListMember";
@@ -164,12 +164,21 @@ const UserPage = () => {
 
         {menuSelected === 1 &&
           boardList &&
-          boardList.result.map((board) => (
-            <BoardComponent
-              board={board}
-              key={board.id}
-              onClick={() => navigate(`/board/${board.id}`)}
-            />
+          (boardList.result.length > 0 ? (
+            boardList.result.map((board) => (
+              <BoardComponent
+                board={board}
+                key={board.id}
+                onClick={() => navigate(`/board/${board.id}`)}
+              />
+            ))
+          ) : (
+            <div css={noChatCSS}>
+              <div css={IconCSS}>
+                <BigCatLogoIcon />
+              </div>
+              <div css={bottomFontSIZE}>게시글이 없어요!</div>
+            </div>
           ))}
         {/* <ListPagination
           limit={limit}
@@ -182,35 +191,63 @@ const UserPage = () => {
 
         {menuSelected === 2 &&
           debateList &&
-          debateList.result.map((debateList) => (
-            <MyDebateComponent
-              debate={debateList}
-              onClick={() => navigate(`/debate/${debateList.id}`)}
-              key={debateList.id}
-            />
+          (debateList.result.length > 0 ? (
+            debateList.result.map((debateItem) => (
+              <MyDebateComponent
+                debate={debateItem}
+                onClick={() => navigate(`/debate/${debateItem.id}`)}
+                key={debateItem.id}
+              />
+            ))
+          ) : (
+            <div css={noChatCSS}>
+              <div css={IconCSS}>
+                <BigCatLogoIcon />
+              </div>
+              <div css={bottomFontSIZE}>게시글이 없어요!</div>
+            </div>
           ))}
+
         {menuSelected === 3 &&
           worryPostList &&
-          worryPostList.result.map((worryPost) => (
-            <MatchingComponent
-              matching={worryPost}
-              solve={"waiting"}
-              onClick={() => navigate(`/match/${worryPost.id}`)}
-              key={worryPost.id}
-            />
+          (worryPostList.result.length > 0 ? (
+            worryPostList.result.map((worryPost) => (
+              <MatchingComponent
+                matching={worryPost}
+                solve={"waiting"}
+                onClick={() => navigate(`/match/${worryPost.id}`)}
+                key={worryPost.id}
+              />
+            ))
+          ) : (
+            <div css={noChatCSS}>
+              <div css={IconCSS}>
+                <BigCatLogoIcon />
+              </div>
+              <div css={bottomFontSIZE}>게시글이 없어요!</div>
+            </div>
           ))}
         {menuSelected === 4 &&
           worrySolveList &&
-          worrySolveList.result.map((worrySolve) => (
-            <>
-              {console.log(worrySolve.title)}
-              <MatchingComponent
-                matching={worrySolve}
-                solve={"solved"}
-                onClick={() => navigate(`/match/${worrySolve.id}`)}
-                key={worrySolve.id}
-              />
-            </>
+          (worrySolveList.result.length > 0 ? (
+            worrySolveList.result.map((worrySolve) => (
+              <>
+                {console.log(worrySolve.title)}
+                <MatchingComponent
+                  matching={worrySolve}
+                  solve={"solved"}
+                  onClick={() => navigate(`/match/${worrySolve.id}`)}
+                  key={worrySolve.id}
+                />
+              </>
+            ))
+          ) : (
+            <div css={noChatCSS}>
+              <div css={IconCSS}>
+                <BigCatLogoIcon />
+              </div>
+              <div css={bottomFontSIZE}>게시글이 없어요!</div>
+            </div>
           ))}
       </Container>
     </div>
@@ -218,6 +255,27 @@ const UserPage = () => {
 };
 
 export default UserPage;
+
+const noChatCSS = css`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+const IconCSS = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const bottomFontSIZE = css`
+  font-size: ${FONT.SIZE.TITLE1};
+  color: ${COLOR.GRAY2};
+`;
 
 const boxHeadContainerCSS = css`
   margin-bottom: 2rem;
@@ -243,29 +301,31 @@ const box1CSS = css`
   flex-direction: column;
   align-items: center;
   background-color: ${COLOR.MAIN3};
-  min-width: 15.625rem;
+  // min-width: 15.625rem;
 
   flex: 1;
   height: 26rem;
+  width: 25%;
   border-radius: 1.875rem;
-  margin-right: 2.875rem;
-  padding: 2.5rem 2.125rem;
+  margin-right: 1.5rem;
+
+  // margin-right: 2.875rem;
+  // padding: 2.5rem 2.125rem;
 `;
 
 const box2CSS = css`
   display: flex;
   flex-direction: column;
   background-color: ${COLOR.MAIN3};
-  min-width: 15.625rem;
-  /* max-width: 250px; */
-  flex: 1;
+  width: 25%;
+  padding: 1.5rem;
   height: 26rem;
   border-radius: 1.875rem;
-  margin-right: 2.875rem;
-  padding: 2.5rem 3.125rem;
+  margin-right: 1.5rem;
 `;
 
 const subTitleCSS = css`
+  padding-top: 0.5rem;
   font-size: ${FONT.SIZE.TITLE3};
   font-weight: ${FONT.WEIGHT.BOLD};
   color: ${COLOR.GRAY1};
@@ -279,7 +339,7 @@ const oneLineIntroductionCSS = css`
 `;
 
 const profileContainerCSS = css`
-  margin: 0.625rem 0 2.5rem;
+  margin: 2rem 0 2.5rem;
   display: flex;
   flex-direction: column;
 `;

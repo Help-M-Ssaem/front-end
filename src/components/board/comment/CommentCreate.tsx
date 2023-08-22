@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 import { SerializedStyles, css } from "@emotion/react";
-import Button from "../../button/Button";
 import Input from "../../input/Input";
 import { ReplyIcon } from "../../../assets/CommentIcons";
 import { useState } from "react";
@@ -73,9 +72,9 @@ const CommentCreate = ({ addCSS, reply }: CommentCreateProps) => {
   };
 
   const handleButtonClick = () => {
-    if (reply) {
+    if (reply && replyContent.trim() !== "") {
       handleReplyCommentSubmit();
-    } else {
+    } else if (content.trim() !== "") {
       handleCommentSubmit();
     }
   };
@@ -94,7 +93,14 @@ const CommentCreate = ({ addCSS, reply }: CommentCreateProps) => {
           value={reply ? replyContent : content}
           placeholder={!token ? "댓글을 작성하려면 로그인 해주세요." : ""}
         />
-        <button css={buttonCSS} onSubmit={handleButtonClick}>
+        <button
+          css={buttonCSS}
+          onSubmit={handleButtonClick}
+          disabled={
+            !token ||
+            (reply ? replyContent.trim() === "" : content.trim() === "")
+          }
+        >
           등록
         </button>
       </form>

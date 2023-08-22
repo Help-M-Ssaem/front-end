@@ -4,7 +4,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainPage from "./pages/main/main";
 import LoginPage from "./pages/auth/login";
 import SigninPage from "./pages/auth/signin";
-import Search from "./pages/search/search";
 import SearchResult from "./pages/search/result";
 import MoreBoardResult from "./pages/search/moreBoardResult";
 import MoreDebateResult from "./pages/search/moreDebateResult";
@@ -46,6 +45,7 @@ import PrivacyPolicy from "./components/auth/PrivacyPolicy";
 import CommunityPolicy from "./components/auth/CommunityPolicy";
 import UserPage from "./pages/userPage/UserPage";
 import ProfilePage from "./pages/userPage/ProfilePage";
+import Search from "./pages/search/search";
 
 function App() {
   return (
@@ -79,6 +79,7 @@ function App() {
               path="/search/moreMatching"
               element={<MoreMatchingResult />}
             />
+
             <Route path="/policy/privacy" element={<PrivacyPolicy />} />
             <Route path="/policy/community" element={<CommunityPolicy />} />
 

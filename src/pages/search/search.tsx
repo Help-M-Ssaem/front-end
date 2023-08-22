@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const Search: React.FC = () => {
-  const { keywordList} = usePopularSearch();
+  const { keywordList } = usePopularSearch();
   const [searchWord, setSearchWord] = useState("");
   const search = useSearch(searchWord);
   const navigate = useNavigate();
@@ -29,8 +29,8 @@ const Search: React.FC = () => {
   const formattedDate = formatDate(currentDate);
   useEffect(() => {
     const interval = setInterval(() => {
-      if(keywordList)
-      setIdx((prevIndex) => (prevIndex + 1) % keywordList.length);
+      if (keywordList)
+        setIdx((prevIndex) => (prevIndex + 1) % keywordList.length);
     }, 1500);
 
     return () => {
@@ -51,9 +51,10 @@ const Search: React.FC = () => {
           <span css={timeNow}>{formattedDate}</span>
         </div>
         {/* 모션 넣기 */}
-        { keywordList && keywordList.map((keyword, index) => (
+        {keywordList &&
+          keywordList.map((keyword, index) => (
             <motion.div
-              css={[trendingKeywordWrapper, (index === idx) && recentCSS ]}
+              css={[trendingKeywordWrapper, index === idx && recentCSS]}
               key={index}
               onClick={() => handleSearch(keyword.keyword)}
               initial={{ opacity: 1, scale: 1 }}
@@ -62,8 +63,8 @@ const Search: React.FC = () => {
             >
               <span css={indexStyle}>{index + 1}</span>
               <span css={trendingKeyword}>{keyword.keyword}</span>
-          </motion.div>
-        ))}
+            </motion.div>
+          ))}
       </div>
     </div>
   );
@@ -116,6 +117,6 @@ const timeNow = css`
 `;
 
 const recentCSS = css`
-background: ${COLOR.MAIN4};
+  background: ${COLOR.MAIN4};
 `;
 export default Search;
