@@ -39,13 +39,13 @@ import HotBoardPage from "./pages/main/hotBoard";
 import HotDebatePage from "./pages/main/hotDebate";
 import Callback from "./components/auth/Callback";
 
-import MyPage from "./pages/usePage/mypage";
-import MyPageUpdate from "./pages/usePage/update";
+import MyPage from "./pages/userPage/mypage";
+import MyPageUpdate from "./pages/userPage/update";
 import DetailMatchingPage from "./pages/matching/detail";
 import PrivacyPolicy from "./components/auth/PrivacyPolicy";
 import CommunityPolicy from "./components/auth/CommunityPolicy";
-import UserPage from "./pages/usePage/UserPage";
-import ProfilePage from "./pages/usePage/ProfilePage";
+import UserPage from "./pages/userPage/UserPage";
+import ProfilePage from "./pages/userPage/ProfilePage";
 
 function App() {
   return (

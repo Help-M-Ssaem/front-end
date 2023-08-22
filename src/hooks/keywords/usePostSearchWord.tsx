@@ -1,20 +1,20 @@
 import { useMutation, useQueryClient } from "react-query";
 import { mssaemAxios as axios } from "../../apis/axios";
 
-async function postSerch(keyWord: string) {
+async function postSearch(keyWord: string) {
   await axios.post("/keywords", { keyword: keyWord });
 }
 
-interface UseSerchWord {
+interface UseSearchWord {
   mutate: () => void;
 }
 
-export function useSerch(keyWord: string): UseSerchWord {
+export function useSearch(keyWord: string): UseSearchWord {
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(() => postSerch(keyWord), {
+  const { mutate } = useMutation(() => postSearch(keyWord), {
     onSuccess: () => {
-      queryClient.invalidateQueries("keyWordKeys");
+      queryClient.invalidateQueries("recentkeyWordKeys");
     },
   });
 

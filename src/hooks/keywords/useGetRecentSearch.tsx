@@ -12,7 +12,7 @@ interface UseKeywords {
 }
 
 export function useRecentSearch(): UseKeywords {
-  const { data: keywords } = useQuery("keyWordKeys", () =>
+  const { data: keywords } = useQuery("recentkeyWordKeys", () =>
     getRecentSearch(),
   );
   return { keywords };

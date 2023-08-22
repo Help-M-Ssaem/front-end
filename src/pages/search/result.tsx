@@ -38,7 +38,9 @@ const SearchResult: React.FC = () => {
   return (
     <>
       <div css={searchContainer}>
-        <SearchBar></SearchBar>
+        <div css={searchBarContainer}>
+          <SearchBar></SearchBar>
+        </div>
       </div>
 
       <div css={resultContainer}>
@@ -161,6 +163,14 @@ const boardHeader = css`
 `;
 
 const searchContainer = css`
+  width: 100%;
+  // width: calc(100% + 30rem);
+  // margin-left: -15rem;
+  padding-bottom: 1rem;
+  // background-color: ${COLOR.MAIN3};
+`;
+
+const searchBarContainer = css`
   padding: 3.75rem 10.625rem 0 10.625rem;
   display: flex;
   flex-direction: column;

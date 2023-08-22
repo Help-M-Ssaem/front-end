@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
+import { css, SerializedStyles } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import { MBTICOLOR } from "../../styles/color";
@@ -10,10 +10,12 @@ import { ContainerAnimation } from "../../styles/animation";
 interface BadgeProps {
   mbti: string;
   imgUrl?: string;
+  isSelected?: boolean;
+  onClick?: () => void;
 }
 type MBTIColors = typeof MBTICOLOR;
 
-const Badge = ({ mbti, imgUrl }: BadgeProps) => {
+const Badge = ({ mbti, imgUrl, isSelected, onClick }: BadgeProps) => {
   const [color, setColor] = useState("#7A7A7B");
   const [changeColor, setChangeColor] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -45,6 +47,9 @@ const Badge = ({ mbti, imgUrl }: BadgeProps) => {
   const formattedMbti = mbti && mbti.length === 4 && mbti.toUpperCase();
 
   const handleBadgeClick = () => {
+    if (onClick) {
+      onClick(); // onClick 함수가 정의되어 있을 때만 호출
+    }
     setModalOpen(!modalOpen);
   };
   const handleBackgroundClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -55,6 +60,7 @@ const Badge = ({ mbti, imgUrl }: BadgeProps) => {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 
     color: ${COLOR.WHITE};
     font-size: ${FONT.SIZE.BODY};
@@ -66,15 +72,19 @@ const Badge = ({ mbti, imgUrl }: BadgeProps) => {
     border-radius: 0.9rem;
     margin-right: 0.4rem;
     white-space: nowrap;
+
+    ${isSelected &&
+    css`
+      border: 0.15rem solid ${COLOR.MAIN2};
+      align-items: center;
+      padding: 0.1rem 0.4rem;
+      display: flex;
+    `}
   `;
 
   return (
     <>
-      <div
-        ref={backgroundRef}
-        css={[badgeCSS, imgUrl && cursorCSS]}
-        onClick={handleBadgeClick}
-      >
+      <div ref={backgroundRef} css={[badgeCSS]} onClick={handleBadgeClick}>
         {mbti}
       </div>
       {modalOpen && imgUrl && (

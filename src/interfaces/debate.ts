@@ -11,7 +11,7 @@ export interface Option {
   content: string;
   imgUrl: string|null;
   selectedPercent?: string;
-  selected?: boolean;
+  selected: boolean;
 };
 
 export interface Debate {

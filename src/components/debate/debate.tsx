@@ -115,7 +115,7 @@ const marginRightCSS = css`
   margin-left: auto;
   font-size: 0.9rem;
   color: ${COLOR.GRAY2};
-  font-size: ${FONT.SIZE.FOOTNOTE};
+  font-size: ${FONT.SIZE.BODY};
   font-weight: ${FONT.WEIGHT.REGULAR};
 `;
 
@@ -129,13 +129,11 @@ const detailCSS = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.9rem;
   color: ${COLOR.GRAY2};
-  font-size: ${FONT.SIZE.FOOTNOTE};
+  font-size: ${FONT.SIZE.BODY};
   font-weight: ${FONT.WEIGHT.REGULAR};
-  margin-top: 2rem;
+  margin-top: 1rem;
   margin-right: 1rem;
-  margin-left: 1rem;
 `;
 
 const buttonBoxCSS = css`

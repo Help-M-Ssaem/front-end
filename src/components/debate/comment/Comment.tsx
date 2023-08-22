@@ -17,7 +17,7 @@ import { useRecoilState } from "recoil";
 import {
   replyCommentIdState,
   replyCommentOpenState,
-} from "../../../states/debate";
+} from "../../../states/board";
 
 interface CommentProps {
   comment: Comment;

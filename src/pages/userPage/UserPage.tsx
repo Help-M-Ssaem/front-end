@@ -5,7 +5,7 @@ import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import BoardComponent from "../../components/board/Board";
-import ActivityList from "../../components/mypage/MyPage";
+import ActivityList from "../../components/mypage/ActivityList";
 import { useGetProfile } from "../../hooks/user/useProfile";
 import { SettingIcon } from "../../assets/CommonIcons";
 import { useNavigate } from "react-router-dom";
@@ -134,11 +134,10 @@ const UserPage = () => {
         <div css={box2CSS}>
           <p css={subTitleCSS}>수집한 칭호</p>
           <div css={collectedTitleContainer}>
-            {profileData?.badgeInfos?.map(
-              (value: { mbti: string; color?: string }, idx: any) => {
-                return <Badge key={idx} mbti={value?.mbti} />;
-              },
-            )}
+            {profileData?.badgeInfos &&
+              profileData?.badgeInfos.map((badgeInfo: any) => {
+                return <Badge mbti={badgeInfo.name} />;
+              })}
           </div>
         </div>
         {/* box3 */}
@@ -235,9 +234,7 @@ const mainTitleCSS = css`
 
 const boxContainerCSS = css`
   display: flex;
-  /* background-color: red; */
   margin: 1.5rem 0 3rem;
-  /* max-width: 80rem; */
   min-width: 65.625rem;
 `;
 
@@ -247,9 +244,9 @@ const box1CSS = css`
   align-items: center;
   background-color: ${COLOR.MAIN3};
   min-width: 15.625rem;
-  /* max-width: 250px; */
+
   flex: 1;
-  height: 27.0625rem;
+  height: 26rem;
   border-radius: 1.875rem;
   margin-right: 2.875rem;
   padding: 2.5rem 2.125rem;
@@ -262,7 +259,7 @@ const box2CSS = css`
   min-width: 15.625rem;
   /* max-width: 250px; */
   flex: 1;
-  height: 27.0625rem;
+  height: 26rem;
   border-radius: 1.875rem;
   margin-right: 2.875rem;
   padding: 2.5rem 3.125rem;
@@ -291,11 +288,20 @@ const profileImageContainerCSS = css`
   max-width: 12.125rem;
   height: 12.125rem;
   overflow: hidden;
-  border-radius: 6.25rem;
+  border-radius: 50%;
   background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const imageCSS = css`
+  // width: 12.125rem;
+  // height: auto;
+  // width: auto;
+  height: 100%;
+  // max-height: 9rem;
+  object-fit: contain;
 `;
 
 const profilenameCSS = css`
@@ -389,10 +395,4 @@ const menuBox = css`
   text-align: center;
   flex: 1;
   padding: 1.875rem 2.5625rem;
-`;
-const imageCSS = css`
-  width: 11rem;
-  height: auto;
-  max-height: 9rem;
-  object-fit: contain;
 `;

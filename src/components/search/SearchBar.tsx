@@ -6,14 +6,13 @@ import { useNavigate } from "react-router-dom";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import { useRecentSearch } from "../../hooks/keywords/useGetRecentSearch";
-import { useSerch } from "../../hooks/keywords/usePostSearchWord";
+import { useSearch } from "../../hooks/keywords/usePostSearchWord";
 
 const SearchBar: React.FC = () => {
   const { keywords } = useRecentSearch();
   const [searchWord, setSearchWord] = useState("");
-  const search = useSerch(searchWord);
+  const search = useSearch(searchWord);
   const navigate = useNavigate();
-
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchWord(event.target.value);
   };
@@ -69,9 +68,9 @@ const SearchBar: React.FC = () => {
 };
 
 const historyKeyword = css`
-  background-color: ${COLOR.MAIN4};
+  background-color: ${COLOR.MAIN};
   padding: 0.8rem;
-  color: ${COLOR.GRAY3};
+  color: ${COLOR.WHITE};
   font-size: ${FONT.SIZE.TITLE3};
   font-weight: ${FONT.WEIGHT.SEMIBOLD};
   border-radius: 1.2rem;
@@ -93,6 +92,7 @@ const searchBarContainer = css`
 const searchInput = css`
   border: none;
   padding: 0.25rem 0.75rem 0.25rem 0;
+  // background-color: ${COLOR.MAIN3};
   font-size: ${FONT.SIZE.TITLE2};
   width: 100%;
   &::placeholder {

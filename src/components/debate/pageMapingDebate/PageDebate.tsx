@@ -23,7 +23,6 @@ const PageDebate: React.FC<Props> = ({pathMov, postId}) => {
   const totalPage = debateList ? debateList.totalSize : 1; //전체 페이지 수
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
-    refetch();
   };
   useEffect(() => {
     setPage(page);

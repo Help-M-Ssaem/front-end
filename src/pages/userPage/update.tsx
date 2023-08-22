@@ -4,7 +4,7 @@ import { useState } from "react";
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
-import ActivityList from "../../components/mypage/MyPage";
+import ActivityList from "../../components/mypage/ActivityList";
 import { useGetProfile } from "../../hooks/user/useProfile";
 import { useNavigate } from "react-router-dom";
 import NameBox from "../../components/mypage/nameBox";
@@ -17,14 +17,18 @@ import { mssaemAxios as axios } from "../../apis/axios";
 import { useDeleteImage } from "../../hooks/mypage/useDeleteImage";
 import Catlogo from "../../assets/logo/CatLogo.svg";
 import Container from "../../components/container/Container";
+import MyActivityList from "../../components/mypage/MyActivityList";
 import Badge from "../../components/badge/Badge";
 import { User } from "../../interfaces/user";
 
 const MyPageUpdate = () => {
   const navigate = useNavigate();
-
   const { user } = useMemberInfo();
-  const { profileData } = useGetProfile(user!!.id);
+  const userId = user?.id || 1;
+  const { profileData } = useGetProfile(userId);
+
+  // const { user } = useMemberInfo();
+  // const { profileData } = useGetProfile(user!!.id);
   const [mbtiNum, setMbtinum] = useState<string | null>(null);
   const [invalidInput, setInvalidInput] = useState<string | null>(null);
   const [mbti, setMbti] = useState<string | undefined>(undefined);
@@ -298,7 +302,7 @@ const MyPageUpdate = () => {
 
   const handleImageCancel = async () => {
     try {
-      deleteImageMutation.mutate();
+      await deleteImageMutation.mutate();
       const { profileImgUrl } = await getMemberInfo();
       setImageChange(profileImgUrl);
     } catch (error) {
@@ -396,10 +400,11 @@ const MyPageUpdate = () => {
               {profileData?.badgeInfos?.map(
                 (value: { id: number; name: string }, idx: number) => {
                   const isSelected = value.name === values.badge;
-                  // 클릭 이벤트 핸들러
+
                   const handleBadgeClick = () => {
                     if (isSelected) {
                       setBadgeChange("");
+                      setBadgeId(null);
                     } else {
                       setBadgeChange(value.name as string);
                       setBadgeId(value.id);
@@ -407,23 +412,12 @@ const MyPageUpdate = () => {
                   };
 
                   return (
-                    <Badge mbti={value.name}></Badge>
-                    // <p
-                    //   key={idx}
-                    //   css={[
-                    //     selectBadge(value),
-                    //     isSelected && {
-                    //       border: `0.2rem solid ${COLOR.MAIN1} `,
-                    //       padding: `0.6rem 0.5rem`,
-                    //       display: "flex",
-                    //       alignItems: "center",
-                    //     },
-                    //   ]}
-                    //   onClick={handleBadgeClick}
-                    //   style={{ cursor: "pointer" }}
-                    // >
-                    //   {value.name}
-                    // </p>
+                    <Badge
+                      key={idx}
+                      onClick={handleBadgeClick}
+                      mbti={value.name}
+                      isSelected={isSelected}
+                    ></Badge>
                   );
                 },
               )}
@@ -432,7 +426,7 @@ const MyPageUpdate = () => {
           </Container>
 
           {/* box3 */}
-          <ActivityList profileData={profileData} />
+          <MyActivityList profileData={profileData} />
         </div>
 
         <div css={buttonCSS}>
@@ -451,7 +445,7 @@ const MyPageUpdate = () => {
 export default MyPageUpdate;
 
 const containerCSS = css`
-  padding-top: 3rem;
+  padding-top: 0.5rem;
 `;
 
 const mainTitleCSS = css`
@@ -473,7 +467,7 @@ const box1CSS = css`
   display: flex;
   flex-direction: column;
   background-color: ${COLOR.MAIN3};
-  width: 30%;
+  width: 25%;
   flex: 1;
   border-radius: 1.875rem;
   margin-right: 2.875rem;
@@ -484,7 +478,7 @@ const box2CSS = css`
   display: flex;
   flex-direction: column;
   background-color: ${COLOR.MAIN3};
-  width: 50%;
+  width: 25%;
 
   height: 28rem;
   border-radius: 1.875rem;
@@ -509,7 +503,6 @@ const profileContainerCSS = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-
   position: relative;
 `;
 

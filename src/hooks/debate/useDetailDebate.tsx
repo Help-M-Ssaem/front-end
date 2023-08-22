@@ -4,8 +4,14 @@ import { debateKeys } from "../../constants/debateKey";
 import { DebateDetail } from "../../interfaces/debate";
 
 export async function getDebateDetail(id: number): Promise<DebateDetail> {
-  const { data } = await axios.get(`/discussions/${id}`);
-  return data;
+  try{
+    const { data } = await axios.get(`/discussions/${id}`);
+    return data;
+  } catch (error:any){
+    window.history.back();
+    window.alert(error.response.data.message);
+    throw error;
+  }
 }
 
 interface UseDebateDetail {
