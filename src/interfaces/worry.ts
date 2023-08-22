@@ -42,6 +42,7 @@ export interface DetailWorry {
   imgList: string[];
   isEditAllowed: boolean;
   isChatAllowed: boolean;
+  isSolved: boolean;
   chatRoomId?: number;
   hits: number;
 }
