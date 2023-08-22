@@ -342,7 +342,7 @@ const profileContainerCSS = css`
 
 const profileImageContainerCSS = css`
   max-width: 12.125rem;
-  height: 12.125rem;
+  max-height: 12.125rem;
   overflow: hidden;
   border-radius: 50%;
   background-color: white;
@@ -355,6 +355,7 @@ const imageCSS = css`
   // width: 12.125rem;
   // height: auto;
   // width: auto;
+  width: 100%;
   height: 100%;
   // max-height: 9rem;
   object-fit: contain;
