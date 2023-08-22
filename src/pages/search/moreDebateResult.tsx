@@ -81,7 +81,6 @@ const MoreDebateResult = () => {
               setBlockNum={setBlockNum}
               totalPage={totalPage}
             />
-            <SelectBox />
           </div>
         </Container>
       </div>

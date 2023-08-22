@@ -80,7 +80,6 @@ const MoreBoardResult = () => {
             setBlockNum={setBlockNum}
             totalPage={totalPage}
           />
-          <SelectBox />
         </Container>
       </div>
     </>

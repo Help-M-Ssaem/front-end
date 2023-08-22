@@ -120,7 +120,7 @@ const MbtiBoardPage = () => {
           setBlockNum={setBlockNum}
           totalPage={totalPage}
         />
-        <SelectBox />
+        <SelectBox boardName={"mbtiboard"} />
       </Container>
     </>
   );

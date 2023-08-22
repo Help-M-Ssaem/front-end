@@ -7,9 +7,14 @@ import FONT from "../../styles/font";
 import { FaSearch } from "react-icons/fa";
 import { useSearch } from "../../hooks/keywords/usePostSearchWord";
 import { useNavigate } from "react-router-dom";
+
+interface SelectBoxProps {
+  boardName: String;
+}
+
 const selectList = ["제목+내용", "제목", "내용", "글쓴이"];
 
-const SelectBox = () => {
+const SelectBox = ({ boardName }: SelectBoxProps) => {
   const first = selectList[0];
   const navigate = useNavigate();
   const [option, setOption] = useState(first);
@@ -32,7 +37,16 @@ const SelectBox = () => {
 
   const handleSearch = () => {
     search.mutate();
-    navigate(`/search/result?query=${searchWord}`);
+    if (searchWord.length > 0) {
+      if (boardName === "mbtiboard") {
+        // navigate(`/search/result?query=${searchWord}`);
+        navigate(`/search/moreBoard?query=${searchWord}`);
+      } else if (boardName === "discussion") {
+        navigate(`/search/moreDebate?query=${searchWord}`);
+      } else if (boardName === "matching") {
+        navigate(`/search/moreMatching?query=${searchWord}`);
+      }
+    }
   };
 
   const handleOnKeyPress = (e: { key: string }) => {

@@ -2,6 +2,7 @@ import { CompatClient, Stomp } from "@stomp/stompjs";
 import { createContext, useContext, useMemo, useRef } from "react";
 import { useSetRecoilState } from "recoil";
 import { messageState } from "../../states/chatting";
+import audio from "../../assets/audios/chatting.mp3";
 
 const ChatContext = createContext(
   {} as {
@@ -42,6 +43,9 @@ export function ChatProvider({ children }: any) {
     return client;
   };
   const onMessageReceived = (message: any, roomId: number) => {
+    const audioElement = new Audio(audio);
+    audioElement.play();
+
     setMessages((prevMessages) => {
       const updatedMessages = {
         ...prevMessages,
