@@ -4,7 +4,9 @@ import { useState } from "react";
 import { css } from "@emotion/react";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
+import Badge from "../../components/badge/Badge";
 import BoardComponent from "../../components/board/Board";
+import Profile from "../../components/profile/Profile";
 import { useGetProfile } from "../../hooks/user/useProfile";
 import { BigCatLogoIcon, SettingIcon } from "../../assets/CommonIcons";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +18,6 @@ import MatchingComponent from "../../components/matching/Matching";
 import useMemberInfo from "../../hooks/user/useMemberInfo";
 import { useDebateListMember } from "../../hooks/debate/useDebateListMember";
 import MyDebateComponent from "../../components/debate/myDebate";
-import Badge from "../../components/badge/Badge";
 import MyActivityList from "../../components/mypage/MyActivityList";
 
 const menuTabBar = [
@@ -24,6 +25,61 @@ const menuTabBar = [
   { type: 2, title: "내가 쓴 토론글" },
   { type: 3, title: "내가 쓴 고민글" },
   { type: 4, title: "내가 해결한 고민" },
+];
+// 가져올 컴포넌트들 임시로
+const myPostArray5 = [
+  {
+    id: 1,
+    name: "유저5",
+    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
+    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
+    mbti: "EsFP",
+    badge: "엠비티어론",
+    title: "내가 고민 해결왕이다",
+    content: "예에",
+    createdAt: "23.06.21",
+    like: 3,
+    comment: 4,
+  },
+  {
+    id: 2,
+    name: "유저5",
+    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
+    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
+    mbti: "EsFP",
+    badge: "엠비티어론",
+    title: "내가 고민 해결왕이다",
+    content: "예에",
+    createdAt: "23.06.21",
+    like: 3,
+    comment: 4,
+  },
+  {
+    id: 3,
+    name: "유저5",
+    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
+    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
+    mbti: "EsFP",
+    badge: "엠비티어론",
+    title: "내가 고민 해결왕이다",
+    content: "예에",
+    createdAt: "23.06.21",
+    like: 3,
+    comment: 4,
+  },
+  {
+    id: 4,
+    name: "유저5",
+    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
+    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
+    mbti: "EsFP",
+    badge: "엠비티어론",
+    title: "내가 고민 해결왕이다",
+    content: "예에",
+    createdAt: "23.06.21",
+    like: 3,
+    comment: 4,
+  },
 ];
 
 const MyPage = () => {
@@ -286,7 +342,7 @@ const profileContainerCSS = css`
 
 const profileImageContainerCSS = css`
   max-width: 12.125rem;
-  height: 12.125rem;
+  max-height: 12.125rem;
   overflow: hidden;
   border-radius: 50%;
   background-color: white;
@@ -299,6 +355,7 @@ const imageCSS = css`
   // width: 12.125rem;
   // height: auto;
   // width: auto;
+  width: 100%;
   height: 100%;
   // max-height: 9rem;
   object-fit: contain;
@@ -338,7 +395,7 @@ const menuButtonContainer = css`
   display: flex;
   justify-content: space-between;
   border-bottom: 0.0625rem solid ${COLOR.MAIN1};
-  height: 5.125rem;
+  height: 3.5rem;
   li {
     cursor: pointer;
     position: relative;
@@ -346,12 +403,12 @@ const menuButtonContainer = css`
   }
   li:hover {
     color: ${COLOR.MAIN1};
-    border-bottom: 0.25rem solid ${COLOR.MAIN1};
+    border-bottom: 0.0625rem solid ${COLOR.MAIN1};
   }
 
   li.active {
     color: ${COLOR.MAIN1};
-    border-bottom: 0.25rem solid ${COLOR.MAIN1};
+    border-bottom: 0.0625rem solid ${COLOR.MAIN1};
   }
   list-style-type: none;
 `;
@@ -359,5 +416,5 @@ const menuButtonContainer = css`
 const menuBox = css`
   text-align: center;
   flex: 1;
-  padding: 1.875rem 2.5625rem;
+  padding: 0.5rem 2.5625rem;
 `;
