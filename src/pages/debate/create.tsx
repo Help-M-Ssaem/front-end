@@ -37,14 +37,7 @@ const CreateDebatePage = () => {
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
   };
-  // const value = e.target.value;
-  // if(value.trim() === ""){
-  //   window.alert("내용은 공백이면 안됩니다.");
-  // }else if(value.length < 3){
-  //     window.alert("내용은 3글자 이상입니다.");
-  // }else{
-  //   setContent(value);
-  // }
+
   const handleOptionTextChange = (
     index: number,
     e: React.ChangeEvent<HTMLInputElement>,
