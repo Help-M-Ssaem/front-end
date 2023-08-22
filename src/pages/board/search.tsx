@@ -24,6 +24,7 @@ const BoardSearch = () => {
   const [searchBoardList, setSearchBoardList] = useState<SearchBoardList>();
   const mbti = "ALL";
   const limit = 10; //한 페이지당 아이템의 개수
+  const searchType = "";
   const [page, setPage] = useState(1); // 현재 페이지 설정하는 함수
 
   const queryValue = query.get("query") || ""; // null값일 때 빈 문자열로

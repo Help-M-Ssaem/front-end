@@ -18,8 +18,10 @@ const SearchBar: React.FC = () => {
   };
 
   const handleSearch = () => {
-    search.mutate();
-    navigate(`/search/result?query=${searchWord}`);
+    if (searchWord.length > 0) {
+      search.mutate();
+      navigate(`/search/result?query=${searchWord}`);
+    }
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -45,6 +47,12 @@ const SearchBar: React.FC = () => {
           css={searchInput}
           onKeyUp={handleKeyPress}
         />
+        {/* {searchWord.length === 0 && <FaSearch css={searchIconCSS} />}
+        {searchWord.length > 0 && (
+          <div css={clearIconCSS} onClick={() => setSearchWord("")}>
+            &times;
+          </div>
+        )} */}
         <SearchIcon css={searchIconContainer} onClick={handleSearch} />
       </div>
 
