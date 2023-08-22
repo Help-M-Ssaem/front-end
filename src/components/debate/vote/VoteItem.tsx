@@ -121,9 +121,12 @@ const imageCSS = css`
 `;
 
 const textCSS = ({ size, weight }: { size: string, weight: number }) => css`
-  margin-top: 0.5rem;
   font-size: ${size};
   font-weight: ${weight};
+  padding: 1rem;
+  align-items: center;
+  justify-content: center;
+  display: flex;
 `;
 
 const titleTextStyle = textCSS({

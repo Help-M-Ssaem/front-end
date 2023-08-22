@@ -19,15 +19,15 @@ const RedButton = ({ count }: ButtonProps) => {
 };
 
 const ButtonCSS = css`
-  width: 1rem;
-  height: 1rem;
+  width: 1.1rem;
+  height: 1.1rem;
   border-radius: 50%;
   background-color: #ff5c5c;
-  // margin-top: 0.1rem;
 `;
 const textCSS = css`
+  padding-top: 0.1rem;
   padding-left: 0.2rem;
-  font-size: ${FONT.SIZE.FOOTNOTE};
+  font-size: ${FONT.SIZE.BODY};
   font-weight: ${FONT.WEIGHT.REGULAR};
   color: ${COLOR.GRAY2};
 `;
