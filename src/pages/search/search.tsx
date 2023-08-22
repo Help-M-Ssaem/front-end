@@ -97,7 +97,7 @@ const trendingKeyword = css`
 const trendingTitleWrapper = css`
   display: flex;
   align-items: baseline;
-  margin-bottom: 30px;
+  margin-bottom: 1.875rem;
 `;
 
 const trendingKeywordsContainer = css`

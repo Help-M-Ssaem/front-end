@@ -91,6 +91,8 @@ const historyKeyword = css`
 
 const searchHistoryKeyword = css`
   display: flex;
+  margin-top: 0.6875rem;
+  cursor: pointer;
   flex-wrap: wrap;
 `;
 const searchBarContainer = css`
