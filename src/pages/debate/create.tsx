@@ -31,12 +31,20 @@ const CreateDebatePage = () => {
   const [image, setImage] = useState<string[]>([]);
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
+    setTitle(e.target.value)
   };
+
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
   };
-
+  // const value = e.target.value;
+  // if(value.trim() === ""){
+  //   window.alert("내용은 공백이면 안됩니다.");
+  // }else if(value.length < 3){
+  //     window.alert("내용은 3글자 이상입니다.");
+  // }else{
+  //   setContent(value);
+  // }
   const handleOptionTextChange = (
     index: number,
     e: React.ChangeEvent<HTMLInputElement>,
@@ -103,6 +111,29 @@ const CreateDebatePage = () => {
 
   const createMutation = useCreateDebate(formData);
   const handleSubmit = () => {
+    if(title.trim() === ""){
+      window.alert("제목은 공백이면 안됩니다.");
+      return;
+    }else if(title.length < 2){
+      window.alert("제목은 2글자 이상입니다.");
+      return;
+    }
+    const isValidOptions = options.every((option, index) => {
+      if (!option.content.trim() && !option.image) {
+        window.alert(`항목 ${index + 1}은(는) 내용 또는 이미지 중 하나는 있어야 합니다.`);
+        return false;
+      }
+      return true;
+    });
+  
+    if (!isValidOptions) {
+      return;
+    }
+  
+    if(options.length<2){
+      window.alert("항목은 2개 이상이어야 합니다.");
+      return;
+    }
     createMutation.mutate();
     navigate(-1);
   };
