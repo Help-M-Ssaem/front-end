@@ -302,7 +302,7 @@ const MyPageUpdate = () => {
 
   const handleImageCancel = async () => {
     try {
-      deleteImageMutation.mutate();
+      await deleteImageMutation.mutate();
       const { profileImgUrl } = await getMemberInfo();
       setImageChange(profileImgUrl);
     } catch (error) {
@@ -400,10 +400,11 @@ const MyPageUpdate = () => {
               {profileData?.badgeInfos?.map(
                 (value: { id: number; name: string }, idx: number) => {
                   const isSelected = value.name === values.badge;
-                  // 클릭 이벤트 핸들러
+
                   const handleBadgeClick = () => {
                     if (isSelected) {
                       setBadgeChange("");
+                      setBadgeId(null);
                     } else {
                       setBadgeChange(value.name as string);
                       setBadgeId(value.id);
@@ -411,23 +412,12 @@ const MyPageUpdate = () => {
                   };
 
                   return (
-                    <Badge mbti={value.name}></Badge>
-                    // <p
-                    //   key={idx}
-                    //   css={[
-                    //     selectBadge(value),
-                    //     isSelected && {
-                    //       border: `0.2rem solid ${COLOR.MAIN1} `,
-                    //       padding: `0.6rem 0.5rem`,
-                    //       display: "flex",
-                    //       alignItems: "center",
-                    //     },
-                    //   ]}
-                    //   onClick={handleBadgeClick}
-                    //   style={{ cursor: "pointer" }}
-                    // >
-                    //   {value.name}
-                    // </p>
+                    <Badge
+                      key={idx}
+                      onClick={handleBadgeClick}
+                      mbti={value.name}
+                      isSelected={isSelected}
+                    ></Badge>
                   );
                 },
               )}
@@ -455,7 +445,7 @@ const MyPageUpdate = () => {
 export default MyPageUpdate;
 
 const containerCSS = css`
-  padding-top: 3rem;
+  padding-top: 0.5rem;
 `;
 
 const mainTitleCSS = css`
@@ -477,7 +467,7 @@ const box1CSS = css`
   display: flex;
   flex-direction: column;
   background-color: ${COLOR.MAIN3};
-  width: 30%;
+  width: 25%;
   flex: 1;
   border-radius: 1.875rem;
   margin-right: 2.875rem;
@@ -488,7 +478,7 @@ const box2CSS = css`
   display: flex;
   flex-direction: column;
   background-color: ${COLOR.MAIN3};
-  width: 50%;
+  width: 25%;
 
   height: 28rem;
   border-radius: 1.875rem;
@@ -513,7 +503,6 @@ const profileContainerCSS = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-
   position: relative;
 `;
 

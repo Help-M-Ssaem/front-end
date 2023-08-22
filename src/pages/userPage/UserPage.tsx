@@ -234,9 +234,7 @@ const mainTitleCSS = css`
 
 const boxContainerCSS = css`
   display: flex;
-  /* background-color: red; */
   margin: 1.5rem 0 3rem;
-  /* max-width: 80rem; */
   min-width: 65.625rem;
 `;
 
@@ -246,7 +244,7 @@ const box1CSS = css`
   align-items: center;
   background-color: ${COLOR.MAIN3};
   min-width: 15.625rem;
-  /* max-width: 250px; */
+
   flex: 1;
   height: 26rem;
   border-radius: 1.875rem;
