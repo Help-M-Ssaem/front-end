@@ -18,14 +18,13 @@ const SearchBar: React.FC = () => {
   };
 
   const handleSearch = () => {
-    if(searchWord.trim() !== ""){
-    search.mutate();
-    navigate(`/search/result?query=${searchWord}`);
-  } else{
-      window.alert("공백은 검색이 안됩니다.")
+    if (searchWord.trim() !== "") {
+      search.mutate();
+      navigate(`/search/result?query=${searchWord}`);
+    } else {
+      window.alert("공백은 검색이 안됩니다.");
     }
   };
-
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
@@ -50,6 +49,12 @@ const SearchBar: React.FC = () => {
           css={searchInput}
           onKeyUp={handleKeyPress}
         />
+        {/* {searchWord.length === 0 && <FaSearch css={searchIconCSS} />}
+        {searchWord.length > 0 && (
+          <div css={clearIconCSS} onClick={() => setSearchWord("")}>
+            &times;
+          </div>
+        )} */}
         <SearchIcon css={searchIconContainer} onClick={handleSearch} />
       </div>
 

@@ -38,7 +38,7 @@ const HotBoardPage = () => {
           setBlockNum={setBlockNum}
           totalPage={totalPage}
         />
-        <SelectBox />
+        <SelectBox boardName={"mbtiboard"} />
       </Container>
     </>
   );
