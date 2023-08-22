@@ -151,6 +151,7 @@ const box3CSS = css`
   display: flex;
   flex-direction: column;
   height: 28rem;
+  width: 50%;
 `;
 
 const subTitleCSS = css`
@@ -161,16 +162,17 @@ const subTitleCSS = css`
 
 const spaceBetween = css`
   display: flex;
+  margin-top: 3 %;
   margin-right: 20%;
+  margin-left: 10%;
   justify-content: space-between;
-  // justify-content: space-around;
 `;
 const spaceBetweenWithMargin = css`
   display: flex;
   margin-right: 20%;
+  margin-left: 10%;
   justify-content: space-between;
 
-  // justify-content: space-around;
   margin-top: 2.8125rem;
 `;
 

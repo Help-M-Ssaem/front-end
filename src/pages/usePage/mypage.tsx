@@ -193,7 +193,7 @@ const box1CSS = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 30%;
+  width: 25%;
   height: 28rem;
   margin-right: 1.5rem;
 `;
@@ -201,7 +201,7 @@ const box1CSS = css`
 const box2CSS = css`
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 25%;
   height: 28rem;
   margin-right: 1.5rem;
 `;
