@@ -18,11 +18,11 @@ import DeleteModal from "../../components/modal/DeletModal";
 import PageDebate from "../../components/debate/pageMapingDebate/PageDebate";
 import ReportModal from "../../components/modal/ReportModal";
 import ShareModal from "../../components/modal/ShareModal";
-import CommentComponent from "../../components/board/comment/Comment";
+import CommentComponent from "../../components/debate/comment/Comment";
 import {
   replyCommentIdState,
   replyCommentOpenState,
-} from "../../states/debate";
+} from "../../states/board";
 import { useRecoilState } from "recoil";
 import CommentCreate from "../../components/debate/comment/CommentCreate";
 const DetailDebatePage = () => {

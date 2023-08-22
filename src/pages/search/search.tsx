@@ -5,13 +5,13 @@ import SearchBar from "../../components/search/SearchBar";
 import COLOR from "../../styles/color";
 import FONT from "../../styles/font";
 import { usePopularSearch } from "../../hooks/keywords/useGetPopularSearch";
-import { useSerch } from "../../hooks/keywords/usePostSearchWord";
+import { useSearch } from "../../hooks/keywords/usePostSearchWord";
 import { useNavigate } from "react-router-dom";
 
 const Search: React.FC = () => {
-  const { keywordList} = usePopularSearch();
+  const { keywordList } = usePopularSearch();
   const [searchWord, setSearchWord] = useState("");
-  const search = useSerch(searchWord);
+  const search = useSearch(searchWord);
   const navigate = useNavigate();
   const currentDate = new Date();
 
@@ -41,7 +41,8 @@ const Search: React.FC = () => {
           <span css={timeNow}>{formattedDate}</span>
         </div>
         {/* 모션 넣기 */}
-        { keywordList && keywordList.map((keyword, index) => (
+        {keywordList &&
+          keywordList.map((keyword, index) => (
             <div
               css={[trendingKeywordWrapper]}
               key={index}
@@ -49,8 +50,8 @@ const Search: React.FC = () => {
             >
               <span css={indexStyle}>{index + 1}</span>
               <span css={trendingKeyword}>{keyword.keyword}</span>
-          </div>
-        ))}
+            </div>
+          ))}
       </div>
     </div>
   );

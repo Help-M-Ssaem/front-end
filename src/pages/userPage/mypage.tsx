@@ -7,7 +7,6 @@ import FONT from "../../styles/font";
 import Badge from "../../components/badge/Badge";
 import BoardComponent from "../../components/board/Board";
 import Profile from "../../components/profile/Profile";
-import ActivityList from "../../components/mypage/MyPage";
 import { useGetProfile } from "../../hooks/user/useProfile";
 import { SettingIcon } from "../../assets/CommonIcons";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +18,7 @@ import MatchingComponent from "../../components/matching/Matching";
 import useMemberInfo from "../../hooks/user/useMemberInfo";
 import { useDebateListMember } from "../../hooks/debate/useDebateListMember";
 import MyDebateComponent from "../../components/debate/myDebate";
-import Badge from "../../components/badge/Badge";
+import MyActivityList from "../../components/mypage/MyActivityList";
 
 const menuTabBar = [
   { type: 1, title: "내가 쓴 게시글" },
@@ -158,7 +157,7 @@ const MyPage = () => {
         </Container>
 
         {/* box3 */}
-        <ActivityList profileData={profileData} />
+        <MyActivityList profileData={profileData}></MyActivityList>
       </div>
 
       <Container>
@@ -250,15 +249,15 @@ const box1CSS = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 30%;
-  height: 28rem;
+  width: 25%;
+  height: 26rem;
   margin-right: 1.5rem;
 `;
 
 const box2CSS = css`
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 25%;
   height: 28rem;
   margin-right: 1.5rem;
 `;
@@ -283,14 +282,23 @@ const profileContainerCSS = css`
 `;
 
 const profileImageContainerCSS = css`
-  width: 12.125rem;
+  max-width: 12.125rem;
   height: 12.125rem;
   overflow: hidden;
-  border-radius: 6.25rem;
+  border-radius: 50%;
   background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const imageCSS = css`
+  // width: 12.125rem;
+  // height: auto;
+  // width: auto;
+  height: 100%;
+  // max-height: 9rem;
+  object-fit: contain;
 `;
 
 const profilenameCSS = css`
@@ -349,10 +357,4 @@ const menuBox = css`
   text-align: center;
   flex: 1;
   padding: 0.5rem 2.5625rem;
-`;
-
-const imageCSS = css`
-  width: auto;
-  height: auto;
-  max-height: 12.125rem;
 `;

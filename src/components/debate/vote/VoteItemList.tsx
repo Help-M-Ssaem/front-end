@@ -35,8 +35,8 @@ export default VoteItemList;
 const imageContentCSS = css`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  gap: 2rem;
   justify-content: center;
-  place-items: center
+  place-items: center;
   grid-auto-rows: minmax(0, auto);
 `;
