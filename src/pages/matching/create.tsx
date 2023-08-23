@@ -105,7 +105,7 @@ const CreateMatchingPage = () => {
       window.alert("제목은 2글자 이상입니다.");
       return;
     }
-    if(content.trim() !== ""){
+    if(content.trim() === ""){
       window.alert("내용은 공백이면 안됩니다.");
       return;
     }else if(content.length < 1){
