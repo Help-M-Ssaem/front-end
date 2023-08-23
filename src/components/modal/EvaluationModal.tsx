@@ -33,11 +33,11 @@ const EvaluationModal: React.FC<ModalProps> = ({
   const [profileData, setProfileData] = useState<MsseamProps | null>(profile);
   const worryBoardId = profile!!.worryBoardId;
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [optionId, setOptionId] = useState<string>("");
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
   const formData = {
     worryBoardId: worryBoardId,
-    evaluations: [optionId],
+    evaluations: selectedOptions, // Use the selectedOptions array
   };
 
   const createMutation = useCreateEvaluation(formData);
@@ -55,13 +55,17 @@ const EvaluationModal: React.FC<ModalProps> = ({
     const option = options.find((option) => option.value === optionValue); // Use optionValue instead of selectedOption
     setSelectedOption(optionValue);
     if (option) {
-      setOptionId(option.id);
+      const updatedSelectedOptions = selectedOptions.includes(option.id)
+        ? selectedOptions.filter((selected) => selected !== option.id)
+        : [...selectedOptions, option.id];
+      setSelectedOptions(updatedSelectedOptions);
     }
   };
   const handleSubmit = () => {
-    if (optionId) {
-      createMutation.mutate();
-      onClick(optionId);
+    if (selectedOptions.length > 0) {
+      selectedOptions.forEach((optionId) => {
+        createMutation.mutate();
+      });
       setIsSubmitted(true);
       onClose();
     }
@@ -109,7 +113,7 @@ const EvaluationModal: React.FC<ModalProps> = ({
                   <button
                     css={buttonCSS}
                     className={`optionItem ${
-                      selectedOption === option.value ? "selected" : ""
+                      selectedOptions.includes(option.id) ? "selected" : ""
                     }`}
                   >
                     {option.id}
