@@ -12,7 +12,7 @@ export interface Board {
   commentCount: number;
   createdAt: string;
   memberSimpleInfo: User;
-  createdDate: string;
+  createdDate?: string;
 }
 
 export interface BoardDetail {

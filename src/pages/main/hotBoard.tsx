@@ -8,14 +8,18 @@ import COLOR from "../../styles/color";
 import ListPagination from "../../components/Pagination/ListPagination";
 import SelectBox from "../../components/Pagination/SelectBox";
 import { useState } from "react";
+import BoardComponent from "../../components/board/Board";
+import { useNavigate } from "react-router-dom";
 
 const HotBoardPage = () => {
   const limit = 6; //한 페이지에 보여주고자 하는 게시글 수
-  const { hotBoardMore } = useHotBoardMore(1, limit);
-  const totalPage = hotBoardMore ? hotBoardMore.totalSize : 6; //전체 페이지 수
+  const { hotBoardMore } = useHotBoardMore(0, limit);
+  const totalPage = hotBoardMore ? hotBoardMore.totalSize : 6;
   const pageNum = hotBoardMore ? hotBoardMore.page : 1;
   const [page, setPage] = useState(pageNum);
-  const [blockNum, setBlockNum] = useState(0); //블록 번호 (1~10 에서 11~블록으로 넘어갈때)
+  const [blockNum, setBlockNum] = useState(0);
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -24,10 +28,10 @@ const HotBoardPage = () => {
         {hotBoardMore &&
           Array.isArray(hotBoardMore.result) &&
           hotBoardMore.result.map((hotBoard) => (
-            <HotBoardComponent
-              hotBoard={hotBoard}
+            <BoardComponent
+              board={hotBoard}
               key={hotBoard.id}
-              addCSS={hotBoardCSS}
+              onClick={() => navigate(`/board/${hotBoard.id}`)}
             />
           ))}
         <ListPagination
