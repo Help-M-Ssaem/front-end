@@ -74,6 +74,7 @@ const leftCSS = css`
 
 const rightCSS = css`
   height: 100%;
+  width: 20%;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -105,6 +106,8 @@ const textCSS = css`
   font-size: ${FONT.SIZE.CAPTION};
   font-weight: ${FONT.WEIGHT.REGULAR};
   color: ${COLOR.GRAY2};
+  display: flex;
+  align-items: center;
 `;
 
 const imgCSS = css`
