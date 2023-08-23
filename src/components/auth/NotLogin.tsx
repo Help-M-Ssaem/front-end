@@ -16,13 +16,13 @@ const NotLoginComponent = () => {
     <Container addCSS={containerCSS}>
       <div css={textCSS}>M쌤이 되어 더 자유롭게 이용하세요</div>
       <Button onClick={handleLogin}>로그인하고 이용하기</Button>
-      <div css={detailBoxCSS}>
+      {/* <div css={detailBoxCSS}>
         <div css={detailCSS}>아이디 찾기</div>
         <span css={verticalBarCSS}>|</span>
         <div css={detailCSS}>비밀번호 찾기</div>
         <span css={verticalBarCSS}>|</span>
         <div css={detailCSS}>회원가입</div>
-      </div>
+      </div> */}
     </Container>
   );
 };
