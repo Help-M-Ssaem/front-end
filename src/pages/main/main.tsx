@@ -13,10 +13,10 @@ import { useNavigate } from "react-router";
 import HotBoardComponent from "../../components/main/HotBoard";
 import { useHotThree } from "../../hooks/main/useHotThree";
 import Container from "../../components/container/Container";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMainMatching } from "../../hooks/main/useMainMatching";
 import { useMainTheacher } from "../../hooks/main/useMainTeacher";
-import { HotDebate } from "../../interfaces/debate";
+import { Debate } from "../../interfaces/debate";
 import HotDebateComponent from "../../components/main/HotDebate";
 import useMemberInfo from "../../hooks/user/useMemberInfo";
 import { MainMatching, MainTeacher } from "../../interfaces/matching";
@@ -26,7 +26,7 @@ import Mssaem from "../../components/matching/Mssaem";
 const MainPage = () => {
   const { hotThree } = useHotThree();
   const { hotBoards } = useHotBoard();
-  const { hotDebates } = useHotDebate();
+  const { hotDebates, refetch } = useHotDebate();
   const { mainMatching } = useMainMatching();
   const { mainTeacher } = useMainTheacher();
   const [selected, setSelected] = useState(0);
@@ -55,6 +55,10 @@ const MainPage = () => {
     `}
     }
   `;
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
   return (
     <>
       <div css={headerCSS}>
@@ -104,7 +108,7 @@ const MainPage = () => {
       </div>
       <div css={hotDebateBoxCSS}>
         {Array.isArray(hotDebates) &&
-          hotDebates.map((hotDebate: HotDebate) => (
+          hotDebates.map((hotDebate: Debate) => (
             <HotDebateComponent hotDebate={hotDebate} key={hotDebate.id} />
           ))}
       </div>

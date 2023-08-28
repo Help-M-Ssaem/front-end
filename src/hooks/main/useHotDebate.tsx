@@ -1,20 +1,18 @@
 import { useQuery } from "react-query";
 import { mssaemAxios as axios } from "../../apis/axios";
-import { HotDebate } from "../../interfaces/debate";
-import { hotDebateKeys } from "../../constants/boardKey";
+import { Debates } from "../../interfaces/debate";
+import { debateKeys } from "../../constants/debateKey";
 
-async function getHotDebate(): Promise<HotDebate[]> {
-  const { data } = await axios.get("/discussions/home");
-  return data;
-}
-
-interface UseHotDebate {
-  hotDebates?: HotDebate[];
-}
-
-export function useHotDebate(): UseHotDebate {
-  const { data: hotDebates } = useQuery(hotDebateKeys.all, () =>
-    getHotDebate(),
+export function useHotDebate() {
+  const hotQueryKey = debateKeys.hot;
+  const { data: hotDebates, refetch } = useQuery<Debates>(
+    hotQueryKey,
+    async () => {
+      const { data } = await axios.get(
+        "/discussions/home"
+      );
+      return data;
+    }
   );
-  return { hotDebates };
+  return { hotDebates, refetch };
 }
