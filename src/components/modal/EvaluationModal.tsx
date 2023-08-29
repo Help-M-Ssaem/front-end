@@ -63,9 +63,7 @@ const EvaluationModal: React.FC<ModalProps> = ({
   };
   const handleSubmit = () => {
     if (selectedOptions.length > 0) {
-      selectedOptions.forEach((optionId) => {
-        createMutation.mutate();
-      });
+      createMutation.mutate();
       setIsSubmitted(true);
       onClose();
     }
