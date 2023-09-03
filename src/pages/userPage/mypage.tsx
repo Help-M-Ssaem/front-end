@@ -341,8 +341,10 @@ const profileContainerCSS = css`
 `;
 
 const profileImageContainerCSS = css`
-  width: 12.125rem;
-  height: 12.125rem;
+  width: 80%;
+  height: 100%;
+  // width: 12.125rem;
+  // height: 12.125rem;
   overflow: hidden;
   border-radius: 50%;
   background-color: white;
@@ -352,7 +354,8 @@ const profileImageContainerCSS = css`
 `;
 
 const imageCSS = css`
-  // width: 12.125rem;
+  // width: 80%;
+  // height: 80%;
   // height: auto;
   // width: auto;
   width: 100%;

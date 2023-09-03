@@ -13,7 +13,7 @@ import { useNavigate } from "react-router";
 import HotBoardComponent from "../../components/main/HotBoard";
 import { useHotThree } from "../../hooks/main/useHotThree";
 import Container from "../../components/container/Container";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMainMatching } from "../../hooks/main/useMainMatching";
 import { useMainTheacher } from "../../hooks/main/useMainTeacher";
 import { HotDebate } from "../../interfaces/debate";
@@ -33,28 +33,36 @@ const MainPage = () => {
   const { user } = useMemberInfo();
 
   const navigate = useNavigate();
-  const gridContainerCSS = css`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); 
-  > *:nth-of-type(2n + 1) {
-    border-right: 1px solid ${COLOR.MAIN};
-    padding-right: 1rem;
-  }
 
-  > *:nth-of-type(1),
-  > *:nth-of-type(2){
-    ${(Array.isArray(mainMatching) && (mainMatching.length > 2)) && `
+  useEffect(() => {}, [user]);
+
+  const gridContainerCSS = css`
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    > *:nth-of-type(2n + 1) {
+      border-right: 1px solid ${COLOR.MAIN};
+      padding-right: 1rem;
+    }
+
+    > *:nth-of-type(1),
+    > *:nth-of-type(2) {
+      ${Array.isArray(mainMatching) &&
+      mainMatching.length > 2 &&
+      `
       border-bottom: 1px solid ${COLOR.MAIN};
     `}
     }
 
-  > *:nth-of-type(3),
-  > *:nth-of-type(4){
-    ${(Array.isArray(mainMatching) && (mainMatching.length > 4)) && `
+    > *:nth-of-type(3),
+    > *:nth-of-type(4) {
+      ${Array.isArray(mainMatching) &&
+      mainMatching.length > 4 &&
+      `
       border-bottom: 1px solid ${COLOR.MAIN};
     `}
     }
   `;
+
   return (
     <>
       <div css={headerCSS}>
@@ -79,7 +87,7 @@ const MainPage = () => {
           id={hotThree && hotThree.worryBoardId}
           category="match"
         />
-        {user ? <LoginComponent user={user} /> : <NotLoginComponent />}
+        {user?.id ? <LoginComponent user={user} /> : <NotLoginComponent />}
       </div>
 
       <div css={plusBoxCSS}>
@@ -176,10 +184,10 @@ const hotBoardBoxCSS = css`
   justify-content: space-between;
 `;
 
-const hotDebateBoxCSS = css `
-display: grid;
-grid-template-columns: repeat(2, 1fr);
-column-gap: 2rem;
+const hotDebateBoxCSS = css`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 2rem;
 `;
 
 const plusBoxCSS = css`
@@ -233,7 +241,7 @@ const MssaemCSS = css`
 `;
 
 const MssaemCenterCSS = css`
-justify-content: center;
-display: flex;
-margin-bottom: 2rem;
+  justify-content: center;
+  display: flex;
+  margin-bottom: 2rem;
 `;
