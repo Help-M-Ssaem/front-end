@@ -56,6 +56,7 @@ const UserInfo = () => {
   const onSubmit = () => {
     mutation.mutate(userData);
     navigate("/");
+    // window.location.reload();
   };
 
   useEffect(() => {

@@ -52,7 +52,7 @@ const EvaluationModal: React.FC<ModalProps> = ({
   if (!isOpen || profileData === null) return null; // 모달 열리기 전에 데이터가 없으면 null 반환
 
   const handleOptionClick = (optionValue: string) => {
-    const option = options.find((option) => option.value === optionValue); // Use optionValue instead of selectedOption
+    const option = options.find((option) => option.value === optionValue);
     setSelectedOption(optionValue);
     if (option) {
       const updatedSelectedOptions = selectedOptions.includes(option.id)
@@ -63,9 +63,7 @@ const EvaluationModal: React.FC<ModalProps> = ({
   };
   const handleSubmit = () => {
     if (selectedOptions.length > 0) {
-      selectedOptions.forEach((optionId) => {
-        createMutation.mutate();
-      });
+      createMutation.mutate();
       setIsSubmitted(true);
       onClose();
     }
