@@ -33,6 +33,9 @@ const MainPage = () => {
   const { user } = useMemberInfo();
 
   const navigate = useNavigate();
+
+  useEffect(() => {}, [user]);
+
   const gridContainerCSS = css`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -84,7 +87,7 @@ const MainPage = () => {
           id={hotThree && hotThree.worryBoardId}
           category="match"
         />
-        {user ? <LoginComponent user={user} /> : <NotLoginComponent />}
+        {user?.id ? <LoginComponent user={user} /> : <NotLoginComponent />}
       </div>
 
       <div css={plusBoxCSS}>
