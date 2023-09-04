@@ -3,17 +3,17 @@
 도와줘요, M쌤은 MBTI 기반 고민 상담 커뮤니티입니다.  
 MBTI를 잘 아는 선생님 → MBTI쌤 → 줄여서 M쌤이 되었습니다.
 
-당신의 MBTI는 무엇인가요?   
-여러분도 “도와줘요, M쌤”에서 여러분의 MBTI에 대해 M쌤이 되어보세요!    
-    
+당신의 MBTI는 무엇인가요?  
+여러분도 “도와줘요, M쌤”에서 여러분의 MBTI에 대해 M쌤이 되어보세요!
+
 ## MVP 핵심기능소개
 
 ### 0. 익명 프로필 제공
 
 - 개인 정보는 가입할 때만 사용돼요.
 - 서비스 사용 시 닉네임, MBTI, 칭호만이 나타나요.
-- MBTI를 설정 시 대소문자도 구별하여 나를 더 잘 나타낼 수 있어요. 
-ex) `EsfP`, `inTJ`
+- MBTI를 설정 시 대소문자도 구별하여 나를 더 잘 나타낼 수 있어요.
+  ex) `EsfP`, `inTJ`
 - 원한다면 프로필 사진과 한줄소개도 설정할 수 있어요.
 
 ### 1. 원하는 MBTI의 M쌤과 1:1 매칭 및 실시간 채팅 기능 제공
@@ -37,38 +37,42 @@ ex) `EsfP`, `inTJ`
 ### 4. M쌤 칭호 모으기 기능 제공
 
 - M쌤이 고민을 해결해주었다면, M쌤에게 리뷰를 남길 수 있어요.
-- 다양한 태그가 존재하여 손 쉽게 리뷰를 남길 수 있어요. 
-ex) `재미있어요`, `어른스러워요`, `해결을 잘해줘요`
+- 다양한 태그가 존재하여 손 쉽게 리뷰를 남길 수 있어요.
+  ex) `재미있어요`, `어른스러워요`, `해결을 잘해줘요`
 - 내가 받은 리뷰에 따라 칭호를 얻을 수 있어요.
-ex 1) 어른스러운 방법으로 고민을 해결해주는 **“엠비티어른”**
-ex 2) 화끈한 해결책을 알려주는 “**엠비티라노사우르스”**
-ex 3) 채팅을 길게 이어 나가며 자세한 이야기를 해주는 **“MBTIM”**
+  ex 1) 어른스러운 방법으로 고민을 해결해주는 **“엠비티어른”**
+  ex 2) 화끈한 해결책을 알려주는 “**엠비티라노사우르스”**
+  ex 3) 채팅을 길게 이어 나가며 자세한 이야기를 해주는 **“MBTIM”**
 
 ### 5. MBTI 별 상세 설명 페이지 제공
 
 - MBTI 설명은 빠질 수 없죠. 구글링할 필요 없이 하나의 서비스 안에 담았어요.
 
 ## 팀원 소개
-| FrontEnd | FrontEnd | FrontEnd | FrontEnd | 
-|:-----:|:----:|:------:|:--------:|
-| <img src="https://avatars.githubusercontent.com/u/97819580?v=4" width=320px alt="박브레드"/> | <img src="https://avatars.githubusercontent.com/u/137751841?v=4" width=320px alt="희희"/> | <img src="https://avatars.githubusercontent.com/u/101424642?v=4" width=320px alt="지니"/> | <img src="https://avatars.githubusercontent.com/u/109562161?v=4" width=320px alt="크리스"/>
-| [박브레드](https://github.com/uiop5809) | [희희](https://github.com/KKangHHee) | [지니](https://github.com/jjuny-won) | [크리스](https://github.com/whaleflyingsky)   
-   
-   
- 
-### 🏙️  환경 구축
+
+|                                           FrontEnd                                           |                                         FrontEnd                                          |                                         FrontEnd                                          |                                          FrontEnd                                           |
+| :------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------: |
+| <img src="https://avatars.githubusercontent.com/u/97819580?v=4" width=320px alt="박브레드"/> | <img src="https://avatars.githubusercontent.com/u/137751841?v=4" width=320px alt="희희"/> | <img src="https://avatars.githubusercontent.com/u/101424642?v=4" width=320px alt="지니"/> | <img src="https://avatars.githubusercontent.com/u/109562161?v=4" width=320px alt="크리스"/> |
+|                           [박브레드](https://github.com/uiop5809)                            |                           [희희](https://github.com/KKangHHee)                            |                           [지니](https://github.com/jjuny-won)                            |                         [크리스](https://github.com/whaleflyingsky)                         |
+
+### 🏙️ 환경 구축
+
 `React.js` `TypeScript` `Npm`
 
 ### 💅 Style
+
 `Emotion`
 
 ### 🧹 Lint
+
 `ESLint` `Prettier`
 
 ### 💎 State
-`Recoil`
+
+`Recoil` `React Query` `ContextAPI`
 
 ## ⚒️ 기술 스택
+
 ```jsx
     "@emotion/react": "^11.11.1",
     "@react-oauth/google": "^0.11.0",
