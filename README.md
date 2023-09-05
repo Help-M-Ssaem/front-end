@@ -1,46 +1,106 @@
-# Getting Started with Create React App
+## 💜도와줘요, M쌤!💜
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+도와줘요, M쌤은 MBTI 기반 고민 상담 커뮤니티입니다.  
+MBTI를 잘 아는 선생님 → MBTI쌤 → 줄여서 M쌤이 되었습니다.
 
-## Available Scripts
+당신의 MBTI는 무엇인가요?  
+여러분도 “도와줘요, M쌤”에서 여러분의 MBTI에 대해 M쌤이 되어보세요!
 
-In the project directory, you can run:
+## MVP 핵심기능소개
 
-### `npm start`
+### 0. 익명 프로필 제공
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- 개인 정보는 가입할 때만 사용돼요.
+- 서비스 사용 시 닉네임, MBTI, 칭호만이 나타나요.
+- MBTI를 설정 시 대소문자도 구별하여 나를 더 잘 나타낼 수 있어요.
+  ex) `EsfP`, `inTJ`
+- 원한다면 프로필 사진과 한줄소개도 설정할 수 있어요.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### 1. 원하는 MBTI의 M쌤과 1:1 매칭 및 실시간 채팅 기능 제공
 
-### `npm test`
+- 내가 상담하고 싶은 유형의 MBTI를 고르면 M쌤과 1:1 매칭돼요.
+- 누구나 고민 상담을 요청할 수 있고, 누구나 M쌤이 될 수 있어요.
+- 익명으로 편안한 실시간 채팅 기능을 제공해요.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 2. 커뮤니티 기능 제공
 
-### `npm run build`
+- 자유 게시판
+- MBTI 별 게시판
+- MBTI 맞추기 게시판 (주변에 ~한 사람 있는데 이 사람 MBTI 뭘까?)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 3. MBTI 과몰입 토론 기능 제공
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- 과몰입 토론은 토론 상황과 선택지로 이루어져요.
+- 선택지를 고르면 나의 MBTI와 내가 고른 선택지가 통계에 반영돼요.
+- 재밌는 토론 상황을 직접 만들 수 있어요.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 4. M쌤 칭호 모으기 기능 제공
 
-### `npm run eject`
+- M쌤이 고민을 해결해주었다면, M쌤에게 리뷰를 남길 수 있어요.
+- 다양한 태그가 존재하여 손 쉽게 리뷰를 남길 수 있어요.
+  ex) `재미있어요`, `어른스러워요`, `해결을 잘해줘요`
+- 내가 받은 리뷰에 따라 칭호를 얻을 수 있어요.
+  ex 1) 어른스러운 방법으로 고민을 해결해주는 **“엠비티어른”**
+  ex 2) 화끈한 해결책을 알려주는 “**엠비티라노사우르스”**
+  ex 3) 채팅을 길게 이어 나가며 자세한 이야기를 해주는 **“MBTIM”**
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### 5. MBTI 별 상세 설명 페이지 제공
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- MBTI 설명은 빠질 수 없죠. 구글링할 필요 없이 하나의 서비스 안에 담았어요.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## 팀원 소개
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+|                                           FrontEnd                                           |                                         FrontEnd                                          |                                         FrontEnd                                          |                                          FrontEnd                                           |
+| :------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------: |
+| <img src="https://avatars.githubusercontent.com/u/97819580?v=4" width=320px alt="박브레드"/> | <img src="https://avatars.githubusercontent.com/u/137751841?v=4" width=320px alt="희희"/> | <img src="https://avatars.githubusercontent.com/u/101424642?v=4" width=320px alt="지니"/> | <img src="https://avatars.githubusercontent.com/u/109562161?v=4" width=320px alt="크리스"/> |
+|                           [박브레드](https://github.com/uiop5809)                            |                           [희희](https://github.com/KKangHHee)                            |                           [지니](https://github.com/jjuny-won)                            |                         [크리스](https://github.com/whaleflyingsky)                         |
 
-## Learn More
+### 🏙️ 환경 구축
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+`React.js` `TypeScript` `Npm`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 💅 Style
+
+`Emotion`
+
+### 🧹 Lint
+
+`ESLint` `Prettier`
+
+### 💎 State
+
+`Recoil` `React Query` `ContextAPI`
+
+## ⚒️ 기술 스택
+
+```jsx
+    "@emotion/react": "^11.11.1",
+    "@react-oauth/google": "^0.11.0",
+    "@stomp/stompjs": "^7.0.0",
+    "@toast-ui/editor": "^3.2.2",
+    "@toast-ui/react-editor": "^3.2.3",
+    "@types/node": "^16.18.38",
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
+    "axios": "^1.4.0",
+    "date-fns": "^2.30.0",
+    "emotion": "^11.0.0",
+    "framer-motion": "^10.12.18",
+    "pretendard": "^1.3.8",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-google-login": "^5.2.2",
+    "react-hook-form": "^7.45.1",
+    "react-kakao-login": "^2.1.1",
+    "react-markdown": "^8.0.7",
+    "react-query": "^3.39.3",
+    "react-router-dom": "^6.14.1",
+    "react-scripts": "5.0.1",
+    "recoil": "^0.7.7",
+    "recoil-persist": "^5.1.0",
+    "remark-gfm": "^3.0.1",
+    "sockjs-client": "^1.6.1",
+    "stompjs": "^2.3.3",
+    "typescript": "^4.9.5",
+    "web-vitals": "^2.1.4"
+```

@@ -22,6 +22,7 @@ import useMemberInfo from "../../hooks/user/useMemberInfo";
 import { MainMatching, MainTeacher } from "../../interfaces/matching";
 import HotWorryComponent from "../../components/main/HotWorry";
 import Mssaem from "../../components/matching/Mssaem";
+import { User } from "../../interfaces/user";
 
 const MainPage = () => {
   const { hotThree } = useHotThree();
@@ -30,32 +31,46 @@ const MainPage = () => {
   const { mainMatching } = useMainMatching();
   const { mainTeacher } = useMainTheacher();
   const [selected, setSelected] = useState(0);
+  const [info, setInfo] = useState<User | undefined>(undefined);
   const { user } = useMemberInfo();
   const [isLoadingTime, setIsLoadingTime] = useState(false);
 
   const navigate = useNavigate();
-  const gridContainerCSS = css`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); 
-  > *:nth-of-type(2n + 1) {
-    border-right: 1px solid ${COLOR.MAIN};
-    padding-right: 1rem;
-  }
 
-  > *:nth-of-type(1),
-  > *:nth-of-type(2){
-    ${(Array.isArray(mainMatching) && (mainMatching.length > 2)) && `
+  useEffect(() => {
+    const fetchData = async () => {
+      setInfo(user);
+    };
+    fetchData();
+  }, [user]);
+
+  const gridContainerCSS = css`
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    > *:nth-of-type(2n + 1) {
+      border-right: 1px solid ${COLOR.MAIN};
+      padding-right: 1rem;
+    }
+
+    > *:nth-of-type(1),
+    > *:nth-of-type(2) {
+      ${Array.isArray(mainMatching) &&
+      mainMatching.length > 2 &&
+      `
       border-bottom: 1px solid ${COLOR.MAIN};
     `}
     }
 
-  > *:nth-of-type(3),
-  > *:nth-of-type(4){
-    ${(Array.isArray(mainMatching) && (mainMatching.length > 4)) && `
+    > *:nth-of-type(3),
+    > *:nth-of-type(4) {
+      ${Array.isArray(mainMatching) &&
+      mainMatching.length > 4 &&
+      `
       border-bottom: 1px solid ${COLOR.MAIN};
     `}
     }
   `;
+<<<<<<< HEAD
   const handleHotDebatesClick = () => {
     setIsLoadingTime(true); 
     refetch();
@@ -65,6 +80,9 @@ const MainPage = () => {
     setIsLoadingTime(true);
     refetch();
   }, [refetch, isLoadingTime]);
+=======
+
+>>>>>>> 4a4f758cbad36e0cf2776ad3355db623aad5b221
   return (
     <>
       <div css={headerCSS}>
@@ -89,7 +107,7 @@ const MainPage = () => {
           id={hotThree && hotThree.worryBoardId}
           category="match"
         />
-        {user ? <LoginComponent user={user} /> : <NotLoginComponent />}
+        {info ? <LoginComponent user={info} /> : <NotLoginComponent />}
       </div>
 
       <div css={plusBoxCSS}>
@@ -185,10 +203,10 @@ const hotBoardBoxCSS = css`
   justify-content: space-between;
 `;
 
-const hotDebateBoxCSS = css `
-display: grid;
-grid-template-columns: repeat(2, 1fr);
-column-gap: 2rem;
+const hotDebateBoxCSS = css`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 2rem;
 `;
 
 const plusBoxCSS = css`
@@ -242,7 +260,7 @@ const MssaemCSS = css`
 `;
 
 const MssaemCenterCSS = css`
-justify-content: center;
-display: flex;
-margin-bottom: 2rem;
+  justify-content: center;
+  display: flex;
+  margin-bottom: 2rem;
 `;

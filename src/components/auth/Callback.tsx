@@ -41,6 +41,7 @@ const Callback = () => {
         navigate("/sign-up");
       }
     }
+    // window.location.reload();
   }, [loginMutation.isSuccess, loginMutation.data, navigate]);
 
   return <div></div>;
