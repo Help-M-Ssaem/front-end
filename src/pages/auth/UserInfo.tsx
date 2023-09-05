@@ -56,7 +56,9 @@ const UserInfo = () => {
   const onSubmit = () => {
     mutation.mutate(userData);
     navigate("/");
-    // window.location.reload();
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000); // 1000 밀리초 (1초) 후에 새로고침
   };
 
   useEffect(() => {
