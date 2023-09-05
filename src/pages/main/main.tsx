@@ -70,7 +70,6 @@ const MainPage = () => {
     `}
     }
   `;
-<<<<<<< HEAD
   const handleHotDebatesClick = () => {
     setIsLoadingTime(true); 
     refetch();
@@ -80,9 +79,6 @@ const MainPage = () => {
     setIsLoadingTime(true);
     refetch();
   }, [refetch, isLoadingTime]);
-=======
-
->>>>>>> 4a4f758cbad36e0cf2776ad3355db623aad5b221
   return (
     <>
       <div css={headerCSS}>
