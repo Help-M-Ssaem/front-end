@@ -94,7 +94,7 @@ const MainPage = () => {
           id={hotThree && hotThree.worryBoardId}
           category="match"
         />
-        {user?.id ? <LoginComponent user={user} /> : <NotLoginComponent />}
+        {info ? <LoginComponent user={info} /> : <NotLoginComponent />}
       </div>
 
       <div css={plusBoxCSS}>
