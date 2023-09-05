@@ -12,12 +12,15 @@ import AlarmMenu from "../side/Alarm";
 import FavoritesMenu from "../side/Favorites";
 import Profile from "../profile/Profile";
 import { useEffect, useRef } from "react";
+import { useAlarmList } from "../../hooks/alarm/useGetAlarm";
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useMemberInfo();
 
+  const { alarmList } = useAlarmList(0, 10);
+  const newAlarm = alarmList?.result.some(alarm => !alarm.state);
   const [alarmOpen, setAlarmOpen] = useState(false);
   const [favoritesOpen, setFavoritesOpen] = useState(false);
 
@@ -113,6 +116,8 @@ const Header = () => {
           >
             알람
           </li>
+          {newAlarm && 
+            <div css = {[newAlarmCSS]}>!</div>}
           {alarmOpen && 
             <div css={AlarmContainerCSS}><AlarmMenu/></div>}
           <li
@@ -239,6 +244,37 @@ const buttonCSS = css`
   width: 20%;
   z-index: 11;
 `;
+const newAlarmCSS = css`
+  position: absolute;
+  top: 65%;
+  right: 18.4%;
+  width: 10%;
+  z-index: 11;
+
+
+  width: 1rem;
+  height: 1rem;
+  background-color: ${COLOR.MAIN1};
+  border-radius: 50%;
+  color: white;
+  font-size: 0.7rem;
+  text-align: center;
+  line-height: 1rem;
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: -0.4rem;
+    left: 30%;
+    transform: rotate(30deg) translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 0.2rem solid transparent;
+    border-right: 0.2rem solid transparent;
+    border-top: 0.5rem solid ${COLOR.MAIN1};
+  }
+`;
+
 
 const FavoritesContainerCSS = css`
 position: absolute;
@@ -247,3 +283,5 @@ right: 10;
 width: 20%;
 z-index: 11;
 `;
+
+

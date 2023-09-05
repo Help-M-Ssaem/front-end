@@ -4,12 +4,12 @@ import MatchingComponent from "../Matching";
 import { css } from "@emotion/react";
 import COLOR from "../../../styles/color";
 import FONT from "../../../styles/font";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Text from "../../../components/text/Text";
 import Container from "../../../components/container/Container";
 import { RightArrowIcon, SmallArrowIcon } from "../../../assets/CommonIcons";
 import Button from "../../button/Button";
-import useFetchWorryBoardList from "../../../hooks/worry/UseFetchBoardList";
+import {useFetchWorryBoardList} from "../../../hooks/worry/UseFetchBoardList";
 import MbtiList from "../mapingMatching/MbtiList";
 import React from "react";
 import SelectBox from "../../Pagination/SelectBox";
@@ -22,24 +22,35 @@ interface WorryProps {
 }
 
 const WorryList: React.FC<WorryProps> = ({ pathMove, SaW, postId }) => {
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
   const [openMbti1, setOpenMbti1] = useState(false);
-  const [mbti1, setMbti1] = useState("전체");
+  const [mbti1, setMbti1] = useState("ALL");
   const [openMbti2, setOpenMbti2] = useState(false);
-  const [mbti2, setMbti2] = useState("전체");
-
+  const [mbti2, setMbti2] = useState("ALL");
+  const [boardId, setBoardId] = useState(Number(id));
   const [blockNum, setBlockNum] = useState(0); //블록 설정하는 함수
   const [page, setPage] = useState(1);
-  const worryBoardLists = useFetchWorryBoardList(
+  const {worryBoardList, refetch} = useFetchWorryBoardList(
     mbti1,
     mbti2,
     pathMove,
     page - 1,
-    postId,
+    boardId,
   );
   const limit = 10; //한 페이지당 아이템의 개수
-  const totalPage = worryBoardLists ? worryBoardLists.totalSize : 1; //전체 페이지 수
+  const totalPage = worryBoardList ? worryBoardList.totalSize : 1; //전체 페이지 수
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
+  useEffect(() => {
+    setMbti1(mbti1);
+    setMbti2(mbti2);
+    setBoardId(postId);
+    setPage(page);
+    refetch();
+  }, [page, refetch, mbti1,mbti2]);
 
   const handleOpenMbti1 = () => {
     setOpenMbti1(!openMbti1);
@@ -53,19 +64,17 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW, postId }) => {
   const handleMbti1Click = (mbti: string) => {
     setOpenMbti1(false);
     setMbti1(mbti);
+    setPage(1);
   };
   const handleMbti2Click = (mbti: string) => {
     setOpenMbti2(false);
     setMbti2(mbti);
+    setPage(1);
   };
 
   const handleMatchingClick = (id: number) => {
     navigate(`/match/${id}`);
   };
-  useEffect(() => {
-    setMbti1("전체");
-    setMbti2("전체");
-  }, []);
   return (
     <>
       <Container addCSS={containerCSS}>
@@ -86,12 +95,12 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW, postId }) => {
               {openMbti2 && <MbtiList onClick={handleMbti2Click} />}
             </div>
           </div>
-          {pathMove === "waiting" && token && (
+          {pathMove === "waiting" &&  (
             <Button onClick={() => navigate("/match/create")}>글 쓰기</Button>
           )}
         </div>
-        {worryBoardLists &&
-          worryBoardLists.result.map((matching) => (
+        {worryBoardList &&
+          worryBoardList.result.map((matching) => (
             <MatchingComponent
               matching={matching}
               solve={pathMove}
@@ -102,7 +111,7 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW, postId }) => {
         <ListPagination
           limit={limit}
           page={page}
-          setPage={setPage}
+          setPage={handlePageChange}
           blockNum={blockNum}
           setBlockNum={setBlockNum}
           totalPage={totalPage}
