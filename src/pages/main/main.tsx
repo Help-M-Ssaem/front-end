@@ -22,6 +22,7 @@ import useMemberInfo from "../../hooks/user/useMemberInfo";
 import { MainMatching, MainTeacher } from "../../interfaces/matching";
 import HotWorryComponent from "../../components/main/HotWorry";
 import Mssaem from "../../components/matching/Mssaem";
+import { User } from "../../interfaces/user";
 
 const MainPage = () => {
   const { hotThree } = useHotThree();
@@ -30,11 +31,17 @@ const MainPage = () => {
   const { mainMatching } = useMainMatching();
   const { mainTeacher } = useMainTheacher();
   const [selected, setSelected] = useState(0);
+  const [info, setInfo] = useState<User | undefined>(undefined);
   const { user } = useMemberInfo();
 
   const navigate = useNavigate();
 
-  useEffect(() => {}, [user]);
+  useEffect(() => {
+    const fetchData = async () => {
+      setInfo(user);
+    };
+    fetchData();
+  }, [user]);
 
   const gridContainerCSS = css`
     display: grid;
