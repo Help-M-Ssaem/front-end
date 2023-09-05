@@ -20,6 +20,17 @@ const LoginComponent = ({ user }: userProps) => {
     axios.get(
       `https://kauth.kakao.com/oauth/logout?client_id=${process.env.REACT_APP_KAKAO_API_KEY}&logout_redirect_uri=${logout_url}`,
     );
+    //쿠키 삭제 로직 추가
+    const cookies = document.cookie.split(";");
+
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i];
+      const eqPos = cookie.indexOf("=");
+      const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+
+      // 3. 쿠키 만료 날짜 설정 (현재 시간 이전으로)
+      document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    }
 
     localStorage.removeItem("accessToken");
     window.location.reload();
