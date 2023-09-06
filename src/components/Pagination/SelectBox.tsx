@@ -10,73 +10,30 @@ import { useNavigate } from "react-router-dom";
 
 interface SelectBoxProps {
   boardName: String;
-  // searchType: number;
   setSearchType: (searchType: number) => void;
 }
 
 const selectList = ["제목+내용", "제목", "내용", "글쓴이"];
 
-const SelectBox: React.FC<SelectBoxProps> = ({
-  boardName,
-  // searchType,
-  setSearchType,
-}) => {
+const SelectBox: React.FC<SelectBoxProps> = ({ boardName, setSearchType }) => {
   const first = selectList[0];
   const navigate = useNavigate();
   const [option, setOption] = useState(first);
   const [open, setOpen] = useState(false);
   const [searchWord, setSearchWord] = useState("");
   const search = useSearch(searchWord);
-  let searchTypeNum = 0;
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(0); // 초기값 설정
 
   const handleOpen = () => {
     setOpen(!open);
   };
 
-  // const handleOption = (selectedOption: string) => {
-  //   setOption(selectedOption);
-  //   setOpen(false);
-
-  //   switch (selectedOption) {
-  //     case selectList[0]:
-  //       setSearchType(0);
-  //       searchTypeNum = 0;
-  //       console.log(selectedOption + " : " + searchType);
-  //       break;
-  //     case selectList[1]:
-  //       setSearchType(1);
-  //       searchTypeNum = 1;
-  //       console.log(selectedOption + " : " + searchType);
-  //       break;
-  //     case selectList[2]:
-  //       setSearchType(2);
-  //       searchTypeNum = 2;
-  //       console.log(selectedOption + " : " + searchType);
-  //       break;
-  //     case selectList[3]:
-  //       setSearchType(3);
-  //       searchTypeNum = 3;
-  //       console.log(selectedOption + " : " + searchType);
-  //       break;
-  //     default:
-  //       setSearchType(0);
-  //       console.log("default");
-  //       break;
-  //   }
-  //   console.log(selectedOption + " : num: " + searchTypeNum);
-  // };
   const handleOption = (index: number, selectedOption: string) => {
     setSelectedOptionIndex(index);
     setOption(selectedOption);
     setOpen(false);
   };
 
-  // const handleInputChange = (event: {
-  //   target: { value: SetStateAction<string> };
-  // }) => {
-  //   setSearchWord(event.target.value);
-  // };
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchWord(event.target.value);
   };
@@ -102,11 +59,6 @@ const SelectBox: React.FC<SelectBoxProps> = ({
     }
   };
 
-  // const handleOnKeyPress = (e: { key: string }) => {
-  //   if (e.key === "Enter") {
-  //     handleSearch();
-  //   }
-  // };
   const handleOnKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleSearch();

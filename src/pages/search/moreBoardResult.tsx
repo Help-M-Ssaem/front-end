@@ -34,10 +34,6 @@ const MoreBoardResult = () => {
     page,
     limit,
   );
-  console.log("query : " + query); // searchType=0&query=%EC%9A%94
-  console.log("searchtypeget: " + query.get("searchType")); // 0
-  console.log("queryget: " + query.get("query")); // 요
-  console.log(query.get("query")?.at(0)); // 요
 
   useEffect(() => {
     setSearchBoardList(searchData.searchBoardList);
