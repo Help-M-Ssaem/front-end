@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import Profile from "../profile/Profile";
-import { HotDebate } from "../../interfaces/debate";
+import { Debate } from "../../interfaces/debate";
 import { SerializedStyles, css } from "@emotion/react";
 import FONT from "../../styles/font";
 import COLOR from "../../styles/color";
@@ -9,7 +9,7 @@ import RedButton from "../button/plusbutton/RedButton";
 import { useNavigate } from "react-router";
 import Container from "../container/Container";
 interface HotDebateProps {
-  hotDebate: HotDebate;
+  hotDebate: Debate;
   addCSS?: SerializedStyles;
 }
 

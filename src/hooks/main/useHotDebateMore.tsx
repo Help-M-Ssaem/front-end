@@ -1,12 +1,12 @@
 import { useQuery } from "react-query";
 import { mssaemAxios as axios } from "../../apis/axios";
-import { HotDebateMore } from "../../interfaces/debate";
+import { DebateList } from "../../interfaces/debate";
 import { hotDebateKeys } from "../../constants/boardKey";
 
 async function getHotDebateMore(
   page: number,
   size: number,
-): Promise<HotDebateMore> {
+): Promise<DebateList> {
   const { data } = await axios.get(
     `/discussions/hot?page=${page}&size=${size}`,
   );
@@ -14,7 +14,7 @@ async function getHotDebateMore(
 }
 
 interface UseHotDebate {
-  hotDebateMore?: HotDebateMore;
+  hotDebateMore?: DebateList;
 }
 
 export function useHotDebateMore(page: number, size: number): UseHotDebate {
