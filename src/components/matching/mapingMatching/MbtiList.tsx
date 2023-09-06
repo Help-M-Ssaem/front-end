@@ -4,7 +4,7 @@ import COLOR from "../../../styles/color";
 import FONT from "../../../styles/font";
 
 const mbtiList = [
-    "전체",
+    "ALL",
     "ISTJ",
     "ISFJ",
     "INFJ",

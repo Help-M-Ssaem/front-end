@@ -128,7 +128,6 @@ const MyPageUpdate = () => {
   //제출하기
   const onSubmit = async () => {
     try {
-      console.log(data);
       const response = await axios.patch("/member/profile", data, {
         headers: {
           "Content-Type": "application/json",

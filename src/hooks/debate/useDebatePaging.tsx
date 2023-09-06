@@ -4,7 +4,7 @@ import { DebateList } from '../../interfaces/debate';
 import { debateKeys } from '../../constants/debateKey';
 
 export function useDebatePaging(path: string, page: number, postId: number) {
-  const queryKey = path === 'discusstion' ? debateKeys.all : debateKeys.hot;
+  const queryKey = debateKeys.all;
   const { data: debateList, refetch } = useQuery<DebateList>(
     queryKey,
     async () => {

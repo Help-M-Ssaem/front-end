@@ -56,6 +56,9 @@ const UserInfo = () => {
   const onSubmit = () => {
     mutation.mutate(userData);
     navigate("/");
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000); // 1000 밀리초 (1초) 후에 새로고침
   };
 
   useEffect(() => {
@@ -215,7 +218,7 @@ const UserInfo = () => {
           type="submit"
           value="회원가입"
           disabled={result !== false}
-          css={buttonCSS}
+          css={buttonCSS(result)}
           onClick={() => onSubmit()}
         />
       </form>
@@ -310,7 +313,7 @@ const mbtiBox = css`
   text_align: center;
 `;
 
-const buttonCSS = css`
+const buttonCSS = (result: boolean | null) => css`
   margin-top: 5rem;
   display: flex;
   justify-content: center;
@@ -319,7 +322,7 @@ const buttonCSS = css`
   width: 100%;
   height: 3rem;
   color: ${COLOR.WHITE};
-  background: #a7a7a7;
+  background: ${result === false ? `${COLOR.MAIN1}` : "#a7a7a7"};
 
   font-size: ${FONT.SIZE.TITLE3};
   font-weight: ${FONT.WEIGHT.REGULAR};
@@ -328,9 +331,9 @@ const buttonCSS = css`
   border: 0.1rem solid;
 
   :hover {
-    background-color: ${COLOR.GRAY1};
-    transition: 0.7s;
-    cursor: pointer;
+    // background-color: ${COLOR.MAIN1};
+    // transition: 0.7s;
+    cursor: ${result === false ? "pointer" : "not-allowed"};
   }
 
   :disabled {
