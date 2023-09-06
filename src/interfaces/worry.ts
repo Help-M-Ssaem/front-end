@@ -19,6 +19,7 @@ export interface WorryBoard {
   targetMbti: string;
   createdDate: string;
   imgUrl: string;
+  solved: string;
 }
 
 export interface WorryList {
