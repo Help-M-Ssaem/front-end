@@ -16,11 +16,15 @@ export async function getDebateDetail(id: number): Promise<DebateDetail> {
 
 interface UseDebateDetail {
     debate?: DebateDetail;
+    isLoading: boolean;
 }
 
 export function useDebateDetail(id: number): UseDebateDetail {
-  const { data: debate } = useQuery(debateKeys.detail(id), () =>
+  const { isLoading , data: debate } = useQuery(debateKeys.detail(id), () =>
     getDebateDetail(id),
+    {
+      refetchOnMount : true,
+    } 
   );
-  return { debate };
+  return { isLoading,debate,  };
 }
