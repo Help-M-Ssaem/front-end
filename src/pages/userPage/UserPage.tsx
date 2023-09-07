@@ -96,6 +96,9 @@ const UserPage = () => {
             <p css={subTitleCSS}>한줄소개</p>
             <p css={oneLineIntroductionCSS}>
               {profileData?.teacherInfo?.introduction}
+              {!profileData?.teacherInfo?.introduction && (
+                <p css={noIntroductionCSS}>아직 소개가 없어요...</p>
+              )}
             </p>
           </div>
         </Container>
@@ -295,6 +298,13 @@ const oneLineIntroductionCSS = css`
   font-size: ${FONT.SIZE.TITLE3};
   font-weight: ${FONT.WEIGHT.REGULAR};
   color: ${COLOR.GRAY1};
+  margin-top: 0.5rem;
+`;
+
+const noIntroductionCSS = css`
+  font-size: ${FONT.SIZE.BODY};
+  font-weight: ${FONT.WEIGHT.REGULAR};
+  color: ${COLOR.GRAY3};
   margin-top: 0.5rem;
 `;
 
