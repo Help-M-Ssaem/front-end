@@ -8,7 +8,7 @@ import Badge from "../../components/badge/Badge";
 import BoardComponent from "../../components/board/Board";
 import Profile from "../../components/profile/Profile";
 import { useGetProfile } from "../../hooks/user/useProfile";
-import { BigCatLogoIcon, SettingIcon } from "../../assets/CommonIcons";
+import { BigCatLogoIcon } from "../../assets/CommonIcons";
 import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
 import { useBoardListMember } from "../../hooks/board/useBoardListMember";
@@ -25,61 +25,6 @@ const menuTabBar = [
   { type: 2, title: "내가 쓴 토론글" },
   { type: 3, title: "내가 쓴 고민글" },
   { type: 4, title: "내가 해결한 고민" },
-];
-// 가져올 컴포넌트들 임시로
-const myPostArray5 = [
-  {
-    id: 1,
-    name: "유저5",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "내가 고민 해결왕이다",
-    content: "예에",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 2,
-    name: "유저5",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "내가 고민 해결왕이다",
-    content: "예에",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 3,
-    name: "유저5",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "내가 고민 해결왕이다",
-    content: "예에",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
-  {
-    id: 4,
-    name: "유저5",
-    profile: "https://i.ibb.co/KN0Ty4Q/bread.png",
-    thumbnail: "https://i.ibb.co/wrVDXsy/IMG-6365-23992340.png",
-    mbti: "EsFP",
-    badge: "엠비티어론",
-    title: "내가 고민 해결왕이다",
-    content: "예에",
-    createdAt: "23.06.21",
-    like: 3,
-    comment: 4,
-  },
 ];
 
 const MyPage = () => {
@@ -340,9 +285,6 @@ const profileContainerCSS = css`
 `;
 
 const profileImageContainerCSS = css`
-  // width: 100%;
-  // height: 100%;
-
   width: 12.125rem;
   height: 12.125rem;
   overflow: hidden;
