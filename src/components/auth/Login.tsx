@@ -14,8 +14,9 @@ interface userProps {
 
 const LoginComponent = ({ user }: userProps) => {
   const navigate = useNavigate();
-  const logout_url = `https://m-ssaem.vercel.app/logout`;
+  // const logout_url = `https://www.m-ssaem.com/logout`;
   // const logout_url = `https://localhost:3000/logout`;
+  const logout_url = `https://www.m-ssaem.com/logout`;
   const handleLogout = () => {
     axios.get(
       `https://kauth.kakao.com/oauth/logout?client_id=${process.env.REACT_APP_KAKAO_API_KEY}&logout_redirect_uri=${logout_url}`,
