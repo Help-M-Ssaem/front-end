@@ -338,13 +338,15 @@ const profileContainerCSS = css`
   margin: 0.625rem 0 2.5rem;
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 const profileImageContainerCSS = css`
-  width: 80%;
-  height: 100%;
-  // width: 12.125rem;
-  // height: 12.125rem;
+  // width: 100%;
+  // height: 100%;
+
+  width: 12.125rem;
+  height: 12.125rem;
   overflow: hidden;
   border-radius: 50%;
   background-color: white;
@@ -358,8 +360,8 @@ const imageCSS = css`
   // height: 80%;
   // height: auto;
   // width: auto;
-  width: 100%;
-  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
   // max-height: 9rem;
   object-fit: contain;
 `;
