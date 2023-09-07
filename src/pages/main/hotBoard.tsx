@@ -18,6 +18,7 @@ const HotBoardPage = () => {
   const pageNum = hotBoardMore ? hotBoardMore.page : 1;
   const [page, setPage] = useState(pageNum);
   const [blockNum, setBlockNum] = useState(0);
+  const [searchType, setSearchType] = useState(0);
 
   const navigate = useNavigate();
 
@@ -42,7 +43,7 @@ const HotBoardPage = () => {
           setBlockNum={setBlockNum}
           totalPage={totalPage}
         />
-        <SelectBox boardName={"mbtiboard"} />
+        <SelectBox boardName={"mbtiboard"} setSearchType={setSearchType} />
       </Container>
     </>
   );
