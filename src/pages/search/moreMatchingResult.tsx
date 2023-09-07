@@ -5,14 +5,12 @@ import FONT from "../../styles/font";
 import ListPagination from "../../components/Pagination/ListPagination";
 import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
-import SelectBox from "../../components/Pagination/SelectBox";
 import { useLocation } from "react-router-dom";
 import { mssaemAxios as axios } from "../../apis/axios";
 import COLOR from "../../styles/color";
 import { useSearchSolvedWorryList } from "../../hooks/search/useSearchSolvedWorryBoardList";
 import { useSearchWaitingWorryList } from "../../hooks/search/useSearchWaitingWorryBoardList";
 import MatchingComponent from "../../components/matching/Matching";
-import { SearchMatchingList } from "../../interfaces/moresearch";
 import { WorryList } from "../../interfaces/worry";
 
 function useQuery() {
@@ -33,9 +31,9 @@ const MoreMatchingResult = () => {
   const [pageSolved, setPageSolved] = useState(1); // 현재 페이지 설정하는 함수
 
   const queryValue = query.get("query") || ""; // null값일 때 빈 문자열로
-
+  const searchTypeValue = Number(query.get("searchType")) || 0;
   const searchWaitingData = useSearchWaitingWorryList(
-    0,
+    searchTypeValue,
     queryValue,
     mbti,
     mbti,
@@ -43,7 +41,7 @@ const MoreMatchingResult = () => {
     limit,
   );
   const searchSolvedData = useSearchSolvedWorryList(
-    0,
+    searchTypeValue,
     queryValue,
     mbti,
     mbti,
@@ -59,13 +57,6 @@ const MoreMatchingResult = () => {
     setSearchSolvedWorryList(searchSolvedData.searchSolvedWorryList);
   }, [searchSolvedData.searchSolvedWorryList]);
 
-  console.log(
-    "해결완료" + (searchSolvedWorryList && searchSolvedWorryList.result),
-  );
-  console.log(
-    "기다리는" + (searchWaitingWorryList && searchWaitingWorryList.result),
-  );
-
   const totalPageSolved = searchSolvedWorryList
     ? searchSolvedWorryList.totalSize
     : 1; //전체 페이지
@@ -77,7 +68,7 @@ const MoreMatchingResult = () => {
   useEffect(() => {
     axios
       .get(
-        `/worry-board/solved/search?searchType=0&keyword=${queryValue}&strFromMbti=${mbti}&strToMbti=${mbti}&page=${
+        `/worry-board/waiting/search?searchType=${searchTypeValue}&keyword=${queryValue}&strFromMbti=${mbti}&strToMbti=${mbti}&page=${
           pageWaiting - 1
         }&size=${limit}`,
       )
@@ -89,7 +80,7 @@ const MoreMatchingResult = () => {
   useEffect(() => {
     axios
       .get(
-        `/worry-board/waiting/search?searchType=0&keyword=${queryValue}&strFromMbti=${mbti}&strToMbti=${mbti}&page=${
+        `/worry-board/solved/search?searchType=${searchTypeValue}&keyword=${queryValue}&strFromMbti=${mbti}&strToMbti=${mbti}&page=${
           pageSolved - 1
         }&size=${limit}`,
       )

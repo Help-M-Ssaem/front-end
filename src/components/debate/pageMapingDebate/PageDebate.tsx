@@ -19,6 +19,7 @@ interface Props {
 const PageDebate: React.FC<Props> = ({ pathMov, postId }) => {
   const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
+  const [searchType, setSearchType] = useState(0);
   const [blockNum, setBlockNum] = useState(0); //블록 설정하는 함수
   const [page, setPage] = useState(1);
   const { debateList, refetch } = useDebatePaging(pathMov, page - 1, postId);
@@ -44,15 +45,23 @@ const PageDebate: React.FC<Props> = ({ pathMov, postId }) => {
               mode={pathMov}
             />
           ))}
-          {/* 게시글이 아예 없을 경우 처리 */}
-          {debateList &&!debateList.result.length && 
-            <div css={[debateBoxCSS]} >
-              <div css={buttonBoxCSS}>
-                {pathMov === "discusstion" ? <Text>MBTI 과몰입 토론</Text> : <Text>HOT 토론글</Text>}
-                {token &&<Button onClick={() => navigate("/debate/create")}>글 쓰기</Button>}
-              </div>
+        {/* 게시글이 아예 없을 경우 처리 */}
+        {debateList && !debateList.result.length && (
+          <div css={[debateBoxCSS]}>
+            <div css={buttonBoxCSS}>
+              {pathMov === "discusstion" ? (
+                <Text>MBTI 과몰입 토론</Text>
+              ) : (
+                <Text>HOT 토론글</Text>
+              )}
+              {token && (
+                <Button onClick={() => navigate("/debate/create")}>
+                  글 쓰기
+                </Button>
+              )}
             </div>
-          }
+          </div>
+        )}
       </div>
       <ListPagination
         limit={limit}
@@ -62,7 +71,7 @@ const PageDebate: React.FC<Props> = ({ pathMov, postId }) => {
         setBlockNum={setBlockNum}
         totalPage={totalPage}
       />
-      <SelectBox boardName={"discussion"} />
+      <SelectBox boardName={"discussion"} setSearchType={setSearchType} />
     </Container>
   );
 };
@@ -75,18 +84,18 @@ const containerCSS = css`
 `;
 
 const debateBoxCSS = css`
-    padding: 0 1.5rem 1.5rem 1.5rem;
-    margin: 0 0 4rem 0;
-    background: ${COLOR.MAIN3};
-    border-radius: 1.4rem;
-    position: relative;
-  `;
+  padding: 0 1.5rem 1.5rem 1.5rem;
+  margin: 0 0 4rem 0;
+  background: ${COLOR.MAIN3};
+  border-radius: 1.4rem;
+  position: relative;
+`;
 
-  const buttonBoxCSS = css`
+const buttonBoxCSS = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top:1.5rem;
+  padding-top: 1.5rem;
   border-bottom: 1px solid ${COLOR.MAIN};
   padding-bottom: 1.4rem;
 `;
