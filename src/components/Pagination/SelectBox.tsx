@@ -133,13 +133,12 @@ const optionsCSS = css`
   width: 6rem;
 `;
 const optionCSS = css`
-background-color: #FFFFFF;
-box-sizing: border-box;
-color: ${COLOR.GRAY2};
-border-radius: 0.3rem;
-padding:0.1rem;
-font-size: ${FONT.SIZE.TITLE3};
-}
+  background-color: #ffffff;
+  box-sizing: border-box;
+  color: ${COLOR.GRAY2};
+  border-radius: 0.3rem;
+  padding: 0.1rem;
+  font-size: ${FONT.SIZE.TITLE3};
 `;
 
 const inputCSS = css`
