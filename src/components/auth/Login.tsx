@@ -14,7 +14,7 @@ interface userProps {
 
 const LoginComponent = ({ user }: userProps) => {
   const navigate = useNavigate();
-  const logout_url = `https://m-ssaem.vercel.app/logout`;
+  const logout_url = `https://m-ssaem.com/logout`;
   // const logout_url = `https://localhost:3000/logout`;
   const handleLogout = () => {
     axios.get(
