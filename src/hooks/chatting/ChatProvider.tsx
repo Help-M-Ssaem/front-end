@@ -22,7 +22,7 @@ export function ChatProvider({ children }: any) {
   const client = useRef<CompatClient>();
   const connect = (roomId: number) => {
     client.current = Stomp.over(() => {
-      const sock = new WebSocket("wss://m-ssaem.com:8080/stomp/chat");
+      const sock = new WebSocket("wss://m-ssaem.shop:8080/stomp/chat");
       return sock;
     });
     client.current.connect(
