@@ -40,21 +40,23 @@ const SelectBox: React.FC<SelectBoxProps> = ({ boardName, setSearchType }) => {
 
   const handleSearch = () => {
     setSearchType(selectedOptionIndex);
-    search.mutate();
-    if (searchWord.length > 0) {
-      if (boardName === "mbtiboard") {
-        // navigate(`/search/result?query=${searchWord}`);
-        navigate(
-          `/search/moreBoard?searchType=${selectedOptionIndex}&query=${searchWord}`,
-        );
-      } else if (boardName === "discussion") {
-        navigate(
-          `/search/moreDebate?searchType=${selectedOptionIndex}&query=${searchWord}`,
-        );
-      } else if (boardName === "matching") {
-        navigate(
-          `/search/moreMatching?searchType=${selectedOptionIndex}&query=${searchWord}`,
-        );
+    if (searchWord.trim() !== "") {
+      search.mutate();
+      if (searchWord.length > 0) {
+        if (boardName === "mbtiboard") {
+          // navigate(`/search/result?query=${searchWord}`);
+          navigate(
+            `/search/moreBoard?searchType=${selectedOptionIndex}&query=${searchWord}`,
+          );
+        } else if (boardName === "discussion") {
+          navigate(
+            `/search/moreDebate?searchType=${selectedOptionIndex}&query=${searchWord}`,
+          );
+        } else if (boardName === "matching") {
+          navigate(
+            `/search/moreMatching?searchType=${selectedOptionIndex}&query=${searchWord}`,
+          );
+        }
       }
     }
   };
