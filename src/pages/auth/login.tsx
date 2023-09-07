@@ -42,7 +42,7 @@ const LoginPage = () => {
       <div css={RectCSS}>
         <img src={Google} onClick={GoogleLogin} />
         <img src={Kakao} onClick={KakaoLogin} />
-        <img src={Naver} onClick={NaverLogin} />
+        {/* <img src={Naver} onClick={NaverLogin} /> */}
       </div>
     </div>
   );
