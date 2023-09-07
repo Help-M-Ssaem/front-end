@@ -108,6 +108,8 @@ const MyPage = () => {
     setMenuSelected(type);
   };
 
+  console.log(profileData);
+
   return (
     <div>
       <div css={boxHeadContainerCSS}>
