@@ -24,12 +24,14 @@ import {
   replyCommentOpenState,
 } from "../../states/board";
 import { useRecoilState } from "recoil";
+import { motion } from "framer-motion";
 import CommentCreate from "../../components/debate/comment/CommentCreate";
+import { BigCatLogoIcon } from "../../assets/CommonIcons";
 const DetailDebatePage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const debateId = Number(id);
-  const { debate } = useDebateDetail(debateId);
+  const { debate, isLoading } = useDebateDetail(debateId);
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const handleDeleteOpen = () => {
@@ -66,9 +68,33 @@ const DetailDebatePage = () => {
     deleteMutation.mutate();
     navigate(-1);
   };
-
+  const spinCat = () => {
+    const rotateAnimation = {
+      hidden: { rotate: 0 },
+      visible: { rotate: 360 },
+    };
+  
+    return (
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={rotateAnimation}
+        css={noChatCSS}
+        transition={{ type: "spring", damping: 5, stiffness: 250 }}
+      >
+        <BigCatLogoIcon />
+      </motion.div>
+    );
+  }
   return (
-    <div css={ContainerCSS}>
+    <>
+    {isLoading && 
+      <Container>
+        <div>{spinCat()}</div>
+        <div css={[bottomFontSIZE,noChatCSS]}>로딩 중!</div>
+       </Container>
+       }
+    {!isLoading &&<div css={ContainerCSS}>
       <Container>
         {debate && (
           <>
@@ -176,7 +202,8 @@ const DetailDebatePage = () => {
       )}
 
       <PageDebate pathMov={"discusstion"} postId={Number(id)}/>
-    </div>
+    </div>}
+    </>
   );
 };
 
@@ -269,4 +296,23 @@ const declarationCSS = css`
 
 const replyComment = css`
   margin-top: 1rem;
+`;
+
+const noChatCSS = css`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+// const bottomFontSIZE = css`
+//   font-size: ${FONT.SIZE.HEROTITLE};
+//   color: ${COLOR.GRAY2};
+// `;
+const bottomFontSIZE = css`
+  font-size: ${FONT.SIZE.HEROTITLE};
+  color: ${COLOR.GRAY2};
+  align-items: center;
+  justify-content: center;
 `;
