@@ -10,56 +10,46 @@ import { useNavigate } from "react-router-dom";
 
 interface SelectBoxProps {
   boardName: String;
-  setSearchType: (searchType: number) => void;
 }
 
 const selectList = ["제목+내용", "제목", "내용", "글쓴이"];
 
-const SelectBox: React.FC<SelectBoxProps> = ({ boardName, setSearchType }) => {
+const SelectBox = ({ boardName }: SelectBoxProps) => {
   const first = selectList[0];
   const navigate = useNavigate();
   const [option, setOption] = useState(first);
   const [open, setOpen] = useState(false);
   const [searchWord, setSearchWord] = useState("");
   const search = useSearch(searchWord);
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState(0); // 초기값 설정
-
   const handleOpen = () => {
     setOpen(!open);
   };
-
-  const handleOption = (index: number, selectedOption: string) => {
-    setSelectedOptionIndex(index);
-    setOption(selectedOption);
+  const handleOption = (option: string) => {
+    setOption(option);
     setOpen(false);
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event: {
+    target: { value: SetStateAction<string> };
+  }) => {
     setSearchWord(event.target.value);
   };
 
   const handleSearch = () => {
-    setSearchType(selectedOptionIndex);
     search.mutate();
     if (searchWord.length > 0) {
       if (boardName === "mbtiboard") {
         // navigate(`/search/result?query=${searchWord}`);
-        navigate(
-          `/search/moreBoard?searchType=${selectedOptionIndex}&query=${searchWord}`,
-        );
+        navigate(`/search/moreBoard?query=${searchWord}`);
       } else if (boardName === "discussion") {
-        navigate(
-          `/search/moreDebate?searchType=${selectedOptionIndex}&query=${searchWord}`,
-        );
+        navigate(`/search/moreDebate?query=${searchWord}`);
       } else if (boardName === "matching") {
-        navigate(
-          `/search/moreMatching?searchType=${selectedOptionIndex}&query=${searchWord}`,
-        );
+        navigate(`/search/moreMatching?query=${searchWord}`);
       }
     }
   };
 
-  const handleOnKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleOnKeyPress = (e: { key: string }) => {
     if (e.key === "Enter") {
       handleSearch();
     }
@@ -74,10 +64,10 @@ const SelectBox: React.FC<SelectBoxProps> = ({ boardName, setSearchType }) => {
         </div>
         {open && (
           <div css={optionsCSS}>
-            {selectList.map((item, index) => (
+            {selectList.map((item) => (
               <div
                 css={optionCSS}
-                onClick={() => handleOption(index, item)}
+                onClick={() => handleOption(item)}
                 key={item}
               >
                 {item}
@@ -143,12 +133,13 @@ const optionsCSS = css`
   width: 6rem;
 `;
 const optionCSS = css`
-  background-color: #ffffff;
-  box-sizing: border-box;
-  color: ${COLOR.GRAY2};
-  border-radius: 0.3rem;
-  padding: 0.1rem;
-  font-size: ${FONT.SIZE.TITLE3};
+background-color: #FFFFFF;
+box-sizing: border-box;
+color: ${COLOR.GRAY2};
+border-radius: 0.3rem;
+padding:0.1rem;
+font-size: ${FONT.SIZE.TITLE3};
+}
 `;
 
 const inputCSS = css`

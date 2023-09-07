@@ -27,13 +27,7 @@ const MoreDebateResult = () => {
   const [page, setPage] = useState(1); // 현재 페이지 설정하는 함수
 
   const queryValue = query.get("query") || ""; // null값일 때 빈 문자열로
-  const searchTypeValue = Number(query.get("searchType")) || 0;
-  const searchData = useSearchDebateList(
-    searchTypeValue,
-    queryValue,
-    page,
-    limit,
-  );
+  const searchData = useSearchDebateList(0, queryValue, page, limit);
 
   useEffect(() => {
     setSearchDebateList(searchData.searchDebateList);
@@ -46,7 +40,7 @@ const MoreDebateResult = () => {
   useEffect(() => {
     axios
       .get(
-        `/discussions/search?searchType=${searchTypeValue}&keyword=${queryValue}&page=${
+        `/discussions/search?searchType=0&keyword=${queryValue}&page=${
           page - 1
         }&size=${limit}`,
       )

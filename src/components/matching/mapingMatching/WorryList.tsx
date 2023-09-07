@@ -25,7 +25,6 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW, postId }) => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
-  const [searchType, setSearchType] = useState(0);
   const [openMbti1, setOpenMbti1] = useState(false);
   const [mbti1, setMbti1] = useState("ALL");
   const [openMbti2, setOpenMbti2] = useState(false);
@@ -117,7 +116,7 @@ const WorryList: React.FC<WorryProps> = ({ pathMove, SaW, postId }) => {
           setBlockNum={setBlockNum}
           totalPage={totalPage}
         />
-        <SelectBox boardName={"matching"} setSearchType={setSearchType} />
+        <SelectBox boardName={"matching"} />
       </Container>
     </>
   );
@@ -149,7 +148,7 @@ const mbtiSelectBoxCSS2 = css`
 `;
 
 const mbtiCSS = css`
-  display: flex;
+  dispaly: flex;
   align-items: center;
 
   background: ${COLOR.WHITE};
