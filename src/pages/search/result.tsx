@@ -137,7 +137,7 @@ const SearchResult: React.FC = () => {
               multipleBoardList!.getWorriesRes.result?.map((match) => (
                 <MatchingComponent
                   matching={match}
-                  solve={"solved"}
+                  solve={match.solved && "solved"}
                   onClick={() => navigate(`/match/${match.id}`)}
                   key={match.id}
                 />
