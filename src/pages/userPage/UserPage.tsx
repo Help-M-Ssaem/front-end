@@ -7,7 +7,7 @@ import FONT from "../../styles/font";
 import BoardComponent from "../../components/board/Board";
 import ActivityList from "../../components/mypage/ActivityList";
 import { useGetProfile } from "../../hooks/user/useProfile";
-import { BigCatLogoIcon, SettingIcon } from "../../assets/CommonIcons";
+import { BigCatLogoIcon } from "../../assets/CommonIcons";
 import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
 import { useBoardListMember } from "../../hooks/board/useBoardListMember";
@@ -31,8 +31,6 @@ const UserPage = () => {
   const { profileData } = useGetProfile(userId);
   const mbti = profileData?.teacherInfo?.mbti || "";
   const badge = profileData?.teacherInfo?.badge || "";
-
-  // console.log({ myId, userId, profileData });
 
   const menuTabBar = [
     { type: 1, title: `${profileData?.teacherInfo.nickName}의 게시글` },
@@ -61,20 +59,6 @@ const UserPage = () => {
   const clickMenu = (type: number) => {
     setMenuSelected(type);
   };
-  const selectBadge = (value: any) => {
-    switch (value.type) {
-      case 1:
-        return badgeCSS1;
-      case 2:
-        return badgeCSS2;
-      case 3:
-        return badgeCSS3;
-      case 4:
-        return badgeCSS4;
-      default:
-        return badgeCSS1;
-    }
-  };
 
   return (
     <div>
@@ -92,7 +76,7 @@ const UserPage = () => {
       </div>
       <div css={boxContainerCSS}>
         {/* box1 */}
-        <div css={box1CSS}>
+        <Container addCSS={box1CSS}>
           <div css={profileContainerCSS}>
             <div css={profileImageContainerCSS}>
               <img
@@ -104,22 +88,7 @@ const UserPage = () => {
                 alt="프로필"
               />
             </div>
-            <p css={profilenameCSS}>
-              {profileData?.teacherInfo?.nickName} 님
-              {/* <button
-                style={{
-                  display: userId === myId ? "" : "none",
-                }}
-                onClick={handleSettingClick}
-                css={settingIconContainerCSS}
-              >
-                <SettingIcon />
-              </button> */}
-            </p>
-            {/* <div css={bedgeContainer}>
-              <p css={selectBadge(1)}>{profileData?.teacherInfo?.mbti}</p>
-              <p css={selectBadge(1)}>{profileData?.teacherInfo?.badge}</p>
-            </div> */}
+            <p css={profilenameCSS}>{profileData?.teacherInfo?.nickName} 님</p>
             <div css={badgeContainer}>
               <Badge mbti={mbti} />
               {badge && <Badge mbti={badge} />}
@@ -127,19 +96,24 @@ const UserPage = () => {
             <p css={subTitleCSS}>한줄소개</p>
             <p css={oneLineIntroductionCSS}>
               {profileData?.teacherInfo?.introduction}
+              {!profileData?.teacherInfo?.introduction && (
+                <p css={noIntroductionCSS}>아직 소개가 없어요...</p>
+              )}
             </p>
           </div>
-        </div>
+        </Container>
         {/* box2 */}
-        <div css={box2CSS}>
+        <Container addCSS={box2CSS}>
           <p css={subTitleCSS}>수집한 칭호</p>
           <div css={collectedTitleContainer}>
             {profileData?.badgeInfos &&
               profileData?.badgeInfos.map((badgeInfo: any) => {
-                return <Badge mbti={badgeInfo.name} />;
+                return (
+                  <Badge mbti={badgeInfo.name} imgUrl={badgeInfo.imgUrl} />
+                );
               })}
           </div>
-        </div>
+        </Container>
         {/* box3 */}
         <ActivityList profileData={profileData}></ActivityList>
       </div>
@@ -284,7 +258,7 @@ const boxHeadContainerCSS = css`
 const mainTitleCSS = css`
   display: flex;
   align-items: center;
-  margin: 2rem 0 0 0;
+  margin: 2rem;
   font-size: ${FONT.SIZE.TITLE3};
   font-weight: ${FONT.WEIGHT.BOLD};
   color: ${COLOR.MAINDARK};
@@ -292,25 +266,17 @@ const mainTitleCSS = css`
 
 const boxContainerCSS = css`
   display: flex;
-  margin: 1.5rem 0 3rem;
-  min-width: 65.625rem;
+  width: 100%;
+  margin: 1.5rem 0;
 `;
 
 const box1CSS = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: ${COLOR.MAIN3};
-  // min-width: 15.625rem;
-
-  flex: 1;
-  height: 26rem;
   width: 25%;
-  border-radius: 1.875rem;
+  height: 26rem;
   margin-right: 1.5rem;
-
-  // margin-right: 2.875rem;
-  // padding: 2.5rem 2.125rem;
 `;
 
 const box2CSS = css`
@@ -318,14 +284,11 @@ const box2CSS = css`
   flex-direction: column;
   background-color: ${COLOR.MAIN3};
   width: 25%;
-  padding: 1.5rem;
   height: 26rem;
-  border-radius: 1.875rem;
   margin-right: 1.5rem;
 `;
 
 const subTitleCSS = css`
-  padding-top: 0.5rem;
   font-size: ${FONT.SIZE.TITLE3};
   font-weight: ${FONT.WEIGHT.BOLD};
   color: ${COLOR.GRAY1};
@@ -338,10 +301,18 @@ const oneLineIntroductionCSS = css`
   margin-top: 0.5rem;
 `;
 
+const noIntroductionCSS = css`
+  font-size: ${FONT.SIZE.BODY};
+  font-weight: ${FONT.WEIGHT.REGULAR};
+  color: ${COLOR.GRAY3};
+  margin-top: 0.5rem;
+`;
+
 const profileContainerCSS = css`
-  margin: 2rem 0 2.5rem;
+  margin: 0.625rem 0 2.5rem;
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 const profileImageContainerCSS = css`
@@ -384,14 +355,16 @@ const settingIconContainerCSS = css`
 const badgeContainer = css`
   display: flex;
   margin: 0 auto 1.25rem;
-  column-gap: 0.625rem;
+  /* column-gap: 0.625rem; */
+  column-gap: 0.1rem;
 `;
 
 const collectedTitleContainer = css`
   margin: 0.625rem 0 0.625rem;
   display: flex;
   flex-wrap: wrap;
-  column-gap: 0.625rem;
+  /* column-gap: 0.625rem; */
+  column-gap: 0.3rem;
   row-gap: 0.625rem;
 `;
 
@@ -435,7 +408,7 @@ const menuButtonContainer = css`
   display: flex;
   justify-content: space-between;
   border-bottom: 0.0625rem solid ${COLOR.MAIN1};
-  height: 5.125rem;
+  height: 3.5rem;
   li {
     cursor: pointer;
     position: relative;
@@ -443,17 +416,17 @@ const menuButtonContainer = css`
   }
   li:hover {
     color: ${COLOR.MAIN1};
-    border-bottom: 0.25rem solid ${COLOR.MAIN1};
+    border-bottom: 0.0625rem solid ${COLOR.MAIN1};
   }
 
   li.active {
     color: ${COLOR.MAIN1};
-    border-bottom: 0.25rem solid ${COLOR.MAIN1};
+    border-bottom: 0.0625rem solid ${COLOR.MAIN1};
   }
   list-style-type: none;
 `;
 const menuBox = css`
   text-align: center;
   flex: 1;
-  padding: 1.875rem 2.5625rem;
+  padding: 0.5rem 2.5625rem;
 `;

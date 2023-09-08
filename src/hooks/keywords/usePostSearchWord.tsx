@@ -8,6 +8,10 @@ async function postSearch(keyWord: string) {
 interface UseSearchWord {
   mutate: () => void;
 }
+// interface UseSearchWord {
+//   search: () => void;
+//   isLoading: boolean;
+// }
 
 export function useSearch(keyWord: string): UseSearchWord {
   const queryClient = useQueryClient();
@@ -20,3 +24,20 @@ export function useSearch(keyWord: string): UseSearchWord {
 
   return { mutate };
 }
+// export function useSearch(keyWord: string): UseSearchWord {
+//   const queryClient = useQueryClient();
+
+//   const { mutate, isLoading } = useMutation(() => postSearch(keyWord), {
+//     onSuccess: () => {
+//       queryClient.invalidateQueries("recentkeyWordKeys");
+//     },
+//   });
+
+//   const search = () => {
+//     if (!isLoading) {
+//       mutate();
+//     }
+//   };
+
+//   return { search, isLoading };
+// }
