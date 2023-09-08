@@ -47,7 +47,6 @@ const MbtiBoardPage = () => {
   const limit = 10;
   const totalPage = boardList ? boardList.totalSize : 1;
   const [page, setPage] = useState(1);
-  const [searchType, setSearchType] = useState(0);
   const [blockNum, setBlockNum] = useState(0);
 
   const [containerKey, setContainerKey] = useState(0);
@@ -121,7 +120,7 @@ const MbtiBoardPage = () => {
           setBlockNum={setBlockNum}
           totalPage={totalPage}
         />
-        <SelectBox boardName={"mbtiboard"} setSearchType={setSearchType} />
+        <SelectBox boardName={"mbtiboard"} />
       </Container>
     </>
   );

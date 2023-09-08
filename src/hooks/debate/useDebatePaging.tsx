@@ -12,7 +12,10 @@ export function useDebatePaging(path: string, page: number, postId: number) {
         `/discussions${path === 'discusstion' ? '' : '/hot'}?discussionId=${postId}&page=${page}&size=6`
       );
       return data;
-    }
+    },
+    {
+      refetchOnMount : true,
+    } 
   );
 
   return { debateList, refetch };
