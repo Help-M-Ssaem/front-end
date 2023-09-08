@@ -6,7 +6,6 @@ import ListPagination from "../../components/Pagination/ListPagination";
 import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
 import BoardComponent from "../../components/board/Board";
-import SelectBox from "../../components/Pagination/SelectBox";
 import { useLocation } from "react-router-dom";
 import { mssaemAxios as axios } from "../../apis/axios";
 import COLOR from "../../styles/color";
@@ -27,7 +26,18 @@ const MoreBoardResult = () => {
   const [page, setPage] = useState(1); // 현재 페이지 설정하는 함수
 
   const queryValue = query.get("query") || ""; // null값일 때 빈 문자열로
-  const searchData = useSearchBoardList(0, queryValue, mbti, page, limit);
+  const searchTypeValue = Number(query.get("searchType")) || 0;
+  const searchData = useSearchBoardList(
+    searchTypeValue,
+    queryValue,
+    mbti,
+    page,
+    limit,
+  );
+  console.log("query : " + query); // searchType=0&query=%EC%9A%94
+  console.log("searchtypeget: " + query.get("searchType")); // 0
+  console.log("queryget: " + query.get("query")); // 요
+  console.log(query.get("query")?.at(0)); // 요
 
   useEffect(() => {
     setSearchBoardList(searchData.searchBoardList);
@@ -39,7 +49,7 @@ const MoreBoardResult = () => {
   useEffect(() => {
     axios
       .get(
-        `/boards/search?searchType=0&keyword=${queryValue}&strMbti=${mbti}&page=${
+        `/boards/search?searchType=${searchTypeValue}&keyword=${queryValue}&strMbti=${mbti}&page=${
           page - 1
         }&size=${limit}`,
       )
