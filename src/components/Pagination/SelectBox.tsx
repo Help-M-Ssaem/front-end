@@ -22,7 +22,7 @@ const SelectBox: React.FC<SelectBoxProps> = ({ boardName, setSearchType }) => {
   const [open, setOpen] = useState(false);
   const [searchWord, setSearchWord] = useState("");
   const search = useSearch(searchWord);
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(0); // 초기값 설정
 
   const handleOpen = () => {
     setOpen(!open);
@@ -40,9 +40,10 @@ const SelectBox: React.FC<SelectBoxProps> = ({ boardName, setSearchType }) => {
 
   const handleSearch = () => {
     setSearchType(selectedOptionIndex);
-    if (searchWord.trim() !== "") {
-      search.mutate();
+    search.mutate();
+    if (searchWord.length > 0) {
       if (boardName === "mbtiboard") {
+        // navigate(`/search/result?query=${searchWord}`);
         navigate(
           `/search/moreBoard?searchType=${selectedOptionIndex}&query=${searchWord}`,
         );

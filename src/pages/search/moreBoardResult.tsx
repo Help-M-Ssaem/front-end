@@ -6,6 +6,7 @@ import ListPagination from "../../components/Pagination/ListPagination";
 import { useNavigate } from "react-router-dom";
 import Container from "../../components/container/Container";
 import BoardComponent from "../../components/board/Board";
+import SelectBox from "../../components/Pagination/SelectBox";
 import { useLocation } from "react-router-dom";
 import { mssaemAxios as axios } from "../../apis/axios";
 import COLOR from "../../styles/color";
@@ -26,14 +27,7 @@ const MoreBoardResult = () => {
   const [page, setPage] = useState(1); // 현재 페이지 설정하는 함수
 
   const queryValue = query.get("query") || ""; // null값일 때 빈 문자열로
-  const searchTypeValue = Number(query.get("searchType")) || 0;
-  const searchData = useSearchBoardList(
-    searchTypeValue,
-    queryValue,
-    mbti,
-    page,
-    limit,
-  );
+  const searchData = useSearchBoardList(0, queryValue, mbti, page, limit);
 
   useEffect(() => {
     setSearchBoardList(searchData.searchBoardList);
@@ -45,7 +39,7 @@ const MoreBoardResult = () => {
   useEffect(() => {
     axios
       .get(
-        `/boards/search?searchType=${searchTypeValue}&keyword=${queryValue}&strMbti=${mbti}&page=${
+        `/boards/search?searchType=0&keyword=${queryValue}&strMbti=${mbti}&page=${
           page - 1
         }&size=${limit}`,
       )

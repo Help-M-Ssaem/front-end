@@ -115,11 +115,9 @@ const Header = () => {
             css = {AlarmPotintCSS}
           >
             알람
-            {newAlarm && 
-            <div css = {[newAlarmCSS]}>!</div>}
           </li>
-          {/* {newAlarm && 
-            <div css = {[newAlarmCSS]}>!</div>} */}
+          {newAlarm && 
+            <div css = {[newAlarmCSS]}>!</div>}
           {alarmOpen && 
             <div css={AlarmContainerCSS}><AlarmMenu/></div>}
           <li
@@ -248,9 +246,9 @@ const buttonCSS = css`
 `;
 const newAlarmCSS = css`
   position: absolute;
-  top: -80%;
-  right: -45%;
-  width: 5%;
+  top: 65%;
+  right: 18.4%;
+  width: 10%;
   z-index: 11;
 
 
