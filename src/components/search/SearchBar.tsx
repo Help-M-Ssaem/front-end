@@ -25,6 +25,16 @@ const SearchBar: React.FC = () => {
       window.alert("공백은 검색이 안됩니다.");
     }
   };
+  // const handleSearch = () => {
+  //   if (searchWord.trim() !== "") {
+  //     if (!search.isLoading) {
+  //       search.mutate();
+  //     }
+  //     navigate(`/search/result?query=${searchWord}`);
+  //   } else {
+  //     window.alert("공백은 검색이 안됩니다.");
+  //   }
+  // };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {

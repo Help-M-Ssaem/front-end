@@ -22,7 +22,7 @@ const SelectBox: React.FC<SelectBoxProps> = ({ boardName, setSearchType }) => {
   const [open, setOpen] = useState(false);
   const [searchWord, setSearchWord] = useState("");
   const search = useSearch(searchWord);
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState(0); // 초기값 설정
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
 
   const handleOpen = () => {
     setOpen(!open);
@@ -42,21 +42,18 @@ const SelectBox: React.FC<SelectBoxProps> = ({ boardName, setSearchType }) => {
     setSearchType(selectedOptionIndex);
     if (searchWord.trim() !== "") {
       search.mutate();
-      if (searchWord.length > 0) {
-        if (boardName === "mbtiboard") {
-          // navigate(`/search/result?query=${searchWord}`);
-          navigate(
-            `/search/moreBoard?searchType=${selectedOptionIndex}&query=${searchWord}`,
-          );
-        } else if (boardName === "discussion") {
-          navigate(
-            `/search/moreDebate?searchType=${selectedOptionIndex}&query=${searchWord}`,
-          );
-        } else if (boardName === "matching") {
-          navigate(
-            `/search/moreMatching?searchType=${selectedOptionIndex}&query=${searchWord}`,
-          );
-        }
+      if (boardName === "mbtiboard") {
+        navigate(
+          `/search/moreBoard?searchType=${selectedOptionIndex}&query=${searchWord}`,
+        );
+      } else if (boardName === "discussion") {
+        navigate(
+          `/search/moreDebate?searchType=${selectedOptionIndex}&query=${searchWord}`,
+        );
+      } else if (boardName === "matching") {
+        navigate(
+          `/search/moreMatching?searchType=${selectedOptionIndex}&query=${searchWord}`,
+        );
       }
     }
   };
