@@ -20,7 +20,10 @@ const privacyPolicy = () => {
 export default privacyPolicy;
 const communityCss = css`
   margin: auto 0;
-  padding: 2rem;
+  padding-top: 8rem;
+  @media screen and (max-width: 768px) {
+    padding: 8rem 1rem 0 1rem;
+  }
 `;
 const titleCSS = css`
   text-align: center;

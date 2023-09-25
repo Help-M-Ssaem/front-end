@@ -13,7 +13,7 @@ import FavoritesMenu from "../side/Favorites";
 import Profile from "../profile/Profile";
 import { useEffect, useRef } from "react";
 import { useAlarmList } from "../../hooks/alarm/useGetAlarm";
-
+import Catlogo from "../../assets/logo/CatLogo.svg";
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -57,51 +57,8 @@ const Header = () => {
   return (
     <header css={headerCSS} onClick={handleCloseAll} ref={menuRef}>
       <div css={headerTopCSS}>
-        <LogoIcon onClick={() => navigate("/")} />
-        {!user ? (
-          <Button onClick={handleLoginClick} addCSS={buttonCSS}>
-            로그인하고 이용하기
-          </Button>
-        ) : (
-          <Profile
-            id={user.id}
-            image={user.profileImgUrl}
-            name={user.nickName}
-            mbti={user.mbti}
-            badge={user.badge}
-          />
-        )}
-      </div>
-      <div css={headerBottomCSS}>
-        <ul css={[listCSS, left]}>
-          <li
-            onClick={() => navigate("/")}
-            className={
-              homeRouteList.includes(location.pathname) ? "active" : ""
-            }
-          >
-            Home
-          </li>
-          <li
-            onClick={() => navigate("/board/mbti")}
-            className={location.pathname.startsWith("/board") ? "active" : ""}
-          >
-            게시판
-          </li>
-          <li
-            onClick={() => navigate("/match/matching")}
-            className={location.pathname.startsWith("/match") ? "active" : ""}
-          >
-            M쌤 매칭
-          </li>
-          <li
-            onClick={() => navigate("/debate/postlist")}
-            className={location.pathname.startsWith("/debate") ? "active" : ""}
-          >
-            MBTI 과몰입 토론
-          </li>
-        </ul>
         <ul css={[listCSS, right]}>
+          <img src={Catlogo} css={CatCss} />
           <li
             onClick={() => navigate("/chatting")}
             className={
@@ -142,6 +99,37 @@ const Header = () => {
           </li>
         </ul>
       </div>
+      <hr css={lineCSS} />
+      <div css={headerBottomCSS}>
+        <ul css={[listCSS, left]}>
+          <li
+            onClick={() => navigate("/")}
+            className={
+              homeRouteList.includes(location.pathname) ? "active" : ""
+            }
+          >
+            Home
+          </li>
+          <li
+            onClick={() => navigate("/board/mbti")}
+            className={location.pathname.startsWith("/board") ? "active" : ""}
+          >
+            게시판
+          </li>
+          <li
+            onClick={() => navigate("/match/matching")}
+            className={location.pathname.startsWith("/match") ? "active" : ""}
+          >
+            M쌤 매칭
+          </li>
+          <li
+            onClick={() => navigate("/debate/postlist")}
+            className={location.pathname.startsWith("/debate") ? "active" : ""}
+          >
+            MBTI 과몰입 토론
+          </li>
+        </ul>
+      </div>
     </header>
   );
 };
@@ -149,7 +137,7 @@ export default Header;
 
 const headerCSS = css`
   width: 100%;
-  height: 9rem;
+  height: 8rem;
   // min-width: 1280px;
 
   display: flex;
@@ -167,7 +155,26 @@ const headerCSS = css`
 
   @media screen and (max-width: 768px) {
     width: 100%;
-    padding: 0 3rem;
+    padding: 0.5rem;
+    height: 6rem;
+  }
+`;
+const CatCss = css`
+  width: 35px;
+  margin-right: 3rem;
+`;
+
+const lineCSS = css`
+  width: 100%;
+  margin: 1rem 0;
+  border: 0.5px solid ${COLOR.GRAY4};
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin: 0;
+    // margin-left: -1rem;
+    border: 0.5px solid ${COLOR.GRAY5};
+    margin: 0rem 0 0rem -1rem -1rem;
   }
 `;
 
@@ -175,21 +182,24 @@ const headerTopCSS = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 0 0.8rem 0;
 `;
 
 const headerBottomCSS = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.2rem;
+  padding-top: 1rem;
+  padding-bottom: 0.2rem;
 `;
 
 const listCSS = css`
   display: flex;
   align-items: center;
-  font-size: ${FONT.SIZE.TITLE3};
+  font-size: ${FONT.SIZE.HEADLINE};
   font-weight: ${FONT.WEIGHT.REGULAR};
+  @media (max-width: 768px) {
+    padding-left: 1rem;
+  }
 
   li {
     cursor: pointer;
@@ -227,12 +237,19 @@ const listCSS = css`
     height: 3.5px;
     opacity: 1;
     transform: translateY(0.7rem);
+
+    @media (max-width: 768px) {
+      height: 2px;
+    }
   }
 `;
 
 const left = css`
   li {
     margin-right: 1.7rem;
+    @media (max-width: 768px) {
+      margin-right: 1.7rem;
+    }
   }
 `;
 
@@ -241,7 +258,7 @@ const right = css`
     margin-left: 1.7rem;
 
     @media (max-width: 768px) {
-      margin-left: 0rem;
+      margin-left: 1.7rem;
     }
   }
 `;
@@ -264,6 +281,10 @@ const AlarmContainerCSS = css`
   right: 20;
   width: 20%;
   z-index: 11;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 const newAlarmCSS = css`
   position: absolute;
@@ -299,6 +320,6 @@ const FavoritesContainerCSS = css`
   position: absolute;
   top: 110%;
   right: 10;
-  width: 20%;
+  width: 100%;
   z-index: 11;
 `;

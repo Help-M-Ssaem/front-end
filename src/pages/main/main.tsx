@@ -71,7 +71,7 @@ const MainPage = () => {
     }
   `;
   const handleHotDebatesClick = () => {
-    setIsLoadingTime(true); 
+    setIsLoadingTime(true);
     refetch();
     setIsLoadingTime(false);
   };
@@ -191,6 +191,12 @@ const headerCSS = css`
   justify-content: space-between;
   align-items: center;
   height: 15rem;
+
+  @media screen and (max-width: 768px) {
+    padding: 0rem;
+    margin-left: 0rem;
+    width: 100%;
+  }
 `;
 
 const hotBoardBoxCSS = css`

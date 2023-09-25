@@ -52,6 +52,7 @@ const checkboxLabelStyles = css`
   font-size: 16px;
   color: ${COLOR.GRAY2};
   cursor: pointer;
+
   input[type="checkbox"] {
     display: none;
   }
@@ -63,6 +64,17 @@ const checkboxLabelStyles = css`
     // height: 30px;
     position: relative;
     margin-bottom: 0.5rem;
+  }
+
+  @media screen and (max-width: 400px) {
+    font-size: ${FONT.SIZE.HEADLINE};
+    .checkmark {
+      width: 25px;
+      top: 0.3rem;
+
+      position: relative;
+      margin-bottom: 0.5rem;
+    }
   }
 `;
 

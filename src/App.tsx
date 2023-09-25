@@ -46,14 +46,24 @@ import CommunityPolicy from "./components/auth/CommunityPolicy";
 import UserPage from "./pages/userPage/UserPage";
 import ProfilePage from "./pages/userPage/ProfilePage";
 import Search from "./pages/search/search";
+import HeaderMobile from "./components/header/HeaderMobile";
 
 function App() {
+  const isMobile = window.innerWidth <= 768;
+
   return (
     <>
       <Global styles={GlobalStyle} />
       <BrowserRouter>
         <ScrollToTop />
-        <Header />
+        {isMobile &&
+        !window.location.pathname.includes("/login") &&
+        !window.location.pathname.includes("/sign-up") ? (
+          <HeaderMobile />
+        ) : isMobile ? null : (
+          <Header />
+        )}
+
         <Layout>
           <Routes>
             <Route path="/" element={<MainPage />} />

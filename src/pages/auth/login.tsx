@@ -51,13 +51,26 @@ const loginCss = css`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  // min-width: 1280px;
+  padding: 9rem 15rem 3rem 15rem;
   padding-top: 2rem;
   max-width: 100rem;
+
+  @media screen and (max-width: 768px) {
+    padding: 1.5rem;
+    padding-bottom: 10.7rem;
+  }
 `;
 
 const CatCss = css`
-  width: 7rem;
-  padding-top: 2rem;
+  // width: 7rem;
+  // padding-top: 2rem;
+
+  @media screen and (max-width: 768px) {
+    width: 5rem;
+    padding-top: 3rem;
+  }
 `;
 
 const titleCSS = css`
@@ -78,6 +91,13 @@ const lineCSS = css`
   border: 1px solid #d4d3d3;
   height: 0.1rem;
   width: 30rem;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    border: 1px solid #d4d3d3;
+    height: 0.05rem;
+    margin-bottom: 2rem;
+  }
 `;
 
 const RectCSS = css`
@@ -87,6 +107,11 @@ const RectCSS = css`
   gap: 1rem;
   cursor: pointer;
   width: 30rem;
+
+  @media screen and (max-width: 768px) {
+    padding: 0;
+    width: 115%;
+  }
 `;
 
 export default LoginPage;
