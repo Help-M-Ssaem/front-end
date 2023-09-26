@@ -234,6 +234,11 @@ const userinfoCSS = css`
   flex-direction: column;
   align-items: center;
   padding-top: 2rem;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+    padding-bottom: 7rem;
+  }
 `;
 const titleCSS = css`
   font-size: ${FONT.SIZE.TITLE1};
@@ -305,12 +310,23 @@ const mbtiCSS = css`
   border-radius: 0.8rem;
   margin-top: 1rem;
   text-align: center;
+
+  @media (max-width: 768px) {
+    padding: 0rem;
+    width: 3.5rem;
+    height: 3.5rem;
+  }
 `;
 const mbtiBox = css`
   display: flex;
   gap: 3rem;
   align-items: center;
   text_align: center;
+
+  @media (max-width: 768px) {
+    margin-right: 0rem;
+    gap: 1rem;
+  }
 `;
 
 const buttonCSS = (result: boolean | null) => css`
@@ -349,7 +365,17 @@ const mbtiContainerCSS = css`
   text_align: center;
 
   svg {
-    width: 10;
+    width: 1rem;
+    margin-left: 0;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+
+    svg {
+      width: 1rem;
+      margin-left: -0.3rem;
+    }
   }
 `;
 

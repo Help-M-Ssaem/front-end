@@ -18,6 +18,14 @@ const layoutCSS = css`
   flex-direction: column;
 
   padding: 9rem 15rem 0 15rem;
+
+  @media screen and (max-width: 768px) {
+    max-width: 768px;
+    width: 100%;
+    padding: 0rem;
+
+    min-width: 375px;
+  }
 `;
 
 export default Layout;

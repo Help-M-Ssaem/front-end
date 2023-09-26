@@ -19,7 +19,10 @@ const communityPolicy = () => {
 export default communityPolicy;
 
 const communityCSS = css`
-  padding-top: 2rem;
+  padding-top: 8rem;
+  @media screen and (max-width: 768px) {
+    padding: 8rem 1rem 0 1rem;
+  }
 `;
 
 const contentCSS = css`

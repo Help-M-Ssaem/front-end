@@ -310,132 +310,129 @@ const MyPageUpdate = () => {
   };
 
   return (
-    <div>
-      <div css={containerCSS}>
-        <div css={mainTitleCSS}>프로필</div>
-        <div css={boxContainerCSS}>
-          <Container addCSS={box1CSS}>
-            {/* box1 */}
+    <div css={containerCSS}>
+      <div css={mainTitleCSS}>프로필</div>
+      <div css={boxContainerCSS}>
+        <Container addCSS={box1CSS}>
+          {/* box1 */}
 
-            <div css={profileContainerCSS}>
-              <div css={profileImageContainerCSS}>
-                <img
-                  css={imageCSS}
-                  src={values.image}
-                  alt="프로필"
-                  decoding="async"
-                />
-              </div>
-              <div css={cancelCSS2}>
-                <CancelIcon onClick={handleImageCancel} />
-              </div>
-              {/* 프로필 설정  */}
+          <div css={profileContainerCSS}>
+            <div css={profileImageContainerCSS}>
+              <img
+                css={imageCSS}
+                src={values.image}
+                alt="프로필"
+                decoding="async"
+              />
+            </div>
+            <div css={cancelCSS2}>
+              <CancelIcon onClick={handleImageCancel} />
+            </div>
+            {/* 프로필 설정  */}
 
-              <label css={uploadLabelCSS}>
-                <span css={settingCSS}>프로필 설정</span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  css={uploadInputCSS}
-                />
-              </label>
-              <div>
-                <p css={subTitle2CSS}>닉네임</p>
-                <NameBox
-                  name={values.nickName}
-                  onChange={handleNicknameChange}
-                />
+            <label css={uploadLabelCSS}>
+              <span css={settingCSS}>프로필 설정</span>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                css={uploadInputCSS}
+              />
+            </label>
+            <div>
+              <p css={subTitle2CSS}>닉네임</p>
+              <NameBox name={values.nickName} onChange={handleNicknameChange} />
 
-                {/* <MbtiBox /> */}
-                <p css={subTitle2CSS}>MBTI</p>
-                <div css={userinfoCSS}>
-                  <div css={mbtiBox}>
-                    {mbtiInputs.map((mbti, index) => (
-                      <div key={mbti.name} css={mbtiContainerCSS}>
-                        <input
-                          type="text"
-                          css={mbtiCSS}
-                          value={mbtiValue[index].values[0]}
-                          onChange={(e) => handleInputChange(e, mbti.name)}
-                          placeholder={profileData?.teacherInfo.mbti}
+              {/* <MbtiBox /> */}
+              <p css={subTitle2CSS}>MBTI</p>
+              <div css={userinfoCSS}>
+                <div css={mbtiBox}>
+                  {mbtiInputs.map((mbti, index) => (
+                    <div key={mbti.name} css={mbtiContainerCSS}>
+                      <input
+                        type="text"
+                        css={mbtiCSS}
+                        value={mbtiValue[index].values[0]}
+                        onChange={(e) => handleInputChange(e, mbti.name)}
+                        placeholder={profileData?.teacherInfo.mbti}
+                      />
+                      <div css={arrowContainerCSS}>
+                        <PolygonIcon
+                          width={"9"}
+                          height={"70"}
+                          onClick={() => handlePolygonClick(mbti.name)}
                         />
-                        <div css={arrowContainerCSS}>
-                          <PolygonIcon
-                            width={"9"}
-                            height={"70"}
-                            onClick={() => handlePolygonClick(mbti.name)}
-                          />
-                        </div>
                       </div>
-                    ))}
-                  </div>
-
-                  {invalidInput &&
-                    !mbtiInputs.some((mbti) =>
-                      mbti.values.includes(invalidInput),
-                    ) && (
-                      <div css={warningContainerCSS}>
-                        <p css={warningMessageCSS}>
-                          "{invalidInput}"은(는) 유효한 MBTI 요소가 아닙니다.
-                        </p>
-                      </div>
-                    )}
+                    </div>
+                  ))}
                 </div>
-                <p css={subTitle2CSS}>한줄소개</p>
-                <Input2
-                  placeholder={profileData?.teacherInfo.introduction}
-                  value={values.introduction}
-                  onChange={(e) => setIntroductionChange(e.target.value)}
-                />
+
+                {invalidInput &&
+                  !mbtiInputs.some((mbti) =>
+                    mbti.values.includes(invalidInput),
+                  ) && (
+                    <div css={warningContainerCSS}>
+                      <p css={warningMessageCSS}>
+                        "{invalidInput}"은(는) 유효한 MBTI 요소가 아닙니다.
+                      </p>
+                    </div>
+                  )}
               </div>
+              <p css={subTitle2CSS}>한줄소개</p>
+              <Input2
+                placeholder={profileData?.teacherInfo.introduction}
+                value={values.introduction}
+                onChange={(e) => setIntroductionChange(e.target.value)}
+              />
             </div>
-          </Container>
+          </div>
+        </Container>
 
-          {/* box2 */}
-          <Container addCSS={box2CSS}>
-            <p css={subTitleCSS}>수집한 칭호</p>
-            <div css={collectedTitleContainer}>
-              {profileData?.badgeInfos?.map(
-                (value: { id: number; name: string }, idx: number) => {
-                  const isSelected = value.name === values.badge;
+        {/* box2 */}
+        <Container addCSS={box2CSS}>
+          <p css={subTitleCSS}>수집한 칭호</p>
+          <div css={collectedTitleContainer}>
+            {profileData?.badgeInfos?.map(
+              (value: { id: number; name: string }, idx: number) => {
+                const isSelected = value.name === values.badge;
 
-                  const handleBadgeClick = () => {
-                    if (isSelected) {
-                      setBadgeChange("");
-                      setBadgeId(null);
-                    } else {
-                      setBadgeChange(value.name as string);
-                      setBadgeId(value.id);
-                    }
-                  };
+                const handleBadgeClick = () => {
+                  if (isSelected) {
+                    setBadgeChange("");
+                    setBadgeId(null);
+                  } else {
+                    setBadgeChange(value.name as string);
+                    setBadgeId(value.id);
+                  }
+                };
 
-                  return (
-                    <Badge
-                      key={idx}
-                      onClick={handleBadgeClick}
-                      mbti={value.name}
-                      isSelected={isSelected}
-                    ></Badge>
-                  );
-                },
-              )}
-            </div>
-            {/* </div> */}
-          </Container>
+                return (
+                  <Badge
+                    key={idx}
+                    onClick={handleBadgeClick}
+                    mbti={value.name}
+                    isSelected={isSelected}
+                  ></Badge>
+                );
+              },
+            )}
+          </div>
+          {/* </div> */}
+        </Container>
 
-          {/* box3 */}
+        {/* box3 */}
+        <div css={box3CSS}>
           <MyActivityList profileData={profileData} />
         </div>
+      </div>
 
-        <div css={buttonCSS}>
-          <Button addCSS={calcelCSS} onClick={handleCancel}>
-            취소하기
-          </Button>
-          <Button type="submit" onClick={handleSubmit(onSubmit)}>
-            수정하기
-          </Button>
-        </div>
+      <div css={buttonCSS}>
+        <Button addCSS={calcelCSS} onClick={handleCancel}>
+          취소하기
+        </Button>
+        <Button type="submit" onClick={handleSubmit(onSubmit)}>
+          수정하기
+        </Button>
       </div>
     </div>
   );
@@ -445,6 +442,12 @@ export default MyPageUpdate;
 
 const containerCSS = css`
   padding-top: 0.5rem;
+  @media screen and (max-width: 768px) {
+    margin-top: 6rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    padding: 1rem;
+  }
 `;
 
 const mainTitleCSS = css`
@@ -454,6 +457,13 @@ const mainTitleCSS = css`
   font-size: ${FONT.SIZE.TITLE3};
   font-weight: ${FONT.WEIGHT.BOLD};
   color: ${COLOR.MAINDARK};
+
+  @media screen and (max-width: 768px) {
+    margin: 1rem 0 0 0;
+    font-size: ${FONT.SIZE.HEADLINE};
+    font-weight: ${FONT.WEIGHT.BOLD};
+    color: ${COLOR.MAINDARK};
+  }
 `;
 
 const boxContainerCSS = css`
@@ -470,6 +480,11 @@ const box1CSS = css`
   flex: 1;
   border-radius: 1.875rem;
   margin-right: 1.5rem;
+
+  @media screen and (max-width: 768px) {
+    border-radius: 1.875rem;
+    margin-right: 0rem;
+  }
 `;
 
 const box2CSS = css`
@@ -480,12 +495,24 @@ const box2CSS = css`
   height: 26rem;
   border-radius: 1.875rem;
   margin-right: 1.5rem;
+
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+const box3CSS = css`
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const subTitleCSS = css`
   font-size: ${FONT.SIZE.TITLE3};
   font-weight: ${FONT.WEIGHT.BOLD};
   color: ${COLOR.GRAY1};
+  @media screen and (max-width: 768px) {
+    font-size: ${FONT.SIZE.TITLE3};
+  }
 `;
 
 const subTitle2CSS = css`
@@ -569,6 +596,9 @@ const badgeCSS4 = css`
 const calcelCSS = css`
   opacity: 0.5;
   margin-right: 1rem;
+  @media screen and (max-width: 768px) {
+    margin-right: 0.5rem;
+  }
 `;
 
 const buttonCSS = css`
@@ -576,6 +606,11 @@ const buttonCSS = css`
   justify-content: flex-end;
   margin-right: 0rem;
   margin-top: -5rem;
+
+  @media screen and (max-width: 768px) {
+    margin-top: -2rem;
+    // margin-right: 2rem;
+  }
 `;
 
 const cancelCSS2 = css`

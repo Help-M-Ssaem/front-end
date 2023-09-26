@@ -117,6 +117,11 @@ const sigininCSS = css`
   padding-top: 2rem;
   max-width: 100rem;
   font: unset;
+
+  @media screen and (max-width: 768px) {
+    padding: 1rem;
+    padding-bottom: 2.3rem;
+  }
 `;
 
 const titleCSS = css`
@@ -133,6 +138,14 @@ const checkboxCSS = css`
   padding-top: 1rem;
   max-width: 30rem;
   font: unset;
+
+  @media screen and (max-width: 768px) {
+    margin: 1rem;
+    margin-bottom: 1rem;
+    padding-top: 0rem;
+
+    // max-width: 30rem;
+  }
 `;
 
 const join = css`
@@ -158,16 +171,23 @@ const join = css`
     background-color: #ad71ea;
     cursor: pointer;
   }
+
+  @media screen and (max-width: 768px) {
+    height: 2.5 drem;
+  }
 `;
 
 const buttonContainer = css`
   display: flex;
   justify-content: center;
   margin-top: 2rem;
+
+  @media screen and (max-width: 768px) {
+    margin-top: 1rem;
+  }
 `;
 const policyCSS = css`
-  width: 30rem;
-  }
+  width: 100%;
 `;
 
 const containerCSS = css`
@@ -176,4 +196,8 @@ const containerCSS = css`
   padding: 1rem;
   overflow: scroll;
   height: 10rem;
+
+  @media screen and (max-width: 768px) {
+    height: 7rem;
+  }
 `;
