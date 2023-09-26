@@ -164,11 +164,6 @@ const headerCSS = css`
   left: 0;
   right: 0;
   z-index: 999;
-
-  @media screen and (max-width: 768px) {
-    width: 100%;
-    padding: 0 3rem;
-  }
 `;
 
 const headerTopCSS = css`
@@ -239,19 +234,11 @@ const left = css`
 const right = css`
   li {
     margin-left: 1.7rem;
-
-    @media (max-width: 768px) {
-      margin-left: 0rem;
-    }
   }
 `;
 
 const buttonCSS = css`
   font-size: ${FONT.SIZE.HEADLINE};
-
-  @media (max-width: 400px) {
-    font-size: ${FONT.SIZE.BODY};
-  }
 `;
 
 const AlarmPotintCSS = css`

@@ -236,8 +236,8 @@ const userinfoCSS = css`
   padding-top: 2rem;
 
   @media (max-width: 768px) {
+    padding: 1rem;
     padding-bottom: 7rem;
-    padding-top: 1rem;
   }
 `;
 const titleCSS = css`
